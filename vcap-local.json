@@ -1,0 +1,15 @@
+{
+ "services": {
+   "cloudantNoSQLDB": [
+     {
+       "credentials": {
+         "username":"onedscredelfelverediveri",
+         "password":"ef1cdd002877bb845483655c1f02edfade09b52e",
+         "host":"fe47db14-f406-43e6-a832-84e17593d1f2-bluemix.cloudant.com"
+       },
+       "db_name":"hovor-exec-develop",
+       "label": "cloudantNoSQLDB"
+     }
+   ]
+ }
+}

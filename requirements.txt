@@ -1,0 +1,9 @@
+requests
+Flask==0.12.2
+Werkzeug==0.16.0
+cloudant==2.4.0
+flask-cors
+json2html
+jsonpickle
+watson-developer-cloud==2.4.0
+ibm-watson==4.0.1

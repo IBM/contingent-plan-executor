@@ -1,0 +1,749 @@
+{
+    "intents": {
+        "title_change": [
+            "Make the title [regex]{parsed_title:=[\\w ]+}",
+            "Change the title to [regex]{parsed_title:=[\\w ]+}",
+            "Please change the title to [regex]{parsed_title:=[\\w ]+}"
+        ]
+    },
+    "context-variables": {
+        "GOAL": {
+            "type": "flag",
+            "config": "false",
+            "confirm": "false",
+            "confirmation_utterance": ""
+        },
+        "subgoal": {
+            "type": "flag",
+            "config": "false",
+            "confirm": "false",
+            "confirmation_utterance": ""
+        },
+        "need_summary": {
+            "type": "flag",
+            "config": "false",
+            "confirm": "false",
+            "confirmation_utterance": ""
+        },
+        "data_file_choices": {
+            "type": "enum",
+            "config": [
+                "models",
+                "runtimes"
+            ],
+            "confirm": "false",
+            "confirmation_utterance": ""
+        },
+        "reset": {
+            "type": "flag",
+            "config": "false",
+            "confirm": "false",
+            "confirmation_utterance": ""
+        },
+        "need_plot": {
+            "type": "flag",
+            "config": "false",
+            "confirm": "false",
+            "confirmation_utterance": ""
+        },
+        "plot_generated": {
+            "type": "flag",
+            "config": "false",
+            "confirm": "false",
+            "confirmation_utterance": ""
+        },
+        "data_file": {
+            "type": "json",
+            "config": "null",
+            "confirm": "false",
+            "confirmation_utterance": ""
+        },
+        "summary": {
+            "type": "json",
+            "config": "null",
+            "confirm": "false",
+            "confirmation_utterance": ""
+        },
+        "title": {
+            "type": "json",
+            "config": "null",
+            "confirm": "true",
+            "confirmation_utterance": "Should the title be {value}?"
+        }
+    },
+    "name": "data-doppelganger",
+    "actions": {
+        "dialogue-disambiguation__custom__confirm-title": {
+            "name": "dialogue-disambiguation__custom__confirm-title",
+            "type": "dialogue",
+            "subtype": "Dialogue disambiguation",
+            "condition": [
+                [
+                    "title",
+                    "Uncertain"
+                ]
+            ],
+            "effect": {
+                "type": "oneof",
+                "global-outcome-name": "confirm-value-of-title",
+                "generic-outcome-specification": "auto-generated interaction",
+                "outcomes": [
+                    {
+                        "name": "confirmed-title",
+                        "assignments": {},
+                        "updates": {
+                            "title": {
+                                "variable": "title",
+                                "value": "$title",
+                                "certainty": "Known",
+                                "interpretation": "spel"
+                            }
+                        },
+                        "intent": "confirmation-positive",
+                        "follow_up": null
+                    },
+                    {
+                        "name": "denied-title",
+                        "assignments": {},
+                        "updates": {
+                            "title": {
+                                "variable": "title",
+                                "value": "null",
+                                "certainty": "Unknown",
+                                "interpretation": "spel"
+                            }
+                        },
+                        "intent": "confirmation-negative",
+                        "follow_up": null
+                    }
+                ]
+            },
+            "message_variants": [
+                "Should the title be $title?"
+            ],
+            "intents": {
+                "confirmation-positive": {
+                    "utterances": [
+                        "Yes",
+                        "Yep",
+                        "Sure",
+                        "That's right"
+                    ],
+                    "variables": []
+                },
+                "confirmation-negative": {
+                    "utterances": [
+                        "No",
+                        "Nope",
+                        "That's not right",
+                        "No way"
+                    ],
+                    "variables": []
+                }
+            }
+        },
+        "dialogue-disambiguation-ask-for-data": {
+            "name": "dialogue-disambiguation-ask-for-data",
+            "type": "dialogue",
+            "subtype": "Dialogue disambiguation",
+            "condition": [
+                [
+                    "data_file",
+                    "Unknown"
+                ]
+            ],
+            "effect": {
+                "type": "oneof",
+                "global-outcome-name": "resolve-ask-for-data",
+                "generic-outcome-specification": "",
+                "outcomes": [
+                    {
+                        "name": "ask-for-data-outcome-fallback__",
+                        "assignments": {},
+                        "updates": {},
+                        "intent": "ask-for-data-outcome-fallback",
+                        "follow_up": "dialogue-disambiguation-cant-parse"
+                    },
+                    {
+                        "name": "ask-for-data-outcome-found__check-data_file_choices-eq-found",
+                        "assignments": {
+                            "$data_file_choices": "found"
+                        },
+                        "updates": {
+                            "data_file": {
+                                "variable": "data_file",
+                                "value": "$data_file_choices",
+                                "certainty": "Known",
+                                "interpretation": "spel"
+                            },
+                            "title": {
+                                "variable": "title",
+                                "value": "$data_file_choices",
+                                "certainty": "Uncertain",
+                                "interpretation": "spel"
+                            }
+                        },
+                        "intent": "ask-for-data-outcome-found",
+                        "follow_up": null
+                    },
+                    {
+                        "name": "ask-for-data-outcome-found__check-data_file_choices-eq-didnt-find",
+                        "assignments": {
+                            "$data_file_choices": "didnt-find"
+                        },
+                        "updates": {
+                            "data_file": {
+                                "variable": "data_file",
+                                "value": "$data_file_choices",
+                                "certainty": "Known",
+                                "interpretation": "spel"
+                            },
+                            "title": {
+                                "variable": "title",
+                                "value": "$data_file_choices",
+                                "certainty": "Uncertain",
+                                "interpretation": "spel"
+                            }
+                        },
+                        "intent": "ask-for-data-outcome-found",
+                        "follow_up": null
+                    }
+                ]
+            },
+            "message_variants": [
+                "What data file?"
+            ],
+            "intents": {
+                "ask-for-data-outcome-fallback": {
+                    "utterances": [],
+                    "variables": []
+                },
+                "ask-for-data-outcome-found": {
+                    "utterances": [
+                        "I want to use $data_file_choices ",
+                        " $data_file_choices"
+                    ],
+                    "variables": [
+                        "$data_file_choices"
+                    ]
+                }
+            }
+        },
+        "dialogue-disambiguation-ask-for-title": {
+            "name": "dialogue-disambiguation-ask-for-title",
+            "type": "dialogue",
+            "subtype": "Dialogue disambiguation",
+            "condition": [
+                [
+                    "title",
+                    "Unknown"
+                ]
+            ],
+            "effect": {
+                "type": "oneof",
+                "global-outcome-name": "resolve-ask-for-title",
+                "generic-outcome-specification": "",
+                "outcomes": [
+                    {
+                        "name": "ask-for-title-outcome-fallback__",
+                        "assignments": {},
+                        "updates": {},
+                        "intent": "ask-for-title-outcome-fallback",
+                        "follow_up": "dialogue-disambiguation-cant-parse"
+                    },
+                    {
+                        "name": "ask-for-title-outcome-found__",
+                        "assignments": {},
+                        "updates": {
+                            "title": {
+                                "variable": "title",
+                                "value": "$parsed_title",
+                                "certainty": "Known",
+                                "interpretation": "spel"
+                            }
+                        },
+                        "intent": "ask-for-title-outcome-found",
+                        "follow_up": null
+                    }
+                ]
+            },
+            "message_variants": [
+                "What should the title be?"
+            ],
+            "intents": {
+                "ask-for-title-outcome-fallback": {
+                    "utterances": [],
+                    "variables": []
+                },
+                "ask-for-title-outcome-found": {
+                    "utterances": [
+                        "Make the title [regex]{parsed_title:=[\\w ]+}",
+                        "Change the title to [regex]{parsed_title:=[\\w ]+}",
+                        "Please change the title to [regex]{parsed_title:=[\\w ]+}"
+                    ],
+                    "variables": []
+                }
+            }
+        },
+        "cloud-function-determination-generate-misha-plot": {
+            "name": "cloud-function-determination-generate-misha-plot",
+            "type": "api",
+            "subtype": "Cloud function determination",
+            "condition": [
+                [
+                    "need_plot",
+                    true
+                ],
+                [
+                    "data_file",
+                    "Known"
+                ],
+                [
+                    "title",
+                    "Known"
+                ]
+            ],
+            "effect": {
+                "type": "oneof",
+                "global-outcome-name": "outcome-generate-misha-plot",
+                "generic-outcome-specification": "This isn't done yet",
+                "outcomes": [
+                    {
+                        "updates": {
+                            "plot_generated": {
+                                "variable": "plot_generated",
+                                "value": true,
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            }
+                        },
+                        "name": "generate-misha-plot-outcome",
+                        "variable_list": [],
+                        "follow_up": null
+                    }
+                ]
+            },
+            "call": {
+                "endpoint": "http://dd:1313/misha",
+                "initial_payload": {}
+            }
+        },
+        "dialogue-disambiguation-refine-plot": {
+            "name": "dialogue-disambiguation-refine-plot",
+            "type": "dialogue",
+            "subtype": "Dialogue disambiguation",
+            "condition": [
+                [
+                    "plot_generated",
+                    true
+                ],
+                [
+                    "need_plot",
+                    true
+                ]
+            ],
+            "effect": {
+                "type": "oneof",
+                "global-outcome-name": "resolve-refine-plot",
+                "generic-outcome-specification": "",
+                "outcomes": [
+                    {
+                        "name": "refine-plot-outcome-fallback__",
+                        "assignments": {},
+                        "updates": {},
+                        "intent": "refine-plot-outcome-fallback",
+                        "follow_up": "dialogue-disambiguation-cant-parse"
+                    },
+                    {
+                        "name": "refine-plot-outcome-done__",
+                        "assignments": {},
+                        "updates": {
+                            "reset": {
+                                "variable": "reset",
+                                "value": true,
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "refine-plot-outcome-done",
+                        "follow_up": "logic-based-determination-reset"
+                    },
+                    {
+                        "name": "refine-plot-outcome-title-change__",
+                        "assignments": {},
+                        "updates": {
+                            "title": {
+                                "variable": "title",
+                                "value": "$parsed_title",
+                                "certainty": "Known",
+                                "interpretation": "spel"
+                            }
+                        },
+                        "intent": "refine-plot-outcome-title-change",
+                        "follow_up": "cloud-function-determination-generate-misha-plot"
+                    }
+                ]
+            },
+            "message_variants": [
+                "Plot is generated! Anything you would like to change?"
+            ],
+            "intents": {
+                "refine-plot-outcome-fallback": {
+                    "utterances": [],
+                    "variables": []
+                },
+                "refine-plot-outcome-done": {
+                    "utterances": [
+                        "No ",
+                        " We're all done ",
+                        " No thanks"
+                    ],
+                    "variables": []
+                },
+                "refine-plot-outcome-title-change": {
+                    "utterances": [
+                        "Make the title [regex]{parsed_title:=[\\w ]+}",
+                        "Change the title to [regex]{parsed_title:=[\\w ]+}",
+                        "Please change the title to [regex]{parsed_title:=[\\w ]+}"
+                    ],
+                    "variables": []
+                }
+            }
+        },
+        "logic-based-determination-reset": {
+            "name": "logic-based-determination-reset",
+            "type": "system",
+            "subtype": "Logic based determination",
+            "condition": [
+                [
+                    "reset",
+                    true
+                ]
+            ],
+            "effect": {
+                "type": "oneof",
+                "global-outcome-name": "outcome-reset",
+                "generic-outcome-specification": "",
+                "outcomes": [
+                    {
+                        "updates": {
+                            "reset": {
+                                "variable": "reset",
+                                "value": false,
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            },
+                            "subgoal": {
+                                "variable": "subgoal",
+                                "value": false,
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            },
+                            "need_summary": {
+                                "variable": "need_summary",
+                                "value": false,
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            },
+                            "summary": {
+                                "variable": "summary",
+                                "value": "null",
+                                "certainty": "Unknown",
+                                "interpretation": "json"
+                            },
+                            "data_file": {
+                                "variable": "data_file",
+                                "value": "null",
+                                "certainty": "Unknown",
+                                "interpretation": "json"
+                            },
+                            "data_file_choices": {
+                                "variable": "data_file_choices",
+                                "value": "$data_file_choices",
+                                "certainty": "Unknown",
+                                "interpretation": "spel"
+                            },
+                            "need_plot": {
+                                "variable": "need_plot",
+                                "value": false,
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            },
+                            "plot_generated": {
+                                "variable": "plot_generated",
+                                "value": false,
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            },
+                            "title": {
+                                "variable": "title",
+                                "value": "null",
+                                "certainty": "Unknown",
+                                "interpretation": "json"
+                            }
+                        },
+                        "name": "reset-outcome",
+                        "logic_condition": "true",
+                        "follow_up": null
+                    }
+                ]
+            }
+        },
+        "dialogue-disambiguation-show-summary": {
+            "name": "dialogue-disambiguation-show-summary",
+            "type": "dialogue",
+            "subtype": "Dialogue disambiguation",
+            "condition": [
+                [
+                    "summary",
+                    "Known"
+                ]
+            ],
+            "effect": {
+                "type": "oneof",
+                "global-outcome-name": "resolve-show-summary",
+                "generic-outcome-specification": "",
+                "outcomes": [
+                    {
+                        "name": "show-summary-outcome-fallback__",
+                        "assignments": {},
+                        "updates": {
+                            "reset": {
+                                "variable": "reset",
+                                "value": true,
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "show-summary-outcome-fallback",
+                        "follow_up": "logic-based-determination-reset"
+                    }
+                ]
+            },
+            "message_variants": [
+                "$summary"
+            ],
+            "intents": {
+                "show-summary-outcome-fallback": {
+                    "utterances": [],
+                    "variables": []
+                }
+            }
+        },
+        "cloud-function-determination-fetch-summary": {
+            "name": "cloud-function-determination-fetch-summary",
+            "type": "api",
+            "subtype": "Cloud function determination",
+            "condition": [
+                [
+                    "need_summary",
+                    true
+                ],
+                [
+                    "data_file",
+                    "Known"
+                ]
+            ],
+            "effect": {
+                "type": "oneof",
+                "global-outcome-name": "outcome-fetch-summary",
+                "generic-outcome-specification": "",
+                "outcomes": [
+                    {
+                        "updates": {},
+                        "name": "fetch-summary-outcome-0",
+                        "variable_list": [
+                            "summary"
+                        ],
+                        "follow_up": null
+                    }
+                ]
+            },
+            "call": {
+                "endpoint": "http://dd:1313/summarize",
+                "initial_payload": {}
+            }
+        },
+        "dialogue-disambiguation-show-help": {
+            "name": "dialogue-disambiguation-show-help",
+            "type": "dialogue",
+            "subtype": "Dialogue disambiguation",
+            "condition": [],
+            "effect": {
+                "type": "oneof",
+                "global-outcome-name": "resolve-show-help",
+                "generic-outcome-specification": "",
+                "outcomes": [
+                    {
+                        "name": "show-help-outcome-fallback__",
+                        "assignments": {},
+                        "updates": {},
+                        "intent": "show-help-outcome-fallback",
+                        "follow_up": null
+                    }
+                ]
+            },
+            "message_variants": [
+                "You can say things like: \"Summarize the data\" or \"Let's make a Misha plot\""
+            ],
+            "intents": {
+                "show-help-outcome-fallback": {
+                    "utterances": [],
+                    "variables": []
+                }
+            }
+        },
+        "dialogue-disambiguation-cant-parse": {
+            "name": "dialogue-disambiguation-cant-parse",
+            "type": "dialogue",
+            "subtype": "Dialogue disambiguation",
+            "condition": [],
+            "effect": {
+                "type": "oneof",
+                "global-outcome-name": "resolve-cant-parse",
+                "generic-outcome-specification": "",
+                "outcomes": [
+                    {
+                        "name": "cant-parse-outcome-fallback__",
+                        "assignments": {},
+                        "updates": {},
+                        "intent": "cant-parse-outcome-fallback",
+                        "follow_up": null
+                    }
+                ]
+            },
+            "message_variants": [
+                "Sorry, I don't quite understand that response."
+            ],
+            "intents": {
+                "cant-parse-outcome-fallback": {
+                    "utterances": [],
+                    "variables": []
+                }
+            }
+        },
+        "dialogue-disambiguation-agent-start": {
+            "name": "dialogue-disambiguation-agent-start",
+            "type": "dialogue",
+            "subtype": "Dialogue disambiguation",
+            "condition": [
+                [
+                    "subgoal",
+                    false
+                ]
+            ],
+            "effect": {
+                "type": "oneof",
+                "global-outcome-name": "resolve-agent-start",
+                "generic-outcome-specification": "",
+                "outcomes": [
+                    {
+                        "name": "agent-start-outcome-fallback__",
+                        "assignments": {},
+                        "updates": {},
+                        "intent": "agent-start-outcome-fallback",
+                        "follow_up": "dialogue-disambiguation-cant-parse"
+                    },
+                    {
+                        "name": "agent-start-outcome-end__",
+                        "assignments": {},
+                        "updates": {
+                            "GOAL": {
+                                "variable": "GOAL",
+                                "value": true,
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "agent-start-outcome-end",
+                        "follow_up": null
+                    },
+                    {
+                        "name": "agent-start-outcome-help__",
+                        "assignments": {},
+                        "updates": {},
+                        "intent": "agent-start-outcome-help",
+                        "follow_up": "dialogue-disambiguation-show-help"
+                    },
+                    {
+                        "name": "agent-start-outcome-summarize__",
+                        "assignments": {},
+                        "updates": {
+                            "subgoal": {
+                                "variable": "subgoal",
+                                "value": true,
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            },
+                            "need_summary": {
+                                "variable": "need_summary",
+                                "value": true,
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "agent-start-outcome-summarize",
+                        "follow_up": null
+                    },
+                    {
+                        "name": "agent-start-outcome-misha__",
+                        "assignments": {},
+                        "updates": {
+                            "subgoal": {
+                                "variable": "subgoal",
+                                "value": true,
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            },
+                            "need_plot": {
+                                "variable": "need_plot",
+                                "value": true,
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "agent-start-outcome-misha",
+                        "follow_up": null
+                    }
+                ]
+            },
+            "message_variants": [
+                "What is it you would like to do?"
+            ],
+            "intents": {
+                "agent-start-outcome-fallback": {
+                    "utterances": [],
+                    "variables": []
+                },
+                "agent-start-outcome-end": {
+                    "utterances": [
+                        "I'm done. ",
+                        " That is all."
+                    ],
+                    "variables": []
+                },
+                "agent-start-outcome-help": {
+                    "utterances": [
+                        "What can you do?"
+                    ],
+                    "variables": []
+                },
+                "agent-start-outcome-summarize": {
+                    "utterances": [
+                        "Can you summarize the data? ",
+                        " Describe the data. ",
+                        " Give me a summary."
+                    ],
+                    "variables": []
+                },
+                "agent-start-outcome-misha": {
+                    "utterances": [
+                        "Can you make a Misha plot? ",
+                        " Let's make a Misha plot."
+                    ],
+                    "variables": []
+                }
+            }
+        }
+    }
+}

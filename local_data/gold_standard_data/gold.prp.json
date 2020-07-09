@@ -1,0 +1,915 @@
+{
+  "msg": "Plan computed",
+  "output": "INFO     Running translator.\nINFO     translator input: ['dom.pddl', 'prob.pddl']\nINFO     translator arguments: ['--keep-unimportant-variables', '--invariant-generation-max-time', '5']\nINFO     translator time limit: None\nINFO     translator memory limit: None\nINFO     callstring: /usr/bin/python /prp/builds/release32/bin/translate/translate.py dom.pddl prob.pddl --keep-unimportant-variables --invariant-generation-max-time 5\nParsing...\nWARNING: Single outcome in labeled-oneof effect.\nWARNING: Single outcome in labeled-oneof effect.\nWARNING: Single outcome in labeled-oneof effect.\nWARNING: Single outcome in labeled-oneof effect.\nWARNING: Single outcome in labeled-oneof effect.\nWARNING: Single outcome in labeled-oneof effect.\nParsing: [0.020s CPU, 0.097s wall-clock]\nNormalizing task... [0.000s CPU, 0.001s wall-clock]\nInstantiating...\nGenerating Datalog program... [0.000s CPU, 0.001s wall-clock]\nNormalizing Datalog program...\nNormalizing Datalog program: [0.000s CPU, 0.002s wall-clock]\nPreparing model... [0.000s CPU, 0.001s wall-clock]\nGenerated 190 rules.\nComputing model... [0.000s CPU, 0.001s wall-clock]\n44 relevant atoms\n0 auxiliary atoms\n44 final queue length\n201 total queue pushes\nCompleting instantiation... [0.010s CPU, 0.002s wall-clock]\nInstantiating: [0.010s CPU, 0.007s wall-clock]\nComputing fact groups...\nFinding invariants...\n25 initial candidates\nFinding invariants: [0.000s CPU, 0.088s wall-clock]\nChecking invariant weight... [0.000s CPU, 0.000s wall-clock]\nInstantiating groups... [0.000s CPU, 0.000s wall-clock]\nCollecting mutex groups... [0.000s CPU, 0.000s wall-clock]\nChoosing groups...\n22 uncovered facts\nChoosing groups: [0.000s CPU, 0.000s wall-clock]\nBuilding translation key... [0.000s CPU, 0.000s wall-clock]\nComputing fact groups: [0.000s CPU, 0.088s wall-clock]\nBuilding STRIPS to SAS dictionary... [0.000s CPU, 0.000s wall-clock]\nBuilding dictionary for full mutex groups... [0.000s CPU, 0.000s wall-clock]\nBuilding mutex information...\nBuilding mutex information: [0.000s CPU, 0.000s wall-clock]\nTranslating task...\nProcessing axioms...\nSimplifying axioms... [0.000s CPU, 0.000s wall-clock]\nProcessing axioms: [0.000s CPU, 0.000s wall-clock]\nTranslating task: [0.000s CPU, 0.003s wall-clock]\n96 effect conditions simplified\n0 implied preconditions added\nDetecting unreachable propositions...\n0 operators removed\n0 axioms removed\n0 propositions removed\nDetecting unreachable propositions: [0.000s CPU, 0.002s wall-clock]\nReordering and filtering variables...\n0 of 0 mutex groups necessary.\n21 of 21 operators necessary.\n0 of 0 axiom rules necessary.\nReordering and filtering variables: [0.010s CPU, 0.001s wall-clock]\nTranslator variables: 22\nTranslator derived variables: 0\nTranslator facts: 44\nTranslator goal facts: 1\nTranslator mutex groups: 0\nTranslator total mutex groups size: 0\nTranslator operators: 21\nTranslator axioms: 0\nTranslator task size: 390\nTranslator peak memory: 25036 KB\nWriting output... [0.000s CPU, 0.001s wall-clock]\nDone! [0.040s CPU, 0.200s wall-clock]\nINFO     Running search (release32).\nINFO     search input: output.sas\nINFO     search arguments: ['--search', 'prpsearch()', '--output-format', '3']\nINFO     search time limit: None\nINFO     search memory limit: None\nINFO     search executable: /prp/builds/release32/bin/downward\nINFO     callstring: /prp/builds/release32/bin/downward --search 'prpsearch()' --output-format 3 --internal-plan-file sas_plan < output.sas\nreading input... [t=3.9118e-05s]\ndone reading input! [t=0.000749922s]\npacking state variables...done! [t=0.000763339s]\nVariables: 22\nFactPairs: 44\nBytes per state: 4\nBuilding successor generator...done! [t=0.00083973s]\npeak memory difference for root successor generator creation: 0 KB\ntime for root successor generation creation: 1.8305e-05s\ndone initializing global data [t=0.000890224s]\n\nTotal allotted time (s): 1800\nMax time for core phase (remaining used in final-round repairs): 900\nMax time for each of the 1 epochs: 900\n\n\n\nCreating the simulator...\n\n\nGenerating an incumbent solution...\n\n\nBeginning search for strong cyclic solution...\n\n\nFOND Search: Round 1\nStarting a fresh search...\n\n {........................}\n\nCould not close 0 of 10 open leaf states.\nInvestigated 46 states for the strong cyclic plan.\nDone repairing...\n\n\n-------------------------------------------------------------------\n\n\n\t\t-----------------------------------\n\t\t      { General Statistics }\n\t\t-----------------------------------\n\n                         Time taken: 0.02182 sec\n                           # Rounds: 1\n                    # Weak Searches: 10\n                      Solution Size: 30\n                          FSAP Size: 0\n                       Poison Count: 0\n\n-------------------------------------------------------------------\n\n\nRunning the simulation...\n\n\t\t--------------------------------------\n\t\t      { Simulation Statistics }\n\t\t--------------------------------------\n\n                          Trials: 100\n                           Depth: 1000\n                         Success: 100\t (100.00 %)\n                        Failures: 0\t (0.00 %)\n\n Failures due to unhandled state: 0\t (-nan %)\n     Failures due to depth limit: 0\t (-nan %)\n\n      Mean successful run length: 29.18\n  Mean (state-)failed run length: 0.00\n\n-------------------------------------------------------------------\n\nDumping the final psgraph as json...\n\nStrong cyclic solution found.\nPeak memory: 4668 KB\nCommand '['/prp/builds/release32/bin/downward', '--search', 'prpsearch()', '--output-format', '3', '--internal-plan-file', 'sas_plan']' returned non-zero exit status 9\n\n",
+  "plan": {
+    "edges": [
+      [
+        "2",
+        ">",
+        "6"
+      ],
+      [
+        "4",
+        ">",
+        "3"
+      ],
+      [
+        "5",
+        ">",
+        "10"
+      ],
+      [
+        "5",
+        ">",
+        "4"
+      ],
+      [
+        "5",
+        ">",
+        "9"
+      ],
+      [
+        "3",
+        ">",
+        "2"
+      ],
+      [
+        "10",
+        ">",
+        "5"
+      ],
+      [
+        "6",
+        ">",
+        "0"
+      ],
+      [
+        "6",
+        ">",
+        "31"
+      ],
+      [
+        "6",
+        ">",
+        "30"
+      ],
+      [
+        "6",
+        ">",
+        "14"
+      ],
+      [
+        "6",
+        ">",
+        "5"
+      ],
+      [
+        "8",
+        ">",
+        "7"
+      ],
+      [
+        "7",
+        ">",
+        "6"
+      ],
+      [
+        "9",
+        ">",
+        "8"
+      ],
+      [
+        "12",
+        ">",
+        "15"
+      ],
+      [
+        "13",
+        ">",
+        "16"
+      ],
+      [
+        "13",
+        ">",
+        "19"
+      ],
+      [
+        "14",
+        ">",
+        "29"
+      ],
+      [
+        "14",
+        ">",
+        "13"
+      ],
+      [
+        "14",
+        ">",
+        "25"
+      ],
+      [
+        "15",
+        ">",
+        "18"
+      ],
+      [
+        "15",
+        ">",
+        "17"
+      ],
+      [
+        "15",
+        ">",
+        "12"
+      ],
+      [
+        "16",
+        ">",
+        "15"
+      ],
+      [
+        "17",
+        ">",
+        "15"
+      ],
+      [
+        "19",
+        ">",
+        "20"
+      ],
+      [
+        "19",
+        ">",
+        "16"
+      ],
+      [
+        "18",
+        ">",
+        "6"
+      ],
+      [
+        "20",
+        ">",
+        "19"
+      ],
+      [
+        "21",
+        ">",
+        "22"
+      ],
+      [
+        "22",
+        ">",
+        "27"
+      ],
+      [
+        "22",
+        ">",
+        "26"
+      ],
+      [
+        "22",
+        ">",
+        "21"
+      ],
+      [
+        "23",
+        ">",
+        "22"
+      ],
+      [
+        "24",
+        ">",
+        "28"
+      ],
+      [
+        "24",
+        ">",
+        "23"
+      ],
+      [
+        "25",
+        ">",
+        "23"
+      ],
+      [
+        "25",
+        ">",
+        "24"
+      ],
+      [
+        "27",
+        ">",
+        "6"
+      ],
+      [
+        "26",
+        ">",
+        "22"
+      ],
+      [
+        "29",
+        ">",
+        "14"
+      ],
+      [
+        "28",
+        ">",
+        "24"
+      ],
+      [
+        "30",
+        ">",
+        "6"
+      ],
+      [
+        "31",
+        ">",
+        "6"
+      ]
+    ],
+    "goal": "0",
+    "init": "6",
+    "nodes": {
+      "0": {
+        "action": "---",
+        "distance": 0,
+        "expected_successor": false,
+        "is_goal": 1,
+        "is_relevant": 1,
+        "is_sc": 1,
+        "state": "0x996cdf8",
+        "successors": []
+      },
+      "10": {
+        "action": "dialogue-disambiguation-cant-parse",
+        "distance": 6,
+        "expected_successor": "5",
+        "is_goal": 0,
+        "is_relevant": 0,
+        "is_sc": 1,
+        "state": "0x997b3b0",
+        "successors": [
+          {
+            "outcome_label": "cant-parse-outcome-fallback__",
+            "successor_id": "5"
+          }
+        ]
+      },
+      "12": {
+        "action": "cloud-function-determination-generate-misha-plot",
+        "distance": 4,
+        "expected_successor": "15",
+        "is_goal": 0,
+        "is_relevant": 0,
+        "is_sc": 1,
+        "state": "0x9979278",
+        "successors": [
+          {
+            "outcome_label": "generate-misha-plot-outcome",
+            "successor_id": "15"
+          }
+        ]
+      },
+      "13": {
+        "action": "dialogue-disambiguation__custom__confirm-title",
+        "distance": 5,
+        "expected_successor": "16",
+        "is_goal": 0,
+        "is_relevant": 0,
+        "is_sc": 1,
+        "state": "0x997bf10",
+        "successors": [
+          {
+            "outcome_label": "confirmed-title",
+            "successor_id": "16"
+          },
+          {
+            "outcome_label": "denied-title",
+            "successor_id": "19"
+          }
+        ]
+      },
+      "14": {
+        "action": "dialogue-disambiguation-ask-for-data",
+        "distance": 6,
+        "expected_successor": "13",
+        "is_goal": 0,
+        "is_relevant": 0,
+        "is_sc": 1,
+        "state": "0x997bff0",
+        "successors": [
+          {
+            "outcome_label": "ask-for-data-outcome-fallback__",
+            "successor_id": "29"
+          },
+          {
+            "outcome_label": "ask-for-data-outcome-found__check-data_file_choices-eq-didnt-find",
+            "successor_id": "13"
+          },
+          {
+            "outcome_label": "ask-for-data-outcome-found__check-data_file_choices-eq-found",
+            "successor_id": "25"
+          }
+        ]
+      },
+      "15": {
+        "action": "dialogue-disambiguation-refine-plot",
+        "distance": 3,
+        "expected_successor": "18",
+        "is_goal": 0,
+        "is_relevant": 0,
+        "is_sc": 1,
+        "state": "0x997d390",
+        "successors": [
+          {
+            "outcome_label": "refine-plot-outcome-done__",
+            "successor_id": "18"
+          },
+          {
+            "outcome_label": "refine-plot-outcome-fallback__",
+            "successor_id": "17"
+          },
+          {
+            "outcome_label": "refine-plot-outcome-title-change__",
+            "successor_id": "12"
+          }
+        ]
+      },
+      "16": {
+        "action": "cloud-function-determination-generate-misha-plot",
+        "distance": 4,
+        "expected_successor": "15",
+        "is_goal": 0,
+        "is_relevant": 0,
+        "is_sc": 1,
+        "state": "0x997d7f0",
+        "successors": [
+          {
+            "outcome_label": "generate-misha-plot-outcome",
+            "successor_id": "15"
+          }
+        ]
+      },
+      "17": {
+        "action": "dialogue-disambiguation-cant-parse",
+        "distance": 4,
+        "expected_successor": "15",
+        "is_goal": 0,
+        "is_relevant": 0,
+        "is_sc": 1,
+        "state": "0x997c388",
+        "successors": [
+          {
+            "outcome_label": "cant-parse-outcome-fallback__",
+            "successor_id": "15"
+          }
+        ]
+      },
+      "18": {
+        "action": "logic-based-determination-reset",
+        "distance": 2,
+        "expected_successor": "6",
+        "is_goal": 0,
+        "is_relevant": 0,
+        "is_sc": 1,
+        "state": "0x997a500",
+        "successors": [
+          {
+            "outcome_label": "reset-outcome",
+            "successor_id": "6"
+          }
+        ]
+      },
+      "19": {
+        "action": "dialogue-disambiguation-ask-for-title",
+        "distance": 5,
+        "expected_successor": "16",
+        "is_goal": 0,
+        "is_relevant": 0,
+        "is_sc": 1,
+        "state": "0x997f0b8",
+        "successors": [
+          {
+            "outcome_label": "ask-for-title-outcome-fallback__",
+            "successor_id": "20"
+          },
+          {
+            "outcome_label": "ask-for-title-outcome-found__",
+            "successor_id": "16"
+          }
+        ]
+      },
+      "2": {
+        "action": "logic-based-determination-reset",
+        "distance": 2,
+        "expected_successor": "6",
+        "is_goal": 0,
+        "is_relevant": 0,
+        "is_sc": 1,
+        "state": "0x99790d0",
+        "successors": [
+          {
+            "outcome_label": "reset-outcome",
+            "successor_id": "6"
+          }
+        ]
+      },
+      "20": {
+        "action": "dialogue-disambiguation-cant-parse",
+        "distance": 6,
+        "expected_successor": "19",
+        "is_goal": 0,
+        "is_relevant": 0,
+        "is_sc": 1,
+        "state": "0x997f828",
+        "successors": [
+          {
+            "outcome_label": "cant-parse-outcome-fallback__",
+            "successor_id": "19"
+          }
+        ]
+      },
+      "21": {
+        "action": "cloud-function-determination-generate-misha-plot",
+        "distance": 4,
+        "expected_successor": "22",
+        "is_goal": 0,
+        "is_relevant": 0,
+        "is_sc": 1,
+        "state": "0x99802d0",
+        "successors": [
+          {
+            "outcome_label": "generate-misha-plot-outcome",
+            "successor_id": "22"
+          }
+        ]
+      },
+      "22": {
+        "action": "dialogue-disambiguation-refine-plot",
+        "distance": 3,
+        "expected_successor": "27",
+        "is_goal": 0,
+        "is_relevant": 0,
+        "is_sc": 1,
+        "state": "0x9980640",
+        "successors": [
+          {
+            "outcome_label": "refine-plot-outcome-done__",
+            "successor_id": "27"
+          },
+          {
+            "outcome_label": "refine-plot-outcome-fallback__",
+            "successor_id": "26"
+          },
+          {
+            "outcome_label": "refine-plot-outcome-title-change__",
+            "successor_id": "21"
+          }
+        ]
+      },
+      "23": {
+        "action": "cloud-function-determination-generate-misha-plot",
+        "distance": 4,
+        "expected_successor": "22",
+        "is_goal": 0,
+        "is_relevant": 0,
+        "is_sc": 1,
+        "state": "0x9980780",
+        "successors": [
+          {
+            "outcome_label": "generate-misha-plot-outcome",
+            "successor_id": "22"
+          }
+        ]
+      },
+      "24": {
+        "action": "dialogue-disambiguation-ask-for-title",
+        "distance": 5,
+        "expected_successor": "23",
+        "is_goal": 0,
+        "is_relevant": 0,
+        "is_sc": 1,
+        "state": "0x9980898",
+        "successors": [
+          {
+            "outcome_label": "ask-for-title-outcome-fallback__",
+            "successor_id": "28"
+          },
+          {
+            "outcome_label": "ask-for-title-outcome-found__",
+            "successor_id": "23"
+          }
+        ]
+      },
+      "25": {
+        "action": "dialogue-disambiguation__custom__confirm-title",
+        "distance": 5,
+        "expected_successor": "23",
+        "is_goal": 0,
+        "is_relevant": 0,
+        "is_sc": 1,
+        "state": "0x99809d8",
+        "successors": [
+          {
+            "outcome_label": "confirmed-title",
+            "successor_id": "23"
+          },
+          {
+            "outcome_label": "denied-title",
+            "successor_id": "24"
+          }
+        ]
+      },
+      "26": {
+        "action": "dialogue-disambiguation-cant-parse",
+        "distance": 4,
+        "expected_successor": "22",
+        "is_goal": 0,
+        "is_relevant": 0,
+        "is_sc": 1,
+        "state": "0x99802c0",
+        "successors": [
+          {
+            "outcome_label": "cant-parse-outcome-fallback__",
+            "successor_id": "22"
+          }
+        ]
+      },
+      "27": {
+        "action": "logic-based-determination-reset",
+        "distance": 2,
+        "expected_successor": "6",
+        "is_goal": 0,
+        "is_relevant": 0,
+        "is_sc": 1,
+        "state": "0x9980fb8",
+        "successors": [
+          {
+            "outcome_label": "reset-outcome",
+            "successor_id": "6"
+          }
+        ]
+      },
+      "28": {
+        "action": "dialogue-disambiguation-cant-parse",
+        "distance": 6,
+        "expected_successor": "24",
+        "is_goal": 0,
+        "is_relevant": 0,
+        "is_sc": 1,
+        "state": "0x997f4d0",
+        "successors": [
+          {
+            "outcome_label": "cant-parse-outcome-fallback__",
+            "successor_id": "24"
+          }
+        ]
+      },
+      "29": {
+        "action": "dialogue-disambiguation-cant-parse",
+        "distance": 7,
+        "expected_successor": "14",
+        "is_goal": 0,
+        "is_relevant": 0,
+        "is_sc": 1,
+        "state": "0x99815c8",
+        "successors": [
+          {
+            "outcome_label": "cant-parse-outcome-fallback__",
+            "successor_id": "14"
+          }
+        ]
+      },
+      "3": {
+        "action": "dialogue-disambiguation-show-summary",
+        "distance": 3,
+        "expected_successor": "2",
+        "is_goal": 0,
+        "is_relevant": 0,
+        "is_sc": 1,
+        "state": "0x9978248",
+        "successors": [
+          {
+            "outcome_label": "show-summary-outcome-fallback__",
+            "successor_id": "2"
+          }
+        ]
+      },
+      "30": {
+        "action": "dialogue-disambiguation-show-help",
+        "distance": 2,
+        "expected_successor": "6",
+        "is_goal": 0,
+        "is_relevant": 0,
+        "is_sc": 1,
+        "state": "0x9983010",
+        "successors": [
+          {
+            "outcome_label": "show-help-outcome-fallback__",
+            "successor_id": "6"
+          }
+        ]
+      },
+      "31": {
+        "action": "dialogue-disambiguation-cant-parse",
+        "distance": 2,
+        "expected_successor": "6",
+        "is_goal": 0,
+        "is_relevant": 0,
+        "is_sc": 1,
+        "state": "0x997c1f0",
+        "successors": [
+          {
+            "outcome_label": "cant-parse-outcome-fallback__",
+            "successor_id": "6"
+          }
+        ]
+      },
+      "4": {
+        "action": "cloud-function-determination-fetch-summary",
+        "distance": 4,
+        "expected_successor": "3",
+        "is_goal": 0,
+        "is_relevant": 0,
+        "is_sc": 1,
+        "state": "0x9979380",
+        "successors": [
+          {
+            "outcome_label": "fetch-summary-outcome-0",
+            "successor_id": "3"
+          }
+        ]
+      },
+      "5": {
+        "action": "dialogue-disambiguation-ask-for-data",
+        "distance": 5,
+        "expected_successor": "4",
+        "is_goal": 0,
+        "is_relevant": 0,
+        "is_sc": 1,
+        "state": "0x9979460",
+        "successors": [
+          {
+            "outcome_label": "ask-for-data-outcome-fallback__",
+            "successor_id": "10"
+          },
+          {
+            "outcome_label": "ask-for-data-outcome-found__check-data_file_choices-eq-didnt-find",
+            "successor_id": "4"
+          },
+          {
+            "outcome_label": "ask-for-data-outcome-found__check-data_file_choices-eq-found",
+            "successor_id": "9"
+          }
+        ]
+      },
+      "6": {
+        "action": "dialogue-disambiguation-agent-start",
+        "distance": 1,
+        "expected_successor": "0",
+        "is_goal": 0,
+        "is_relevant": 0,
+        "is_sc": 1,
+        "state": "0x997a270",
+        "successors": [
+          {
+            "outcome_label": "agent-start-outcome-end__",
+            "successor_id": "0"
+          },
+          {
+            "outcome_label": "agent-start-outcome-fallback__",
+            "successor_id": "31"
+          },
+          {
+            "outcome_label": "agent-start-outcome-help__",
+            "successor_id": "30"
+          },
+          {
+            "outcome_label": "agent-start-outcome-misha__",
+            "successor_id": "14"
+          },
+          {
+            "outcome_label": "agent-start-outcome-summarize__",
+            "successor_id": "5"
+          }
+        ]
+      },
+      "7": {
+        "action": "logic-based-determination-reset",
+        "distance": 2,
+        "expected_successor": "6",
+        "is_goal": 0,
+        "is_relevant": 0,
+        "is_sc": 1,
+        "state": "0x997a530",
+        "successors": [
+          {
+            "outcome_label": "reset-outcome",
+            "successor_id": "6"
+          }
+        ]
+      },
+      "8": {
+        "action": "dialogue-disambiguation-show-summary",
+        "distance": 3,
+        "expected_successor": "7",
+        "is_goal": 0,
+        "is_relevant": 0,
+        "is_sc": 1,
+        "state": "0x997b000",
+        "successors": [
+          {
+            "outcome_label": "show-summary-outcome-fallback__",
+            "successor_id": "7"
+          }
+        ]
+      },
+      "9": {
+        "action": "cloud-function-determination-fetch-summary",
+        "distance": 4,
+        "expected_successor": "8",
+        "is_goal": 0,
+        "is_relevant": 0,
+        "is_sc": 1,
+        "state": "0x997b150",
+        "successors": [
+          {
+            "outcome_label": "fetch-summary-outcome-0",
+            "successor_id": "8"
+          }
+        ]
+      }
+    },
+    "states": {
+      "0x996cdf8": [
+        "Atom goal()"
+      ],
+      "0x9978248": [
+        "Atom have_summary()",
+        "Atom can-do_dialogue-disambiguation-show-summary()"
+      ],
+      "0x99790d0": [
+        "Atom reset()",
+        "Atom can-do_logic-based-determination-reset()"
+      ],
+      "0x9979278": [
+        "Atom have_data_file()",
+        "Atom need_plot()",
+        "Atom have_title()",
+        "NegatedAtom maybe-have_title()",
+        "Atom can-do_cloud-function-determination-generate-misha-plot()"
+      ],
+      "0x9979380": [
+        "Atom have_data_file()",
+        "Atom need_summary()",
+        "Atom can-do_cloud-function-determination-fetch-summary()"
+      ],
+      "0x9979460": [
+        "NegatedAtom have_data_file()",
+        "Atom need_summary()",
+        "Atom can-do_dialogue-disambiguation-ask-for-data()"
+      ],
+      "0x997a270": [
+        "NegatedAtom have_data_file()",
+        "NegatedAtom subgoal()",
+        "Atom can-do_dialogue-disambiguation-agent-start()"
+      ],
+      "0x997a500": [
+        "Atom reset()",
+        "Atom can-do_logic-based-determination-reset()"
+      ],
+      "0x997a530": [
+        "Atom reset()",
+        "Atom can-do_logic-based-determination-reset()"
+      ],
+      "0x997b000": [
+        "Atom have_summary()",
+        "Atom can-do_dialogue-disambiguation-show-summary()"
+      ],
+      "0x997b150": [
+        "Atom have_data_file()",
+        "Atom need_summary()",
+        "Atom can-do_cloud-function-determination-fetch-summary()"
+      ],
+      "0x997b3b0": [
+        "NegatedAtom have_data_file()",
+        "Atom need_summary()",
+        "Atom can-do_dialogue-disambiguation-cant-parse()"
+      ],
+      "0x997bf10": [
+        "Atom have_data_file()",
+        "Atom need_plot()",
+        "NegatedAtom have_title()",
+        "Atom maybe-have_title()",
+        "Atom can-do_dialogue-disambiguation__custom__confirm-title()"
+      ],
+      "0x997bff0": [
+        "NegatedAtom have_data_file()",
+        "Atom need_plot()",
+        "Atom can-do_dialogue-disambiguation-ask-for-data()"
+      ],
+      "0x997c1f0": [
+        "NegatedAtom have_data_file()",
+        "NegatedAtom subgoal()",
+        "Atom can-do_dialogue-disambiguation-cant-parse()"
+      ],
+      "0x997c388": [
+        "Atom have_data_file()",
+        "Atom need_plot()",
+        "Atom plot_generated()",
+        "Atom can-do_dialogue-disambiguation-cant-parse()"
+      ],
+      "0x997d390": [
+        "Atom have_data_file()",
+        "Atom need_plot()",
+        "Atom plot_generated()",
+        "Atom can-do_dialogue-disambiguation-refine-plot()"
+      ],
+      "0x997d7f0": [
+        "Atom have_data_file()",
+        "Atom need_plot()",
+        "Atom have_title()",
+        "NegatedAtom maybe-have_title()",
+        "Atom can-do_cloud-function-determination-generate-misha-plot()"
+      ],
+      "0x997f0b8": [
+        "Atom have_data_file()",
+        "Atom need_plot()",
+        "NegatedAtom have_title()",
+        "NegatedAtom maybe-have_title()",
+        "Atom can-do_dialogue-disambiguation-ask-for-title()"
+      ],
+      "0x997f4d0": [
+        "Atom have_data_file()",
+        "Atom need_plot()",
+        "NegatedAtom have_title()",
+        "NegatedAtom maybe-have_title()",
+        "Atom can-do_dialogue-disambiguation-cant-parse()"
+      ],
+      "0x997f828": [
+        "Atom have_data_file()",
+        "Atom need_plot()",
+        "NegatedAtom have_title()",
+        "NegatedAtom maybe-have_title()",
+        "Atom can-do_dialogue-disambiguation-cant-parse()"
+      ],
+      "0x99802c0": [
+        "Atom have_data_file()",
+        "Atom need_plot()",
+        "Atom plot_generated()",
+        "Atom can-do_dialogue-disambiguation-cant-parse()"
+      ],
+      "0x99802d0": [
+        "Atom have_data_file()",
+        "Atom need_plot()",
+        "Atom have_title()",
+        "NegatedAtom maybe-have_title()",
+        "Atom can-do_cloud-function-determination-generate-misha-plot()"
+      ],
+      "0x9980640": [
+        "Atom have_data_file()",
+        "Atom need_plot()",
+        "Atom plot_generated()",
+        "Atom can-do_dialogue-disambiguation-refine-plot()"
+      ],
+      "0x9980780": [
+        "Atom have_data_file()",
+        "Atom need_plot()",
+        "Atom have_title()",
+        "NegatedAtom maybe-have_title()",
+        "Atom can-do_cloud-function-determination-generate-misha-plot()"
+      ],
+      "0x9980898": [
+        "Atom have_data_file()",
+        "Atom need_plot()",
+        "NegatedAtom have_title()",
+        "NegatedAtom maybe-have_title()",
+        "Atom can-do_dialogue-disambiguation-ask-for-title()"
+      ],
+      "0x99809d8": [
+        "Atom have_data_file()",
+        "Atom need_plot()",
+        "NegatedAtom have_title()",
+        "Atom maybe-have_title()",
+        "Atom can-do_dialogue-disambiguation__custom__confirm-title()"
+      ],
+      "0x9980fb8": [
+        "Atom reset()",
+        "Atom can-do_logic-based-determination-reset()"
+      ],
+      "0x99815c8": [
+        "NegatedAtom have_data_file()",
+        "Atom need_plot()",
+        "Atom can-do_dialogue-disambiguation-cant-parse()"
+      ],
+      "0x9983010": [
+        "NegatedAtom have_data_file()",
+        "NegatedAtom subgoal()",
+        "Atom can-do_dialogue-disambiguation-show-help()"
+      ]
+    }
+  },
+  "status": "success"
+}

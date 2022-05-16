@@ -7,9 +7,7 @@ import time
 from watson_developer_cloud.assistant_v1 import InputData, DialogNodeOutput
 from ibm_watson.assistant_v1 import MessageInput
 
-from hovor.outcome_determiners.unified_workspace_outcome_determiner import UnifiedWorkspaceOutcomeDeterminer
-from hovor.outcome_determiners.workspace_outcome_determiner import MAX_WS_PAGINATION
-
+from hovor.outcome_determiners.unified_workspace_outcome_determiner import UnifiedWorkspaceOutcomeDeterminer, MAX_WS_PAGINATION
 
 class SpelEvaluator(object):
     _existing_nodes = None

@@ -5,7 +5,7 @@ from watson_developer_cloud.assistant_v1 import CreateIntent, CreateExample, Cre
     DialogNodeOutput, CreateEntity, CreateValue, DialogNodeAction
 
 from hovor.configuration.configuration_provider_base import ConfigurationProviderBase
-from hovor.outcome_determiners.workspace_outcome_determiner import MAX_WS_PAGINATION
+from hovor.outcome_determiners.unified_workspace_outcome_determiner import MAX_WS_PAGINATION
 from hovor.planning.node import Node
 
 

@@ -72,7 +72,7 @@ class JsonConfigurationProvider(ConfigurationProviderBase):
     def _force_build_of_all_action_builders(self):
         for action_name, action_config in self._configuration_data["actions"].items():
             self._create_action_builder(action_name, action_config)
-        UnifiedWorkspaceOutcomeDeterminer.setup_workspace()
+        # UnifiedWorkspaceOutcomeDeterminer.setup_workspace()
 
     def get_node_info(self, node):
         return self._get_action_config(node)
@@ -242,9 +242,10 @@ class JsonConfigurationProvider(ConfigurationProviderBase):
                 #     all_entities[entity] = None  # update the set/dict of all entities
                 entity_definitions[entity] = self._get_entity_type_specification(entity)
 
-            return ContextEntityOutcomeDeterminer(action_name, outcome_config["global-outcome-name"],
-                                                  outcome_config["example_utterances"],
-                                                  entity_definitions=entity_definitions)
+            return RandomOutcomeDeterminer()
+            # return ContextEntityOutcomeDeterminer(action_name, outcome_config["global-outcome-name"],
+            #                                       outcome_config["example_utterances"],
+            #                                       entity_definitions=entity_definitions)
 
         if outcome_determiner_name == "disambiguation_outcome_determiner":
             entity_definitions = {}
@@ -252,19 +253,19 @@ class JsonConfigurationProvider(ConfigurationProviderBase):
                 # if entity not in all_entities:
                 #     all_entities[entity] = None  # update the set/dict of all entities
                 entity_definitions[entity] = self._get_entity_type_specification(entity)
-
-            return UnifiedWorkspaceOutcomeDeterminer(action_name, outcome_config["global-outcome-name"], outcome_config[
-                "intents"],
-                                                     entity_definitions)
+            return RandomOutcomeDeterminer()
+            # return UnifiedWorkspaceOutcomeDeterminer(action_name, outcome_config["global-outcome-name"], outcome_config[
+            #     "intents"],
+            #                                          entity_definitions)
 
         if outcome_determiner_name == "regex_disambiguation_outcome_determiner":
             entity_definitions = {}
             for entity in outcome_config["entities_to_recognize"]:
                 entity_definitions[entity] = self._get_entity_type_specification(entity)
-
-            return RegexWorkspaceOutcomeDeterminer(action_name, outcome_config["global-outcome-name"], outcome_config[
-                "intents"],
-                                                   entity_definitions)
+            return RandomOutcomeDeterminer()
+            # return RegexWorkspaceOutcomeDeterminer(action_name, outcome_config["global-outcome-name"], outcome_config[
+            #     "intents"],
+            #                                        entity_definitions)
 
         if outcome_determiner_name == "web_call_outcome_determiner":
             return WebCallOutcomeDeterminer()

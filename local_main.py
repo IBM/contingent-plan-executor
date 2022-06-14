@@ -6,7 +6,9 @@ from hovor.core import run_interaction
 
 initialize_local_environment()
 
-configuration_provider = JsonConfigurationProvider("./local_data/gold_standard_data/gold")
+# configuration_provider = JsonConfigurationProvider("./local_data/gold_standard_data/gold")
+configuration_provider = JsonConfigurationProvider("./pizza")
+
 # test on recoded provider
 json = jsonpickle.encode(configuration_provider)
 configuration_provider = jsonpickle.decode(json)

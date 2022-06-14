@@ -253,6 +253,7 @@ class JsonConfigurationProvider(ConfigurationProviderBase):
                 # if entity not in all_entities:
                 #     all_entities[entity] = None  # update the set/dict of all entities
                 entity_definitions[entity] = self._get_entity_type_specification(entity)
+            # TODO: insert Rasa here instead of Random
             return RandomOutcomeDeterminer()
             # return UnifiedWorkspaceOutcomeDeterminer(action_name, outcome_config["global-outcome-name"], outcome_config[
             #     "intents"],

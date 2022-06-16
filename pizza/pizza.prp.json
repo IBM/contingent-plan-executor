@@ -1,0 +1,46 @@
+{
+    "plan": {
+        "init": "1",
+        "goal": "0",
+        "nodes": {
+            "0": {
+                "expected_successor": false,
+                "action": "---",
+                "state": "0x1c86da0",
+                "distance": 0,
+                "is_relevant": 1,
+                "is_goal": 1,
+                "is_sc": 1,
+                "successors": []
+            },
+            "1": {
+                "expected_successor": "0",
+                "action": "place-order",
+                "state": "0x1c898c0",
+                "distance": 1,
+                "is_relevant": 0,
+                "is_goal": 0,
+                "is_sc": 1,
+                "successors": [
+                    {
+                        "outcome_label": "place-order_DETDUP_make-call-EQ-success",
+                        "successor_id": "0"
+                    }
+                ]
+            }
+        },
+        "edges": [
+            [
+                "1",
+                ">",
+                "0"
+            ]
+        ],
+        "states": {
+            "0x1c86da0": [
+                "Atom goal()"
+            ],
+            "0x1c898c0": []
+        }
+    }
+}

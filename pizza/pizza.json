@@ -38,37 +38,38 @@
     },
     "intents": {
         "greet": {
+            "variables": [],
             "utterances": [
                 "Hey",
                 "Hi",
                 "hey there"
-            ],
-            "variables": []
+            ]
         },
         "leave": {
+            "variables": [],
             "utterances": [
                 "Goodbye",
                 "Bye",
                 "That's all",
                 "i'm done"
-            ],
-            "variables": []
+            ]
         },
         "confirm": {
+            "variables": [],
             "utterances": [
-                true,
+                "yes",
                 "yeah",
                 "that's it",
                 "Y",
                 "mhm",
                 "confirm",
                 "yes please"
-            ],
-            "variables": []
+            ]
         },
         "deny": {
+            "variables": [],
             "utterances": [
-                false,
+                "no",
                 "not at all",
                 "that's not what i meant",
                 "absolutely not",
@@ -76,47 +77,38 @@
                 "nah",
                 "no thanks",
                 "no thank you"
-            ],
-            "variables": []
+            ]
         },
         "share_order": {
+            "variables": [],
             "utterances": [
                 "I want a $order pizza",
                 "$order pizza please!",
                 "Do you have $order pizza?"
-            ],
-            "variables": [
-                "$order"
             ]
         },
         "share_location": {
+            "variables": [],
             "utterances": [
                 "I live in $location.",
                 "Do you deliver to $location?",
                 "I want my pizza to be delivered to $location."
-            ],
-            "variables": [
-                "$location"
             ]
         },
         "set_payment_method": {
+            "variables": [],
             "utterances": [
                 "I want to pay by $payment_method.",
                 "Can I pay with $payment_method?",
                 "I will pay in $payment_method"
-            ],
-            "variables": [
-                "$payment_method"
             ]
         },
         "pay": {
+            "variables": [],
             "utterances": [
                 "My credit card number is $card_number.",
                 "This is my account number $card_number",
                 "Ok, the number on my card is $card_number."
-            ],
-            "variables": [
-                "$card_number"
             ]
         }
     },
@@ -136,30 +128,50 @@
                 "type": "oneof",
                 "outcomes": [
                     {
-                        "name": "valid",
+                        "name": "ask-location_DETDUP_validate-response-EQ-valid",
                         "updates": {
                             "location": {
                                 "variable": "location",
                                 "value": "$location",
-                                "certainty": "Known"
+                                "certainty": "Known",
+                                "interpretation": "spel"
                             }
+                        },
+                        "assignments": {
+                            "$location": "found"
                         },
                         "intent": "share_location"
                     },
                     {
-                        "name": "unclear",
+                        "name": "ask-location_DETDUP_validate-response-EQ-unclear",
                         "updates": {
                             "location": {
                                 "variable": "location",
                                 "value": "$location",
-                                "certainty": "Uncertain"
+                                "certainty": "Uncertain",
+                                "interpretation": "spel"
                             }
+                        },
+                        "assignments": {
+                            "$location": "maybe-found"
                         },
                         "follow_up": {
                             "clarify": "clarify__ask-location"
                         }
                     }
                 ]
+            },
+            "intents": {
+                "share_location": {
+                    "variables": [
+                        "location"
+                    ],
+                    "utterances": [
+                        "I live in $location.",
+                        "Do you deliver to $location?",
+                        "I want my pizza to be delivered to $location."
+                    ]
+                }
             }
         },
         "ask-order": {
@@ -176,31 +188,51 @@
                 "type": "oneof",
                 "outcomes": [
                     {
-                        "name": "valid",
+                        "name": "ask-order_DETDUP_validate-response-EQ-valid",
                         "updates": {
                             "order": {
                                 "variable": "order",
                                 "value": "$order",
-                                "certainty": "Known"
+                                "certainty": "Known",
+                                "interpretation": "spel"
                             }
+                        },
+                        "assignments": {
+                            "$order": "found"
                         },
                         "intent": "share_order",
                         "follow_up": "check-order-availability"
                     },
                     {
-                        "name": "unclear",
+                        "name": "ask-order_DETDUP_validate-response-EQ-unclear",
                         "updates": {
                             "order": {
                                 "variable": "order",
                                 "value": "$order",
-                                "certainty": "Uncertain"
+                                "certainty": "Uncertain",
+                                "interpretation": "spel"
                             }
+                        },
+                        "assignments": {
+                            "$order": "maybe-found"
                         },
                         "follow_up": {
                             "clarify": "clarify__ask-order"
                         }
                     }
                 ]
+            },
+            "intents": {
+                "share_order": {
+                    "variables": [
+                        "order"
+                    ],
+                    "utterances": [
+                        "I want a $order pizza",
+                        "$order pizza please!",
+                        "Do you have $order pizza?"
+                    ]
+                }
             }
         },
         "ask-payment": {
@@ -216,30 +248,50 @@
                 "type": "oneof",
                 "outcomes": [
                     {
-                        "name": "valid",
+                        "name": "ask-payment_DETDUP_validate-response-EQ-valid",
                         "updates": {
                             "payment_method": {
                                 "variable": "payment_method",
                                 "value": "$payment_method",
-                                "certainty": "Known"
+                                "certainty": "Known",
+                                "interpretation": "spel"
                             }
+                        },
+                        "assignments": {
+                            "$payment_method": "found"
                         },
                         "intent": "set_payment_method"
                     },
                     {
-                        "name": "unclear",
+                        "name": "ask-payment_DETDUP_validate-response-EQ-unclear",
                         "updates": {
                             "payment_method": {
                                 "variable": "payment_method",
                                 "value": "$payment_method",
-                                "certainty": "Uncertain"
+                                "certainty": "Uncertain",
+                                "interpretation": "spel"
                             }
+                        },
+                        "assignments": {
+                            "$payment_method": "maybe-found"
                         },
                         "follow_up": {
                             "clarify": "clarify__ask-payment"
                         }
                     }
                 ]
+            },
+            "intents": {
+                "set_payment_method": {
+                    "variables": [
+                        "payment_method"
+                    ],
+                    "utterances": [
+                        "I want to pay by $payment_method.",
+                        "Can I pay with $payment_method?",
+                        "I will pay in $payment_method"
+                    ]
+                }
             }
         },
         "ask-card-number": {
@@ -256,30 +308,50 @@
                 "type": "oneof",
                 "outcomes": [
                     {
-                        "name": "valid",
+                        "name": "ask-card-number_DETDUP_validate-response-EQ-valid",
                         "updates": {
                             "card_number": {
                                 "variable": "card_number",
                                 "value": "$card_number",
-                                "certainty": "Known"
+                                "certainty": "Known",
+                                "interpretation": "spel"
                             }
+                        },
+                        "assignments": {
+                            "$card_number": "found"
                         },
                         "intent": "pay"
                     },
                     {
-                        "name": "unclear",
+                        "name": "ask-card-number_DETDUP_validate-response-EQ-unclear",
                         "updates": {
                             "card_number": {
                                 "variable": "card_number",
                                 "value": "$card_number",
-                                "certainty": "Uncertain"
+                                "certainty": "Uncertain",
+                                "interpretation": "spel"
                             }
+                        },
+                        "assignments": {
+                            "$card_number": "maybe-found"
                         },
                         "follow_up": {
                             "clarify": "clarify__ask-card-number"
                         }
                     }
                 ]
+            },
+            "intents": {
+                "pay": {
+                    "variables": [
+                        "card_number"
+                    ],
+                    "utterances": [
+                        "My credit card number is $card_number.",
+                        "This is my account number $card_number",
+                        "Ok, the number on my card is $card_number."
+                    ]
+                }
             }
         },
         "check-order-availability": {
@@ -291,32 +363,47 @@
                 "type": "oneof",
                 "outcomes": [
                     {
-                        "name": "in-stock",
+                        "name": "check-order-availability_DETDUP_make-call-EQ-in-stock",
                         "updates": {
                             "order_available": {
                                 "variable": "order_available",
-                                "value": true
+                                "value": true,
+                                "interpretation": "json"
                             }
                         },
-                        "status": "success"
+                        "assignments": {},
+                        "status": "success",
+                        "variable_list": []
                     },
                     {
-                        "name": "out-of-stock",
+                        "name": "check-order-availability_DETDUP_make-call-EQ-out-of-stock",
                         "updates": {
                             "order": {
                                 "variable": "order",
-                                "value": null
+                                "value": null,
+                                "certainty": "Unknown",
+                                "interpretation": "json"
                             }
                         },
+                        "assignments": {
+                            "$order": "didnt-find"
+                        },
                         "follow_up": "ask-order",
-                        "status": "success"
+                        "status": "success",
+                        "variable_list": []
                     },
                     {
-                        "name": "site-down",
+                        "name": "check-order-availability_DETDUP_make-call-EQ-site-down",
+                        "assignments": {},
                         "status": 404,
-                        "response": "site-down-exit"
+                        "response": "site-down-exit",
+                        "variable_list": []
                     }
                 ]
+            },
+            "call": {
+                "endpoint": "https://jsonplaceholder.typicode.com/posts/1",
+                "initial_payload": {}
             }
         },
         "place-order": {
@@ -328,42 +415,56 @@
                 "type": "oneof",
                 "outcomes": [
                     {
-                        "name": "success",
+                        "name": "place-order_DETDUP_make-call-EQ-success",
                         "updates": {
                             "goal": {
                                 "variable": "goal",
-                                "value": true
+                                "value": true,
+                                "interpretation": "json"
                             },
-                            "ask-location": {
-                                "variable": "ask-location",
-                                "value": null
+                            "can-do_ask-location": {
+                                "variable": "can-do_ask-location",
+                                "value": false,
+                                "interpretation": "json"
                             },
-                            "ask-order": {
-                                "variable": "ask-order",
-                                "value": null
+                            "can-do_ask-order": {
+                                "variable": "can-do_ask-order",
+                                "value": false,
+                                "interpretation": "json"
                             },
-                            "ask-payment": {
-                                "variable": "ask-payment",
-                                "value": null
+                            "can-do_ask-payment": {
+                                "variable": "can-do_ask-payment",
+                                "value": false,
+                                "interpretation": "json"
                             },
-                            "ask-card-number": {
-                                "variable": "ask-card-number",
-                                "value": null
+                            "can-do_ask-card-number": {
+                                "variable": "can-do_ask-card-number",
+                                "value": false,
+                                "interpretation": "json"
                             },
-                            "check-order-availability": {
-                                "variable": "check-order-availability",
-                                "value": null
+                            "can-do_check-order-availability": {
+                                "variable": "can-do_check-order-availability",
+                                "value": false,
+                                "interpretation": "json"
                             }
                         },
+                        "assignments": {},
                         "status": "success",
-                        "response": "Order was successfully placed!"
+                        "response": "Order was successfully placed!",
+                        "variable_list": []
                     },
                     {
-                        "name": "site-down",
+                        "name": "place-order_DETDUP_make-call-EQ-site-down",
+                        "assignments": {},
                         "status": 404,
-                        "response": "site-down-exit"
+                        "response": "site-down-exit",
+                        "variable_list": []
                     }
                 ]
+            },
+            "call": {
+                "endpoint": "https://jsonplaceholder.typicode.com/posts/1",
+                "initial_payload": {}
             }
         },
         "clarify__ask-location": {
@@ -380,27 +481,61 @@
                 "type": "oneof",
                 "outcomes": [
                     {
-                        "name": "confirm",
+                        "name": "clarify__ask-location_DETDUP_yes-no-EQ-confirm",
                         "updates": {
                             "location": {
                                 "variable": "location",
                                 "value": "$location",
-                                "certainty": "Known"
+                                "certainty": "Known",
+                                "interpretation": "spel"
                             }
+                        },
+                        "assignments": {
+                            "$location": "found"
                         },
                         "intent": "confirm"
                     },
                     {
-                        "name": "deny",
+                        "name": "clarify__ask-location_DETDUP_yes-no-EQ-deny",
                         "updates": {
-                            "entity": {
-                                "variable": "entity",
-                                "value": null
+                            "location": {
+                                "variable": "location",
+                                "value": null,
+                                "certainty": "Unknown",
+                                "interpretation": "json"
                             }
+                        },
+                        "assignments": {
+                            "$location": "didnt-find"
                         },
                         "intent": "deny"
                     }
                 ]
+            },
+            "intents": {
+                "confirm": {
+                    "utterances": [
+                        "yes",
+                        "yeah",
+                        "that's it",
+                        "Y",
+                        "mhm",
+                        "confirm",
+                        "yes please"
+                    ]
+                },
+                "deny": {
+                    "utterances": [
+                        "no",
+                        "not at all",
+                        "that's not what i meant",
+                        "absolutely not",
+                        "i don't want that",
+                        "nah",
+                        "no thanks",
+                        "no thank you"
+                    ]
+                }
             }
         },
         "clarify__ask-order": {
@@ -416,27 +551,61 @@
                 "type": "oneof",
                 "outcomes": [
                     {
-                        "name": "confirm",
+                        "name": "clarify__ask-order_DETDUP_yes-no-EQ-confirm",
                         "updates": {
                             "order": {
                                 "variable": "order",
                                 "value": "$order",
-                                "certainty": "Known"
+                                "certainty": "Known",
+                                "interpretation": "spel"
                             }
+                        },
+                        "assignments": {
+                            "$order": "found"
                         },
                         "intent": "confirm"
                     },
                     {
-                        "name": "deny",
+                        "name": "clarify__ask-order_DETDUP_yes-no-EQ-deny",
                         "updates": {
-                            "entity": {
-                                "variable": "entity",
-                                "value": null
+                            "order": {
+                                "variable": "order",
+                                "value": null,
+                                "certainty": "Unknown",
+                                "interpretation": "json"
                             }
+                        },
+                        "assignments": {
+                            "$order": "didnt-find"
                         },
                         "intent": "deny"
                     }
                 ]
+            },
+            "intents": {
+                "confirm": {
+                    "utterances": [
+                        "yes",
+                        "yeah",
+                        "that's it",
+                        "Y",
+                        "mhm",
+                        "confirm",
+                        "yes please"
+                    ]
+                },
+                "deny": {
+                    "utterances": [
+                        "no",
+                        "not at all",
+                        "that's not what i meant",
+                        "absolutely not",
+                        "i don't want that",
+                        "nah",
+                        "no thanks",
+                        "no thank you"
+                    ]
+                }
             }
         },
         "clarify__ask-payment": {
@@ -452,27 +621,61 @@
                 "type": "oneof",
                 "outcomes": [
                     {
-                        "name": "confirm",
+                        "name": "clarify__ask-payment_DETDUP_yes-no-EQ-confirm",
                         "updates": {
                             "payment_method": {
                                 "variable": "payment_method",
                                 "value": "$payment_method",
-                                "certainty": "Known"
+                                "certainty": "Known",
+                                "interpretation": "spel"
                             }
+                        },
+                        "assignments": {
+                            "$payment_method": "found"
                         },
                         "intent": "confirm"
                     },
                     {
-                        "name": "deny",
+                        "name": "clarify__ask-payment_DETDUP_yes-no-EQ-deny",
                         "updates": {
-                            "entity": {
-                                "variable": "entity",
-                                "value": null
+                            "payment_method": {
+                                "variable": "payment_method",
+                                "value": null,
+                                "certainty": "Unknown",
+                                "interpretation": "json"
                             }
+                        },
+                        "assignments": {
+                            "$payment_method": "didnt-find"
                         },
                         "intent": "deny"
                     }
                 ]
+            },
+            "intents": {
+                "confirm": {
+                    "utterances": [
+                        "yes",
+                        "yeah",
+                        "that's it",
+                        "Y",
+                        "mhm",
+                        "confirm",
+                        "yes please"
+                    ]
+                },
+                "deny": {
+                    "utterances": [
+                        "no",
+                        "not at all",
+                        "that's not what i meant",
+                        "absolutely not",
+                        "i don't want that",
+                        "nah",
+                        "no thanks",
+                        "no thank you"
+                    ]
+                }
             }
         }
     }

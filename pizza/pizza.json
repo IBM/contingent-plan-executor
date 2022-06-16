@@ -122,7 +122,12 @@
                 "Where do you live?",
                 "Where would you like to deliver?"
             ],
-            "condition": [],
+            "condition": [
+                [
+                    "location",
+                    "Unknown"
+                ]
+            ],
             "effect": {
                 "global-outcome-name": "validate-response",
                 "type": "oneof",
@@ -182,7 +187,12 @@
                 "What would you like to order?",
                 "What type of pizza would you like?"
             ],
-            "condition": [],
+            "condition": [
+                [
+                    "order",
+                    "Unknown"
+                ]
+            ],
             "effect": {
                 "global-outcome-name": "validate-response",
                 "type": "oneof",
@@ -242,7 +252,20 @@
             "message_variants": [
                 "How would you like to pay?"
             ],
-            "condition": [],
+            "condition": [
+                [
+                    "order",
+                    "Known"
+                ],
+                [
+                    "location",
+                    "Known"
+                ],
+                [
+                    "payment_method",
+                    "Unknown"
+                ]
+            ],
             "effect": {
                 "global-outcome-name": "validate-response",
                 "type": "oneof",
@@ -302,7 +325,12 @@
                 "Enter your card number.",
                 "Please enter your card details."
             ],
-            "condition": [],
+            "condition": [
+                [
+                    "payment_method",
+                    "Known"
+                ]
+            ],
             "effect": {
                 "global-outcome-name": "validate-response",
                 "type": "oneof",
@@ -357,7 +385,12 @@
         "check-order-availability": {
             "name": "check-order-availability",
             "type": "api",
-            "condition": [],
+            "condition": [
+                [
+                    "order",
+                    "Known"
+                ]
+            ],
             "effect": {
                 "global-outcome-name": "make-call",
                 "type": "oneof",
@@ -409,7 +442,20 @@
         "place-order": {
             "name": "place-order",
             "type": "api",
-            "condition": [],
+            "condition": [
+                [
+                    "order",
+                    "Known"
+                ],
+                [
+                    "card_number",
+                    "Known"
+                ],
+                [
+                    "order_available",
+                    true
+                ]
+            ],
             "effect": {
                 "global-outcome-name": "make-call",
                 "type": "oneof",
@@ -475,7 +521,12 @@
                 "Are you located in $location?",
                 "Do you live in $location?"
             ],
-            "condition": [],
+            "condition": [
+                [
+                    "location",
+                    "Uncertain"
+                ]
+            ],
             "effect": {
                 "global-outcome-name": "yes-no",
                 "type": "oneof",
@@ -545,7 +596,12 @@
             "message_variants": [
                 "Would you like to order $order?"
             ],
-            "condition": [],
+            "condition": [
+                [
+                    "order",
+                    "Uncertain"
+                ]
+            ],
             "effect": {
                 "global-outcome-name": "yes-no",
                 "type": "oneof",
@@ -615,7 +671,12 @@
             "message_variants": [
                 "Would you like to pay with $payment_method?"
             ],
-            "condition": [],
+            "condition": [
+                [
+                    "payment_method",
+                    "Uncertain"
+                ]
+            ],
             "effect": {
                 "global-outcome-name": "yes-no",
                 "type": "oneof",

@@ -76,6 +76,10 @@
         :parameters()
         :precondition
             (and
+                (have_order)
+                (not (maybe-have_order))
+                (have_location)
+                (not (maybe-have_location))
                 (not (have_payment_method))
                 (not (maybe-have_payment_method))
                 (can-do_ask-payment)
@@ -102,7 +106,6 @@
             (and
                 (have_payment_method)
                 (not (maybe-have_payment_method))
-                (can-do_ask-card-number)
                 (can-do_ask-card-number)
             )
         :effect
@@ -152,7 +155,11 @@
         :parameters()
         :precondition
             (and
-                (can-do_place-order)
+                (have_order)
+                (not (maybe-have_order))
+                (have_card_number)
+                (not (maybe-have_card_number))
+                (order_available)
                 (can-do_place-order)
             )
         :effect

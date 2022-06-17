@@ -10,6 +10,7 @@ from hovor.outcome_determiners.context_entity_outcome_determiner import ContextE
 from hovor.outcome_determiners.logic_outcome_determiner import LogicOutcomeDeterminer
 from hovor.outcome_determiners.outcome_determination_info import OutcomeDeterminationInfo
 from hovor.outcome_determiners.random_outcome_determiner import RandomOutcomeDeterminer
+from hovor.outcome_determiners.rasa_outcome_determiner import RasaOutcomeDeterminer
 from hovor.outcome_determiners.regex_workspace_outcome_determiner import RegexWorkspaceOutcomeDeterminer
 from hovor.outcome_determiners.unified_workspace_outcome_determiner import UnifiedWorkspaceOutcomeDeterminer
 from hovor.outcome_determiners.web_call_outcome_determiner import WebCallOutcomeDeterminer
@@ -254,7 +255,8 @@ class JsonConfigurationProvider(ConfigurationProviderBase):
                 #     all_entities[entity] = None  # update the set/dict of all entities
                 entity_definitions[entity] = self._get_entity_type_specification(entity)
             # TODO: insert Rasa here instead of Random
-            return RandomOutcomeDeterminer()
+            return RasaOutcomeDeterminer(outcome_config["outcomes"])
+            # return RandomOutcomeDeterminer()
             # return UnifiedWorkspaceOutcomeDeterminer(action_name, outcome_config["global-outcome-name"], outcome_config[
             #     "intents"],
             #                                          entity_definitions)

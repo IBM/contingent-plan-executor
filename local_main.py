@@ -4,7 +4,7 @@ from rasa.model_training import train_nlu
 from environment import initialize_local_environment
 from hovor.configuration.json_configuration_provider import JsonConfigurationProvider
 from hovor.core import run_interaction
-import requests
+
 
 initialize_local_environment()
 
@@ -20,8 +20,7 @@ initialize_local_environment()
 #     output="./pizza",
 #     fixed_model_name="pizza-model"
 # )
-payload = {'text':'hi how are you?'}
-r = json.loads(requests.post('http://localhost:5005/model/parse', json=payload).text)
+
 configuration_provider = JsonConfigurationProvider("./pizza/pizza")
 
 # configuration_provider = JsonConfigurationProvider("./local_data/gold_standard_data/gold")

@@ -31,7 +31,6 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                         # payment_method entity. not sure where exactly this is caused (maybe just need more examples,
                         # or to attach the appropriate classifiers i.e. spacy, or maybe something else is breaking this?).
                         # this entity keys bug causes errors when trying to update values.
-                        # also need to call a non-trivial API!
                         entity_sample = RandomOutcomeDeterminer._make_entity_sample(entity["entity"], progress)
                         progress.add_detected_entity(entity["entity"], entity_sample)
                     ranked_groups.append((intent_to_outcome_map[intent["name"]], intent["confidence"]))

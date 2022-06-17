@@ -43,695 +43,143 @@ nlu:
 
     - no thank you'
   intent: deny
-- examples: '- I want a [cheese](order) pizza in [New York](location)
+- examples: '- I want a [cheese](order) pizza
 
-    - [cheese](order) pizza please in [New York](location)!
+    - [cheese](order) pizza please!
 
-    - Do you have [cheese](order) pizza in [New York](location)?
+    - Do you have [cheese](order) pizza?
 
-    - I want a [cheese](order) pizza in [Denver](location)
+    - I want a [pepperoni](order) pizza
 
-    - [cheese](order) pizza please in [Denver](location)!
+    - [pepperoni](order) pizza please!
 
-    - Do you have [cheese](order) pizza in [Denver](location)?
+    - Do you have [pepperoni](order) pizza?
 
-    - I want a [cheese](order) pizza in [Tallahassee](location)
+    - I want a [mushroom](order) pizza
 
-    - [cheese](order) pizza please in [Tallahassee](location)!
+    - [mushroom](order) pizza please!
 
-    - Do you have [cheese](order) pizza in [Tallahassee](location)?
+    - Do you have [mushroom](order) pizza?
 
-    - I want a [cheese](order) pizza in [Chicago](location)
+    - I want a [gluten free](order) pizza
 
-    - [cheese](order) pizza please in [Chicago](location)!
+    - [gluten free](order) pizza please!
 
-    - Do you have [cheese](order) pizza in [Chicago](location)?
+    - Do you have [gluten free](order) pizza?
 
-    - I want a [cheese](order) pizza in [Austin](location)
+    - I want a [hawaiian](order) pizza
 
-    - [cheese](order) pizza please in [Austin](location)!
+    - [hawaiian](order) pizza please!
 
-    - Do you have [cheese](order) pizza in [Austin](location)?
+    - Do you have [hawaiian](order) pizza?
 
-    - I want a [pepperoni](order) pizza in [New York](location)
+    - I want a [chz](order) pizza
 
-    - [pepperoni](order) pizza please in [New York](location)!
+    - [chz](order) pizza please!
 
-    - Do you have [pepperoni](order) pizza in [New York](location)?
+    - Do you have [chz](order) pizza?
 
-    - I want a [pepperoni](order) pizza in [Denver](location)
+    - I want a [cheez](order) pizza
 
-    - [pepperoni](order) pizza please in [Denver](location)!
+    - [cheez](order) pizza please!
 
-    - Do you have [pepperoni](order) pizza in [Denver](location)?
+    - Do you have [cheez](order) pizza?
 
-    - I want a [pepperoni](order) pizza in [Tallahassee](location)
+    - I want a [mozzarella](order) pizza
 
-    - [pepperoni](order) pizza please in [Tallahassee](location)!
+    - [mozzarella](order) pizza please!
 
-    - Do you have [pepperoni](order) pizza in [Tallahassee](location)?
+    - Do you have [mozzarella](order) pizza?
 
-    - I want a [pepperoni](order) pizza in [Chicago](location)
+    - I want a [fromage](order) pizza
 
-    - [pepperoni](order) pizza please in [Chicago](location)!
+    - [fromage](order) pizza please!
 
-    - Do you have [pepperoni](order) pizza in [Chicago](location)?
+    - Do you have [fromage](order) pizza?
 
-    - I want a [pepperoni](order) pizza in [Austin](location)
+    - I want a [cheesy](order) pizza
 
-    - [pepperoni](order) pizza please in [Austin](location)!
+    - [cheesy](order) pizza please!
 
-    - Do you have [pepperoni](order) pizza in [Austin](location)?
+    - Do you have [cheesy](order) pizza?
 
-    - I want a [mushroom](order) pizza in [New York](location)
+    - I want a [peperoni](order) pizza
 
-    - [mushroom](order) pizza please in [New York](location)!
+    - [peperoni](order) pizza please!
 
-    - Do you have [mushroom](order) pizza in [New York](location)?
+    - Do you have [peperoni](order) pizza?
 
-    - I want a [mushroom](order) pizza in [Denver](location)
+    - I want a [meat](order) pizza
 
-    - [mushroom](order) pizza please in [Denver](location)!
+    - [meat](order) pizza please!
 
-    - Do you have [mushroom](order) pizza in [Denver](location)?
+    - Do you have [meat](order) pizza?
 
-    - I want a [mushroom](order) pizza in [Tallahassee](location)
+    - I want a [sausage](order) pizza
 
-    - [mushroom](order) pizza please in [Tallahassee](location)!
+    - [sausage](order) pizza please!
 
-    - Do you have [mushroom](order) pizza in [Tallahassee](location)?
+    - Do you have [sausage](order) pizza?
 
-    - I want a [mushroom](order) pizza in [Chicago](location)
+    - I want a [vegetable](order) pizza
 
-    - [mushroom](order) pizza please in [Chicago](location)!
+    - [vegetable](order) pizza please!
 
-    - Do you have [mushroom](order) pizza in [Chicago](location)?
+    - Do you have [vegetable](order) pizza?
 
-    - I want a [mushroom](order) pizza in [Austin](location)
+    - I want a [veggie](order) pizza
 
-    - [mushroom](order) pizza please in [Austin](location)!
+    - [veggie](order) pizza please!
 
-    - Do you have [mushroom](order) pizza in [Austin](location)?
+    - Do you have [veggie](order) pizza?
 
-    - I want a [gluten free](order) pizza in [New York](location)
+    - I want a [musroom](order) pizza
 
-    - [gluten free](order) pizza please in [New York](location)!
+    - [musroom](order) pizza please!
 
-    - Do you have [gluten free](order) pizza in [New York](location)?
+    - Do you have [musroom](order) pizza?
 
-    - I want a [gluten free](order) pizza in [Denver](location)
+    - I want a [shroom](order) pizza
 
-    - [gluten free](order) pizza please in [Denver](location)!
+    - [shroom](order) pizza please!
 
-    - Do you have [gluten free](order) pizza in [Denver](location)?
+    - Do you have [shroom](order) pizza?
 
-    - I want a [gluten free](order) pizza in [Tallahassee](location)
+    - I want a [healthy](order) pizza
 
-    - [gluten free](order) pizza please in [Tallahassee](location)!
+    - [healthy](order) pizza please!
 
-    - Do you have [gluten free](order) pizza in [Tallahassee](location)?
+    - Do you have [healthy](order) pizza?
 
-    - I want a [gluten free](order) pizza in [Chicago](location)
+    - I want a [gluten-free](order) pizza
 
-    - [gluten free](order) pizza please in [Chicago](location)!
+    - [gluten-free](order) pizza please!
 
-    - Do you have [gluten free](order) pizza in [Chicago](location)?
+    - Do you have [gluten-free](order) pizza?
 
-    - I want a [gluten free](order) pizza in [Austin](location)
+    - I want a [gf](order) pizza
 
-    - [gluten free](order) pizza please in [Austin](location)!
+    - [gf](order) pizza please!
 
-    - Do you have [gluten free](order) pizza in [Austin](location)?
+    - Do you have [gf](order) pizza?
 
-    - I want a [hawaiian](order) pizza in [New York](location)
+    - I want a [pineapple](order) pizza
 
-    - [hawaiian](order) pizza please in [New York](location)!
+    - [pineapple](order) pizza please!
 
-    - Do you have [hawaiian](order) pizza in [New York](location)?
+    - Do you have [pineapple](order) pizza?
 
-    - I want a [hawaiian](order) pizza in [Denver](location)
+    - I want a [ham and pineapple](order) pizza
 
-    - [hawaiian](order) pizza please in [Denver](location)!
+    - [ham and pineapple](order) pizza please!
 
-    - Do you have [hawaiian](order) pizza in [Denver](location)?
+    - Do you have [ham and pineapple](order) pizza?
 
-    - I want a [hawaiian](order) pizza in [Tallahassee](location)
+    - I want a [sweet](order) pizza
 
-    - [hawaiian](order) pizza please in [Tallahassee](location)!
+    - [sweet](order) pizza please!
 
-    - Do you have [hawaiian](order) pizza in [Tallahassee](location)?
-
-    - I want a [hawaiian](order) pizza in [Chicago](location)
-
-    - [hawaiian](order) pizza please in [Chicago](location)!
-
-    - Do you have [hawaiian](order) pizza in [Chicago](location)?
-
-    - I want a [hawaiian](order) pizza in [Austin](location)
-
-    - [hawaiian](order) pizza please in [Austin](location)!
-
-    - Do you have [hawaiian](order) pizza in [Austin](location)?
-
-    - I want a [chz](order) pizza in [New York](location)
-
-    - [chz](order) pizza please in [New York](location)!
-
-    - Do you have [chz](order) pizza in [New York](location)?
-
-    - I want a [chz](order) pizza in [Denver](location)
-
-    - [chz](order) pizza please in [Denver](location)!
-
-    - Do you have [chz](order) pizza in [Denver](location)?
-
-    - I want a [chz](order) pizza in [Tallahassee](location)
-
-    - [chz](order) pizza please in [Tallahassee](location)!
-
-    - Do you have [chz](order) pizza in [Tallahassee](location)?
-
-    - I want a [chz](order) pizza in [Chicago](location)
-
-    - [chz](order) pizza please in [Chicago](location)!
-
-    - Do you have [chz](order) pizza in [Chicago](location)?
-
-    - I want a [chz](order) pizza in [Austin](location)
-
-    - [chz](order) pizza please in [Austin](location)!
-
-    - Do you have [chz](order) pizza in [Austin](location)?
-
-    - I want a [cheez](order) pizza in [New York](location)
-
-    - [cheez](order) pizza please in [New York](location)!
-
-    - Do you have [cheez](order) pizza in [New York](location)?
-
-    - I want a [cheez](order) pizza in [Denver](location)
-
-    - [cheez](order) pizza please in [Denver](location)!
-
-    - Do you have [cheez](order) pizza in [Denver](location)?
-
-    - I want a [cheez](order) pizza in [Tallahassee](location)
-
-    - [cheez](order) pizza please in [Tallahassee](location)!
-
-    - Do you have [cheez](order) pizza in [Tallahassee](location)?
-
-    - I want a [cheez](order) pizza in [Chicago](location)
-
-    - [cheez](order) pizza please in [Chicago](location)!
-
-    - Do you have [cheez](order) pizza in [Chicago](location)?
-
-    - I want a [cheez](order) pizza in [Austin](location)
-
-    - [cheez](order) pizza please in [Austin](location)!
-
-    - Do you have [cheez](order) pizza in [Austin](location)?
-
-    - I want a [mozzarella](order) pizza in [New York](location)
-
-    - [mozzarella](order) pizza please in [New York](location)!
-
-    - Do you have [mozzarella](order) pizza in [New York](location)?
-
-    - I want a [mozzarella](order) pizza in [Denver](location)
-
-    - [mozzarella](order) pizza please in [Denver](location)!
-
-    - Do you have [mozzarella](order) pizza in [Denver](location)?
-
-    - I want a [mozzarella](order) pizza in [Tallahassee](location)
-
-    - [mozzarella](order) pizza please in [Tallahassee](location)!
-
-    - Do you have [mozzarella](order) pizza in [Tallahassee](location)?
-
-    - I want a [mozzarella](order) pizza in [Chicago](location)
-
-    - [mozzarella](order) pizza please in [Chicago](location)!
-
-    - Do you have [mozzarella](order) pizza in [Chicago](location)?
-
-    - I want a [mozzarella](order) pizza in [Austin](location)
-
-    - [mozzarella](order) pizza please in [Austin](location)!
-
-    - Do you have [mozzarella](order) pizza in [Austin](location)?
-
-    - I want a [fromage](order) pizza in [New York](location)
-
-    - [fromage](order) pizza please in [New York](location)!
-
-    - Do you have [fromage](order) pizza in [New York](location)?
-
-    - I want a [fromage](order) pizza in [Denver](location)
-
-    - [fromage](order) pizza please in [Denver](location)!
-
-    - Do you have [fromage](order) pizza in [Denver](location)?
-
-    - I want a [fromage](order) pizza in [Tallahassee](location)
-
-    - [fromage](order) pizza please in [Tallahassee](location)!
-
-    - Do you have [fromage](order) pizza in [Tallahassee](location)?
-
-    - I want a [fromage](order) pizza in [Chicago](location)
-
-    - [fromage](order) pizza please in [Chicago](location)!
-
-    - Do you have [fromage](order) pizza in [Chicago](location)?
-
-    - I want a [fromage](order) pizza in [Austin](location)
-
-    - [fromage](order) pizza please in [Austin](location)!
-
-    - Do you have [fromage](order) pizza in [Austin](location)?
-
-    - I want a [cheesy](order) pizza in [New York](location)
-
-    - [cheesy](order) pizza please in [New York](location)!
-
-    - Do you have [cheesy](order) pizza in [New York](location)?
-
-    - I want a [cheesy](order) pizza in [Denver](location)
-
-    - [cheesy](order) pizza please in [Denver](location)!
-
-    - Do you have [cheesy](order) pizza in [Denver](location)?
-
-    - I want a [cheesy](order) pizza in [Tallahassee](location)
-
-    - [cheesy](order) pizza please in [Tallahassee](location)!
-
-    - Do you have [cheesy](order) pizza in [Tallahassee](location)?
-
-    - I want a [cheesy](order) pizza in [Chicago](location)
-
-    - [cheesy](order) pizza please in [Chicago](location)!
-
-    - Do you have [cheesy](order) pizza in [Chicago](location)?
-
-    - I want a [cheesy](order) pizza in [Austin](location)
-
-    - [cheesy](order) pizza please in [Austin](location)!
-
-    - Do you have [cheesy](order) pizza in [Austin](location)?
-
-    - I want a [peperoni](order) pizza in [New York](location)
-
-    - [peperoni](order) pizza please in [New York](location)!
-
-    - Do you have [peperoni](order) pizza in [New York](location)?
-
-    - I want a [peperoni](order) pizza in [Denver](location)
-
-    - [peperoni](order) pizza please in [Denver](location)!
-
-    - Do you have [peperoni](order) pizza in [Denver](location)?
-
-    - I want a [peperoni](order) pizza in [Tallahassee](location)
-
-    - [peperoni](order) pizza please in [Tallahassee](location)!
-
-    - Do you have [peperoni](order) pizza in [Tallahassee](location)?
-
-    - I want a [peperoni](order) pizza in [Chicago](location)
-
-    - [peperoni](order) pizza please in [Chicago](location)!
-
-    - Do you have [peperoni](order) pizza in [Chicago](location)?
-
-    - I want a [peperoni](order) pizza in [Austin](location)
-
-    - [peperoni](order) pizza please in [Austin](location)!
-
-    - Do you have [peperoni](order) pizza in [Austin](location)?
-
-    - I want a [meat](order) pizza in [New York](location)
-
-    - [meat](order) pizza please in [New York](location)!
-
-    - Do you have [meat](order) pizza in [New York](location)?
-
-    - I want a [meat](order) pizza in [Denver](location)
-
-    - [meat](order) pizza please in [Denver](location)!
-
-    - Do you have [meat](order) pizza in [Denver](location)?
-
-    - I want a [meat](order) pizza in [Tallahassee](location)
-
-    - [meat](order) pizza please in [Tallahassee](location)!
-
-    - Do you have [meat](order) pizza in [Tallahassee](location)?
-
-    - I want a [meat](order) pizza in [Chicago](location)
-
-    - [meat](order) pizza please in [Chicago](location)!
-
-    - Do you have [meat](order) pizza in [Chicago](location)?
-
-    - I want a [meat](order) pizza in [Austin](location)
-
-    - [meat](order) pizza please in [Austin](location)!
-
-    - Do you have [meat](order) pizza in [Austin](location)?
-
-    - I want a [sausage](order) pizza in [New York](location)
-
-    - [sausage](order) pizza please in [New York](location)!
-
-    - Do you have [sausage](order) pizza in [New York](location)?
-
-    - I want a [sausage](order) pizza in [Denver](location)
-
-    - [sausage](order) pizza please in [Denver](location)!
-
-    - Do you have [sausage](order) pizza in [Denver](location)?
-
-    - I want a [sausage](order) pizza in [Tallahassee](location)
-
-    - [sausage](order) pizza please in [Tallahassee](location)!
-
-    - Do you have [sausage](order) pizza in [Tallahassee](location)?
-
-    - I want a [sausage](order) pizza in [Chicago](location)
-
-    - [sausage](order) pizza please in [Chicago](location)!
-
-    - Do you have [sausage](order) pizza in [Chicago](location)?
-
-    - I want a [sausage](order) pizza in [Austin](location)
-
-    - [sausage](order) pizza please in [Austin](location)!
-
-    - Do you have [sausage](order) pizza in [Austin](location)?
-
-    - I want a [vegetable](order) pizza in [New York](location)
-
-    - [vegetable](order) pizza please in [New York](location)!
-
-    - Do you have [vegetable](order) pizza in [New York](location)?
-
-    - I want a [vegetable](order) pizza in [Denver](location)
-
-    - [vegetable](order) pizza please in [Denver](location)!
-
-    - Do you have [vegetable](order) pizza in [Denver](location)?
-
-    - I want a [vegetable](order) pizza in [Tallahassee](location)
-
-    - [vegetable](order) pizza please in [Tallahassee](location)!
-
-    - Do you have [vegetable](order) pizza in [Tallahassee](location)?
-
-    - I want a [vegetable](order) pizza in [Chicago](location)
-
-    - [vegetable](order) pizza please in [Chicago](location)!
-
-    - Do you have [vegetable](order) pizza in [Chicago](location)?
-
-    - I want a [vegetable](order) pizza in [Austin](location)
-
-    - [vegetable](order) pizza please in [Austin](location)!
-
-    - Do you have [vegetable](order) pizza in [Austin](location)?
-
-    - I want a [veggie](order) pizza in [New York](location)
-
-    - [veggie](order) pizza please in [New York](location)!
-
-    - Do you have [veggie](order) pizza in [New York](location)?
-
-    - I want a [veggie](order) pizza in [Denver](location)
-
-    - [veggie](order) pizza please in [Denver](location)!
-
-    - Do you have [veggie](order) pizza in [Denver](location)?
-
-    - I want a [veggie](order) pizza in [Tallahassee](location)
-
-    - [veggie](order) pizza please in [Tallahassee](location)!
-
-    - Do you have [veggie](order) pizza in [Tallahassee](location)?
-
-    - I want a [veggie](order) pizza in [Chicago](location)
-
-    - [veggie](order) pizza please in [Chicago](location)!
-
-    - Do you have [veggie](order) pizza in [Chicago](location)?
-
-    - I want a [veggie](order) pizza in [Austin](location)
-
-    - [veggie](order) pizza please in [Austin](location)!
-
-    - Do you have [veggie](order) pizza in [Austin](location)?
-
-    - I want a [musroom](order) pizza in [New York](location)
-
-    - [musroom](order) pizza please in [New York](location)!
-
-    - Do you have [musroom](order) pizza in [New York](location)?
-
-    - I want a [musroom](order) pizza in [Denver](location)
-
-    - [musroom](order) pizza please in [Denver](location)!
-
-    - Do you have [musroom](order) pizza in [Denver](location)?
-
-    - I want a [musroom](order) pizza in [Tallahassee](location)
-
-    - [musroom](order) pizza please in [Tallahassee](location)!
-
-    - Do you have [musroom](order) pizza in [Tallahassee](location)?
-
-    - I want a [musroom](order) pizza in [Chicago](location)
-
-    - [musroom](order) pizza please in [Chicago](location)!
-
-    - Do you have [musroom](order) pizza in [Chicago](location)?
-
-    - I want a [musroom](order) pizza in [Austin](location)
-
-    - [musroom](order) pizza please in [Austin](location)!
-
-    - Do you have [musroom](order) pizza in [Austin](location)?
-
-    - I want a [shroom](order) pizza in [New York](location)
-
-    - [shroom](order) pizza please in [New York](location)!
-
-    - Do you have [shroom](order) pizza in [New York](location)?
-
-    - I want a [shroom](order) pizza in [Denver](location)
-
-    - [shroom](order) pizza please in [Denver](location)!
-
-    - Do you have [shroom](order) pizza in [Denver](location)?
-
-    - I want a [shroom](order) pizza in [Tallahassee](location)
-
-    - [shroom](order) pizza please in [Tallahassee](location)!
-
-    - Do you have [shroom](order) pizza in [Tallahassee](location)?
-
-    - I want a [shroom](order) pizza in [Chicago](location)
-
-    - [shroom](order) pizza please in [Chicago](location)!
-
-    - Do you have [shroom](order) pizza in [Chicago](location)?
-
-    - I want a [shroom](order) pizza in [Austin](location)
-
-    - [shroom](order) pizza please in [Austin](location)!
-
-    - Do you have [shroom](order) pizza in [Austin](location)?
-
-    - I want a [healthy](order) pizza in [New York](location)
-
-    - [healthy](order) pizza please in [New York](location)!
-
-    - Do you have [healthy](order) pizza in [New York](location)?
-
-    - I want a [healthy](order) pizza in [Denver](location)
-
-    - [healthy](order) pizza please in [Denver](location)!
-
-    - Do you have [healthy](order) pizza in [Denver](location)?
-
-    - I want a [healthy](order) pizza in [Tallahassee](location)
-
-    - [healthy](order) pizza please in [Tallahassee](location)!
-
-    - Do you have [healthy](order) pizza in [Tallahassee](location)?
-
-    - I want a [healthy](order) pizza in [Chicago](location)
-
-    - [healthy](order) pizza please in [Chicago](location)!
-
-    - Do you have [healthy](order) pizza in [Chicago](location)?
-
-    - I want a [healthy](order) pizza in [Austin](location)
-
-    - [healthy](order) pizza please in [Austin](location)!
-
-    - Do you have [healthy](order) pizza in [Austin](location)?
-
-    - I want a [gluten-free](order) pizza in [New York](location)
-
-    - [gluten-free](order) pizza please in [New York](location)!
-
-    - Do you have [gluten-free](order) pizza in [New York](location)?
-
-    - I want a [gluten-free](order) pizza in [Denver](location)
-
-    - [gluten-free](order) pizza please in [Denver](location)!
-
-    - Do you have [gluten-free](order) pizza in [Denver](location)?
-
-    - I want a [gluten-free](order) pizza in [Tallahassee](location)
-
-    - [gluten-free](order) pizza please in [Tallahassee](location)!
-
-    - Do you have [gluten-free](order) pizza in [Tallahassee](location)?
-
-    - I want a [gluten-free](order) pizza in [Chicago](location)
-
-    - [gluten-free](order) pizza please in [Chicago](location)!
-
-    - Do you have [gluten-free](order) pizza in [Chicago](location)?
-
-    - I want a [gluten-free](order) pizza in [Austin](location)
-
-    - [gluten-free](order) pizza please in [Austin](location)!
-
-    - Do you have [gluten-free](order) pizza in [Austin](location)?
-
-    - I want a [gf](order) pizza in [New York](location)
-
-    - [gf](order) pizza please in [New York](location)!
-
-    - Do you have [gf](order) pizza in [New York](location)?
-
-    - I want a [gf](order) pizza in [Denver](location)
-
-    - [gf](order) pizza please in [Denver](location)!
-
-    - Do you have [gf](order) pizza in [Denver](location)?
-
-    - I want a [gf](order) pizza in [Tallahassee](location)
-
-    - [gf](order) pizza please in [Tallahassee](location)!
-
-    - Do you have [gf](order) pizza in [Tallahassee](location)?
-
-    - I want a [gf](order) pizza in [Chicago](location)
-
-    - [gf](order) pizza please in [Chicago](location)!
-
-    - Do you have [gf](order) pizza in [Chicago](location)?
-
-    - I want a [gf](order) pizza in [Austin](location)
-
-    - [gf](order) pizza please in [Austin](location)!
-
-    - Do you have [gf](order) pizza in [Austin](location)?
-
-    - I want a [pineapple](order) pizza in [New York](location)
-
-    - [pineapple](order) pizza please in [New York](location)!
-
-    - Do you have [pineapple](order) pizza in [New York](location)?
-
-    - I want a [pineapple](order) pizza in [Denver](location)
-
-    - [pineapple](order) pizza please in [Denver](location)!
-
-    - Do you have [pineapple](order) pizza in [Denver](location)?
-
-    - I want a [pineapple](order) pizza in [Tallahassee](location)
-
-    - [pineapple](order) pizza please in [Tallahassee](location)!
-
-    - Do you have [pineapple](order) pizza in [Tallahassee](location)?
-
-    - I want a [pineapple](order) pizza in [Chicago](location)
-
-    - [pineapple](order) pizza please in [Chicago](location)!
-
-    - Do you have [pineapple](order) pizza in [Chicago](location)?
-
-    - I want a [pineapple](order) pizza in [Austin](location)
-
-    - [pineapple](order) pizza please in [Austin](location)!
-
-    - Do you have [pineapple](order) pizza in [Austin](location)?
-
-    - I want a [ham and pineapple](order) pizza in [New York](location)
-
-    - [ham and pineapple](order) pizza please in [New York](location)!
-
-    - Do you have [ham and pineapple](order) pizza in [New York](location)?
-
-    - I want a [ham and pineapple](order) pizza in [Denver](location)
-
-    - [ham and pineapple](order) pizza please in [Denver](location)!
-
-    - Do you have [ham and pineapple](order) pizza in [Denver](location)?
-
-    - I want a [ham and pineapple](order) pizza in [Tallahassee](location)
-
-    - [ham and pineapple](order) pizza please in [Tallahassee](location)!
-
-    - Do you have [ham and pineapple](order) pizza in [Tallahassee](location)?
-
-    - I want a [ham and pineapple](order) pizza in [Chicago](location)
-
-    - [ham and pineapple](order) pizza please in [Chicago](location)!
-
-    - Do you have [ham and pineapple](order) pizza in [Chicago](location)?
-
-    - I want a [ham and pineapple](order) pizza in [Austin](location)
-
-    - [ham and pineapple](order) pizza please in [Austin](location)!
-
-    - Do you have [ham and pineapple](order) pizza in [Austin](location)?
-
-    - I want a [sweet](order) pizza in [New York](location)
-
-    - [sweet](order) pizza please in [New York](location)!
-
-    - Do you have [sweet](order) pizza in [New York](location)?
-
-    - I want a [sweet](order) pizza in [Denver](location)
-
-    - [sweet](order) pizza please in [Denver](location)!
-
-    - Do you have [sweet](order) pizza in [Denver](location)?
-
-    - I want a [sweet](order) pizza in [Tallahassee](location)
-
-    - [sweet](order) pizza please in [Tallahassee](location)!
-
-    - Do you have [sweet](order) pizza in [Tallahassee](location)?
-
-    - I want a [sweet](order) pizza in [Chicago](location)
-
-    - [sweet](order) pizza please in [Chicago](location)!
-
-    - Do you have [sweet](order) pizza in [Chicago](location)?
-
-    - I want a [sweet](order) pizza in [Austin](location)
-
-    - [sweet](order) pizza please in [Austin](location)!
-
-    - Do you have [sweet](order) pizza in [Austin](location)?'
+    - Do you have [sweet](order) pizza?'
   intent: share_order
 - examples: '- I live in [New York](location).
 

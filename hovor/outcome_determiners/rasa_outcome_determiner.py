@@ -13,6 +13,8 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
     def rank_groups(self, outcome_groups, progress):
         payload = {'text': progress.json["action_result"]["fields"]["input"]}
         r = json.loads(requests.post('http://localhost:5005/model/parse', json=payload).text)
+        for info, val in r.items():
+            print(f"{info}: {val}\n")
         ranked_groups = []
         intent_to_outcome_map = {}
         intent_to_outcome_map["null"] = []

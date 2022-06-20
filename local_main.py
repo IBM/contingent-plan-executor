@@ -1,25 +1,17 @@
+from time import sleep
 import jsonpickle
-import json
-from rasa.model_training import train_nlu
 from environment import initialize_local_environment
 from hovor.configuration.json_configuration_provider import JsonConfigurationProvider
 from hovor.core import run_interaction
-
+from setup_hovor_rasa import setup_hovor_rasa
+import subprocess
+import requests
+from requests.exceptions import ConnectionError
 
 initialize_local_environment()
 
-# with open("./pizza/policy.out") as f:
-#     plan_data = json.load(f)
-# plan_data = {"plan": plan_data}
-# with open("./pizza/pizza.prp.json", 'w') as f:
-#     json.dump(plan_data, f, indent=4)
-# train rasa nlu
-# train_nlu(
-#     config="./pizza/config.yml",
-#     nlu_data="./pizza/nlu.yml",
-#     output="./pizza",
-#     fixed_model_name="pizza-model"
-# )
+setup_hovor_rasa("pizza", train=False)
+subprocess.Popen("./rasa_setup.sh", shell=True)
 
 configuration_provider = JsonConfigurationProvider("./pizza/pizza")
 
@@ -30,4 +22,11 @@ json = jsonpickle.encode(configuration_provider)
 configuration_provider = jsonpickle.decode(json)
 configuration_provider.check_all_action_builders()
 
+while True:
+    try:
+        requests.post('http://localhost:5005/model/parse', json={"text": "test"})
+    except ConnectionError:
+        sleep(0.1)
+    else:
+        break
 run_interaction(configuration_provider)

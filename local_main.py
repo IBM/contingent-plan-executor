@@ -12,19 +12,19 @@ import json
 
 import requests
 
-city="Kingston"
-url = "https://weatherbit-v1-mashape.p.rapidapi.com/forecast/daily"
+# city="Kingston"
+# url = "https://weatherbit-v1-mashape.p.rapidapi.com/forecast/daily"
 
-querystring = {"city":city, "country": "Canada"}
+# querystring = {"city":city, "country": "Canada"}
 
-headers = {
-	"X-RapidAPI-Key": "b2c27ee596mshd8717ee1c0eba27p1c6ff4jsn1467f4601dfe",
-	"X-RapidAPI-Host": "weatherbit-v1-mashape.p.rapidapi.com"
-}
+# headers = {
+# 	"X-RapidAPI-Key": "b2c27ee596mshd8717ee1c0eba27p1c6ff4jsn1467f4601dfe",
+# 	"X-RapidAPI-Host": "weatherbit-v1-mashape.p.rapidapi.com"
+# }
 
-response = requests.request("GET", url, headers=headers, params=querystring)
+# response = requests.request("GET", url, headers=headers, params=querystring)
 
-print(response.text)
+# print(response.text)
 
 # url = "https://hotels-com-provider.p.rapidapi.com/v1/hotels/search"
 

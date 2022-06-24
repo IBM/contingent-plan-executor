@@ -17,7 +17,24 @@
         },
         "location": {
             "type": "json",
-            "config": "null"
+            "config": {
+                "extraction": "spacy",
+                "method": "gpe"
+            }
+        },
+        "start_location": {
+            "type": "json",
+            "config": {
+                "extraction": "spacy",
+                "method": "gpe"
+            }
+        },
+        "end_location": {
+            "type": "json",
+            "config": {
+                "extraction": "spacy",
+                "method": "gpe"
+            }
         },
         "payment_method": {
             "type": "enum",
@@ -29,7 +46,10 @@
         },
         "card_number": {
             "type": "json",
-            "config": "null"
+            "config": {
+                "extraction": "regex",
+                "pattern": "\\d{16}"
+            }
         },
         "goal": {
             "type": "flag",
@@ -80,7 +100,9 @@
             ]
         },
         "share_order": {
-            "variables": [],
+            "variables": [
+                "$order"
+            ],
             "utterances": [
                 "I want a $order pizza",
                 "$order pizza please!",
@@ -88,15 +110,30 @@
             ]
         },
         "share_location": {
-            "variables": [],
+            "variables": [
+                "$location"
+            ],
             "utterances": [
                 "I live in $location.",
                 "Do you deliver to $location?",
                 "I want my pizza to be delivered to $location."
             ]
         },
+        "share_two_locations": {
+            "variables": [
+                "$start_location",
+                "$end_location"
+            ],
+            "utterances": [
+                "Can you deliver from $start_location to $end_location?",
+                "I want my pizza to be delivered from $start_location to $location.",
+                "Do you travel from $start_location to $end_location?"
+            ]
+        },
         "set_payment_method": {
-            "variables": [],
+            "variables": [
+                "$payment_method"
+            ],
             "utterances": [
                 "I want to pay by $payment_method.",
                 "Can I pay with $payment_method?",
@@ -104,12 +141,30 @@
             ]
         },
         "pay": {
-            "variables": [],
+            "variables": [
+                "$card_number"
+            ],
             "utterances": [
                 "My credit card number is $card_number.",
                 "This is my account number $card_number",
                 "Ok, the number on my card is $card_number."
             ]
+        },
+        "location-unclear": {
+            "variables": [],
+            "utterances": []
+        },
+        "order-unclear": {
+            "variables": [],
+            "utterances": []
+        },
+        "payment_method-unclear": {
+            "variables": [],
+            "utterances": []
+        },
+        "card_number-unclear": {
+            "variables": [],
+            "utterances": []
         }
     },
     "actions": {
@@ -135,17 +190,24 @@
                     {
                         "name": "ask-location_DETDUP_validate-response-EQ-valid",
                         "updates": {
-                            "location": {
-                                "variable": "location",
-                                "value": "$location",
+                            "start_location": {
+                                "variable": "start_location",
+                                "value": "$start_location",
                                 "certainty": "Known",
                                 "interpretation": "spel"
                             }
                         },
+                            "end_location": {
+                                "variable": "end_location",
+                                "value": "$end_location",
+                                "certainty": "Known",
+                                "interpretation": "spel"
+                            },
                         "assignments": {
-                            "$location": "found"
+                            "$start_location": "found",
+                            "$end_location": "found"
                         },
-                        "intent": "share_location"
+                        "intent": "share_two_locations"
                     },
                     {
                         "name": "ask-location_DETDUP_validate-response-EQ-unclear",
@@ -160,6 +222,7 @@
                         "assignments": {
                             "$location": "maybe-found"
                         },
+                        "intent": "location-unclear",
                         "follow_up": {
                             "clarify": "clarify__ask-location"
                         }
@@ -167,15 +230,20 @@
                 ]
             },
             "intents": {
-                "share_location": {
+                "share_two_locations": {
                     "variables": [
-                        "location"
+                        "start_location",
+                        "end_location"
                     ],
                     "utterances": [
                         "I live in $location.",
                         "Do you deliver to $location?",
                         "I want my pizza to be delivered to $location."
                     ]
+                },
+                "location-unclear": {
+                    "variables": [],
+                    "utterances": []
                 }
             }
         },
@@ -226,6 +294,7 @@
                         "assignments": {
                             "$order": "maybe-found"
                         },
+                        "intent": "order-unclear",
                         "follow_up": {
                             "clarify": "clarify__ask-order"
                         }
@@ -242,6 +311,10 @@
                         "$order pizza please!",
                         "Do you have $order pizza?"
                     ]
+                },
+                "order-unclear": {
+                    "variables": [],
+                    "utterances": []
                 }
             }
         },
@@ -298,6 +371,7 @@
                         "assignments": {
                             "$payment_method": "maybe-found"
                         },
+                        "intent": "payment_method-unclear",
                         "follow_up": {
                             "clarify": "clarify__ask-payment"
                         }
@@ -314,6 +388,10 @@
                         "Can I pay with $payment_method?",
                         "I will pay in $payment_method"
                     ]
+                },
+                "payment_method-unclear": {
+                    "variables": [],
+                    "utterances": []
                 }
             }
         },
@@ -363,6 +441,7 @@
                         "assignments": {
                             "$card_number": "maybe-found"
                         },
+                        "intent": "card_number-unclear",
                         "follow_up": {
                             "clarify": "clarify__ask-card-number"
                         }
@@ -379,6 +458,10 @@
                         "This is my account number $card_number",
                         "Ok, the number on my card is $card_number."
                     ]
+                },
+                "card_number-unclear": {
+                    "variables": [],
+                    "utterances": []
                 }
             }
         },
@@ -435,7 +518,7 @@
                 ]
             },
             "call": {
-                "endpoint": "https://jsonplaceholder.typicode.com/posts/1",
+                "endpoint": "pizza.actions.check_order_availability",
                 "initial_payload": {}
             }
         },
@@ -509,7 +592,7 @@
                 ]
             },
             "call": {
-                "endpoint": "https://jsonplaceholder.typicode.com/posts/1",
+                "endpoint": "pizza.actions.place_order",
                 "initial_payload": {}
             }
         },

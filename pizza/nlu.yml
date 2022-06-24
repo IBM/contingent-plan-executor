@@ -211,6 +211,156 @@ nlu:
 
     - I want my pizza to be delivered to [Austin](location).'
   intent: share_location
+- examples: '- Can you deliver from [New York](start_location) to [New York](end_location)?
+
+    - I want my pizza to be delivered from [New York](start_location) to $location.
+
+    - Do you travel from [New York](start_location) to [New York](end_location)?
+
+    - Can you deliver from [New York](start_location) to [Denver](end_location)?
+
+    - I want my pizza to be delivered from [New York](start_location) to $location.
+
+    - Do you travel from [New York](start_location) to [Denver](end_location)?
+
+    - Can you deliver from [New York](start_location) to [Tallahassee](end_location)?
+
+    - I want my pizza to be delivered from [New York](start_location) to $location.
+
+    - Do you travel from [New York](start_location) to [Tallahassee](end_location)?
+
+    - Can you deliver from [New York](start_location) to [Chicago](end_location)?
+
+    - I want my pizza to be delivered from [New York](start_location) to $location.
+
+    - Do you travel from [New York](start_location) to [Chicago](end_location)?
+
+    - Can you deliver from [New York](start_location) to [Austin](end_location)?
+
+    - I want my pizza to be delivered from [New York](start_location) to $location.
+
+    - Do you travel from [New York](start_location) to [Austin](end_location)?
+
+    - Can you deliver from [Denver](start_location) to [New York](end_location)?
+
+    - I want my pizza to be delivered from [Denver](start_location) to $location.
+
+    - Do you travel from [Denver](start_location) to [New York](end_location)?
+
+    - Can you deliver from [Denver](start_location) to [Denver](end_location)?
+
+    - I want my pizza to be delivered from [Denver](start_location) to $location.
+
+    - Do you travel from [Denver](start_location) to [Denver](end_location)?
+
+    - Can you deliver from [Denver](start_location) to [Tallahassee](end_location)?
+
+    - I want my pizza to be delivered from [Denver](start_location) to $location.
+
+    - Do you travel from [Denver](start_location) to [Tallahassee](end_location)?
+
+    - Can you deliver from [Denver](start_location) to [Chicago](end_location)?
+
+    - I want my pizza to be delivered from [Denver](start_location) to $location.
+
+    - Do you travel from [Denver](start_location) to [Chicago](end_location)?
+
+    - Can you deliver from [Denver](start_location) to [Austin](end_location)?
+
+    - I want my pizza to be delivered from [Denver](start_location) to $location.
+
+    - Do you travel from [Denver](start_location) to [Austin](end_location)?
+
+    - Can you deliver from [Tallahassee](start_location) to [New York](end_location)?
+
+    - I want my pizza to be delivered from [Tallahassee](start_location) to $location.
+
+    - Do you travel from [Tallahassee](start_location) to [New York](end_location)?
+
+    - Can you deliver from [Tallahassee](start_location) to [Denver](end_location)?
+
+    - I want my pizza to be delivered from [Tallahassee](start_location) to $location.
+
+    - Do you travel from [Tallahassee](start_location) to [Denver](end_location)?
+
+    - Can you deliver from [Tallahassee](start_location) to [Tallahassee](end_location)?
+
+    - I want my pizza to be delivered from [Tallahassee](start_location) to $location.
+
+    - Do you travel from [Tallahassee](start_location) to [Tallahassee](end_location)?
+
+    - Can you deliver from [Tallahassee](start_location) to [Chicago](end_location)?
+
+    - I want my pizza to be delivered from [Tallahassee](start_location) to $location.
+
+    - Do you travel from [Tallahassee](start_location) to [Chicago](end_location)?
+
+    - Can you deliver from [Tallahassee](start_location) to [Austin](end_location)?
+
+    - I want my pizza to be delivered from [Tallahassee](start_location) to $location.
+
+    - Do you travel from [Tallahassee](start_location) to [Austin](end_location)?
+
+    - Can you deliver from [Chicago](start_location) to [New York](end_location)?
+
+    - I want my pizza to be delivered from [Chicago](start_location) to $location.
+
+    - Do you travel from [Chicago](start_location) to [New York](end_location)?
+
+    - Can you deliver from [Chicago](start_location) to [Denver](end_location)?
+
+    - I want my pizza to be delivered from [Chicago](start_location) to $location.
+
+    - Do you travel from [Chicago](start_location) to [Denver](end_location)?
+
+    - Can you deliver from [Chicago](start_location) to [Tallahassee](end_location)?
+
+    - I want my pizza to be delivered from [Chicago](start_location) to $location.
+
+    - Do you travel from [Chicago](start_location) to [Tallahassee](end_location)?
+
+    - Can you deliver from [Chicago](start_location) to [Chicago](end_location)?
+
+    - I want my pizza to be delivered from [Chicago](start_location) to $location.
+
+    - Do you travel from [Chicago](start_location) to [Chicago](end_location)?
+
+    - Can you deliver from [Chicago](start_location) to [Austin](end_location)?
+
+    - I want my pizza to be delivered from [Chicago](start_location) to $location.
+
+    - Do you travel from [Chicago](start_location) to [Austin](end_location)?
+
+    - Can you deliver from [Austin](start_location) to [New York](end_location)?
+
+    - I want my pizza to be delivered from [Austin](start_location) to $location.
+
+    - Do you travel from [Austin](start_location) to [New York](end_location)?
+
+    - Can you deliver from [Austin](start_location) to [Denver](end_location)?
+
+    - I want my pizza to be delivered from [Austin](start_location) to $location.
+
+    - Do you travel from [Austin](start_location) to [Denver](end_location)?
+
+    - Can you deliver from [Austin](start_location) to [Tallahassee](end_location)?
+
+    - I want my pizza to be delivered from [Austin](start_location) to $location.
+
+    - Do you travel from [Austin](start_location) to [Tallahassee](end_location)?
+
+    - Can you deliver from [Austin](start_location) to [Chicago](end_location)?
+
+    - I want my pizza to be delivered from [Austin](start_location) to $location.
+
+    - Do you travel from [Austin](start_location) to [Chicago](end_location)?
+
+    - Can you deliver from [Austin](start_location) to [Austin](end_location)?
+
+    - I want my pizza to be delivered from [Austin](start_location) to $location.
+
+    - Do you travel from [Austin](start_location) to [Austin](end_location)?'
+  intent: share_two_locations
 - examples: '- I want to pay by [credit](payment_method).
 
     - Can I pay with [credit](payment_method)?

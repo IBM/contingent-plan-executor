@@ -18,7 +18,7 @@ from hovor import DEBUG
 
 # Cutoff for the fallback
 FALLBACK_THRESHOLD = 0.2
-
+MAX_WS_PAGINATION = 5
 
 class WorkspaceOutcomeDeterminer(OutcomeDeterminerBase):
     _workspace_cache_file = "./odws_cache.p"

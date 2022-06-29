@@ -45,7 +45,7 @@ Use a configuration similar to this for the `vcap-local.json` file (get credenti
   ```
 
 
-View your app at : http://localhost:8000 
+View your app at : [http://localhost:9000](http://localhost:9000)
 
 Send new messages with `curl` :
   ```

@@ -56,7 +56,7 @@ configuration_provider.check_all_action_builders()
 
 while True:
     try:
-        requests.post('http://localhost:5005/model/parse', json={"text": "test"})
+        requests.post('http://localhost:5005/model/parse', json={"text": ""})
     except ConnectionError:
         sleep(0.1)
     else:

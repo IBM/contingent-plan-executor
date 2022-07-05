@@ -7,18 +7,21 @@ from .random_outcome_determiner import RandomOutcomeDeterminer
 
 class RasaOutcomeDeterminer(OutcomeDeterminerBase):
     """Determiner"""
-    def __init__(self, full_outcomes, context_variables):
-        self.full_outcomes =  {outcome["name"]: outcome for outcome in full_outcomes}
+    def __init__(self, full_outcomes, context_variables, intents):
+        self.full_outcomes = {outcome["name"]: outcome for outcome in full_outcomes}
         self.context_variables = context_variables
+        self.intents = intents
     
     def rank_groups(self, outcome_groups, progress):
+
         import spacy
         nlp = spacy.load("en_core_web_md")
         print(nlp.get_pipe("ner").labels)
+
         payload = {'text': progress.json["action_result"]["fields"]["input"]}
         r = json.loads(requests.post('http://localhost:5005/model/parse', json=payload).text)
-        for info, val in r.items():
-            print(f"{info}: {val}\n")
+        print(json.dumps(r, indent=4))
+
         ranked_groups = []
         intent_to_outcome_map = {}
         for outcome in outcome_groups:
@@ -50,32 +53,116 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         #   break as soon as you find an intent where all entities can be filled appropriately
         
         # TODO: fix below code by implementing the above algorithm.
+        for extracted in r["entities"]:
+            if extracted["entity"] in nlp.get_pipe("ner").labels:
+                if extracted["entity"] in spacy_entities:
+                    spacy_entities[extracted["entity"]].append(extracted)
+                else:
+                    spacy_entities[extracted["entity"]] = [extracted]
+            else:
+                if extracted["entity"] in rasa_entities:
+                    rasa_entities[extracted["entity"]].append(extracted)
+                else:
+                    rasa_entities[extracted["entity"]] = [extracted]       
 
         entities = {}
+        chosen_intent = None
         for intent in r["intent_ranking"]:
-            # if len(r["entities"]) == len(intent_to_outcome_map[intent["name"]].required_present_entities):
+            valid = True
+            # if this intent expects entities, make sure we extract them
+            if len(self.intents[intent["name"]]["variables"]) > 0:
+                for entity in self.intents[intent["name"]]["variables"]:
+                    # get rid of $
+                    entity = entity[1:]
+                    entities[entity] = []
 
-            # SECOND: map spacy-extracted entities to user-supplied entities when appropriate
-            # NOTE: based on intents
-            for spacy_ent in spacy_entities:
-                entity_name = spacy_ent["entity"]
-                for ent in intent_to_outcome_map[intent["name"]].required_present_entities:
-                    if "method" in self.context_variables[ent]["config"]:
-                        if self.context_variables[ent]["config"]["method"].upper() == entity_name:
-                            entities[ent] = self.context_variables[ent]
-                else:
-                    if entity_name not in entities:
-                        entities[ent] = entity_name
-                # NOTE: this just randomly picks from the list of enums (see the enum option)
-                # add to the rasa configuration which option is explicitly picked each time.
-                # entity "keys" are also sometimes wrongly extracted, i.e. "kingston" is parsed as a
-                # payment_method entity. not sure where exactly this is caused (maybe just need more examples,
-                # or to attach the appropriate classifiers i.e. spacy, or maybe something else is breaking this?).
-                # this entity keys bug causes errors when trying to update values.
-                for entity in entities:
-                    entity_sample = RandomOutcomeDeterminer._make_entity_sample(entity, progress)
-                    progress.add_detected_entity(entity, entity_sample)
-            ranked_groups.append((intent_to_outcome_map[intent["name"]], intent["confidence"]))
+                    # start integrating roles/groups here
+                    if "roles" in self.context_variables[entity]:
+                        roles = [str(r) for r in self.context_variables[entity]["roles"]]
+                        roles_so_far = []
+                    if "groups" in self.context_variables[entity]:
+                        groups = [str(g) for g in self.context_variables[entity]["groups"]]
+                        groups_so_far = []
+
+                    # also account for duplicates (for example, extracting 2 locations, neither of which has a distinguishing role/group)
+                    for _ in range(self.intents[intent["name"]]["utterances"][0].count(entity)):
+                        prev_length = len(entities[entity])
+                        got_from_spacy = False
+                        # spacy
+                        if type(self.context_variables[entity]["config"]) == dict:
+                            if self.context_variables[entity]["config"]["extraction"] == "spacy":
+                                if self.context_variables[entity]["config"]["method"].upper() in spacy_entities:
+                                    if spacy_entities[self.context_variables[entity]["config"]["method"].upper()]:
+                                        entities[entity].append(spacy_entities[self.context_variables[entity]["config"]["method"].upper()].pop())
+                                        got_from_spacy = True
+                        # rasa
+                        if not got_from_spacy:   
+                            if entity in rasa_entities:
+                                if rasa_entities[entity]:
+                                    extracted = rasa_entities[entity].pop()
+                                    added = False
+                                    if roles:
+                                        if "role" in extracted:
+                                            if extracted["role"] in roles and extracted["role"] not in roles_so_far:
+                                                roles_so_far.append(extracted["role"])
+                                                entities[entity].append(extracted)
+                                                added = True
+                                    if not added:
+                                        if groups:
+                                            if "group" in extracted:
+                                                if extracted["group"] in groups and extracted["group"] not in groups_so_far:
+                                                    groups_so_far.append(extracted["group"])
+                                                    entities[entity].append(extracted)
+                                        else:
+                                            entities[entity].append(extracted)
+                        # break and proceed to the next intent if we weren't able to find the next entity
+                        if len(entities[entity]) == prev_length:
+                            valid = False
+                            break
+                    # HAVING PROBLEMS HERE - need to keep track of roles/groups a different way
+                    if roles_so_far != roles or groups_so_far != groups:
+                        valid = False
+                    roles = None
+                    groups = None
+                    if not valid:
+                        break
+                if valid:
+                    # stop looking for a suitable intent if we found all entities
+                    chosen_intent = intent
+                break
+            else:
+                # stop looking or a suitable intent if the intent extracted doesn't require entities
+                chosen_intent = intent
+                break
+        if not chosen_intent:
+            print("no suitable intent found.")
+
+        # entities = {}
+        # for intent in r["intent_ranking"]:
+        #     # if len(r["entities"]) == len(intent_to_outcome_map[intent["name"]].required_present_entities):
+
+        #     # SECOND: map spacy-extracted entities to user-supplied entities when appropriate
+        #     # NOTE: based on intents
+        #     for spacy_ent in spacy_entities:
+        #         entity_name = spacy_ent["entity"]
+        #         for ent in intent_to_outcome_map[intent["name"]].required_present_entities:
+        #             if "method" in self.context_variables[ent]["config"]:
+        #                 if self.context_variables[ent]["config"]["method"].upper() == entity_name:
+        #                     entities[ent] = self.context_variables[ent]
+        #         else:
+        #             if entity_name not in entities:
+        #                 entities[ent] = entity_name
+        #         # NOTE: this just randomly picks from the list of enums (see the enum option)
+        #         # add to the rasa configuration which option is explicitly picked each time.
+        #         # entity "keys" are also sometimes wrongly extracted, i.e. "kingston" is parsed as a
+        #         # payment_method entity. not sure where exactly this is caused (maybe just need more examples,
+        #         # or to attach the appropriate classifiers i.e. spacy, or maybe something else is breaking this?).
+        #         # this entity keys bug causes errors when trying to update values.
+        #         for entity in entities:
+        #             entity_sample = RandomOutcomeDeterminer._make_entity_sample(entity, progress)
+        #             progress.add_detected_entity(entity, entity_sample)
+        #     ranked_groups.append((intent_to_outcome_map[intent["name"]], intent["confidence"]))
+
         DEBUG("\t top random ranking for group '%s'" % (ranked_groups[0][0].name))
         return ranked_groups, progress
 

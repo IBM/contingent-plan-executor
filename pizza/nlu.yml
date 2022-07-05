@@ -43,425 +43,551 @@ nlu:
 
     - no thank you'
   intent: deny
-- examples: '- I want a [cheese](order) pizza
+- examples: '- I want a [cheese]{"entity": "order", "value": "cheese"} pizza
 
-    - [cheese](order) pizza please!
+    - I want a [pepperoni]{"entity": "order", "value": "pepperoni"} pizza
 
-    - Do you have [cheese](order) pizza?
+    - I want a [mushroom]{"entity": "order", "value": "mushroom"} pizza
 
-    - I want a [pepperoni](order) pizza
+    - I want a [gluten free]{"entity": "order", "value": "gluten free"} pizza
 
-    - [pepperoni](order) pizza please!
-
-    - Do you have [pepperoni](order) pizza?
-
-    - I want a [mushroom](order) pizza
-
-    - [mushroom](order) pizza please!
-
-    - Do you have [mushroom](order) pizza?
-
-    - I want a [gluten free](order) pizza
-
-    - [gluten free](order) pizza please!
-
-    - Do you have [gluten free](order) pizza?
-
-    - I want a [hawaiian](order) pizza
-
-    - [hawaiian](order) pizza please!
-
-    - Do you have [hawaiian](order) pizza?
+    - I want a [hawaiian]{"entity": "order", "value": "hawaiian"} pizza
 
     - I want a [chz]{"entity": "order", "value": "cheese"} pizza
 
-    - [chz]{"entity": "order", "value": "cheese"} pizza please!
-
-    - Do you have [chz]{"entity": "order", "value": "cheese"} pizza?
-
     - I want a [cheez]{"entity": "order", "value": "cheese"} pizza
-
-    - [cheez]{"entity": "order", "value": "cheese"} pizza please!
-
-    - Do you have [cheez]{"entity": "order", "value": "cheese"} pizza?
 
     - I want a [mozzarella]{"entity": "order", "value": "cheese"} pizza
 
-    - [mozzarella]{"entity": "order", "value": "cheese"} pizza please!
-
-    - Do you have [mozzarella]{"entity": "order", "value": "cheese"} pizza?
-
     - I want a [fromage]{"entity": "order", "value": "cheese"} pizza
-
-    - [fromage]{"entity": "order", "value": "cheese"} pizza please!
-
-    - Do you have [fromage]{"entity": "order", "value": "cheese"} pizza?
 
     - I want a [cheesy]{"entity": "order", "value": "cheese"} pizza
 
-    - [cheesy]{"entity": "order", "value": "cheese"} pizza please!
-
-    - Do you have [cheesy]{"entity": "order", "value": "cheese"} pizza?
-
     - I want a [peperoni]{"entity": "order", "value": "pepperoni"} pizza
-
-    - [peperoni]{"entity": "order", "value": "pepperoni"} pizza please!
-
-    - Do you have [peperoni]{"entity": "order", "value": "pepperoni"} pizza?
 
     - I want a [meat]{"entity": "order", "value": "pepperoni"} pizza
 
-    - [meat]{"entity": "order", "value": "pepperoni"} pizza please!
-
-    - Do you have [meat]{"entity": "order", "value": "pepperoni"} pizza?
-
     - I want a [sausage]{"entity": "order", "value": "pepperoni"} pizza
-
-    - [sausage]{"entity": "order", "value": "pepperoni"} pizza please!
-
-    - Do you have [sausage]{"entity": "order", "value": "pepperoni"} pizza?
 
     - I want a [vegetable]{"entity": "order", "value": "mushroom"} pizza
 
-    - [vegetable]{"entity": "order", "value": "mushroom"} pizza please!
-
-    - Do you have [vegetable]{"entity": "order", "value": "mushroom"} pizza?
-
     - I want a [veggie]{"entity": "order", "value": "mushroom"} pizza
-
-    - [veggie]{"entity": "order", "value": "mushroom"} pizza please!
-
-    - Do you have [veggie]{"entity": "order", "value": "mushroom"} pizza?
 
     - I want a [musroom]{"entity": "order", "value": "mushroom"} pizza
 
-    - [musroom]{"entity": "order", "value": "mushroom"} pizza please!
-
-    - Do you have [musroom]{"entity": "order", "value": "mushroom"} pizza?
-
     - I want a [shroom]{"entity": "order", "value": "mushroom"} pizza
-
-    - [shroom]{"entity": "order", "value": "mushroom"} pizza please!
-
-    - Do you have [shroom]{"entity": "order", "value": "mushroom"} pizza?
 
     - I want a [healthy]{"entity": "order", "value": "gluten free"} pizza
 
-    - [healthy]{"entity": "order", "value": "gluten free"} pizza please!
-
-    - Do you have [healthy]{"entity": "order", "value": "gluten free"} pizza?
-
     - I want a [gluten-free]{"entity": "order", "value": "gluten free"} pizza
-
-    - [gluten-free]{"entity": "order", "value": "gluten free"} pizza please!
-
-    - Do you have [gluten-free]{"entity": "order", "value": "gluten free"} pizza?
 
     - I want a [gf]{"entity": "order", "value": "gluten free"} pizza
 
-    - [gf]{"entity": "order", "value": "gluten free"} pizza please!
-
-    - Do you have [gf]{"entity": "order", "value": "gluten free"} pizza?
-
     - I want a [pineapple]{"entity": "order", "value": "hawaiian"} pizza
-
-    - [pineapple]{"entity": "order", "value": "hawaiian"} pizza please!
-
-    - Do you have [pineapple]{"entity": "order", "value": "hawaiian"} pizza?
 
     - I want a [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza
 
-    - [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza please!
-
-    - Do you have [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza?
-
     - I want a [sweet]{"entity": "order", "value": "hawaiian"} pizza
+
+    - [cheese]{"entity": "order", "value": "cheese"} pizza please!
+
+    - [pepperoni]{"entity": "order", "value": "pepperoni"} pizza please!
+
+    - [mushroom]{"entity": "order", "value": "mushroom"} pizza please!
+
+    - [gluten free]{"entity": "order", "value": "gluten free"} pizza please!
+
+    - [hawaiian]{"entity": "order", "value": "hawaiian"} pizza please!
+
+    - [chz]{"entity": "order", "value": "cheese"} pizza please!
+
+    - [cheez]{"entity": "order", "value": "cheese"} pizza please!
+
+    - [mozzarella]{"entity": "order", "value": "cheese"} pizza please!
+
+    - [fromage]{"entity": "order", "value": "cheese"} pizza please!
+
+    - [cheesy]{"entity": "order", "value": "cheese"} pizza please!
+
+    - [peperoni]{"entity": "order", "value": "pepperoni"} pizza please!
+
+    - [meat]{"entity": "order", "value": "pepperoni"} pizza please!
+
+    - [sausage]{"entity": "order", "value": "pepperoni"} pizza please!
+
+    - [vegetable]{"entity": "order", "value": "mushroom"} pizza please!
+
+    - [veggie]{"entity": "order", "value": "mushroom"} pizza please!
+
+    - [musroom]{"entity": "order", "value": "mushroom"} pizza please!
+
+    - [shroom]{"entity": "order", "value": "mushroom"} pizza please!
+
+    - [healthy]{"entity": "order", "value": "gluten free"} pizza please!
+
+    - [gluten-free]{"entity": "order", "value": "gluten free"} pizza please!
+
+    - [gf]{"entity": "order", "value": "gluten free"} pizza please!
+
+    - [pineapple]{"entity": "order", "value": "hawaiian"} pizza please!
+
+    - [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza please!
 
     - [sweet]{"entity": "order", "value": "hawaiian"} pizza please!
 
+    - Do you have [cheese]{"entity": "order", "value": "cheese"} pizza?
+
+    - Do you have [pepperoni]{"entity": "order", "value": "pepperoni"} pizza?
+
+    - Do you have [mushroom]{"entity": "order", "value": "mushroom"} pizza?
+
+    - Do you have [gluten free]{"entity": "order", "value": "gluten free"} pizza?
+
+    - Do you have [hawaiian]{"entity": "order", "value": "hawaiian"} pizza?
+
+    - Do you have [chz]{"entity": "order", "value": "cheese"} pizza?
+
+    - Do you have [cheez]{"entity": "order", "value": "cheese"} pizza?
+
+    - Do you have [mozzarella]{"entity": "order", "value": "cheese"} pizza?
+
+    - Do you have [fromage]{"entity": "order", "value": "cheese"} pizza?
+
+    - Do you have [cheesy]{"entity": "order", "value": "cheese"} pizza?
+
+    - Do you have [peperoni]{"entity": "order", "value": "pepperoni"} pizza?
+
+    - Do you have [meat]{"entity": "order", "value": "pepperoni"} pizza?
+
+    - Do you have [sausage]{"entity": "order", "value": "pepperoni"} pizza?
+
+    - Do you have [vegetable]{"entity": "order", "value": "mushroom"} pizza?
+
+    - Do you have [veggie]{"entity": "order", "value": "mushroom"} pizza?
+
+    - Do you have [musroom]{"entity": "order", "value": "mushroom"} pizza?
+
+    - Do you have [shroom]{"entity": "order", "value": "mushroom"} pizza?
+
+    - Do you have [healthy]{"entity": "order", "value": "gluten free"} pizza?
+
+    - Do you have [gluten-free]{"entity": "order", "value": "gluten free"} pizza?
+
+    - Do you have [gf]{"entity": "order", "value": "gluten free"} pizza?
+
+    - Do you have [pineapple]{"entity": "order", "value": "hawaiian"} pizza?
+
+    - Do you have [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza?
+
     - Do you have [sweet]{"entity": "order", "value": "hawaiian"} pizza?'
   intent: share_order
-- examples: '- I live in [New York](location).
+- examples: '- Can you deliver from [New York]{"entity": "location", "role": "start",
+    "group": "1", "value": "New York"} to [New York]{"entity": "location", "role":
+    "end", "group": "2", "value": "New York"}?
 
-    - Do you deliver to [New York](location)?
+    - Can you deliver from [New York]{"entity": "location", "role": "start", "group":
+    "1", "value": "New York"} to [Denver]{"entity": "location", "role": "end", "group":
+    "2", "value": "Denver"}?
 
-    - I want my pizza to be delivered to [New York](location).
+    - Can you deliver from [New York]{"entity": "location", "role": "start", "group":
+    "1", "value": "New York"} to [Tallahassee]{"entity": "location", "role": "end",
+    "group": "2", "value": "Tallahassee"}?
 
-    - I live in [Denver](location).
+    - Can you deliver from [New York]{"entity": "location", "role": "start", "group":
+    "1", "value": "New York"} to [Chicago]{"entity": "location", "role": "end", "group":
+    "2", "value": "Chicago"}?
 
-    - Do you deliver to [Denver](location)?
+    - Can you deliver from [New York]{"entity": "location", "role": "start", "group":
+    "1", "value": "New York"} to [Austin]{"entity": "location", "role": "end", "group":
+    "2", "value": "Austin"}?
 
-    - I want my pizza to be delivered to [Denver](location).
+    - Can you deliver from [Denver]{"entity": "location", "role": "start", "group":
+    "1", "value": "Denver"} to [New York]{"entity": "location", "role": "end", "group":
+    "2", "value": "New York"}?
 
-    - I live in [Tallahassee](location).
+    - Can you deliver from [Denver]{"entity": "location", "role": "start", "group":
+    "1", "value": "Denver"} to [Denver]{"entity": "location", "role": "end", "group":
+    "2", "value": "Denver"}?
 
-    - Do you deliver to [Tallahassee](location)?
+    - Can you deliver from [Denver]{"entity": "location", "role": "start", "group":
+    "1", "value": "Denver"} to [Tallahassee]{"entity": "location", "role": "end",
+    "group": "2", "value": "Tallahassee"}?
 
-    - I want my pizza to be delivered to [Tallahassee](location).
+    - Can you deliver from [Denver]{"entity": "location", "role": "start", "group":
+    "1", "value": "Denver"} to [Chicago]{"entity": "location", "role": "end", "group":
+    "2", "value": "Chicago"}?
 
-    - I live in [Chicago](location).
+    - Can you deliver from [Denver]{"entity": "location", "role": "start", "group":
+    "1", "value": "Denver"} to [Austin]{"entity": "location", "role": "end", "group":
+    "2", "value": "Austin"}?
 
-    - Do you deliver to [Chicago](location)?
+    - Can you deliver from [Tallahassee]{"entity": "location", "role": "start", "group":
+    "1", "value": "Tallahassee"} to [New York]{"entity": "location", "role": "end",
+    "group": "2", "value": "New York"}?
 
-    - I want my pizza to be delivered to [Chicago](location).
+    - Can you deliver from [Tallahassee]{"entity": "location", "role": "start", "group":
+    "1", "value": "Tallahassee"} to [Denver]{"entity": "location", "role": "end",
+    "group": "2", "value": "Denver"}?
 
-    - I live in [Austin](location).
+    - Can you deliver from [Tallahassee]{"entity": "location", "role": "start", "group":
+    "1", "value": "Tallahassee"} to [Tallahassee]{"entity": "location", "role": "end",
+    "group": "2", "value": "Tallahassee"}?
 
-    - Do you deliver to [Austin](location)?
+    - Can you deliver from [Tallahassee]{"entity": "location", "role": "start", "group":
+    "1", "value": "Tallahassee"} to [Chicago]{"entity": "location", "role": "end",
+    "group": "2", "value": "Chicago"}?
 
-    - I want my pizza to be delivered to [Austin](location).'
+    - Can you deliver from [Tallahassee]{"entity": "location", "role": "start", "group":
+    "1", "value": "Tallahassee"} to [Austin]{"entity": "location", "role": "end",
+    "group": "2", "value": "Austin"}?
+
+    - Can you deliver from [Chicago]{"entity": "location", "role": "start", "group":
+    "1", "value": "Chicago"} to [New York]{"entity": "location", "role": "end", "group":
+    "2", "value": "New York"}?
+
+    - Can you deliver from [Chicago]{"entity": "location", "role": "start", "group":
+    "1", "value": "Chicago"} to [Denver]{"entity": "location", "role": "end", "group":
+    "2", "value": "Denver"}?
+
+    - Can you deliver from [Chicago]{"entity": "location", "role": "start", "group":
+    "1", "value": "Chicago"} to [Tallahassee]{"entity": "location", "role": "end",
+    "group": "2", "value": "Tallahassee"}?
+
+    - Can you deliver from [Chicago]{"entity": "location", "role": "start", "group":
+    "1", "value": "Chicago"} to [Chicago]{"entity": "location", "role": "end", "group":
+    "2", "value": "Chicago"}?
+
+    - Can you deliver from [Chicago]{"entity": "location", "role": "start", "group":
+    "1", "value": "Chicago"} to [Austin]{"entity": "location", "role": "end", "group":
+    "2", "value": "Austin"}?
+
+    - Can you deliver from [Austin]{"entity": "location", "role": "start", "group":
+    "1", "value": "Austin"} to [New York]{"entity": "location", "role": "end", "group":
+    "2", "value": "New York"}?
+
+    - Can you deliver from [Austin]{"entity": "location", "role": "start", "group":
+    "1", "value": "Austin"} to [Denver]{"entity": "location", "role": "end", "group":
+    "2", "value": "Denver"}?
+
+    - Can you deliver from [Austin]{"entity": "location", "role": "start", "group":
+    "1", "value": "Austin"} to [Tallahassee]{"entity": "location", "role": "end",
+    "group": "2", "value": "Tallahassee"}?
+
+    - Can you deliver from [Austin]{"entity": "location", "role": "start", "group":
+    "1", "value": "Austin"} to [Chicago]{"entity": "location", "role": "end", "group":
+    "2", "value": "Chicago"}?
+
+    - Can you deliver from [Austin]{"entity": "location", "role": "start", "group":
+    "1", "value": "Austin"} to [Austin]{"entity": "location", "role": "end", "group":
+    "2", "value": "Austin"}?
+
+    - I want my pizza to be delivered to [New York]{"entity": "location", "role":
+    "end", "group": "2", "value": "New York"} from [New York]{"entity": "location",
+    "role": "start", "group": "1", "value": "New York"}.
+
+    - I want my pizza to be delivered to [New York]{"entity": "location", "role":
+    "end", "group": "2", "value": "New York"} from [Denver]{"entity": "location",
+    "role": "start", "group": "1", "value": "Denver"}.
+
+    - I want my pizza to be delivered to [New York]{"entity": "location", "role":
+    "end", "group": "2", "value": "New York"} from [Tallahassee]{"entity": "location",
+    "role": "start", "group": "1", "value": "Tallahassee"}.
+
+    - I want my pizza to be delivered to [New York]{"entity": "location", "role":
+    "end", "group": "2", "value": "New York"} from [Chicago]{"entity": "location",
+    "role": "start", "group": "1", "value": "Chicago"}.
+
+    - I want my pizza to be delivered to [New York]{"entity": "location", "role":
+    "end", "group": "2", "value": "New York"} from [Austin]{"entity": "location",
+    "role": "start", "group": "1", "value": "Austin"}.
+
+    - I want my pizza to be delivered to [Denver]{"entity": "location", "role": "end",
+    "group": "2", "value": "Denver"} from [New York]{"entity": "location", "role":
+    "start", "group": "1", "value": "New York"}.
+
+    - I want my pizza to be delivered to [Denver]{"entity": "location", "role": "end",
+    "group": "2", "value": "Denver"} from [Denver]{"entity": "location", "role": "start",
+    "group": "1", "value": "Denver"}.
+
+    - I want my pizza to be delivered to [Denver]{"entity": "location", "role": "end",
+    "group": "2", "value": "Denver"} from [Tallahassee]{"entity": "location", "role":
+    "start", "group": "1", "value": "Tallahassee"}.
+
+    - I want my pizza to be delivered to [Denver]{"entity": "location", "role": "end",
+    "group": "2", "value": "Denver"} from [Chicago]{"entity": "location", "role":
+    "start", "group": "1", "value": "Chicago"}.
+
+    - I want my pizza to be delivered to [Denver]{"entity": "location", "role": "end",
+    "group": "2", "value": "Denver"} from [Austin]{"entity": "location", "role": "start",
+    "group": "1", "value": "Austin"}.
+
+    - I want my pizza to be delivered to [Tallahassee]{"entity": "location", "role":
+    "end", "group": "2", "value": "Tallahassee"} from [New York]{"entity": "location",
+    "role": "start", "group": "1", "value": "New York"}.
+
+    - I want my pizza to be delivered to [Tallahassee]{"entity": "location", "role":
+    "end", "group": "2", "value": "Tallahassee"} from [Denver]{"entity": "location",
+    "role": "start", "group": "1", "value": "Denver"}.
+
+    - I want my pizza to be delivered to [Tallahassee]{"entity": "location", "role":
+    "end", "group": "2", "value": "Tallahassee"} from [Tallahassee]{"entity": "location",
+    "role": "start", "group": "1", "value": "Tallahassee"}.
+
+    - I want my pizza to be delivered to [Tallahassee]{"entity": "location", "role":
+    "end", "group": "2", "value": "Tallahassee"} from [Chicago]{"entity": "location",
+    "role": "start", "group": "1", "value": "Chicago"}.
+
+    - I want my pizza to be delivered to [Tallahassee]{"entity": "location", "role":
+    "end", "group": "2", "value": "Tallahassee"} from [Austin]{"entity": "location",
+    "role": "start", "group": "1", "value": "Austin"}.
+
+    - I want my pizza to be delivered to [Chicago]{"entity": "location", "role": "end",
+    "group": "2", "value": "Chicago"} from [New York]{"entity": "location", "role":
+    "start", "group": "1", "value": "New York"}.
+
+    - I want my pizza to be delivered to [Chicago]{"entity": "location", "role": "end",
+    "group": "2", "value": "Chicago"} from [Denver]{"entity": "location", "role":
+    "start", "group": "1", "value": "Denver"}.
+
+    - I want my pizza to be delivered to [Chicago]{"entity": "location", "role": "end",
+    "group": "2", "value": "Chicago"} from [Tallahassee]{"entity": "location", "role":
+    "start", "group": "1", "value": "Tallahassee"}.
+
+    - I want my pizza to be delivered to [Chicago]{"entity": "location", "role": "end",
+    "group": "2", "value": "Chicago"} from [Chicago]{"entity": "location", "role":
+    "start", "group": "1", "value": "Chicago"}.
+
+    - I want my pizza to be delivered to [Chicago]{"entity": "location", "role": "end",
+    "group": "2", "value": "Chicago"} from [Austin]{"entity": "location", "role":
+    "start", "group": "1", "value": "Austin"}.
+
+    - I want my pizza to be delivered to [Austin]{"entity": "location", "role": "end",
+    "group": "2", "value": "Austin"} from [New York]{"entity": "location", "role":
+    "start", "group": "1", "value": "New York"}.
+
+    - I want my pizza to be delivered to [Austin]{"entity": "location", "role": "end",
+    "group": "2", "value": "Austin"} from [Denver]{"entity": "location", "role": "start",
+    "group": "1", "value": "Denver"}.
+
+    - I want my pizza to be delivered to [Austin]{"entity": "location", "role": "end",
+    "group": "2", "value": "Austin"} from [Tallahassee]{"entity": "location", "role":
+    "start", "group": "1", "value": "Tallahassee"}.
+
+    - I want my pizza to be delivered to [Austin]{"entity": "location", "role": "end",
+    "group": "2", "value": "Austin"} from [Chicago]{"entity": "location", "role":
+    "start", "group": "1", "value": "Chicago"}.
+
+    - I want my pizza to be delivered to [Austin]{"entity": "location", "role": "end",
+    "group": "2", "value": "Austin"} from [Austin]{"entity": "location", "role": "start",
+    "group": "1", "value": "Austin"}.
+
+    - Do you travel from [New York]{"entity": "location", "role": "start", "group":
+    "1", "value": "New York"} to [New York]{"entity": "location", "role": "end", "group":
+    "2", "value": "New York"}?
+
+    - Do you travel from [New York]{"entity": "location", "role": "start", "group":
+    "1", "value": "New York"} to [Denver]{"entity": "location", "role": "end", "group":
+    "2", "value": "Denver"}?
+
+    - Do you travel from [New York]{"entity": "location", "role": "start", "group":
+    "1", "value": "New York"} to [Tallahassee]{"entity": "location", "role": "end",
+    "group": "2", "value": "Tallahassee"}?
+
+    - Do you travel from [New York]{"entity": "location", "role": "start", "group":
+    "1", "value": "New York"} to [Chicago]{"entity": "location", "role": "end", "group":
+    "2", "value": "Chicago"}?
+
+    - Do you travel from [New York]{"entity": "location", "role": "start", "group":
+    "1", "value": "New York"} to [Austin]{"entity": "location", "role": "end", "group":
+    "2", "value": "Austin"}?
+
+    - Do you travel from [Denver]{"entity": "location", "role": "start", "group":
+    "1", "value": "Denver"} to [New York]{"entity": "location", "role": "end", "group":
+    "2", "value": "New York"}?
+
+    - Do you travel from [Denver]{"entity": "location", "role": "start", "group":
+    "1", "value": "Denver"} to [Denver]{"entity": "location", "role": "end", "group":
+    "2", "value": "Denver"}?
+
+    - Do you travel from [Denver]{"entity": "location", "role": "start", "group":
+    "1", "value": "Denver"} to [Tallahassee]{"entity": "location", "role": "end",
+    "group": "2", "value": "Tallahassee"}?
+
+    - Do you travel from [Denver]{"entity": "location", "role": "start", "group":
+    "1", "value": "Denver"} to [Chicago]{"entity": "location", "role": "end", "group":
+    "2", "value": "Chicago"}?
+
+    - Do you travel from [Denver]{"entity": "location", "role": "start", "group":
+    "1", "value": "Denver"} to [Austin]{"entity": "location", "role": "end", "group":
+    "2", "value": "Austin"}?
+
+    - Do you travel from [Tallahassee]{"entity": "location", "role": "start", "group":
+    "1", "value": "Tallahassee"} to [New York]{"entity": "location", "role": "end",
+    "group": "2", "value": "New York"}?
+
+    - Do you travel from [Tallahassee]{"entity": "location", "role": "start", "group":
+    "1", "value": "Tallahassee"} to [Denver]{"entity": "location", "role": "end",
+    "group": "2", "value": "Denver"}?
+
+    - Do you travel from [Tallahassee]{"entity": "location", "role": "start", "group":
+    "1", "value": "Tallahassee"} to [Tallahassee]{"entity": "location", "role": "end",
+    "group": "2", "value": "Tallahassee"}?
+
+    - Do you travel from [Tallahassee]{"entity": "location", "role": "start", "group":
+    "1", "value": "Tallahassee"} to [Chicago]{"entity": "location", "role": "end",
+    "group": "2", "value": "Chicago"}?
+
+    - Do you travel from [Tallahassee]{"entity": "location", "role": "start", "group":
+    "1", "value": "Tallahassee"} to [Austin]{"entity": "location", "role": "end",
+    "group": "2", "value": "Austin"}?
+
+    - Do you travel from [Chicago]{"entity": "location", "role": "start", "group":
+    "1", "value": "Chicago"} to [New York]{"entity": "location", "role": "end", "group":
+    "2", "value": "New York"}?
+
+    - Do you travel from [Chicago]{"entity": "location", "role": "start", "group":
+    "1", "value": "Chicago"} to [Denver]{"entity": "location", "role": "end", "group":
+    "2", "value": "Denver"}?
+
+    - Do you travel from [Chicago]{"entity": "location", "role": "start", "group":
+    "1", "value": "Chicago"} to [Tallahassee]{"entity": "location", "role": "end",
+    "group": "2", "value": "Tallahassee"}?
+
+    - Do you travel from [Chicago]{"entity": "location", "role": "start", "group":
+    "1", "value": "Chicago"} to [Chicago]{"entity": "location", "role": "end", "group":
+    "2", "value": "Chicago"}?
+
+    - Do you travel from [Chicago]{"entity": "location", "role": "start", "group":
+    "1", "value": "Chicago"} to [Austin]{"entity": "location", "role": "end", "group":
+    "2", "value": "Austin"}?
+
+    - Do you travel from [Austin]{"entity": "location", "role": "start", "group":
+    "1", "value": "Austin"} to [New York]{"entity": "location", "role": "end", "group":
+    "2", "value": "New York"}?
+
+    - Do you travel from [Austin]{"entity": "location", "role": "start", "group":
+    "1", "value": "Austin"} to [Denver]{"entity": "location", "role": "end", "group":
+    "2", "value": "Denver"}?
+
+    - Do you travel from [Austin]{"entity": "location", "role": "start", "group":
+    "1", "value": "Austin"} to [Tallahassee]{"entity": "location", "role": "end",
+    "group": "2", "value": "Tallahassee"}?
+
+    - Do you travel from [Austin]{"entity": "location", "role": "start", "group":
+    "1", "value": "Austin"} to [Chicago]{"entity": "location", "role": "end", "group":
+    "2", "value": "Chicago"}?
+
+    - Do you travel from [Austin]{"entity": "location", "role": "start", "group":
+    "1", "value": "Austin"} to [Austin]{"entity": "location", "role": "end", "group":
+    "2", "value": "Austin"}?'
   intent: share_location
-- examples: '- Can you deliver from [New York](start_location) to [New York](end_location)?
+- examples: '- I want to pay by [credit]{"entity": "payment_method", "value": "credit"}.
 
-    - I want my pizza to be delivered from [New York](start_location) to $location.
+    - I want to pay by [debit]{"entity": "payment_method", "value": "debit"}.
 
-    - Do you travel from [New York](start_location) to [New York](end_location)?
-
-    - Can you deliver from [New York](start_location) to [Denver](end_location)?
-
-    - I want my pizza to be delivered from [New York](start_location) to $location.
-
-    - Do you travel from [New York](start_location) to [Denver](end_location)?
-
-    - Can you deliver from [New York](start_location) to [Tallahassee](end_location)?
-
-    - I want my pizza to be delivered from [New York](start_location) to $location.
-
-    - Do you travel from [New York](start_location) to [Tallahassee](end_location)?
-
-    - Can you deliver from [New York](start_location) to [Chicago](end_location)?
-
-    - I want my pizza to be delivered from [New York](start_location) to $location.
-
-    - Do you travel from [New York](start_location) to [Chicago](end_location)?
-
-    - Can you deliver from [New York](start_location) to [Austin](end_location)?
-
-    - I want my pizza to be delivered from [New York](start_location) to $location.
-
-    - Do you travel from [New York](start_location) to [Austin](end_location)?
-
-    - Can you deliver from [Denver](start_location) to [New York](end_location)?
-
-    - I want my pizza to be delivered from [Denver](start_location) to $location.
-
-    - Do you travel from [Denver](start_location) to [New York](end_location)?
-
-    - Can you deliver from [Denver](start_location) to [Denver](end_location)?
-
-    - I want my pizza to be delivered from [Denver](start_location) to $location.
-
-    - Do you travel from [Denver](start_location) to [Denver](end_location)?
-
-    - Can you deliver from [Denver](start_location) to [Tallahassee](end_location)?
-
-    - I want my pizza to be delivered from [Denver](start_location) to $location.
-
-    - Do you travel from [Denver](start_location) to [Tallahassee](end_location)?
-
-    - Can you deliver from [Denver](start_location) to [Chicago](end_location)?
-
-    - I want my pizza to be delivered from [Denver](start_location) to $location.
-
-    - Do you travel from [Denver](start_location) to [Chicago](end_location)?
-
-    - Can you deliver from [Denver](start_location) to [Austin](end_location)?
-
-    - I want my pizza to be delivered from [Denver](start_location) to $location.
-
-    - Do you travel from [Denver](start_location) to [Austin](end_location)?
-
-    - Can you deliver from [Tallahassee](start_location) to [New York](end_location)?
-
-    - I want my pizza to be delivered from [Tallahassee](start_location) to $location.
-
-    - Do you travel from [Tallahassee](start_location) to [New York](end_location)?
-
-    - Can you deliver from [Tallahassee](start_location) to [Denver](end_location)?
-
-    - I want my pizza to be delivered from [Tallahassee](start_location) to $location.
-
-    - Do you travel from [Tallahassee](start_location) to [Denver](end_location)?
-
-    - Can you deliver from [Tallahassee](start_location) to [Tallahassee](end_location)?
-
-    - I want my pizza to be delivered from [Tallahassee](start_location) to $location.
-
-    - Do you travel from [Tallahassee](start_location) to [Tallahassee](end_location)?
-
-    - Can you deliver from [Tallahassee](start_location) to [Chicago](end_location)?
-
-    - I want my pizza to be delivered from [Tallahassee](start_location) to $location.
-
-    - Do you travel from [Tallahassee](start_location) to [Chicago](end_location)?
-
-    - Can you deliver from [Tallahassee](start_location) to [Austin](end_location)?
-
-    - I want my pizza to be delivered from [Tallahassee](start_location) to $location.
-
-    - Do you travel from [Tallahassee](start_location) to [Austin](end_location)?
-
-    - Can you deliver from [Chicago](start_location) to [New York](end_location)?
-
-    - I want my pizza to be delivered from [Chicago](start_location) to $location.
-
-    - Do you travel from [Chicago](start_location) to [New York](end_location)?
-
-    - Can you deliver from [Chicago](start_location) to [Denver](end_location)?
-
-    - I want my pizza to be delivered from [Chicago](start_location) to $location.
-
-    - Do you travel from [Chicago](start_location) to [Denver](end_location)?
-
-    - Can you deliver from [Chicago](start_location) to [Tallahassee](end_location)?
-
-    - I want my pizza to be delivered from [Chicago](start_location) to $location.
-
-    - Do you travel from [Chicago](start_location) to [Tallahassee](end_location)?
-
-    - Can you deliver from [Chicago](start_location) to [Chicago](end_location)?
-
-    - I want my pizza to be delivered from [Chicago](start_location) to $location.
-
-    - Do you travel from [Chicago](start_location) to [Chicago](end_location)?
-
-    - Can you deliver from [Chicago](start_location) to [Austin](end_location)?
-
-    - I want my pizza to be delivered from [Chicago](start_location) to $location.
-
-    - Do you travel from [Chicago](start_location) to [Austin](end_location)?
-
-    - Can you deliver from [Austin](start_location) to [New York](end_location)?
-
-    - I want my pizza to be delivered from [Austin](start_location) to $location.
-
-    - Do you travel from [Austin](start_location) to [New York](end_location)?
-
-    - Can you deliver from [Austin](start_location) to [Denver](end_location)?
-
-    - I want my pizza to be delivered from [Austin](start_location) to $location.
-
-    - Do you travel from [Austin](start_location) to [Denver](end_location)?
-
-    - Can you deliver from [Austin](start_location) to [Tallahassee](end_location)?
-
-    - I want my pizza to be delivered from [Austin](start_location) to $location.
-
-    - Do you travel from [Austin](start_location) to [Tallahassee](end_location)?
-
-    - Can you deliver from [Austin](start_location) to [Chicago](end_location)?
-
-    - I want my pizza to be delivered from [Austin](start_location) to $location.
-
-    - Do you travel from [Austin](start_location) to [Chicago](end_location)?
-
-    - Can you deliver from [Austin](start_location) to [Austin](end_location)?
-
-    - I want my pizza to be delivered from [Austin](start_location) to $location.
-
-    - Do you travel from [Austin](start_location) to [Austin](end_location)?'
-  intent: share_two_locations
-- examples: '- I want to pay by [credit](payment_method).
-
-    - Can I pay with [credit](payment_method)?
-
-    - I will pay in [credit](payment_method)
-
-    - I want to pay by [debit](payment_method).
-
-    - Can I pay with [debit](payment_method)?
-
-    - I will pay in [debit](payment_method)
-
-    - I want to pay by [cash](payment_method).
-
-    - Can I pay with [cash](payment_method)?
-
-    - I will pay in [cash](payment_method)
+    - I want to pay by [cash]{"entity": "payment_method", "value": "cash"}.
 
     - I want to pay by [crdit]{"entity": "payment_method", "value": "credit"}.
 
-    - Can I pay with [crdit]{"entity": "payment_method", "value": "credit"}?
-
-    - I will pay in [crdit]{"entity": "payment_method", "value": "credit"}
-
     - I want to pay by [credit card]{"entity": "payment_method", "value": "credit"}.
-
-    - Can I pay with [credit card]{"entity": "payment_method", "value": "credit"}?
-
-    - I will pay in [credit card]{"entity": "payment_method", "value": "credit"}
 
     - I want to pay by [visa]{"entity": "payment_method", "value": "credit"}.
 
-    - Can I pay with [visa]{"entity": "payment_method", "value": "credit"}?
-
-    - I will pay in [visa]{"entity": "payment_method", "value": "credit"}
-
     - I want to pay by [mastercard]{"entity": "payment_method", "value": "credit"}.
-
-    - Can I pay with [mastercard]{"entity": "payment_method", "value": "credit"}?
-
-    - I will pay in [mastercard]{"entity": "payment_method", "value": "credit"}
 
     - I want to pay by [dbit]{"entity": "payment_method", "value": "debit"}.
 
-    - Can I pay with [dbit]{"entity": "payment_method", "value": "debit"}?
-
-    - I will pay in [dbit]{"entity": "payment_method", "value": "debit"}
-
     - I want to pay by [debit card]{"entity": "payment_method", "value": "debit"}.
-
-    - Can I pay with [debit card]{"entity": "payment_method", "value": "debit"}?
-
-    - I will pay in [debit card]{"entity": "payment_method", "value": "debit"}
 
     - I want to pay by [chequing account]{"entity": "payment_method", "value": "debit"}.
 
-    - Can I pay with [chequing account]{"entity": "payment_method", "value": "debit"}?
-
-    - I will pay in [chequing account]{"entity": "payment_method", "value": "debit"}
-
     - I want to pay by [chequing]{"entity": "payment_method", "value": "debit"}.
-
-    - Can I pay with [chequing]{"entity": "payment_method", "value": "debit"}?
-
-    - I will pay in [chequing]{"entity": "payment_method", "value": "debit"}
 
     - I want to pay by [savings account]{"entity": "payment_method", "value": "debit"}.
 
-    - Can I pay with [savings account]{"entity": "payment_method", "value": "debit"}?
-
-    - I will pay in [savings account]{"entity": "payment_method", "value": "debit"}
-
     - I want to pay by [savings]{"entity": "payment_method", "value": "debit"}.
-
-    - Can I pay with [savings]{"entity": "payment_method", "value": "debit"}?
-
-    - I will pay in [savings]{"entity": "payment_method", "value": "debit"}
 
     - I want to pay by [money]{"entity": "payment_method", "value": "cash"}.
 
-    - Can I pay with [money]{"entity": "payment_method", "value": "cash"}?
-
-    - I will pay in [money]{"entity": "payment_method", "value": "cash"}
-
     - I want to pay by [notes]{"entity": "payment_method", "value": "cash"}.
 
+    - Can I pay with [credit]{"entity": "payment_method", "value": "credit"}?
+
+    - Can I pay with [debit]{"entity": "payment_method", "value": "debit"}?
+
+    - Can I pay with [cash]{"entity": "payment_method", "value": "cash"}?
+
+    - Can I pay with [crdit]{"entity": "payment_method", "value": "credit"}?
+
+    - Can I pay with [credit card]{"entity": "payment_method", "value": "credit"}?
+
+    - Can I pay with [visa]{"entity": "payment_method", "value": "credit"}?
+
+    - Can I pay with [mastercard]{"entity": "payment_method", "value": "credit"}?
+
+    - Can I pay with [dbit]{"entity": "payment_method", "value": "debit"}?
+
+    - Can I pay with [debit card]{"entity": "payment_method", "value": "debit"}?
+
+    - Can I pay with [chequing account]{"entity": "payment_method", "value": "debit"}?
+
+    - Can I pay with [chequing]{"entity": "payment_method", "value": "debit"}?
+
+    - Can I pay with [savings account]{"entity": "payment_method", "value": "debit"}?
+
+    - Can I pay with [savings]{"entity": "payment_method", "value": "debit"}?
+
+    - Can I pay with [money]{"entity": "payment_method", "value": "cash"}?
+
     - Can I pay with [notes]{"entity": "payment_method", "value": "cash"}?
+
+    - I will pay in [credit]{"entity": "payment_method", "value": "credit"}
+
+    - I will pay in [debit]{"entity": "payment_method", "value": "debit"}
+
+    - I will pay in [cash]{"entity": "payment_method", "value": "cash"}
+
+    - I will pay in [crdit]{"entity": "payment_method", "value": "credit"}
+
+    - I will pay in [credit card]{"entity": "payment_method", "value": "credit"}
+
+    - I will pay in [visa]{"entity": "payment_method", "value": "credit"}
+
+    - I will pay in [mastercard]{"entity": "payment_method", "value": "credit"}
+
+    - I will pay in [dbit]{"entity": "payment_method", "value": "debit"}
+
+    - I will pay in [debit card]{"entity": "payment_method", "value": "debit"}
+
+    - I will pay in [chequing account]{"entity": "payment_method", "value": "debit"}
+
+    - I will pay in [chequing]{"entity": "payment_method", "value": "debit"}
+
+    - I will pay in [savings account]{"entity": "payment_method", "value": "debit"}
+
+    - I will pay in [savings]{"entity": "payment_method", "value": "debit"}
+
+    - I will pay in [money]{"entity": "payment_method", "value": "cash"}
 
     - I will pay in [notes]{"entity": "payment_method", "value": "cash"}'
   intent: set_payment_method
 - examples: '- \d{16}'
   regex: card_number
-- examples: '- My credit card number is [1234567812345678](card_number).
+- examples: '- My credit card number is [1234567812345678]{"entity": "card_number",
+    "value": "1234567812345678"}.
 
-    - This is my account number [1234567812345678](card_number)
+    - My credit card number is [9876543212345678]{"entity": "card_number", "value":
+    "9876543212345678"}.
 
-    - Ok, the number on my card is [1234567812345678](card_number).
+    - This is my account number [1234567812345678]{"entity": "card_number", "value":
+    "1234567812345678"}
 
-    - My credit card number is [9876543212345678](card_number).
+    - This is my account number [9876543212345678]{"entity": "card_number", "value":
+    "9876543212345678"}
 
-    - This is my account number [9876543212345678](card_number)
+    - Ok, the number on my card is [1234567812345678]{"entity": "card_number", "value":
+    "1234567812345678"}.
 
-    - Ok, the number on my card is [9876543212345678](card_number).'
+    - Ok, the number on my card is [9876543212345678]{"entity": "card_number", "value":
+    "9876543212345678"}.'
   intent: pay

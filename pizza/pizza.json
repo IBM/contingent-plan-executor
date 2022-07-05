@@ -17,24 +17,15 @@
         },
         "location": {
             "type": "json",
-            "config": {
-                "extraction": "spacy",
-                "method": "gpe"
-            }
-        },
-        "start_location": {
-            "type": "json",
-            "config": {
-                "extraction": "spacy",
-                "method": "gpe"
-            }
-        },
-        "end_location": {
-            "type": "json",
-            "config": {
-                "extraction": "spacy",
-                "method": "gpe"
-            }
+            "config": "null",
+            "roles": [
+                "start",
+                "end"
+            ],
+            "groups": [
+                1,
+                2
+            ]
         },
         "payment_method": {
             "type": "enum",
@@ -104,9 +95,9 @@
                 "$order"
             ],
             "utterances": [
-                "I want a $order pizza",
-                "$order pizza please!",
-                "Do you have $order pizza?"
+                "I want a $order$ pizza",
+                "$order$ pizza please!",
+                "Do you have $order$ pizza?"
             ]
         },
         "share_location": {
@@ -114,20 +105,9 @@
                 "$location"
             ],
             "utterances": [
-                "I live in $location.",
-                "Do you deliver to $location?",
-                "I want my pizza to be delivered to $location."
-            ]
-        },
-        "share_two_locations": {
-            "variables": [
-                "$start_location",
-                "$end_location"
-            ],
-            "utterances": [
-                "Can you deliver from $start_location to $end_location?",
-                "I want my pizza to be delivered from $start_location to $location.",
-                "Do you travel from $start_location to $end_location?"
+                "Can you deliver from $location(role=start, group=1)$ to $location(role=end, group=2)$?",
+                "I want my pizza to be delivered to $location(role=end, group=2)$ from $location(role=start, group=1)$.",
+                "Do you travel from $location(role=start, group=1)$ to $location(role=end, group=2)$?"
             ]
         },
         "set_payment_method": {
@@ -135,9 +115,9 @@
                 "$payment_method"
             ],
             "utterances": [
-                "I want to pay by $payment_method.",
-                "Can I pay with $payment_method?",
-                "I will pay in $payment_method"
+                "I want to pay by $payment_method$.",
+                "Can I pay with $payment_method$?",
+                "I will pay in $payment_method$"
             ]
         },
         "pay": {
@@ -145,9 +125,9 @@
                 "$card_number"
             ],
             "utterances": [
-                "My credit card number is $card_number.",
-                "This is my account number $card_number",
-                "Ok, the number on my card is $card_number."
+                "My credit card number is $card_number$.",
+                "This is my account number $card_number$",
+                "Ok, the number on my card is $card_number$."
             ]
         },
         "location-unclear": {
@@ -190,24 +170,17 @@
                     {
                         "name": "ask-location_DETDUP_validate-response-EQ-valid",
                         "updates": {
-                            "start_location": {
-                                "variable": "start_location",
-                                "value": "$start_location",
+                            "location": {
+                                "variable": "location",
+                                "value": "$location",
                                 "certainty": "Known",
                                 "interpretation": "spel"
                             }
                         },
-                            "end_location": {
-                                "variable": "end_location",
-                                "value": "$end_location",
-                                "certainty": "Known",
-                                "interpretation": "spel"
-                            },
                         "assignments": {
-                            "$start_location": "found",
-                            "$end_location": "found"
+                            "$location": "found"
                         },
-                        "intent": "share_two_locations"
+                        "intent": "share_location"
                     },
                     {
                         "name": "ask-location_DETDUP_validate-response-EQ-unclear",
@@ -230,15 +203,14 @@
                 ]
             },
             "intents": {
-                "share_two_locations": {
+                "share_location": {
                     "variables": [
-                        "start_location",
-                        "end_location"
+                        "location"
                     ],
                     "utterances": [
-                        "I live in $location.",
-                        "Do you deliver to $location?",
-                        "I want my pizza to be delivered to $location."
+                        "Can you deliver from $location(role=start, group=1)$ to $location(role=end, group=2)$?",
+                        "I want my pizza to be delivered to $location(role=end, group=2)$ from $location(role=start, group=1)$.",
+                        "Do you travel from $location(role=start, group=1)$ to $location(role=end, group=2)$?"
                     ]
                 },
                 "location-unclear": {
@@ -307,9 +279,9 @@
                         "order"
                     ],
                     "utterances": [
-                        "I want a $order pizza",
-                        "$order pizza please!",
-                        "Do you have $order pizza?"
+                        "I want a $order$ pizza",
+                        "$order$ pizza please!",
+                        "Do you have $order$ pizza?"
                     ]
                 },
                 "order-unclear": {
@@ -384,9 +356,9 @@
                         "payment_method"
                     ],
                     "utterances": [
-                        "I want to pay by $payment_method.",
-                        "Can I pay with $payment_method?",
-                        "I will pay in $payment_method"
+                        "I want to pay by $payment_method$.",
+                        "Can I pay with $payment_method$?",
+                        "I will pay in $payment_method$"
                     ]
                 },
                 "payment_method-unclear": {
@@ -454,9 +426,9 @@
                         "card_number"
                     ],
                     "utterances": [
-                        "My credit card number is $card_number.",
-                        "This is my account number $card_number",
-                        "Ok, the number on my card is $card_number."
+                        "My credit card number is $card_number$.",
+                        "This is my account number $card_number$",
+                        "Ok, the number on my card is $card_number$."
                     ]
                 },
                 "card_number-unclear": {
@@ -601,8 +573,8 @@
             "type": "dialogue",
             "subtype": "dialogue disambiguation",
             "message_variants": [
-                "Are you located in $location?",
-                "Do you live in $location?"
+                "Are you located in $location$?",
+                "Do you live in $location$?"
             ],
             "condition": [
                 [
@@ -677,7 +649,7 @@
             "type": "dialogue",
             "subtype": "dialogue disambiguation",
             "message_variants": [
-                "Would you like to order $order?"
+                "Would you like to order $order$?"
             ],
             "condition": [
                 [
@@ -752,7 +724,7 @@
             "type": "dialogue",
             "subtype": "dialogue disambiguation",
             "message_variants": [
-                "Would you like to pay with $payment_method?"
+                "Would you like to pay with $payment_method$?"
             ],
             "condition": [
                 [

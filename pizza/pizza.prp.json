@@ -6,7 +6,7 @@
             "0": {
                 "expected_successor": false,
                 "action": "---",
-                "state": "0x24957a0",
+                "state": "0x254a920",
                 "distance": 0,
                 "is_relevant": 1,
                 "is_goal": 1,
@@ -16,15 +16,34 @@
             "1": {
                 "expected_successor": "0",
                 "action": "ask-order",
-                "state": "0x249d9a0",
+                "state": "0x254f7f0",
                 "distance": 1,
                 "is_relevant": 0,
                 "is_goal": 0,
                 "is_sc": 1,
                 "successors": [
                     {
+                        "outcome_label": "ask-order_DETDUP_validate-order-EQ-fallback",
+                        "successor_id": "2"
+                    },
+                    {
                         "outcome_label": "ask-order_DETDUP_validate-order-EQ-valid",
                         "successor_id": "0"
+                    }
+                ]
+            },
+            "2": {
+                "expected_successor": "1",
+                "action": "agent_fallback",
+                "state": "0x2552060",
+                "distance": 2,
+                "is_relevant": 0,
+                "is_goal": 0,
+                "is_sc": 1,
+                "successors": [
+                    {
+                        "outcome_label": "agent_fallback_DETDUP_reset-EQ-lock",
+                        "successor_id": "1"
                     }
                 ]
             }
@@ -33,14 +52,29 @@
             [
                 "1",
                 ">",
+                "2"
+            ],
+            [
+                "1",
+                ">",
                 "0"
+            ],
+            [
+                "2",
+                ">",
+                "1"
             ]
         ],
         "states": {
-            "0x24957a0": [
+            "0x254a920": [
                 "Atom goal()"
             ],
-            "0x249d9a0": [
+            "0x254f7f0": [
+                "NegatedAtom can-do_agent_fallback()",
+                "NegatedAtom have_order()"
+            ],
+            "0x2552060": [
+                "Atom can-do_agent_fallback()",
                 "NegatedAtom have_order()"
             ]
         }

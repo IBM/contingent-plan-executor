@@ -1,5 +1,11 @@
 {
     "name": "order-pizza",
+    "responses": {
+        "agent_fallback": [
+            "Sorry, I couldn't understand that input.",
+            "I couldn't quite get that."
+        ]
+    },
     "context-variables": {
         "order": {
             "type": "enum",
@@ -17,6 +23,23 @@
         }
     },
     "intents": {
+        "greet": {
+            "variables": [],
+            "utterances": [
+                "Hey",
+                "Hi",
+                "hey there"
+            ]
+        },
+        "leave": {
+            "variables": [],
+            "utterances": [
+                "Goodbye",
+                "Bye",
+                "That's all",
+                "i'm done"
+            ]
+        },
         "share_order": {
             "variables": [
                 "$order"
@@ -26,6 +49,10 @@
                 "$order pizza please!",
                 "Do you have $order pizza?"
             ]
+        },
+        "response__agent_fallback": {
+            "variables": [],
+            "utterances": []
         }
     },
     "actions": {
@@ -41,6 +68,10 @@
                 [
                     "order",
                     "Unknown"
+                ],
+                [
+                    "can-do_agent_fallback",
+                    false
                 ]
             ],
             "effect": {
@@ -70,9 +101,14 @@
                     {
                         "name": "ask-order_DETDUP_validate-order-EQ-fallback",
                         "updates": {
+                            "can-do_agent_fallback": {
+                                "variable": "can-do_agent_fallback",
+                                "value": true,
+                                "interpretation": "json"
+                            }
                         },
-                        "assignments": {
-                        }
+                        "assignments": {},
+                        "intent": "fallback"
                     }
                 ]
             },
@@ -86,6 +122,39 @@
                         "$order pizza please!",
                         "Do you have $order pizza?"
                     ]
+                }
+            }
+        },
+        "agent_fallback": {
+            "name": "agent_fallback",
+            "type": "dialogue",
+            "message_variants": [
+                "Sorry, I couldn't understand that input.",
+                "I couldn't quite get that."
+            ],
+            "condition": [],
+            "effect": {
+                "global-outcome-name": "reset",
+                "type": "oneof",
+                "outcomes": [
+                    {
+                        "name": "agent_fallback_DETDUP_reset-EQ-lock",
+                        "updates": {
+                            "can-do_agent_fallback": {
+                                "variable": "can-do_agent_fallback",
+                                "value": false,
+                                "interpretation": "json"
+                            }
+                        },
+                        "assignments": {},
+                        "intent": "response__agent_fallback"
+                    }
+                ]
+            },
+            "intents": {
+                "response__agent_fallback": {
+                    "utterances": [],
+                    "variables": []
                 }
             }
         }

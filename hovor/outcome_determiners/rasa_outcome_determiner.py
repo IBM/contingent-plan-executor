@@ -6,7 +6,6 @@ import json
 import spacy
 import random
 from nltk.corpus import wordnet
-from hovor.planning.outcome_groups.deterministic_outcome_group import DeterministicOutcomeGroup
 LABELS = spacy.load("en_core_web_md").get_pipe("ner").labels
 
 class RasaOutcomeDeterminer(OutcomeDeterminerBase):
@@ -35,29 +34,8 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         ranked_groups = []
         intent_to_outcome_map = {}
         for outcome in outcome_groups:
-            if "intent" in self.full_outcomes[outcome.name]:
-                intent_to_outcome_map[self.full_outcomes[outcome.name]["intent"]] = outcome
-            else:
-                intent_to_outcome_map["fallback"] = outcome
+            intent_to_outcome_map[self.full_outcomes[outcome.name]["intent"]] = outcome
 
-
-        # NOTE: ENTITY EXTRACTION/INTENT SELECTION ALGORITHM
-        # we're running into a problem here where we need to pick (spacy) entities by intent, and pick intents based on entities.
-        # ultimately the spacy entities really need to be based on intents (no way to map them otherwise). so we should: 
-        # (LOOP): iterate through intents in order of confidence.
-        #   (LOOP): iterate through the entities this intent expects. for each entity:
-        #       check what type it expects (i.e. a simple pizza "order" (pure rasa), or something from spacy).
-        #       (IF): something from rasa:
-        #           try to match the entity type of any (NLTK pre-processed) pure-rasa entity to this current entity type.
-        #       (ELSE): something from spacy:
-        #           gather all spacy extractions that match the corresponding entity extraction type (i.e. GPE).
-        #           based on the position of the entity, pick the appropriate spacy extraction.
-        #           NOTE: clarify how we're supposed to deal with this? how would we know how to "position" spacy extractions,
-        #               if there are multiple with the same extraction type (i.e. GPE)?
-        #   break as soon as you find an intent where all entities can be filled appropriately
-        
-        # TODO: fix below code by implementing the above algorithm. PUT INTO A FUNCTION
-        # separate spacy entities from rasa entities
         spacy_entities = {}
         rasa_entities = {}
         for extracted in r["entities"]:
@@ -68,7 +46,6 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                     spacy_entities[extracted["entity"]] = [extracted]
             else:
                 rasa_entities[extracted["entity"]] = extracted   
-        ranked_groups = []
         entities = {}
         chosen_intent = None
         for intent in r["intent_ranking"]:
@@ -94,7 +71,9 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                             extracted = RasaOutcomeDeterminer.find_rasa_entity(entity, rasa_entities)
                             if not extracted:
                                 if spacy_entities.values():
-                                    extracted = random.choice(spacy_entities.values())
+                                    extracted = []
+                                    extracted.extend(val for method_vals in spacy_entities.values() for val in method_vals)
+                                    extracted = random.choice(extracted)
                                     unsure = True
                             if extracted:
                                 entities[entity] = extracted
@@ -112,17 +91,6 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                     chosen_intent = intent
                     break
         if not chosen_intent:
-            print("no suitable intent found.")
-            # not_picked = [(intent_to_outcome_map[intent["name"]], intent["confidence"]) for intent in r["intent_ranking"] if intent["name"] in intent_to_outcome_map]
-            # for outcome in self.full_outcomes:
-            #     if "fallback" in outcome:
-            #         full_fallback_name = outcome
-            #         break
-            # ranked_groups =  [(DeterministicOutcomeGroup(full_fallback_name, []), 1.0)] + not_picked
-
-            # ranked_groups = [(i["name"], i["confidence"]) for i in r["intent_ranking"] if i["name"] in intent_to_outcome_map]
-            # ranked_groups = [(full_fallback_name, 1.0)] + ranked_groups
-
             ranked_groups = [i for i in r["intent_ranking"] if i["name"] in intent_to_outcome_map]
             ranked_groups = [{"name": "fallback", "confidence": 1.0}] + ranked_groups
             ranked_groups = [(intent_to_outcome_map[intent["name"]], intent["confidence"]) for intent in ranked_groups]     

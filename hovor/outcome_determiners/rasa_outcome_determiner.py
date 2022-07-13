@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 from hovor.outcome_determiners.outcome_determiner_base import OutcomeDeterminerBase
 from hovor import DEBUG
 import requests
@@ -16,15 +16,68 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         self.intents = intents
 
     @staticmethod
-    def find_rasa_entity(entity: str, rasa_entities: Dict):
-        if entity in rasa_entities:
-            return rasa_entities[entity]
+    def parse_synset_name(synset):
+        return synset.name().split(".")[0]
 
-    @staticmethod
-    def find_spacy_entity(method: str, spacy_entities: Dict):
-        if method in spacy_entities:
-            if spacy_entities[method]:
-                return spacy_entities[method].pop()
+    def find_rasa_entity(self, entity: str):
+        if entity in self.rasa_entities:
+            return self.rasa_entities[entity]
+
+    def find_spacy_entity(self, method: str):
+        if method in self.spacy_entities:
+            if self.spacy_entities[method]:
+                return self.spacy_entities[method].pop()
+
+    def initialize_extracted_entities(self, entities: Dict):
+        self.spacy_entities = {}
+        self.rasa_entities = {}
+        for extracted in entities:
+            if extracted["entity"] in LABELS:
+                if extracted["entity"] in self.spacy_entities:
+                    self.spacy_entities[extracted["entity"]].append(extracted)
+                else:
+                    self.spacy_entities[extracted["entity"]] = [extracted]
+            else:
+                self.rasa_entities[extracted["entity"]] = extracted 
+
+    def extract_entity(self, entity: str):
+        # spacy
+        if type(self.context_variables[entity]["config"]) == dict:
+            if self.context_variables[entity]["config"]["extraction"] == "spacy":
+                extracted = self.find_spacy_entity(self.context_variables[entity]["config"]["method"].upper())
+                if not extracted:
+                    # if we can't parse with spacy, try with Rasa (may also return None)
+                    extracted = self.find_rasa_entity(entity)
+                    if not extracted:
+                        return
+                return {"extracted": extracted, "certainty": "Certain"}
+        # rasa
+        else:
+            extracted = self.find_rasa_entity(entity)
+            if not extracted:
+                if self.spacy_entities.values():
+                    extracted = []
+                    extracted.extend(val for method_vals in self.spacy_entities.values() for val in method_vals)
+                    extracted = random.choice(extracted)
+                else:
+                    return
+            return {"extracted": extracted, "certainty": "Certain"}
+
+    def extract_entities(self, intent, progress):
+        entities = {}
+        for entity in self.intents[intent["name"]]["variables"]:
+            entity = entity[1:]
+            # get rid of $, raw extract single entity, then validate
+            extracted = self.extract_entity(entity)
+            if extracted:
+                extracted["sample"] = RasaOutcomeDeterminer._make_entity_sample(extracted["extracted"], progress)
+                if not extracted["sample"]:
+                    return
+            # have to extract ALL entities to pass
+            else:
+                return
+            entities[entity] = extracted
+        return entities
 
     def rank_groups(self, outcome_groups, progress):   
         payload = {'text': progress.json["action_result"]["fields"]["input"]}
@@ -36,53 +89,15 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         for outcome in outcome_groups:
             intent_to_outcome_map[self.full_outcomes[outcome.name]["intent"]] = outcome
 
-        spacy_entities = {}
-        rasa_entities = {}
-        for extracted in r["entities"]:
-            if extracted["entity"] in LABELS:
-                if extracted["entity"] in spacy_entities:
-                    spacy_entities[extracted["entity"]].append(extracted)
-                else:
-                    spacy_entities[extracted["entity"]] = [extracted]
-            else:
-                rasa_entities[extracted["entity"]] = extracted   
-        entities = {}
+        self.initialize_extracted_entities(r["entities"])
+  
         chosen_intent = None
         for intent in r["intent_ranking"]:
             if intent["name"] in intent_to_outcome_map:
-                unsure = False
-                valid = True
                 # if this intent expects entities, make sure we extract them
                 if len(self.intents[intent["name"]]["variables"]) > 0:
-                    for entity in self.intents[intent["name"]]["variables"]:
-                        # get rid of $
-                        entity = entity[1:]
-                        # spacy
-                        if type(self.context_variables[entity]["config"]) == dict:
-                            if self.context_variables[entity]["config"]["extraction"] == "spacy":
-                                extracted = RasaOutcomeDeterminer.find_spacy_entity(self.context_variables[entity]["config"]["method"].upper(), spacy_entities)
-                                if not extracted:
-                                    extracted = RasaOutcomeDeterminer.find_rasa_entity(entity)
-                                    unsure = True
-                                if extracted:
-                                    entities[entity] = extracted
-                        # rasa
-                        else:
-                            extracted = RasaOutcomeDeterminer.find_rasa_entity(entity, rasa_entities)
-                            if not extracted:
-                                if spacy_entities.values():
-                                    extracted = []
-                                    extracted.extend(val for method_vals in spacy_entities.values() for val in method_vals)
-                                    extracted = random.choice(extracted)
-                                    unsure = True
-                            if extracted:
-                                entities[entity] = extracted
-
-                        # break and proceed to the next intent if we weren't able to find the next entity
-                        if not extracted:
-                            valid = False
-                            break
-                    if valid:
+                    entities = self.extract_entities(intent, progress)
+                    if entities:
                         # stop looking for a suitable intent if we found all entities
                         chosen_intent = intent
                         break
@@ -90,17 +105,16 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                     # stop looking for a suitable intent if the intent extracted doesn't require entities
                     chosen_intent = intent
                     break
-        if not chosen_intent:
-            ranked_groups = [i for i in r["intent_ranking"] if i["name"] in intent_to_outcome_map]
-            ranked_groups = [{"name": "fallback", "confidence": 1.0}] + ranked_groups
-            ranked_groups = [(intent_to_outcome_map[intent["name"]], intent["confidence"]) for intent in ranked_groups]     
-        else:
+        if chosen_intent:
             not_picked = [i for i in r["intent_ranking"] if i["name"] in intent_to_outcome_map]
             not_picked.remove(chosen_intent)
             ranked_groups = [(intent_to_outcome_map[intent["name"]], intent["confidence"]) for intent in [chosen_intent] + not_picked]
             for entity, entity_info in entities.items():
-                entity_sample = RasaOutcomeDeterminer._make_entity_sample(entity_info, progress)
-                progress.add_detected_entity(entity, entity_sample)        
+                progress.add_detected_entity(entity, entity_info["sample"])  
+        else:
+            ranked_groups = [i for i in r["intent_ranking"] if i["name"] in intent_to_outcome_map]
+            ranked_groups = [{"name": "fallback", "confidence": 1.0}] + ranked_groups
+            ranked_groups = [(intent_to_outcome_map[intent["name"]], intent["confidence"]) for intent in ranked_groups]     
 
         DEBUG("\t top random ranking for group '%s'" % (chosen_intent))
         return ranked_groups, progress
@@ -111,6 +125,7 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         entity_config = progress.get_entity_config(entity_info["entity"])
         return cls._make_entity_type_sample(entity_type, entity_config, entity_info)
 
+
     @classmethod
     def _make_entity_type_sample(cls, entity_type, entity_config, entity_info):
         extracted = entity_info["value"]
@@ -119,31 +134,32 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                 return extracted
             else:
                 for syn in wordnet.synsets(extracted):
-                    for l in syn.lemmas():
-                        l = l.name()
-                        if l in entity_config:
-                            return l
+                    for lemma in syn.lemmas():
+                        for p in lemma.pertainyms():
+                            p = p.name()
+                            if p in entity_config:
+                                return p
+                        for d in lemma.derivationally_related_forms():
+                            d = d.name()
+                            if d in entity_config:
+                                return d
                     for hyp in syn.hypernyms():
-                        hyp = hyp.name()
+                        hyp = RasaOutcomeDeterminer.parse_synset_name(hyp)
                         if hyp in entity_config:
                             return hyp
                     for hyp in syn.hyponyms():
-                        hyp = hyp.name()
+                        hyp = RasaOutcomeDeterminer.parse_synset_name(hyp)
                         if hyp in entity_config:
                             return hyp
-                    for hol in syn.holonyms():
-                        hol = hol.name()
+                    for hol in syn.member_holonyms():
+                        hol = RasaOutcomeDeterminer.parse_synset_name(hol)
+                        if hol in entity_config:
+                            return hol
+                    for hol in syn.root_hypernyms():
+                        hol = RasaOutcomeDeterminer.parse_synset_name(hol)
                         if hol in entity_config:
                             return hol
         elif entity_type == "json":
             return extracted
         else:
             raise NotImplementedError("Cant sample from type: " + entity_type)
-
-    def _report_sampled_entities(self, top_group, progress):
-        # collected_entities = self.find_required_present_entities(outcome_groups)
-        pass
-        # add the entities like they were really detected during the determination
-        # for entity in collected_entities:
-        #     entity_sample = RandomOutcomeDeterminer._make_entity_sample(entity, progress)
-        #     progress.add_detected_entity(entity, entity_sample)

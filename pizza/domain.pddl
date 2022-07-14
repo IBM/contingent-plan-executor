@@ -7,8 +7,10 @@
         (have_order)
         (maybe-have_order)
         (goal)
+        (have-message)
+        (force-statement)
         (can-do_ask-order)
-        (can-do_agent_fallback)
+        (can-do_dialogue_statement)
     )
     (:action ask-order
         :parameters()
@@ -16,7 +18,7 @@
             (and
                 (not (have_order))
                 (not (maybe-have_order))
-                (not (can-do_agent_fallback))
+                (not (force-statement))
                 (can-do_ask-order)
             )
         :effect
@@ -30,22 +32,25 @@
                 )
                 (outcome fallback
                     (and
-                        (can-do_agent_fallback)
+                        (have-message)
+                        (force-statement)
                     )
                 )
             )
     )
-    (:action agent_fallback
+    (:action dialogue_statement
         :parameters()
         :precondition
             (and
-                (can-do_agent_fallback)
+                (have-message)
+                (force-statement)
             )
         :effect
             (labeled-oneof reset
                 (outcome lock
                     (and
-                        (not (can-do_agent_fallback))
+                        (not (have-message))
+                        (not (force-statement))
                     )
                 )
             )

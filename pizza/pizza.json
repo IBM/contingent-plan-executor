@@ -1,11 +1,5 @@
 {
     "name": "order-pizza",
-    "responses": {
-        "agent_fallback": [
-            "Sorry, I couldn't understand that input.",
-            "I couldn't quite get that."
-        ]
-    },
     "context-variables": {
         "order": {
             "type": "enum",
@@ -18,6 +12,14 @@
             ]
         },
         "goal": {
+            "type": "flag",
+            "config": false
+        },
+        "have-message": {
+            "type": "flag",
+            "config": false
+        },
+        "force-statement": {
             "type": "flag",
             "config": false
         }
@@ -50,7 +52,7 @@
                 "Do you have $order pizza?"
             ]
         },
-        "response__agent_fallback": {
+        "fallback": {
             "variables": [],
             "utterances": []
         }
@@ -64,13 +66,17 @@
                 "What would you like to order?",
                 "What type of pizza would you like?"
             ],
+            "fallback_message_variants": [
+                "Sorry, that isn't a valid order.",
+                "I didn't quite get your order. Can you tell me again?"
+            ],
             "condition": [
                 [
                     "order",
                     "Unknown"
                 ],
                 [
-                    "can-do_agent_fallback",
+                    "force-statement",
                     false
                 ]
             ],
@@ -101,8 +107,13 @@
                     {
                         "name": "ask-order_DETDUP_validate-order-EQ-fallback",
                         "updates": {
-                            "can-do_agent_fallback": {
-                                "variable": "can-do_agent_fallback",
+                            "have-message": {
+                                "variable": "have-message",
+                                "value": true,
+                                "interpretation": "json"
+                            },
+                            "force-statement": {
+                                "variable": "force-statement",
                                 "value": true,
                                 "interpretation": "json"
                             }
@@ -125,34 +136,45 @@
                 }
             }
         },
-        "agent_fallback": {
-            "name": "agent_fallback",
+        "dialogue_statement": {
+            "name": "dialogue_statement",
             "type": "dialogue",
-            "message_variants": [
-                "Sorry, I couldn't understand that input.",
-                "I couldn't quite get that."
+            "message_variants": ["test"],
+            "condition": [
+                [
+                    "have-message",
+                    true
+                ],
+                [
+                    "force-statement",
+                    true
+                ]
             ],
-            "condition": [],
             "effect": {
                 "global-outcome-name": "reset",
                 "type": "oneof",
                 "outcomes": [
                     {
-                        "name": "agent_fallback_DETDUP_reset-EQ-lock",
+                        "name": "dialogue_statement_DETDUP_reset-EQ-lock",
                         "updates": {
-                            "can-do_agent_fallback": {
-                                "variable": "can-do_agent_fallback",
+                            "have-message": {
+                                "variable": "have-message",
+                                "value": false,
+                                "interpretation": "json"
+                            },
+                            "force-statement": {
+                                "variable": "force-statement",
                                 "value": false,
                                 "interpretation": "json"
                             }
                         },
                         "assignments": {},
-                        "intent": "response__agent_fallback"
+                        "intent": "fallback"
                     }
                 ]
             },
             "intents": {
-                "response__agent_fallback": {
+                "fallback": {
                     "utterances": [],
                     "variables": []
                 }

@@ -95,6 +95,10 @@ class InMemorySession(SessionBase):
         return deepcopy(self._current_context)
 
     def _update_action(self):
+        if self._current_action:
+            if "fallback_message_variants" in self._current_action.config:
+                if self._current_node.action_name == "dialogue_statement":
+                    self.configuration._configuration_data["actions"]["dialogue_statement"]["message_variants"] = self.configuration._configuration_data["actions"][self.current_action.name]["fallback_message_variants"]
         self._current_action = self._configuration_provider.create_action(self._current_node, self._current_state,
                                                                           self.get_context_copy())
 

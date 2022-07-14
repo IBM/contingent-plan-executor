@@ -255,10 +255,7 @@ class JsonConfigurationProvider(ConfigurationProviderBase):
                 #     all_entities[entity] = None  # update the set/dict of all entities
                 entity_definitions[entity] = self._get_entity_type_specification(entity)
             return RasaOutcomeDeterminer(outcome_config["outcomes"], self._configuration_data["context-variables"], self._configuration_data["intents"])
-            # return RandomOutcomeDeterminer()
-            # return UnifiedWorkspaceOutcomeDeterminer(action_name, outcome_config["global-outcome-name"], outcome_config[
-            #     "intents"],
-            #                                          entity_definitions)
+
 
         if outcome_determiner_name == "regex_disambiguation_outcome_determiner":
             entity_definitions = {}

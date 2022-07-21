@@ -1,5 +1,6 @@
 from copy import deepcopy
 
+from hovor.planning.partial_state import PartialState
 from hovor.runtime.context import Context
 from hovor.session.session_base import SessionBase
 from hovor import DEBUG
@@ -15,6 +16,7 @@ class InMemorySession(SessionBase):
         self._current_action = None
         self._current_context = None
         self._delta_history = []
+        self._action_names = {node.action_name for node in self.plan.nodes}
 
     @property
     def plan(self):
@@ -87,6 +89,16 @@ class InMemorySession(SessionBase):
 
         self._delta_history.append(progress)
         self._print_update_report()
+
+        # actions = self._action_names.copy()
+        # actions.discard("---")
+        # outcomes = self._current_action.config["effect"]["outcomes"]
+        # for o in outcomes:
+        #     if o["name"] == progress.final_outcome_name:
+        #         if "follow_up" in o:
+        #             if o["follow_up"] == self._current_node.action_name:
+        #                 progress.apply_state_update({f.replace("Negated", "") for f in n1.partial_state.difference(progress.actual_state) if "can-do__" in f})
+        #         break
 
     def update_action_result(self, result):
         self._current_action_result = result

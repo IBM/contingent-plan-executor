@@ -86,7 +86,7 @@ begin_goal
 end_goal
 15
 begin_operator
-ask-drink_DETDUP_validate-response-EQ-fallback 
+ask-drink_DETDUP_validate-drink-EQ-fallback 
 4
 2 1
 1 0
@@ -98,7 +98,7 @@ ask-drink_DETDUP_validate-response-EQ-fallback
 1
 end_operator
 begin_operator
-ask-drink_DETDUP_validate-response-EQ-unclear 
+ask-drink_DETDUP_validate-drink-EQ-unclear 
 4
 6 1
 2 1
@@ -109,14 +109,15 @@ ask-drink_DETDUP_validate-response-EQ-unclear
 1
 end_operator
 begin_operator
-ask-drink_DETDUP_validate-response-EQ-valid 
-4
-6 1
+ask-drink_DETDUP_validate-drink-EQ-valid 
+3
 1 0
 3 1
 5 1
-2
+4
+0 6 1 0
 0 4 -1 1
+0 7 -1 0
 0 2 1 0
 1
 end_operator

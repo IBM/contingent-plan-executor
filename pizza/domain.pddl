@@ -58,11 +58,13 @@
                 (not (force-statement))
             )
         :effect
-            (labeled-oneof validate-response
+            (labeled-oneof validate-drink
                 (outcome valid
                     (and
                         (have_drink)
                         (not (maybe-have_drink))
+                        (have-message)
+                        (force-statement)
                         (not (forcing__ask-drink))
                     )
                 )

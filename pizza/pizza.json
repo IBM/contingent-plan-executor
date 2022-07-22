@@ -249,7 +249,7 @@
                 ]
             ],
             "effect": {
-                "global-outcome-name": "validate-response",
+                "global-outcome-name": "validate-drink",
                 "type": "oneof",
                 "outcomes": [
                     {
@@ -260,13 +260,22 @@
                                 "certainty": "Known",
                                 "interpretation": "spel"
                             },
+                            "have-message": {
+                                "value": true,
+                                "interpretation": "json"
+                            },
+                            "force-statement": {
+                                "value": true,
+                                "interpretation": "json"
+                            },
                             "forcing__ask-drink": {
                                 "value": false,
                                 "interpretation": "json"
                             }
                         },
                         "intent": "share_drink",
-                        "name": "ask-drink_DETDUP_validate-response-EQ-valid",
+                        "response": "Drink has been successfully logged.",
+                        "name": "ask-drink_DETDUP_validate-drink-EQ-valid",
                         "assignments": {
                             "$drink": "found"
                         }
@@ -281,7 +290,7 @@
                             }
                         },
                         "intent": "unclear",
-                        "name": "ask-drink_DETDUP_validate-response-EQ-unclear",
+                        "name": "ask-drink_DETDUP_validate-drink-EQ-unclear",
                         "assignments": {
                             "$drink": "maybe-found"
                         }
@@ -298,7 +307,7 @@
                             }
                         },
                         "intent": "fallback",
-                        "name": "ask-drink_DETDUP_validate-response-EQ-fallback",
+                        "name": "ask-drink_DETDUP_validate-drink-EQ-fallback",
                         "assignments": {}
                     }
                 ]

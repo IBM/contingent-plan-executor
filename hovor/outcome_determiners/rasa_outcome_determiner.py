@@ -52,7 +52,9 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                     extracted = self.find_rasa_entity(entity)
                     if not extracted:
                         return
-                return {"extracted": extracted, "certainty": "Certain"}
+                    certainty = "Uncertain"
+                else:
+                    certainty = "Certain"
         # rasa
         else:
             extracted = self.find_rasa_entity(entity)
@@ -61,24 +63,27 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                     extracted = []
                     extracted.extend(val for method_vals in self.spacy_entities.values() for val in method_vals)
                     extracted = random.choice(extracted)
+                    certainty = "Uncertain"
                 else:
                     return
-            return {"extracted": extracted, "certainty": "Certain"}
+            else:
+                certainty = "Certain"
+        return {"extracted": extracted, "value": extracted["value"], "certainty": certainty}
 
     def extract_entities(self, intent, progress):
         entities = {}
         for entity in self.intents[intent["name"]]["variables"]:
             entity = entity[1:]
             # get rid of $, raw extract single entity, then validate
-            extracted = self.extract_entity(entity)
-            if extracted:
-                extracted["sample"] = RasaOutcomeDeterminer._make_entity_sample(extracted["extracted"], progress)
-                if not extracted["sample"]:
-                    return
+            extracted_info = self.extract_entity(entity)
+            if extracted_info:
+                extracted_info = RasaOutcomeDeterminer._make_entity_sample(entity, extracted_info, progress)
+                if not extracted_info["sample"]:
+                    return                    
             # have to extract ALL entities to pass
             else:
                 return
-            entities[entity] = extracted
+            entities[entity] = extracted_info
         return entities
 
     def rank_groups(self, outcome_groups, progress):   
@@ -121,46 +126,57 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         return ranked_groups, progress
 
     @classmethod
-    def _make_entity_sample(cls, entity_info, progress):
-        entity_type = progress.get_entity_type(entity_info["entity"])
-        entity_config = progress.get_entity_config(entity_info["entity"])
-        return cls._make_entity_type_sample(entity_type, entity_config, entity_info)
-
+    def _make_entity_sample(cls, entity, extracted_info, progress):
+        entity_type = progress.get_entity_type(entity)
+        entity_config = progress.get_entity_config(entity)
+        return cls._make_entity_type_sample(entity_type, entity_config, extracted_info)
 
     @classmethod
-    def _make_entity_type_sample(cls, entity_type, entity_config, entity_info):
-        extracted = entity_info["value"]
+    def _make_entity_type_sample(cls, entity_type, entity_config, extracted_info):
+        entity_value = extracted_info["value"]
         if entity_type == "enum":
-            if extracted in entity_config:
-                return extracted
+            if entity_value in entity_config:
+                return extracted_info
             else:
-                for syn in wordnet.synsets(extracted):
+                extracted_info["certainty"] = "Uncertain"
+                for syn in wordnet.synsets(entity_value):
+                    for option in entity_config:
+                        if option in syn._definition:
+                            extracted_info["sample"] = option
+                            return extracted_info
                     for lemma in syn.lemmas():
                         for p in lemma.pertainyms():
                             p = p.name()
                             if p in entity_config:
-                                return p
+                                extracted_info["sample"] = p
+                                return extracted_info
                         for d in lemma.derivationally_related_forms():
                             d = d.name()
                             if d in entity_config:
-                                return d
+                                extracted_info["sample"] = d
+                                return extracted_info
                     for hyp in syn.hypernyms():
                         hyp = RasaOutcomeDeterminer.parse_synset_name(hyp)
                         if hyp in entity_config:
-                            return hyp
+                            extracted_info["sample"] = hyp
+                            return extracted_info
                     for hyp in syn.hyponyms():
                         hyp = RasaOutcomeDeterminer.parse_synset_name(hyp)
                         if hyp in entity_config:
-                            return hyp
+                            extracted_info["sample"] = hyp
+                            return extracted_info
                     for hol in syn.member_holonyms():
                         hol = RasaOutcomeDeterminer.parse_synset_name(hol)
                         if hol in entity_config:
-                            return hol
+                            extracted_info["sample"] = hol
+                            return extracted_info
                     for hol in syn.root_hypernyms():
                         hol = RasaOutcomeDeterminer.parse_synset_name(hol)
                         if hol in entity_config:
-                            return hol
+                            extracted_info["sample"] = hol
+                            return extracted_info
         elif entity_type == "json":
-            return extracted
+            extracted_info["sample"] = extracted_info["value"]
+            return extracted_info
         else:
             raise NotImplementedError("Cant sample from type: " + entity_type)

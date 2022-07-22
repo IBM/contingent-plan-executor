@@ -85,20 +85,21 @@ class InMemorySession(SessionBase):
         progress.apply_state_update(n2.partial_state)
         progress.associate_edge(n1)
 
+        if self._current_action:
+            if self._current_node.action_name == "dialogue_statement":
+                if progress._edge.info["intent"] == "fallback":
+                    if "fallback_message_variants" in self._current_action.config:
+                        self.configuration._configuration_data["actions"]["dialogue_statement"]["message_variants"] = self.configuration._configuration_data["actions"][self.current_action.name]["fallback_message_variants"]
+                elif progress._edge.info["intent"] == "response":
+                    pass
         self._update_action()
 
         self._delta_history.append(progress)
         self._print_update_report()
 
-        # actions = self._action_names.copy()
-        # actions.discard("---")
-        # outcomes = self._current_action.config["effect"]["outcomes"]
-        # for o in outcomes:
-        #     if o["name"] == progress.final_outcome_name:
-        #         if "follow_up" in o:
-        #             if o["follow_up"] == self._current_node.action_name:
-        #                 progress.apply_state_update({f.replace("Negated", "") for f in n1.partial_state.difference(progress.actual_state) if "can-do__" in f})
-        #         break
+        print("\n")
+        print("\n".join(f for f in progress.actual_state.fluents))
+        print("\n")
 
     def update_action_result(self, result):
         self._current_action_result = result
@@ -107,10 +108,6 @@ class InMemorySession(SessionBase):
         return deepcopy(self._current_context)
 
     def _update_action(self):
-        if self._current_action:
-            if "fallback_message_variants" in self._current_action.config:
-                if self._current_node.action_name == "dialogue_statement":
-                    self.configuration._configuration_data["actions"]["dialogue_statement"]["message_variants"] = self.configuration._configuration_data["actions"][self.current_action.name]["fallback_message_variants"]
         self._current_action = self._configuration_provider.create_action(self._current_node, self._current_state,
                                                                           self.get_context_copy())
 

@@ -12,12 +12,10 @@ LABELS = spacy.load("en_core_web_md").get_pipe("ner").labels
 
 class RasaOutcomeDeterminer(OutcomeDeterminerBase):
     """Determiner"""
-    def __init__(self, full_outcomes, context_variables, intents, actions):
+    def __init__(self, full_outcomes, context_variables, intents):
         self.full_outcomes = {outcome["name"]: outcome for outcome in full_outcomes}
         self.context_variables = context_variables
         self.intents = intents
-        # self.actions = actions
-        # self.actions.remove("---")
 
     @staticmethod
     def parse_synset_name(synset):
@@ -86,7 +84,6 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
     def rank_groups(self, outcome_groups, progress):   
         payload = {'text': progress.json["action_result"]["fields"]["input"]}
         r = json.loads(requests.post('http://localhost:5005/model/parse', json=payload).text)
-        print(json.dumps(r, indent=4))
 
         ranked_groups = []
         intent_to_outcome_map = {}
@@ -120,11 +117,6 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
             ranked_groups = [i for i in r["intent_ranking"] if i["name"] in intent_to_outcome_map]
             ranked_groups = [{"name": chosen_intent, "confidence": 1.0}] + ranked_groups
             ranked_groups = [(intent_to_outcome_map[intent["name"]], intent["confidence"]) for intent in ranked_groups]     
-        # if "follow_up" in self.full_outcomes[ranked_groups[0][0].name]:
-        #     follow_up = self.full_outcomes[ranked_groups[0][0].name]['follow_up']
-        #     actions = self.actions.copy()
-        #     actions.remove(follow_up)
-        #     progress.apply_state_update(PartialState({f"Atom can-do__{follow_up}()"}.union({f"NegatedAtom can-do__{action}()" for action in actions})))
         DEBUG("\t top random ranking for group '%s'" % (chosen_intent))
         return ranked_groups, progress
 

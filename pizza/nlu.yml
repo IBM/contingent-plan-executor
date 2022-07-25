@@ -31,264 +31,139 @@ nlu:
   intent: deny
 - examples: '- I want a [cheese]{"entity": "order", "value": "cheese"} pizza
 
-    - [cheese]{"entity": "order", "value": "cheese"} pizza please!
+    - [cheese]{"entity": "order", "value": "cheese"} pizza
 
-    - Do you have [cheese]{"entity": "order", "value": "cheese"} pizza?
+    - Can I get a [cheese]{"entity": "order", "value": "cheese"} pizza
 
     - I want a [pepperoni]{"entity": "order", "value": "pepperoni"} pizza
 
-    - [pepperoni]{"entity": "order", "value": "pepperoni"} pizza please!
+    - [pepperoni]{"entity": "order", "value": "pepperoni"} pizza
 
-    - Do you have [pepperoni]{"entity": "order", "value": "pepperoni"} pizza?
+    - Can I get a [pepperoni]{"entity": "order", "value": "pepperoni"} pizza
 
     - I want a [mushroom]{"entity": "order", "value": "mushroom"} pizza
 
-    - [mushroom]{"entity": "order", "value": "mushroom"} pizza please!
+    - [mushroom]{"entity": "order", "value": "mushroom"} pizza
 
-    - Do you have [mushroom]{"entity": "order", "value": "mushroom"} pizza?
+    - Can I get a [mushroom]{"entity": "order", "value": "mushroom"} pizza
 
     - I want a [gluten free]{"entity": "order", "value": "gluten free"} pizza
 
-    - [gluten free]{"entity": "order", "value": "gluten free"} pizza please!
+    - [gluten free]{"entity": "order", "value": "gluten free"} pizza
 
-    - Do you have [gluten free]{"entity": "order", "value": "gluten free"} pizza?
+    - Can I get a [gluten free]{"entity": "order", "value": "gluten free"} pizza
 
     - I want a [hawaiian]{"entity": "order", "value": "hawaiian"} pizza
 
-    - [hawaiian]{"entity": "order", "value": "hawaiian"} pizza please!
+    - [hawaiian]{"entity": "order", "value": "hawaiian"} pizza
 
-    - Do you have [hawaiian]{"entity": "order", "value": "hawaiian"} pizza?
+    - Can I get a [hawaiian]{"entity": "order", "value": "hawaiian"} pizza
 
     - I want a [chz]{"entity": "order", "value": "cheese"} pizza
 
-    - [chz]{"entity": "order", "value": "cheese"} pizza please!
+    - [chz]{"entity": "order", "value": "cheese"} pizza
 
-    - Do you have [chz]{"entity": "order", "value": "cheese"} pizza?
+    - Can I get a [chz]{"entity": "order", "value": "cheese"} pizza
 
     - I want a [cheez]{"entity": "order", "value": "cheese"} pizza
 
-    - [cheez]{"entity": "order", "value": "cheese"} pizza please!
+    - [cheez]{"entity": "order", "value": "cheese"} pizza
 
-    - Do you have [cheez]{"entity": "order", "value": "cheese"} pizza?
+    - Can I get a [cheez]{"entity": "order", "value": "cheese"} pizza
 
     - I want a [mozzarella]{"entity": "order", "value": "cheese"} pizza
 
-    - [mozzarella]{"entity": "order", "value": "cheese"} pizza please!
+    - [mozzarella]{"entity": "order", "value": "cheese"} pizza
 
-    - Do you have [mozzarella]{"entity": "order", "value": "cheese"} pizza?
+    - Can I get a [mozzarella]{"entity": "order", "value": "cheese"} pizza
 
     - I want a [fromage]{"entity": "order", "value": "cheese"} pizza
 
-    - [fromage]{"entity": "order", "value": "cheese"} pizza please!
+    - [fromage]{"entity": "order", "value": "cheese"} pizza
 
-    - Do you have [fromage]{"entity": "order", "value": "cheese"} pizza?
+    - Can I get a [fromage]{"entity": "order", "value": "cheese"} pizza
 
     - I want a [cheesy]{"entity": "order", "value": "cheese"} pizza
 
-    - [cheesy]{"entity": "order", "value": "cheese"} pizza please!
+    - [cheesy]{"entity": "order", "value": "cheese"} pizza
 
-    - Do you have [cheesy]{"entity": "order", "value": "cheese"} pizza?
+    - Can I get a [cheesy]{"entity": "order", "value": "cheese"} pizza
 
     - I want a [peperoni]{"entity": "order", "value": "pepperoni"} pizza
 
-    - [peperoni]{"entity": "order", "value": "pepperoni"} pizza please!
+    - [peperoni]{"entity": "order", "value": "pepperoni"} pizza
 
-    - Do you have [peperoni]{"entity": "order", "value": "pepperoni"} pizza?
+    - Can I get a [peperoni]{"entity": "order", "value": "pepperoni"} pizza
 
     - I want a [meat]{"entity": "order", "value": "pepperoni"} pizza
 
-    - [meat]{"entity": "order", "value": "pepperoni"} pizza please!
+    - [meat]{"entity": "order", "value": "pepperoni"} pizza
 
-    - Do you have [meat]{"entity": "order", "value": "pepperoni"} pizza?
+    - Can I get a [meat]{"entity": "order", "value": "pepperoni"} pizza
 
     - I want a [sausage]{"entity": "order", "value": "pepperoni"} pizza
 
-    - [sausage]{"entity": "order", "value": "pepperoni"} pizza please!
+    - [sausage]{"entity": "order", "value": "pepperoni"} pizza
 
-    - Do you have [sausage]{"entity": "order", "value": "pepperoni"} pizza?
+    - Can I get a [sausage]{"entity": "order", "value": "pepperoni"} pizza
 
     - I want a [vegetable]{"entity": "order", "value": "mushroom"} pizza
 
-    - [vegetable]{"entity": "order", "value": "mushroom"} pizza please!
+    - [vegetable]{"entity": "order", "value": "mushroom"} pizza
 
-    - Do you have [vegetable]{"entity": "order", "value": "mushroom"} pizza?
+    - Can I get a [vegetable]{"entity": "order", "value": "mushroom"} pizza
 
     - I want a [veggie]{"entity": "order", "value": "mushroom"} pizza
 
-    - [veggie]{"entity": "order", "value": "mushroom"} pizza please!
+    - [veggie]{"entity": "order", "value": "mushroom"} pizza
 
-    - Do you have [veggie]{"entity": "order", "value": "mushroom"} pizza?
+    - Can I get a [veggie]{"entity": "order", "value": "mushroom"} pizza
 
     - I want a [musroom]{"entity": "order", "value": "mushroom"} pizza
 
-    - [musroom]{"entity": "order", "value": "mushroom"} pizza please!
+    - [musroom]{"entity": "order", "value": "mushroom"} pizza
 
-    - Do you have [musroom]{"entity": "order", "value": "mushroom"} pizza?
+    - Can I get a [musroom]{"entity": "order", "value": "mushroom"} pizza
 
     - I want a [shroom]{"entity": "order", "value": "mushroom"} pizza
 
-    - [shroom]{"entity": "order", "value": "mushroom"} pizza please!
+    - [shroom]{"entity": "order", "value": "mushroom"} pizza
 
-    - Do you have [shroom]{"entity": "order", "value": "mushroom"} pizza?
+    - Can I get a [shroom]{"entity": "order", "value": "mushroom"} pizza
 
     - I want a [healthy]{"entity": "order", "value": "gluten free"} pizza
 
-    - [healthy]{"entity": "order", "value": "gluten free"} pizza please!
+    - [healthy]{"entity": "order", "value": "gluten free"} pizza
 
-    - Do you have [healthy]{"entity": "order", "value": "gluten free"} pizza?
+    - Can I get a [healthy]{"entity": "order", "value": "gluten free"} pizza
 
     - I want a [gluten-free]{"entity": "order", "value": "gluten free"} pizza
 
-    - [gluten-free]{"entity": "order", "value": "gluten free"} pizza please!
+    - [gluten-free]{"entity": "order", "value": "gluten free"} pizza
 
-    - Do you have [gluten-free]{"entity": "order", "value": "gluten free"} pizza?
+    - Can I get a [gluten-free]{"entity": "order", "value": "gluten free"} pizza
 
     - I want a [gf]{"entity": "order", "value": "gluten free"} pizza
 
-    - [gf]{"entity": "order", "value": "gluten free"} pizza please!
+    - [gf]{"entity": "order", "value": "gluten free"} pizza
 
-    - Do you have [gf]{"entity": "order", "value": "gluten free"} pizza?
+    - Can I get a [gf]{"entity": "order", "value": "gluten free"} pizza
 
     - I want a [pineapple]{"entity": "order", "value": "hawaiian"} pizza
 
-    - [pineapple]{"entity": "order", "value": "hawaiian"} pizza please!
+    - [pineapple]{"entity": "order", "value": "hawaiian"} pizza
 
-    - Do you have [pineapple]{"entity": "order", "value": "hawaiian"} pizza?
+    - Can I get a [pineapple]{"entity": "order", "value": "hawaiian"} pizza
 
     - I want a [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza
 
-    - [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza please!
+    - [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza
 
-    - Do you have [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza?
+    - Can I get a [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza
 
     - I want a [sweet]{"entity": "order", "value": "hawaiian"} pizza
 
-    - [sweet]{"entity": "order", "value": "hawaiian"} pizza please!
+    - [sweet]{"entity": "order", "value": "hawaiian"} pizza
 
-    - Do you have [sweet]{"entity": "order", "value": "hawaiian"} pizza?'
-  intent: share_order
-- examples: '- I want to drink [coke]{"entity": "drink", "value": "coke"}.
-
-    - [coke]{"entity": "drink", "value": "coke"} with ice please!
-
-    - Do you have [coke]{"entity": "drink", "value": "coke"} kind of drink?
-
-    - I want to drink [coffee]{"entity": "drink", "value": "coffee"}.
-
-    - [coffee]{"entity": "drink", "value": "coffee"} with ice please!
-
-    - Do you have [coffee]{"entity": "drink", "value": "coffee"} kind of drink?
-
-    - I want to drink [coke]{"entity": "drink", "value": "coke"}.
-
-    - [coke]{"entity": "drink", "value": "coke"} with ice please!
-
-    - Do you have [coke]{"entity": "drink", "value": "coke"} kind of drink?
-
-    - I want to drink [coca cola]{"entity": "drink", "value": "coke"}.
-
-    - [coca cola]{"entity": "drink", "value": "coke"} with ice please!
-
-    - Do you have [coca cola]{"entity": "drink", "value": "coke"} kind of drink?
-
-    - I want to drink [soda]{"entity": "drink", "value": "coke"}.
-
-    - [soda]{"entity": "drink", "value": "coke"} with ice please!
-
-    - Do you have [soda]{"entity": "drink", "value": "coke"} kind of drink?
-
-    - I want to drink [pop]{"entity": "drink", "value": "coke"}.
-
-    - [pop]{"entity": "drink", "value": "coke"} with ice please!
-
-    - Do you have [pop]{"entity": "drink", "value": "coke"} kind of drink?
-
-    - I want to drink [caffeine]{"entity": "drink", "value": "coffee"}.
-
-    - [caffeine]{"entity": "drink", "value": "coffee"} with ice please!
-
-    - Do you have [caffeine]{"entity": "drink", "value": "coffee"} kind of drink?
-
-    - I want to drink [decaf]{"entity": "drink", "value": "coffee"}.
-
-    - [decaf]{"entity": "drink", "value": "coffee"} with ice please!
-
-    - Do you have [decaf]{"entity": "drink", "value": "coffee"} kind of drink?
-
-    - I want to drink [espresso]{"entity": "drink", "value": "coffee"}.
-
-    - [espresso]{"entity": "drink", "value": "coffee"} with ice please!
-
-    - Do you have [espresso]{"entity": "drink", "value": "coffee"} kind of drink?'
-  intent: share_drink
-- examples: '- I want to have [fries]{"entity": "side", "value": "fries"} on the side.
-
-    - [fries]{"entity": "side", "value": "fries"} on the side please!
-
-    - Do you have [fries]{"entity": "side", "value": "fries"} available as a side
-    option?
-
-    - I want to have [salad]{"entity": "side", "value": "salad"} on the side.
-
-    - [salad]{"entity": "side", "value": "salad"} on the side please!
-
-    - Do you have [salad]{"entity": "side", "value": "salad"} available as a side
-    option?
-
-    - I want to have [french fries]{"entity": "side", "value": "fries"} on the side.
-
-    - [french fries]{"entity": "side", "value": "fries"} on the side please!
-
-    - Do you have [french fries]{"entity": "side", "value": "fries"} available as
-    a side option?
-
-    - I want to have [potato wedges]{"entity": "side", "value": "fries"} on the side.
-
-    - [potato wedges]{"entity": "side", "value": "fries"} on the side please!
-
-    - Do you have [potato wedges]{"entity": "side", "value": "fries"} available as
-    a side option?
-
-    - I want to have [crisps]{"entity": "side", "value": "fries"} on the side.
-
-    - [crisps]{"entity": "side", "value": "fries"} on the side please!
-
-    - Do you have [crisps]{"entity": "side", "value": "fries"} available as a side
-    option?
-
-    - I want to have [chips]{"entity": "side", "value": "fries"} on the side.
-
-    - [chips]{"entity": "side", "value": "fries"} on the side please!
-
-    - Do you have [chips]{"entity": "side", "value": "fries"} available as a side
-    option?
-
-    - I want to have [healthy side]{"entity": "side", "value": "salad"} on the side.
-
-    - [healthy side]{"entity": "side", "value": "salad"} on the side please!
-
-    - Do you have [healthy side]{"entity": "side", "value": "salad"} available as
-    a side option?
-
-    - I want to have [lettuce and tomatoes]{"entity": "side", "value": "salad"} on
-    the side.
-
-    - [lettuce and tomatoes]{"entity": "side", "value": "salad"} on the side please!
-
-    - Do you have [lettuce and tomatoes]{"entity": "side", "value": "salad"} available
-    as a side option?
-
-    - I want to have [greek salad]{"entity": "side", "value": "salad"} on the side.
-
-    - [greek salad]{"entity": "side", "value": "salad"} on the side please!
-
-    - Do you have [greek salad]{"entity": "side", "value": "salad"} available as a
-    side option?
-
-    - I want to have [caesar salad]{"entity": "side", "value": "salad"} on the side.
-
-    - [caesar salad]{"entity": "side", "value": "salad"} on the side please!
-
-    - Do you have [caesar salad]{"entity": "side", "value": "salad"} available as
-    a side option?'
-  intent: share_side
+    - Can I get a [sweet]{"entity": "order", "value": "hawaiian"} pizza'
+  intent: share_all

@@ -52,9 +52,9 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                     extracted = self.find_rasa_entity(entity)
                     if not extracted:
                         return
-                    certainty = "Uncertain"
+                    certainty = "uncertain"
                 else:
-                    certainty = "Certain"
+                    certainty = "certain"
         # rasa
         else:
             extracted = self.find_rasa_entity(entity)
@@ -63,11 +63,11 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                     extracted = []
                     extracted.extend(val for method_vals in self.spacy_entities.values() for val in method_vals)
                     extracted = random.choice(extracted)
-                    certainty = "Uncertain"
+                    certainty = "uncertain"
                 else:
                     return
             else:
-                certainty = "Certain"
+                certainty = "certain"
         return {"extracted": extracted, "value": extracted["value"], "certainty": certainty}
 
     def extract_entities(self, intent, progress):
@@ -93,11 +93,15 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         ranked_groups = []
         intent_to_outcome_map = {}
         for outcome in outcome_groups:
-            intent_to_outcome_map[self.full_outcomes[outcome.name]["intent"]] = outcome
+            intent = self.full_outcomes[outcome.name]["intent"]
+            if type(intent) == dict:
+                intent = frozenset(intent.items())
+            intent_to_outcome_map[intent] = outcome
 
         self.initialize_extracted_entities(r["entities"])
   
         chosen_intent = None
+        entities = {}
         for intent in r["intent_ranking"]:
             if intent["name"] in intent_to_outcome_map:
                 # if this intent expects entities, make sure we extract them
@@ -106,6 +110,12 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                     if entities:
                         # stop looking for a suitable intent if we found all entities
                         chosen_intent = intent
+                        # adjust to match clarity if necessary
+                        key = {}
+                        for entity, entity_config in entities.items():
+                            key[entity] = entity_config["certainty"]
+                        if "uncertain" in key.values():
+                            chosen_intent["name"] = frozenset(key.items())
                         break
                 else:
                     # stop looking for a suitable intent if the intent extracted doesn't require entities
@@ -136,9 +146,10 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         entity_value = extracted_info["value"]
         if entity_type == "enum":
             if entity_value in entity_config:
+                extracted_info["sample"] = entity_value
                 return extracted_info
             else:
-                extracted_info["certainty"] = "Uncertain"
+                extracted_info["certainty"] = "uncertain"
                 for syn in wordnet.synsets(entity_value):
                     for option in entity_config:
                         if option in syn._definition:

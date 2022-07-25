@@ -1,12 +1,12 @@
 {
 
-  "init": "4",
+  "init": "2",
   "goal": "0",
   "nodes" : {
     "0": {
       "expected_successor": false,
       "action": "---",
-      "state": "0xcf9820",
+      "state": "0x18950e0",
       "distance": 0,
       "is_relevant": 1,
       "is_goal": 1,
@@ -17,27 +17,65 @@
     },
     "1": {
       "expected_successor": "0",
-      "action": "ask-side",
-      "state": "0xd0a020",
+      "action": "complete",
+      "state": "0x189ada0",
       "distance": 1,
       "is_relevant": 0,
       "is_goal": 0,
       "is_sc": 1,
       "successors": [
         {
-            "outcome_label": "ask-side_DETDUP_validate-side-EQ-fallback",
-            "successor_id": "2"
+            "outcome_label": "complete_DETDUP_finish-EQ-assign-goal",
+            "successor_id": "0"
         },
         {
-            "outcome_label": "ask-side_DETDUP_validate-side-EQ-valid",
-            "successor_id": "0"
+            "outcome_label": "complete_DETDUP_finish-EQ-fallback",
+            "successor_id": "3"
         }
        ]
     },
     "2": {
       "expected_successor": "1",
+      "action": "ask-order",
+      "state": "0x189a720",
+      "distance": 2,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "ask-order_DETDUP_validate-slot-fill-EQ-fallback",
+            "successor_id": "6"
+        },
+        {
+            "outcome_label": "ask-order_DETDUP_validate-slot-fill-EQ-order_certain",
+            "successor_id": "1"
+        },
+        {
+            "outcome_label": "ask-order_DETDUP_validate-slot-fill-EQ-order_uncertain",
+            "successor_id": "4"
+        }
+       ]
+    },
+    "6": {
+      "expected_successor": "2",
       "action": "dialogue_statement",
-      "state": "0xd01f70",
+      "state": "0x18a0db0",
+      "distance": 3,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "dialogue_statement_DETDUP_reset-EQ-lock",
+            "successor_id": "2"
+        }
+       ]
+    },
+    "3": {
+      "expected_successor": "1",
+      "action": "dialogue_statement",
+      "state": "0x189d190",
       "distance": 2,
       "is_relevant": 0,
       "is_goal": 0,
@@ -49,117 +87,33 @@
         }
        ]
     },
-    "3": {
-      "expected_successor": "2",
-      "action": "ask-drink",
-      "state": "0xcff540",
-      "distance": 3,
-      "is_relevant": 0,
-      "is_goal": 0,
-      "is_sc": 1,
-      "successors": [
-        {
-            "outcome_label": "ask-drink_DETDUP_validate-drink-EQ-fallback",
-            "successor_id": "7"
-        },
-        {
-            "outcome_label": "ask-drink_DETDUP_validate-drink-EQ-unclear",
-            "successor_id": "5"
-        },
-        {
-            "outcome_label": "ask-drink_DETDUP_validate-drink-EQ-valid",
-            "successor_id": "2"
-        }
-       ]
-    },
     "4": {
-      "expected_successor": "3",
-      "action": "ask-order",
-      "state": "0xd09fe0",
-      "distance": 4,
+      "expected_successor": "1",
+      "action": "clarify__order",
+      "state": "0x189da00",
+      "distance": 2,
       "is_relevant": 0,
       "is_goal": 0,
       "is_sc": 1,
       "successors": [
         {
-            "outcome_label": "ask-order_DETDUP_validate-response-EQ-fallback",
-            "successor_id": "12"
+            "outcome_label": "clarify__order_DETDUP_validate-clarification-EQ-confirm",
+            "successor_id": "1"
         },
         {
-            "outcome_label": "ask-order_DETDUP_validate-response-EQ-unclear",
-            "successor_id": "10"
+            "outcome_label": "clarify__order_DETDUP_validate-clarification-EQ-deny",
+            "successor_id": "2"
         },
         {
-            "outcome_label": "ask-order_DETDUP_validate-response-EQ-valid",
-            "successor_id": "3"
-        }
-       ]
-    },
-    "6": {
-      "expected_successor": "5",
-      "action": "dialogue_statement",
-      "state": "0xd05bd0",
-      "distance": 3,
-      "is_relevant": 0,
-      "is_goal": 0,
-      "is_sc": 1,
-      "successors": [
-        {
-            "outcome_label": "dialogue_statement_DETDUP_reset-EQ-lock",
+            "outcome_label": "clarify__order_DETDUP_validate-clarification-EQ-fallback",
             "successor_id": "5"
         }
        ]
     },
     "5": {
-      "expected_successor": "1",
-      "action": "clarify__ask-drink",
-      "state": "0xd06170",
-      "distance": 2,
-      "is_relevant": 0,
-      "is_goal": 0,
-      "is_sc": 1,
-      "successors": [
-        {
-            "outcome_label": "clarify__ask-drink_DETDUP_validate-clarification-EQ-confirm",
-            "successor_id": "1"
-        },
-        {
-            "outcome_label": "clarify__ask-drink_DETDUP_validate-clarification-EQ-deny",
-            "successor_id": "3"
-        },
-        {
-            "outcome_label": "clarify__ask-drink_DETDUP_validate-clarification-EQ-fallback",
-            "successor_id": "6"
-        }
-       ]
-    },
-    "10": {
-      "expected_successor": "1",
-      "action": "clarify__ask-order",
-      "state": "0xd075e0",
-      "distance": 2,
-      "is_relevant": 0,
-      "is_goal": 0,
-      "is_sc": 1,
-      "successors": [
-        {
-            "outcome_label": "clarify__ask-order_DETDUP_validate-clarification-EQ-confirm",
-            "successor_id": "1"
-        },
-        {
-            "outcome_label": "clarify__ask-order_DETDUP_validate-clarification-EQ-deny",
-            "successor_id": "4"
-        },
-        {
-            "outcome_label": "clarify__ask-order_DETDUP_validate-clarification-EQ-fallback",
-            "successor_id": "11"
-        }
-       ]
-    },
-    "11": {
-      "expected_successor": "10",
+      "expected_successor": "4",
       "action": "dialogue_statement",
-      "state": "0xd076f0",
+      "state": "0x189e630",
       "distance": 3,
       "is_relevant": 0,
       "is_goal": 0,
@@ -167,150 +121,58 @@
       "successors": [
         {
             "outcome_label": "dialogue_statement_DETDUP_reset-EQ-lock",
-            "successor_id": "10"
-        }
-       ]
-    },
-    "12": {
-      "expected_successor": "4",
-      "action": "dialogue_statement",
-      "state": "0xd06730",
-      "distance": 5,
-      "is_relevant": 0,
-      "is_goal": 0,
-      "is_sc": 1,
-      "successors": [
-        {
-            "outcome_label": "dialogue_statement_DETDUP_reset-EQ-lock",
             "successor_id": "4"
-        }
-       ]
-    },
-    "7": {
-      "expected_successor": "3",
-      "action": "dialogue_statement",
-      "state": "0xd09700",
-      "distance": 4,
-      "is_relevant": 0,
-      "is_goal": 0,
-      "is_sc": 1,
-      "successors": [
-        {
-            "outcome_label": "dialogue_statement_DETDUP_reset-EQ-lock",
-            "successor_id": "3"
         }
        ]
     }
   },
   "edges" : [
-      ["1", ">", "2"],
       ["1", ">", "0"],
+      ["1", ">", "3"],
+      ["2", ">", "6"],
       ["2", ">", "1"],
-      ["3", ">", "7"],
-      ["3", ">", "5"],
-      ["3", ">", "2"],
-      ["4", ">", "12"],
-      ["4", ">", "10"],
-      ["4", ">", "3"],
-      ["6", ">", "5"],
-      ["5", ">", "1"],
-      ["5", ">", "3"],
-      ["5", ">", "6"],
-      ["10", ">", "1"],
-      ["10", ">", "4"],
-      ["10", ">", "11"],
-      ["11", ">", "10"],
-      ["12", ">", "4"],
-      ["7", ">", "3"]
+      ["2", ">", "4"],
+      ["6", ">", "2"],
+      ["3", ">", "1"],
+      ["4", ">", "1"],
+      ["4", ">", "2"],
+      ["4", ">", "5"],
+      ["5", ">", "4"]
   ],
   "states" : {
-    "0xcf9820": [
+    "0x18950e0": [
       "Atom goal()"
     ],
-    "0xd0a020": [
-      "NegatedAtom have_side()",
+    "0x189ada0": [
       "Atom have_order()",
-      "NegatedAtom forcing__ask-drink()",
       "NegatedAtom maybe-have_order()",
       "NegatedAtom force-statement()"
     ],
-    "0xd01f70": [
-      "NegatedAtom have_side()",
-      "Atom have_order()",
-      "NegatedAtom forcing__ask-drink()",
+    "0x189a720": [
+      "NegatedAtom have_order()",
+      "NegatedAtom maybe-have_order()",
+      "NegatedAtom force-statement()"
+    ],
+    "0x18a0db0": [
+      "NegatedAtom have_order()",
       "NegatedAtom maybe-have_order()",
       "Atom force-statement()",
       "Atom have-message()"
     ],
-    "0xcff540": [
-      "NegatedAtom have_side()",
+    "0x189d190": [
       "Atom have_order()",
-      "NegatedAtom have_drink()",
-      "NegatedAtom maybe-have_drink()",
-      "NegatedAtom maybe-have_order()",
-      "NegatedAtom force-statement()"
-    ],
-    "0xd09fe0": [
-      "NegatedAtom have_side()",
-      "NegatedAtom have_order()",
-      "NegatedAtom have_drink()",
-      "NegatedAtom maybe-have_drink()",
-      "NegatedAtom forcing__ask-drink()",
-      "NegatedAtom maybe-have_order()",
-      "NegatedAtom force-statement()"
-    ],
-    "0xd05bd0": [
-      "NegatedAtom have_side()",
-      "Atom have_order()",
-      "NegatedAtom have_drink()",
-      "Atom maybe-have_drink()",
       "NegatedAtom maybe-have_order()",
       "Atom force-statement()",
       "Atom have-message()"
     ],
-    "0xd06170": [
-      "NegatedAtom have_side()",
-      "Atom have_order()",
-      "NegatedAtom have_drink()",
-      "Atom maybe-have_drink()",
-      "NegatedAtom maybe-have_order()",
-      "NegatedAtom force-statement()"
-    ],
-    "0xd075e0": [
-      "NegatedAtom have_side()",
+    "0x189da00": [
       "NegatedAtom have_order()",
-      "NegatedAtom have_drink()",
-      "NegatedAtom maybe-have_drink()",
-      "NegatedAtom forcing__ask-drink()",
       "Atom maybe-have_order()",
       "NegatedAtom force-statement()"
     ],
-    "0xd076f0": [
-      "NegatedAtom have_side()",
+    "0x189e630": [
       "NegatedAtom have_order()",
-      "NegatedAtom have_drink()",
-      "NegatedAtom maybe-have_drink()",
-      "NegatedAtom forcing__ask-drink()",
       "Atom maybe-have_order()",
-      "Atom force-statement()",
-      "Atom have-message()"
-    ],
-    "0xd06730": [
-      "NegatedAtom have_side()",
-      "NegatedAtom have_order()",
-      "NegatedAtom have_drink()",
-      "NegatedAtom maybe-have_drink()",
-      "NegatedAtom forcing__ask-drink()",
-      "NegatedAtom maybe-have_order()",
-      "Atom force-statement()",
-      "Atom have-message()"
-    ],
-    "0xd09700": [
-      "NegatedAtom have_side()",
-      "Atom have_order()",
-      "NegatedAtom have_drink()",
-      "NegatedAtom maybe-have_drink()",
-      "NegatedAtom maybe-have_order()",
       "Atom force-statement()",
       "Atom have-message()"
     ]

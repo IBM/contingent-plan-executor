@@ -101,10 +101,6 @@ class InMemorySession(SessionBase):
         self._delta_history.append(progress)
         self._print_update_report()
 
-        print("\n")
-        print("\n".join(f for f in progress.actual_state.fluents))
-        print("\n")
-
     def update_action_result(self, result):
         self._current_action_result = result
 

@@ -16,6 +16,17 @@
                 "initially": false
             }
         },
+        "drink": {
+            "type": "enum",
+            "config": [
+                "coke",
+                "coffee"
+            ],
+            "known": {
+                "type": "fflag",
+                "initially": false
+            }
+        },
         "goal": {
             "type": "flag",
             "config": false
@@ -57,19 +68,36 @@
         },
         "share_all": {
             "variables": [
+                "$order",
+                "$drink"
+            ],
+            "utterances": [
+                "I want a $order pizza with a $drink",
+                "$order pizza with a $drink",
+                "Can I get a $order pizza with a $drink"
+            ]
+        },
+        "share_order": {
+            "variables": [
                 "$order"
             ],
             "utterances": [
-                "I want a $order pizza",
-                "$order pizza",
-                "Can I get a $order pizza"
+                "I want a $order pizza.",
+                "$order pizza please!",
+                "Can I get a $order pizza?"
+            ]
+        },
+        "share_drink": {
+            "variables": [
+                "$drink"
+            ],
+            "utterances": [
+                "I want to drink $drink.",
+                "$drink with ice please!",
+                "Can I get $drink to drink?"
             ]
         },
         "fallback": {
-            "variables": [],
-            "utterances": []
-        },
-        "unclear": {
             "variables": [],
             "utterances": []
         }
@@ -95,6 +123,14 @@
                     "Unknown"
                 ],
                 [
+                    "drink",
+                    null
+                ],
+                [
+                    "drink",
+                    "Unknown"
+                ],
+                [
                     "force-statement",
                     false
                 ]
@@ -110,12 +146,111 @@
                                 "known": true,
                                 "certainty": "Known",
                                 "interpretation": "spel"
+                            },
+                            "drink": {
+                                "value": "$drink",
+                                "known": true,
+                                "certainty": "Known",
+                                "interpretation": "spel"
                             }
                         },
                         "intent": "share_all",
-                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-order_certain",
+                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-order_found-drink_found",
+                        "assignments": {
+                            "$order": "found",
+                            "$drink": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "order": {
+                                "value": "$order",
+                                "known": true,
+                                "certainty": "Known",
+                                "interpretation": "spel"
+                            },
+                            "drink": {
+                                "value": "$drink",
+                                "known": "maybe",
+                                "certainty": "Uncertain",
+                                "interpretation": "spel"
+                            }
+                        },
+                        "intent": {
+                            "order": "found",
+                            "drink": "maybe-found"
+                        },
+                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-order_found-drink_maybe-found",
+                        "assignments": {
+                            "$order": "found",
+                            "$drink": "maybe-found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "order": {
+                                "value": "$order",
+                                "known": true,
+                                "certainty": "Known",
+                                "interpretation": "spel"
+                            }
+                        },
+                        "intent": {
+                            "order": "found"
+                        },
+                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-order_found",
                         "assignments": {
                             "$order": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "order": {
+                                "value": "$order",
+                                "known": "maybe",
+                                "certainty": "Uncertain",
+                                "interpretation": "spel"
+                            },
+                            "drink": {
+                                "value": "$drink",
+                                "known": true,
+                                "certainty": "Known",
+                                "interpretation": "spel"
+                            }
+                        },
+                        "intent": {
+                            "order": "maybe-found",
+                            "drink": "found"
+                        },
+                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-order_maybe-found-drink_found",
+                        "assignments": {
+                            "$order": "maybe-found",
+                            "$drink": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "order": {
+                                "value": "$order",
+                                "known": "maybe",
+                                "certainty": "Uncertain",
+                                "interpretation": "spel"
+                            },
+                            "drink": {
+                                "value": "$drink",
+                                "known": "maybe",
+                                "certainty": "Uncertain",
+                                "interpretation": "spel"
+                            }
+                        },
+                        "intent": {
+                            "order": "maybe-found",
+                            "drink": "maybe-found"
+                        },
+                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-order_maybe-found-drink_maybe-found",
+                        "assignments": {
+                            "$order": "maybe-found",
+                            "$drink": "maybe-found"
                         }
                     },
                     {
@@ -128,11 +263,45 @@
                             }
                         },
                         "intent": {
-                            "order": "uncertain"
+                            "order": "maybe-found"
                         },
-                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-order_uncertain",
+                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-order_maybe-found",
                         "assignments": {
                             "$order": "maybe-found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "drink": {
+                                "value": "$drink",
+                                "known": true,
+                                "certainty": "Known",
+                                "interpretation": "spel"
+                            }
+                        },
+                        "intent": {
+                            "drink": "found"
+                        },
+                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-drink_found",
+                        "assignments": {
+                            "$drink": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "drink": {
+                                "value": "$drink",
+                                "known": "maybe",
+                                "certainty": "Uncertain",
+                                "interpretation": "spel"
+                            }
+                        },
+                        "intent": {
+                            "drink": "maybe-found"
+                        },
+                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-drink_maybe-found",
+                        "assignments": {
+                            "$drink": "maybe-found"
                         }
                     },
                     {
@@ -155,12 +324,13 @@
             "intents": {
                 "share_all": {
                     "variables": [
-                        "$order"
+                        "$order",
+                        "$drink"
                     ],
                     "utterances": [
-                        "I want a $order pizza",
-                        "$order pizza",
-                        "Can I get a $order pizza"
+                        "I want a $order pizza with a $drink",
+                        "$order pizza with a $drink",
+                        "Can I get a $order pizza with a $drink"
                     ]
                 },
                 "fallback": {
@@ -180,8 +350,8 @@
                     "Known"
                 ],
                 [
-                    "force-statement",
-                    false
+                    "drink",
+                    "Known"
                 ]
             ],
             "effect": {
@@ -198,33 +368,8 @@
                         "name": "complete_DETDUP_finish-EQ-assign-goal",
                         "intent": null,
                         "assignments": {}
-                    },
-                    {
-                        "updates": {
-                            "have-message": {
-                                "value": true,
-                                "interpretation": "json"
-                            },
-                            "force-statement": {
-                                "value": true,
-                                "interpretation": "json"
-                            }
-                        },
-                        "intent": "fallback",
-                        "name": "complete_DETDUP_finish-EQ-fallback",
-                        "assignments": {}
                     }
                 ]
-            },
-            "fallback_message_variants": [
-                "Sorry, I couldn't understand that input.",
-                "I couldn't quite get that."
-            ],
-            "intents": {
-                "fallback": {
-                    "variables": [],
-                    "utterances": []
-                }
             }
         },
         "dialogue_statement": {
@@ -365,6 +510,273 @@
                         "no thank you"
                     ]
                 },
+                "fallback": {
+                    "variables": [],
+                    "utterances": []
+                }
+            }
+        },
+        "clarify__drink": {
+            "type": "dialogue",
+            "subtype": "dialogue disambiguation",
+            "message_variants": [
+                "Would you like to drink $drink?"
+            ],
+            "condition": [
+                [
+                    "drink",
+                    "Uncertain"
+                ],
+                [
+                    "force-statement",
+                    false
+                ]
+            ],
+            "effect": {
+                "global-outcome-name": "validate-clarification",
+                "type": "oneof",
+                "outcomes": [
+                    {
+                        "updates": {
+                            "drink": {
+                                "value": "$drink",
+                                "known": true,
+                                "certainty": "Known",
+                                "interpretation": "spel"
+                            }
+                        },
+                        "intent": "confirm",
+                        "name": "clarify__drink_DETDUP_validate-clarification-EQ-confirm",
+                        "assignments": {
+                            "$drink": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "drink": {
+                                "value": null,
+                                "known": false,
+                                "certainty": "Unknown",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "deny",
+                        "name": "clarify__drink_DETDUP_validate-clarification-EQ-deny",
+                        "assignments": {
+                            "$drink": "didnt-find"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "have-message": {
+                                "value": true,
+                                "interpretation": "json"
+                            },
+                            "force-statement": {
+                                "value": true,
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "fallback",
+                        "name": "clarify__drink_DETDUP_validate-clarification-EQ-fallback",
+                        "assignments": {}
+                    }
+                ]
+            },
+            "fallback_message_variants": [
+                "Sorry, I couldn't understand that input.",
+                "I couldn't quite get that."
+            ],
+            "intents": {
+                "confirm": {
+                    "variables": [],
+                    "utterances": [
+                        "yes",
+                        "yeah",
+                        "that's it",
+                        "Y",
+                        "mhm",
+                        "confirm",
+                        "yes please"
+                    ]
+                },
+                "deny": {
+                    "variables": [],
+                    "utterances": [
+                        "no",
+                        "not at all",
+                        "that's not what i meant",
+                        "absolutely not",
+                        "i don't want that",
+                        "nah",
+                        "no thanks",
+                        "no thank you"
+                    ]
+                },
+                "fallback": {
+                    "variables": [],
+                    "utterances": []
+                }
+            }
+        },
+        "single_slot__order": {
+            "type": "dialogue",
+            "subtype": "dialogue disambiguation",
+            "message_variants": [
+                "Please enter a valid value for order."
+            ],
+            "condition": [
+                [
+                    "order",
+                    "Unknown"
+                ],
+                [
+                    "force-statement",
+                    false
+                ]
+            ],
+            "effect": {
+                "global-outcome-name": "validate-clarification",
+                "type": "oneof",
+                "outcomes": [
+                    {
+                        "updates": {
+                            "order": {
+                                "value": "$order",
+                                "known": true,
+                                "certainty": "Known",
+                                "interpretation": "spel"
+                            }
+                        },
+                        "intent": {
+                            "order": "found"
+                        },
+                        "name": "single_slot__order_DETDUP_validate-clarification-EQ-fill-slot",
+                        "assignments": {
+                            "$order": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "order": {
+                                "value": "$order",
+                                "known": "maybe",
+                                "certainty": "Uncertain",
+                                "interpretation": "spel"
+                            }
+                        },
+                        "intent": {
+                            "order": "maybe-found"
+                        },
+                        "name": "single_slot__order_DETDUP_validate-clarification-EQ-slot-unclear",
+                        "assignments": {
+                            "$order": "maybe-found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "have-message": {
+                                "value": true,
+                                "interpretation": "json"
+                            },
+                            "force-statement": {
+                                "value": true,
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "fallback",
+                        "name": "single_slot__order_DETDUP_validate-clarification-EQ-fallback",
+                        "assignments": {}
+                    }
+                ]
+            },
+            "fallback_message_variants": [
+                "Sorry, I couldn't understand that input.",
+                "I couldn't quite get that."
+            ],
+            "intents": {
+                "fallback": {
+                    "variables": [],
+                    "utterances": []
+                }
+            }
+        },
+        "single_slot__drink": {
+            "type": "dialogue",
+            "subtype": "dialogue disambiguation",
+            "message_variants": [
+                "Please enter a valid value for drink."
+            ],
+            "condition": [
+                [
+                    "drink",
+                    "Unknown"
+                ],
+                [
+                    "force-statement",
+                    false
+                ]
+            ],
+            "effect": {
+                "global-outcome-name": "validate-clarification",
+                "type": "oneof",
+                "outcomes": [
+                    {
+                        "updates": {
+                            "drink": {
+                                "value": "$drink",
+                                "known": true,
+                                "certainty": "Known",
+                                "interpretation": "spel"
+                            }
+                        },
+                        "intent": {
+                            "drink": "found"
+                        },
+                        "name": "single_slot__drink_DETDUP_validate-clarification-EQ-fill-slot",
+                        "assignments": {
+                            "$drink": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "drink": {
+                                "value": "$drink",
+                                "known": "maybe",
+                                "certainty": "Uncertain",
+                                "interpretation": "spel"
+                            }
+                        },
+                        "intent": {
+                            "drink": "maybe-found"
+                        },
+                        "name": "single_slot__drink_DETDUP_validate-clarification-EQ-slot-unclear",
+                        "assignments": {
+                            "$drink": "maybe-found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "have-message": {
+                                "value": true,
+                                "interpretation": "json"
+                            },
+                            "force-statement": {
+                                "value": true,
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "fallback",
+                        "name": "single_slot__drink_DETDUP_validate-clarification-EQ-fallback",
+                        "assignments": {}
+                    }
+                ]
+            },
+            "fallback_message_variants": [
+                "Sorry, I couldn't understand that input.",
+                "I couldn't quite get that."
+            ],
+            "intents": {
                 "fallback": {
                     "variables": [],
                     "utterances": []

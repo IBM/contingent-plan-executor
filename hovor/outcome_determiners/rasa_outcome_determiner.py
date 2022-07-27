@@ -5,10 +5,11 @@ import requests
 import json
 import spacy
 import random
+from copy import deepcopy
 from nltk.corpus import wordnet
 
-from hovor.planning.partial_state import PartialState
 LABELS = spacy.load("en_core_web_md").get_pipe("ner").labels
+THRESHOLD = 0.65
 
 class RasaOutcomeDeterminer(OutcomeDeterminerBase):
     """Determiner"""
@@ -52,9 +53,9 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                     extracted = self.find_rasa_entity(entity)
                     if not extracted:
                         return
-                    certainty = "uncertain"
+                    certainty = "maybe-found"
                 else:
-                    certainty = "certain"
+                    certainty = "found"
         # rasa
         else:
             extracted = self.find_rasa_entity(entity)
@@ -63,26 +64,29 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                     extracted = []
                     extracted.extend(val for method_vals in self.spacy_entities.values() for val in method_vals)
                     extracted = random.choice(extracted)
-                    certainty = "uncertain"
+                    certainty = "maybe-found"
                 else:
                     return
             else:
-                certainty = "certain"
+                certainty = "found"
         return {"extracted": extracted, "value": extracted["value"], "certainty": certainty}
 
     def extract_entities(self, intent, progress):
         entities = {}
-        for entity in self.intents[intent["name"]]["variables"]:
-            entity = entity[1:]
-            # get rid of $, raw extract single entity, then validate
+        # get entities from frozenset
+        for entity in [f[0] for f in intent["name"]]:
+            # raw extract single entity, then validate
             extracted_info = self.extract_entity(entity)
             if extracted_info:
                 extracted_info = RasaOutcomeDeterminer._make_entity_sample(entity, extracted_info, progress)
                 if not extracted_info["sample"]:
-                    return                    
-            # have to extract ALL entities to pass
+                    return
             else:
-                return
+                extracted_info = {"certainty": "didnt-find", "sample": None}               
+            # TODO: instead, check if we can map the entities to an outcome
+            # have to extract ALL entities to pass
+            # else:
+            #     return
             entities[entity] = extracted_info
         return entities
 
@@ -92,41 +96,57 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
 
         ranked_groups = []
         intent_to_outcome_map = {}
-        for outcome in outcome_groups:
-            intent = self.full_outcomes[outcome.name]["intent"]
+        for out in outcome_groups:
+            intent = self.full_outcomes[out.name]["intent"]
             if type(intent) == dict:
-                intent = frozenset(intent.items())
-            intent_to_outcome_map[intent] = outcome
+                updated_intent = frozenset(intent.items())
+            else:
+                updated_intent = intent
+                if len(self.intents[intent]["variables"]) > 0:
+                    entity_requirements = self.full_outcomes[out.name]["entity_requirements"]
+                    if entity_requirements:
+                        updated_intent = frozenset(entity_requirements.items())
+                    # for i in range(len(r["intent_ranking"])):
+                    #     if r["intent_ranking"][i]["name"] == intent:
+                    #         r["intent_ranking"][i]["name"] = updated_intent
+            intent_to_outcome_map[updated_intent] = out
+
+        for i in range(len(r["intent_ranking"])):
+            extracted_intent = r["intent_ranking"][i]
+            if len(self.intents[extracted_intent["name"]]["variables"]) > 0:
+                r["intent_ranking"][i] = {"name": frozenset({v[1:]: "found" for v in self.intents[extracted_intent["name"]]["variables"]}.items()), "confidence": extracted_intent["confidence"]}
 
         self.initialize_extracted_entities(r["entities"])
-  
         chosen_intent = None
         entities = {}
         for intent in r["intent_ranking"]:
             if intent["name"] in intent_to_outcome_map:
                 # if this intent expects entities, make sure we extract them
-                if len(self.intents[intent["name"]]["variables"]) > 0:
+                if type(intent["name"]) == frozenset:
                     entities = self.extract_entities(intent, progress)
-                    if entities:
+                    # if no entities were successfully extracted
+                    if {entities[e]["sample"] for e in entities} != {None}:
                         # stop looking for a suitable intent if we found all entities
                         chosen_intent = intent
                         # adjust to match clarity if necessary
                         key = {}
                         for entity, entity_config in entities.items():
                             key[entity] = entity_config["certainty"]
-                        if "uncertain" in key.values():
+                        if "maybe-found" in key.values() or "didnt-find" in key.values():
                             chosen_intent["name"] = frozenset(key.items())
                         break
-                else:
-                    # stop looking for a suitable intent if the intent extracted doesn't require entities
-                    chosen_intent = intent
-                    break
+                else:        
+                    if intent["confidence"] > THRESHOLD:
+                        # stop looking for a suitable intent if the intent extracted doesn't require entities
+                        chosen_intent = intent
+                        break
         if chosen_intent:
             not_picked = [i for i in r["intent_ranking"] if i["name"] in intent_to_outcome_map]
             not_picked.remove(chosen_intent)
             ranked_groups = [(intent_to_outcome_map[intent["name"]], intent["confidence"]) for intent in [chosen_intent] + not_picked]
             for entity, entity_info in entities.items():
-                progress.add_detected_entity(entity, entity_info["sample"])  
+                if "sample" in entity_info:
+                    progress.add_detected_entity(entity, entity_info["sample"])  
         else:
             chosen_intent = "fallback"
             ranked_groups = [i for i in r["intent_ranking"] if i["name"] in intent_to_outcome_map]
@@ -149,7 +169,7 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                 extracted_info["sample"] = entity_value
                 return extracted_info
             else:
-                extracted_info["certainty"] = "uncertain"
+                extracted_info["certainty"] = "maybe-found"
                 for syn in wordnet.synsets(entity_value):
                     for option in entity_config:
                         if option in syn._definition:
@@ -191,3 +211,5 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
             return extracted_info
         else:
             raise NotImplementedError("Cant sample from type: " + entity_type)
+        extracted_info["sample"] = None
+        return extracted_info

@@ -29,141 +29,2058 @@ nlu:
 
     - no thank you'
   intent: deny
-- examples: '- I want a [cheese]{"entity": "order", "value": "cheese"} pizza
+- examples: '- I want a [cheese]{"entity": "order", "value": "cheese"} pizza with
+    a [coke]{"entity": "drink", "value": "coke"}
 
-    - [cheese]{"entity": "order", "value": "cheese"} pizza
+    - [cheese]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
 
-    - Can I get a [cheese]{"entity": "order", "value": "cheese"} pizza
+    - Can I get a [cheese]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
 
-    - I want a [pepperoni]{"entity": "order", "value": "pepperoni"} pizza
+    - I want a [cheese]{"entity": "order", "value": "cheese"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
 
-    - [pepperoni]{"entity": "order", "value": "pepperoni"} pizza
+    - [cheese]{"entity": "order", "value": "cheese"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
 
-    - Can I get a [pepperoni]{"entity": "order", "value": "pepperoni"} pizza
+    - Can I get a [cheese]{"entity": "order", "value": "cheese"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
 
-    - I want a [mushroom]{"entity": "order", "value": "mushroom"} pizza
+    - I want a [cheese]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
 
-    - [mushroom]{"entity": "order", "value": "mushroom"} pizza
+    - [cheese]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
 
-    - Can I get a [mushroom]{"entity": "order", "value": "mushroom"} pizza
+    - Can I get a [cheese]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
 
-    - I want a [gluten free]{"entity": "order", "value": "gluten free"} pizza
+    - I want a [cheese]{"entity": "order", "value": "cheese"} pizza with a [coca cola]{"entity":
+    "drink", "value": "coke"}
 
-    - [gluten free]{"entity": "order", "value": "gluten free"} pizza
+    - [cheese]{"entity": "order", "value": "cheese"} pizza with a [coca cola]{"entity":
+    "drink", "value": "coke"}
 
-    - Can I get a [gluten free]{"entity": "order", "value": "gluten free"} pizza
+    - Can I get a [cheese]{"entity": "order", "value": "cheese"} pizza with a [coca
+    cola]{"entity": "drink", "value": "coke"}
 
-    - I want a [hawaiian]{"entity": "order", "value": "hawaiian"} pizza
+    - I want a [cheese]{"entity": "order", "value": "cheese"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
 
-    - [hawaiian]{"entity": "order", "value": "hawaiian"} pizza
+    - [cheese]{"entity": "order", "value": "cheese"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
 
-    - Can I get a [hawaiian]{"entity": "order", "value": "hawaiian"} pizza
+    - Can I get a [cheese]{"entity": "order", "value": "cheese"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
 
-    - I want a [chz]{"entity": "order", "value": "cheese"} pizza
+    - I want a [cheese]{"entity": "order", "value": "cheese"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
 
-    - [chz]{"entity": "order", "value": "cheese"} pizza
+    - [cheese]{"entity": "order", "value": "cheese"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
 
-    - Can I get a [chz]{"entity": "order", "value": "cheese"} pizza
+    - Can I get a [cheese]{"entity": "order", "value": "cheese"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
 
-    - I want a [cheez]{"entity": "order", "value": "cheese"} pizza
+    - I want a [cheese]{"entity": "order", "value": "cheese"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
 
-    - [cheez]{"entity": "order", "value": "cheese"} pizza
+    - [cheese]{"entity": "order", "value": "cheese"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
 
-    - Can I get a [cheez]{"entity": "order", "value": "cheese"} pizza
+    - Can I get a [cheese]{"entity": "order", "value": "cheese"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
 
-    - I want a [mozzarella]{"entity": "order", "value": "cheese"} pizza
+    - I want a [cheese]{"entity": "order", "value": "cheese"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
 
-    - [mozzarella]{"entity": "order", "value": "cheese"} pizza
+    - [cheese]{"entity": "order", "value": "cheese"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
 
-    - Can I get a [mozzarella]{"entity": "order", "value": "cheese"} pizza
+    - Can I get a [cheese]{"entity": "order", "value": "cheese"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
 
-    - I want a [fromage]{"entity": "order", "value": "cheese"} pizza
+    - I want a [cheese]{"entity": "order", "value": "cheese"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
 
-    - [fromage]{"entity": "order", "value": "cheese"} pizza
+    - [cheese]{"entity": "order", "value": "cheese"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
 
-    - Can I get a [fromage]{"entity": "order", "value": "cheese"} pizza
+    - Can I get a [cheese]{"entity": "order", "value": "cheese"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
 
-    - I want a [cheesy]{"entity": "order", "value": "cheese"} pizza
+    - I want a [pepperoni]{"entity": "order", "value": "pepperoni"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
 
-    - [cheesy]{"entity": "order", "value": "cheese"} pizza
+    - [pepperoni]{"entity": "order", "value": "pepperoni"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
 
-    - Can I get a [cheesy]{"entity": "order", "value": "cheese"} pizza
+    - Can I get a [pepperoni]{"entity": "order", "value": "pepperoni"} pizza with
+    a [coke]{"entity": "drink", "value": "coke"}
 
-    - I want a [peperoni]{"entity": "order", "value": "pepperoni"} pizza
+    - I want a [pepperoni]{"entity": "order", "value": "pepperoni"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
 
-    - [peperoni]{"entity": "order", "value": "pepperoni"} pizza
+    - [pepperoni]{"entity": "order", "value": "pepperoni"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
 
-    - Can I get a [peperoni]{"entity": "order", "value": "pepperoni"} pizza
+    - Can I get a [pepperoni]{"entity": "order", "value": "pepperoni"} pizza with
+    a [coffee]{"entity": "drink", "value": "coffee"}
 
-    - I want a [meat]{"entity": "order", "value": "pepperoni"} pizza
+    - I want a [pepperoni]{"entity": "order", "value": "pepperoni"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
 
-    - [meat]{"entity": "order", "value": "pepperoni"} pizza
+    - [pepperoni]{"entity": "order", "value": "pepperoni"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
 
-    - Can I get a [meat]{"entity": "order", "value": "pepperoni"} pizza
+    - Can I get a [pepperoni]{"entity": "order", "value": "pepperoni"} pizza with
+    a [coke]{"entity": "drink", "value": "coke"}
 
-    - I want a [sausage]{"entity": "order", "value": "pepperoni"} pizza
+    - I want a [pepperoni]{"entity": "order", "value": "pepperoni"} pizza with a [coca
+    cola]{"entity": "drink", "value": "coke"}
 
-    - [sausage]{"entity": "order", "value": "pepperoni"} pizza
+    - [pepperoni]{"entity": "order", "value": "pepperoni"} pizza with a [coca cola]{"entity":
+    "drink", "value": "coke"}
 
-    - Can I get a [sausage]{"entity": "order", "value": "pepperoni"} pizza
+    - Can I get a [pepperoni]{"entity": "order", "value": "pepperoni"} pizza with
+    a [coca cola]{"entity": "drink", "value": "coke"}
 
-    - I want a [vegetable]{"entity": "order", "value": "mushroom"} pizza
+    - I want a [pepperoni]{"entity": "order", "value": "pepperoni"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
 
-    - [vegetable]{"entity": "order", "value": "mushroom"} pizza
+    - [pepperoni]{"entity": "order", "value": "pepperoni"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
 
-    - Can I get a [vegetable]{"entity": "order", "value": "mushroom"} pizza
+    - Can I get a [pepperoni]{"entity": "order", "value": "pepperoni"} pizza with
+    a [soda]{"entity": "drink", "value": "coke"}
 
-    - I want a [veggie]{"entity": "order", "value": "mushroom"} pizza
+    - I want a [pepperoni]{"entity": "order", "value": "pepperoni"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
 
-    - [veggie]{"entity": "order", "value": "mushroom"} pizza
+    - [pepperoni]{"entity": "order", "value": "pepperoni"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
 
-    - Can I get a [veggie]{"entity": "order", "value": "mushroom"} pizza
+    - Can I get a [pepperoni]{"entity": "order", "value": "pepperoni"} pizza with
+    a [pop]{"entity": "drink", "value": "coke"}
 
-    - I want a [musroom]{"entity": "order", "value": "mushroom"} pizza
+    - I want a [pepperoni]{"entity": "order", "value": "pepperoni"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
 
-    - [musroom]{"entity": "order", "value": "mushroom"} pizza
+    - [pepperoni]{"entity": "order", "value": "pepperoni"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
 
-    - Can I get a [musroom]{"entity": "order", "value": "mushroom"} pizza
+    - Can I get a [pepperoni]{"entity": "order", "value": "pepperoni"} pizza with
+    a [caffeine]{"entity": "drink", "value": "coffee"}
 
-    - I want a [shroom]{"entity": "order", "value": "mushroom"} pizza
+    - I want a [pepperoni]{"entity": "order", "value": "pepperoni"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
 
-    - [shroom]{"entity": "order", "value": "mushroom"} pizza
+    - [pepperoni]{"entity": "order", "value": "pepperoni"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
 
-    - Can I get a [shroom]{"entity": "order", "value": "mushroom"} pizza
+    - Can I get a [pepperoni]{"entity": "order", "value": "pepperoni"} pizza with
+    a [decaf]{"entity": "drink", "value": "coffee"}
 
-    - I want a [healthy]{"entity": "order", "value": "gluten free"} pizza
+    - I want a [pepperoni]{"entity": "order", "value": "pepperoni"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
 
-    - [healthy]{"entity": "order", "value": "gluten free"} pizza
+    - [pepperoni]{"entity": "order", "value": "pepperoni"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
 
-    - Can I get a [healthy]{"entity": "order", "value": "gluten free"} pizza
+    - Can I get a [pepperoni]{"entity": "order", "value": "pepperoni"} pizza with
+    a [espresso]{"entity": "drink", "value": "coffee"}
 
-    - I want a [gluten-free]{"entity": "order", "value": "gluten free"} pizza
+    - I want a [mushroom]{"entity": "order", "value": "mushroom"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
 
-    - [gluten-free]{"entity": "order", "value": "gluten free"} pizza
+    - [mushroom]{"entity": "order", "value": "mushroom"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
 
-    - Can I get a [gluten-free]{"entity": "order", "value": "gluten free"} pizza
+    - Can I get a [mushroom]{"entity": "order", "value": "mushroom"} pizza with a
+    [coke]{"entity": "drink", "value": "coke"}
 
-    - I want a [gf]{"entity": "order", "value": "gluten free"} pizza
+    - I want a [mushroom]{"entity": "order", "value": "mushroom"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
 
-    - [gf]{"entity": "order", "value": "gluten free"} pizza
+    - [mushroom]{"entity": "order", "value": "mushroom"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
 
-    - Can I get a [gf]{"entity": "order", "value": "gluten free"} pizza
+    - Can I get a [mushroom]{"entity": "order", "value": "mushroom"} pizza with a
+    [coffee]{"entity": "drink", "value": "coffee"}
 
-    - I want a [pineapple]{"entity": "order", "value": "hawaiian"} pizza
+    - I want a [mushroom]{"entity": "order", "value": "mushroom"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
 
-    - [pineapple]{"entity": "order", "value": "hawaiian"} pizza
+    - [mushroom]{"entity": "order", "value": "mushroom"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
 
-    - Can I get a [pineapple]{"entity": "order", "value": "hawaiian"} pizza
+    - Can I get a [mushroom]{"entity": "order", "value": "mushroom"} pizza with a
+    [coke]{"entity": "drink", "value": "coke"}
 
-    - I want a [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza
+    - I want a [mushroom]{"entity": "order", "value": "mushroom"} pizza with a [coca
+    cola]{"entity": "drink", "value": "coke"}
 
-    - [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza
+    - [mushroom]{"entity": "order", "value": "mushroom"} pizza with a [coca cola]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [mushroom]{"entity": "order", "value": "mushroom"} pizza with a
+    [coca cola]{"entity": "drink", "value": "coke"}
+
+    - I want a [mushroom]{"entity": "order", "value": "mushroom"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - [mushroom]{"entity": "order", "value": "mushroom"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [mushroom]{"entity": "order", "value": "mushroom"} pizza with a
+    [soda]{"entity": "drink", "value": "coke"}
+
+    - I want a [mushroom]{"entity": "order", "value": "mushroom"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - [mushroom]{"entity": "order", "value": "mushroom"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [mushroom]{"entity": "order", "value": "mushroom"} pizza with a
+    [pop]{"entity": "drink", "value": "coke"}
+
+    - I want a [mushroom]{"entity": "order", "value": "mushroom"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - [mushroom]{"entity": "order", "value": "mushroom"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [mushroom]{"entity": "order", "value": "mushroom"} pizza with a
+    [caffeine]{"entity": "drink", "value": "coffee"}
+
+    - I want a [mushroom]{"entity": "order", "value": "mushroom"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - [mushroom]{"entity": "order", "value": "mushroom"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [mushroom]{"entity": "order", "value": "mushroom"} pizza with a
+    [decaf]{"entity": "drink", "value": "coffee"}
+
+    - I want a [mushroom]{"entity": "order", "value": "mushroom"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - [mushroom]{"entity": "order", "value": "mushroom"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [mushroom]{"entity": "order", "value": "mushroom"} pizza with a
+    [espresso]{"entity": "drink", "value": "coffee"}
+
+    - I want a [gluten free]{"entity": "order", "value": "gluten free"} pizza with
+    a [coke]{"entity": "drink", "value": "coke"}
+
+    - [gluten free]{"entity": "order", "value": "gluten free"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [gluten free]{"entity": "order", "value": "gluten free"} pizza with
+    a [coke]{"entity": "drink", "value": "coke"}
+
+    - I want a [gluten free]{"entity": "order", "value": "gluten free"} pizza with
+    a [coffee]{"entity": "drink", "value": "coffee"}
+
+    - [gluten free]{"entity": "order", "value": "gluten free"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [gluten free]{"entity": "order", "value": "gluten free"} pizza with
+    a [coffee]{"entity": "drink", "value": "coffee"}
+
+    - I want a [gluten free]{"entity": "order", "value": "gluten free"} pizza with
+    a [coke]{"entity": "drink", "value": "coke"}
+
+    - [gluten free]{"entity": "order", "value": "gluten free"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [gluten free]{"entity": "order", "value": "gluten free"} pizza with
+    a [coke]{"entity": "drink", "value": "coke"}
+
+    - I want a [gluten free]{"entity": "order", "value": "gluten free"} pizza with
+    a [coca cola]{"entity": "drink", "value": "coke"}
+
+    - [gluten free]{"entity": "order", "value": "gluten free"} pizza with a [coca
+    cola]{"entity": "drink", "value": "coke"}
+
+    - Can I get a [gluten free]{"entity": "order", "value": "gluten free"} pizza with
+    a [coca cola]{"entity": "drink", "value": "coke"}
+
+    - I want a [gluten free]{"entity": "order", "value": "gluten free"} pizza with
+    a [soda]{"entity": "drink", "value": "coke"}
+
+    - [gluten free]{"entity": "order", "value": "gluten free"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [gluten free]{"entity": "order", "value": "gluten free"} pizza with
+    a [soda]{"entity": "drink", "value": "coke"}
+
+    - I want a [gluten free]{"entity": "order", "value": "gluten free"} pizza with
+    a [pop]{"entity": "drink", "value": "coke"}
+
+    - [gluten free]{"entity": "order", "value": "gluten free"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [gluten free]{"entity": "order", "value": "gluten free"} pizza with
+    a [pop]{"entity": "drink", "value": "coke"}
+
+    - I want a [gluten free]{"entity": "order", "value": "gluten free"} pizza with
+    a [caffeine]{"entity": "drink", "value": "coffee"}
+
+    - [gluten free]{"entity": "order", "value": "gluten free"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [gluten free]{"entity": "order", "value": "gluten free"} pizza with
+    a [caffeine]{"entity": "drink", "value": "coffee"}
+
+    - I want a [gluten free]{"entity": "order", "value": "gluten free"} pizza with
+    a [decaf]{"entity": "drink", "value": "coffee"}
+
+    - [gluten free]{"entity": "order", "value": "gluten free"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [gluten free]{"entity": "order", "value": "gluten free"} pizza with
+    a [decaf]{"entity": "drink", "value": "coffee"}
+
+    - I want a [gluten free]{"entity": "order", "value": "gluten free"} pizza with
+    a [espresso]{"entity": "drink", "value": "coffee"}
+
+    - [gluten free]{"entity": "order", "value": "gluten free"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [gluten free]{"entity": "order", "value": "gluten free"} pizza with
+    a [espresso]{"entity": "drink", "value": "coffee"}
+
+    - I want a [hawaiian]{"entity": "order", "value": "hawaiian"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [hawaiian]{"entity": "order", "value": "hawaiian"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [hawaiian]{"entity": "order", "value": "hawaiian"} pizza with a
+    [coke]{"entity": "drink", "value": "coke"}
+
+    - I want a [hawaiian]{"entity": "order", "value": "hawaiian"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - [hawaiian]{"entity": "order", "value": "hawaiian"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [hawaiian]{"entity": "order", "value": "hawaiian"} pizza with a
+    [coffee]{"entity": "drink", "value": "coffee"}
+
+    - I want a [hawaiian]{"entity": "order", "value": "hawaiian"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [hawaiian]{"entity": "order", "value": "hawaiian"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [hawaiian]{"entity": "order", "value": "hawaiian"} pizza with a
+    [coke]{"entity": "drink", "value": "coke"}
+
+    - I want a [hawaiian]{"entity": "order", "value": "hawaiian"} pizza with a [coca
+    cola]{"entity": "drink", "value": "coke"}
+
+    - [hawaiian]{"entity": "order", "value": "hawaiian"} pizza with a [coca cola]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [hawaiian]{"entity": "order", "value": "hawaiian"} pizza with a
+    [coca cola]{"entity": "drink", "value": "coke"}
+
+    - I want a [hawaiian]{"entity": "order", "value": "hawaiian"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - [hawaiian]{"entity": "order", "value": "hawaiian"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [hawaiian]{"entity": "order", "value": "hawaiian"} pizza with a
+    [soda]{"entity": "drink", "value": "coke"}
+
+    - I want a [hawaiian]{"entity": "order", "value": "hawaiian"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - [hawaiian]{"entity": "order", "value": "hawaiian"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [hawaiian]{"entity": "order", "value": "hawaiian"} pizza with a
+    [pop]{"entity": "drink", "value": "coke"}
+
+    - I want a [hawaiian]{"entity": "order", "value": "hawaiian"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - [hawaiian]{"entity": "order", "value": "hawaiian"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [hawaiian]{"entity": "order", "value": "hawaiian"} pizza with a
+    [caffeine]{"entity": "drink", "value": "coffee"}
+
+    - I want a [hawaiian]{"entity": "order", "value": "hawaiian"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - [hawaiian]{"entity": "order", "value": "hawaiian"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [hawaiian]{"entity": "order", "value": "hawaiian"} pizza with a
+    [decaf]{"entity": "drink", "value": "coffee"}
+
+    - I want a [hawaiian]{"entity": "order", "value": "hawaiian"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - [hawaiian]{"entity": "order", "value": "hawaiian"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [hawaiian]{"entity": "order", "value": "hawaiian"} pizza with a
+    [espresso]{"entity": "drink", "value": "coffee"}
+
+    - I want a [chz]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [chz]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity": "drink",
+    "value": "coke"}
+
+    - Can I get a [chz]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [chz]{"entity": "order", "value": "cheese"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - [chz]{"entity": "order", "value": "cheese"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [chz]{"entity": "order", "value": "cheese"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [chz]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [chz]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity": "drink",
+    "value": "coke"}
+
+    - Can I get a [chz]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [chz]{"entity": "order", "value": "cheese"} pizza with a [coca cola]{"entity":
+    "drink", "value": "coke"}
+
+    - [chz]{"entity": "order", "value": "cheese"} pizza with a [coca cola]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [chz]{"entity": "order", "value": "cheese"} pizza with a [coca cola]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [chz]{"entity": "order", "value": "cheese"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - [chz]{"entity": "order", "value": "cheese"} pizza with a [soda]{"entity": "drink",
+    "value": "coke"}
+
+    - Can I get a [chz]{"entity": "order", "value": "cheese"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [chz]{"entity": "order", "value": "cheese"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - [chz]{"entity": "order", "value": "cheese"} pizza with a [pop]{"entity": "drink",
+    "value": "coke"}
+
+    - Can I get a [chz]{"entity": "order", "value": "cheese"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [chz]{"entity": "order", "value": "cheese"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - [chz]{"entity": "order", "value": "cheese"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [chz]{"entity": "order", "value": "cheese"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [chz]{"entity": "order", "value": "cheese"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - [chz]{"entity": "order", "value": "cheese"} pizza with a [decaf]{"entity": "drink",
+    "value": "coffee"}
+
+    - Can I get a [chz]{"entity": "order", "value": "cheese"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [chz]{"entity": "order", "value": "cheese"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - [chz]{"entity": "order", "value": "cheese"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [chz]{"entity": "order", "value": "cheese"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [cheez]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [cheez]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [cheez]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [cheez]{"entity": "order", "value": "cheese"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - [cheez]{"entity": "order", "value": "cheese"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [cheez]{"entity": "order", "value": "cheese"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [cheez]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [cheez]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [cheez]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [cheez]{"entity": "order", "value": "cheese"} pizza with a [coca cola]{"entity":
+    "drink", "value": "coke"}
+
+    - [cheez]{"entity": "order", "value": "cheese"} pizza with a [coca cola]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [cheez]{"entity": "order", "value": "cheese"} pizza with a [coca
+    cola]{"entity": "drink", "value": "coke"}
+
+    - I want a [cheez]{"entity": "order", "value": "cheese"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - [cheez]{"entity": "order", "value": "cheese"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [cheez]{"entity": "order", "value": "cheese"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [cheez]{"entity": "order", "value": "cheese"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - [cheez]{"entity": "order", "value": "cheese"} pizza with a [pop]{"entity": "drink",
+    "value": "coke"}
+
+    - Can I get a [cheez]{"entity": "order", "value": "cheese"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [cheez]{"entity": "order", "value": "cheese"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - [cheez]{"entity": "order", "value": "cheese"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [cheez]{"entity": "order", "value": "cheese"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [cheez]{"entity": "order", "value": "cheese"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - [cheez]{"entity": "order", "value": "cheese"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [cheez]{"entity": "order", "value": "cheese"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [cheez]{"entity": "order", "value": "cheese"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - [cheez]{"entity": "order", "value": "cheese"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [cheez]{"entity": "order", "value": "cheese"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [mozzarella]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [mozzarella]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [mozzarella]{"entity": "order", "value": "cheese"} pizza with a
+    [coke]{"entity": "drink", "value": "coke"}
+
+    - I want a [mozzarella]{"entity": "order", "value": "cheese"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - [mozzarella]{"entity": "order", "value": "cheese"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [mozzarella]{"entity": "order", "value": "cheese"} pizza with a
+    [coffee]{"entity": "drink", "value": "coffee"}
+
+    - I want a [mozzarella]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [mozzarella]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [mozzarella]{"entity": "order", "value": "cheese"} pizza with a
+    [coke]{"entity": "drink", "value": "coke"}
+
+    - I want a [mozzarella]{"entity": "order", "value": "cheese"} pizza with a [coca
+    cola]{"entity": "drink", "value": "coke"}
+
+    - [mozzarella]{"entity": "order", "value": "cheese"} pizza with a [coca cola]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [mozzarella]{"entity": "order", "value": "cheese"} pizza with a
+    [coca cola]{"entity": "drink", "value": "coke"}
+
+    - I want a [mozzarella]{"entity": "order", "value": "cheese"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - [mozzarella]{"entity": "order", "value": "cheese"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [mozzarella]{"entity": "order", "value": "cheese"} pizza with a
+    [soda]{"entity": "drink", "value": "coke"}
+
+    - I want a [mozzarella]{"entity": "order", "value": "cheese"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - [mozzarella]{"entity": "order", "value": "cheese"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [mozzarella]{"entity": "order", "value": "cheese"} pizza with a
+    [pop]{"entity": "drink", "value": "coke"}
+
+    - I want a [mozzarella]{"entity": "order", "value": "cheese"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - [mozzarella]{"entity": "order", "value": "cheese"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [mozzarella]{"entity": "order", "value": "cheese"} pizza with a
+    [caffeine]{"entity": "drink", "value": "coffee"}
+
+    - I want a [mozzarella]{"entity": "order", "value": "cheese"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - [mozzarella]{"entity": "order", "value": "cheese"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [mozzarella]{"entity": "order", "value": "cheese"} pizza with a
+    [decaf]{"entity": "drink", "value": "coffee"}
+
+    - I want a [mozzarella]{"entity": "order", "value": "cheese"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - [mozzarella]{"entity": "order", "value": "cheese"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [mozzarella]{"entity": "order", "value": "cheese"} pizza with a
+    [espresso]{"entity": "drink", "value": "coffee"}
+
+    - I want a [fromage]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [fromage]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [fromage]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [fromage]{"entity": "order", "value": "cheese"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - [fromage]{"entity": "order", "value": "cheese"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [fromage]{"entity": "order", "value": "cheese"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [fromage]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [fromage]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [fromage]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [fromage]{"entity": "order", "value": "cheese"} pizza with a [coca
+    cola]{"entity": "drink", "value": "coke"}
+
+    - [fromage]{"entity": "order", "value": "cheese"} pizza with a [coca cola]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [fromage]{"entity": "order", "value": "cheese"} pizza with a [coca
+    cola]{"entity": "drink", "value": "coke"}
+
+    - I want a [fromage]{"entity": "order", "value": "cheese"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - [fromage]{"entity": "order", "value": "cheese"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [fromage]{"entity": "order", "value": "cheese"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [fromage]{"entity": "order", "value": "cheese"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - [fromage]{"entity": "order", "value": "cheese"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [fromage]{"entity": "order", "value": "cheese"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [fromage]{"entity": "order", "value": "cheese"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - [fromage]{"entity": "order", "value": "cheese"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [fromage]{"entity": "order", "value": "cheese"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [fromage]{"entity": "order", "value": "cheese"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - [fromage]{"entity": "order", "value": "cheese"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [fromage]{"entity": "order", "value": "cheese"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [fromage]{"entity": "order", "value": "cheese"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - [fromage]{"entity": "order", "value": "cheese"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [fromage]{"entity": "order", "value": "cheese"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [cheesy]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [cheesy]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [cheesy]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [cheesy]{"entity": "order", "value": "cheese"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - [cheesy]{"entity": "order", "value": "cheese"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [cheesy]{"entity": "order", "value": "cheese"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [cheesy]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [cheesy]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [cheesy]{"entity": "order", "value": "cheese"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [cheesy]{"entity": "order", "value": "cheese"} pizza with a [coca cola]{"entity":
+    "drink", "value": "coke"}
+
+    - [cheesy]{"entity": "order", "value": "cheese"} pizza with a [coca cola]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [cheesy]{"entity": "order", "value": "cheese"} pizza with a [coca
+    cola]{"entity": "drink", "value": "coke"}
+
+    - I want a [cheesy]{"entity": "order", "value": "cheese"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - [cheesy]{"entity": "order", "value": "cheese"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [cheesy]{"entity": "order", "value": "cheese"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [cheesy]{"entity": "order", "value": "cheese"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - [cheesy]{"entity": "order", "value": "cheese"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [cheesy]{"entity": "order", "value": "cheese"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [cheesy]{"entity": "order", "value": "cheese"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - [cheesy]{"entity": "order", "value": "cheese"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [cheesy]{"entity": "order", "value": "cheese"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [cheesy]{"entity": "order", "value": "cheese"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - [cheesy]{"entity": "order", "value": "cheese"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [cheesy]{"entity": "order", "value": "cheese"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [cheesy]{"entity": "order", "value": "cheese"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - [cheesy]{"entity": "order", "value": "cheese"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [cheesy]{"entity": "order", "value": "cheese"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [peperoni]{"entity": "order", "value": "pepperoni"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [peperoni]{"entity": "order", "value": "pepperoni"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [peperoni]{"entity": "order", "value": "pepperoni"} pizza with a
+    [coke]{"entity": "drink", "value": "coke"}
+
+    - I want a [peperoni]{"entity": "order", "value": "pepperoni"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - [peperoni]{"entity": "order", "value": "pepperoni"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [peperoni]{"entity": "order", "value": "pepperoni"} pizza with a
+    [coffee]{"entity": "drink", "value": "coffee"}
+
+    - I want a [peperoni]{"entity": "order", "value": "pepperoni"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [peperoni]{"entity": "order", "value": "pepperoni"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [peperoni]{"entity": "order", "value": "pepperoni"} pizza with a
+    [coke]{"entity": "drink", "value": "coke"}
+
+    - I want a [peperoni]{"entity": "order", "value": "pepperoni"} pizza with a [coca
+    cola]{"entity": "drink", "value": "coke"}
+
+    - [peperoni]{"entity": "order", "value": "pepperoni"} pizza with a [coca cola]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [peperoni]{"entity": "order", "value": "pepperoni"} pizza with a
+    [coca cola]{"entity": "drink", "value": "coke"}
+
+    - I want a [peperoni]{"entity": "order", "value": "pepperoni"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - [peperoni]{"entity": "order", "value": "pepperoni"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [peperoni]{"entity": "order", "value": "pepperoni"} pizza with a
+    [soda]{"entity": "drink", "value": "coke"}
+
+    - I want a [peperoni]{"entity": "order", "value": "pepperoni"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - [peperoni]{"entity": "order", "value": "pepperoni"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [peperoni]{"entity": "order", "value": "pepperoni"} pizza with a
+    [pop]{"entity": "drink", "value": "coke"}
+
+    - I want a [peperoni]{"entity": "order", "value": "pepperoni"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - [peperoni]{"entity": "order", "value": "pepperoni"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [peperoni]{"entity": "order", "value": "pepperoni"} pizza with a
+    [caffeine]{"entity": "drink", "value": "coffee"}
+
+    - I want a [peperoni]{"entity": "order", "value": "pepperoni"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - [peperoni]{"entity": "order", "value": "pepperoni"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [peperoni]{"entity": "order", "value": "pepperoni"} pizza with a
+    [decaf]{"entity": "drink", "value": "coffee"}
+
+    - I want a [peperoni]{"entity": "order", "value": "pepperoni"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - [peperoni]{"entity": "order", "value": "pepperoni"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [peperoni]{"entity": "order", "value": "pepperoni"} pizza with a
+    [espresso]{"entity": "drink", "value": "coffee"}
+
+    - I want a [meat]{"entity": "order", "value": "pepperoni"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [meat]{"entity": "order", "value": "pepperoni"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [meat]{"entity": "order", "value": "pepperoni"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [meat]{"entity": "order", "value": "pepperoni"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - [meat]{"entity": "order", "value": "pepperoni"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [meat]{"entity": "order", "value": "pepperoni"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [meat]{"entity": "order", "value": "pepperoni"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [meat]{"entity": "order", "value": "pepperoni"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [meat]{"entity": "order", "value": "pepperoni"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [meat]{"entity": "order", "value": "pepperoni"} pizza with a [coca
+    cola]{"entity": "drink", "value": "coke"}
+
+    - [meat]{"entity": "order", "value": "pepperoni"} pizza with a [coca cola]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [meat]{"entity": "order", "value": "pepperoni"} pizza with a [coca
+    cola]{"entity": "drink", "value": "coke"}
+
+    - I want a [meat]{"entity": "order", "value": "pepperoni"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - [meat]{"entity": "order", "value": "pepperoni"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [meat]{"entity": "order", "value": "pepperoni"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [meat]{"entity": "order", "value": "pepperoni"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - [meat]{"entity": "order", "value": "pepperoni"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [meat]{"entity": "order", "value": "pepperoni"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [meat]{"entity": "order", "value": "pepperoni"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - [meat]{"entity": "order", "value": "pepperoni"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [meat]{"entity": "order", "value": "pepperoni"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [meat]{"entity": "order", "value": "pepperoni"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - [meat]{"entity": "order", "value": "pepperoni"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [meat]{"entity": "order", "value": "pepperoni"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [meat]{"entity": "order", "value": "pepperoni"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - [meat]{"entity": "order", "value": "pepperoni"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [meat]{"entity": "order", "value": "pepperoni"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [sausage]{"entity": "order", "value": "pepperoni"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [sausage]{"entity": "order", "value": "pepperoni"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [sausage]{"entity": "order", "value": "pepperoni"} pizza with a
+    [coke]{"entity": "drink", "value": "coke"}
+
+    - I want a [sausage]{"entity": "order", "value": "pepperoni"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - [sausage]{"entity": "order", "value": "pepperoni"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [sausage]{"entity": "order", "value": "pepperoni"} pizza with a
+    [coffee]{"entity": "drink", "value": "coffee"}
+
+    - I want a [sausage]{"entity": "order", "value": "pepperoni"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [sausage]{"entity": "order", "value": "pepperoni"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [sausage]{"entity": "order", "value": "pepperoni"} pizza with a
+    [coke]{"entity": "drink", "value": "coke"}
+
+    - I want a [sausage]{"entity": "order", "value": "pepperoni"} pizza with a [coca
+    cola]{"entity": "drink", "value": "coke"}
+
+    - [sausage]{"entity": "order", "value": "pepperoni"} pizza with a [coca cola]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [sausage]{"entity": "order", "value": "pepperoni"} pizza with a
+    [coca cola]{"entity": "drink", "value": "coke"}
+
+    - I want a [sausage]{"entity": "order", "value": "pepperoni"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - [sausage]{"entity": "order", "value": "pepperoni"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [sausage]{"entity": "order", "value": "pepperoni"} pizza with a
+    [soda]{"entity": "drink", "value": "coke"}
+
+    - I want a [sausage]{"entity": "order", "value": "pepperoni"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - [sausage]{"entity": "order", "value": "pepperoni"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [sausage]{"entity": "order", "value": "pepperoni"} pizza with a
+    [pop]{"entity": "drink", "value": "coke"}
+
+    - I want a [sausage]{"entity": "order", "value": "pepperoni"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - [sausage]{"entity": "order", "value": "pepperoni"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [sausage]{"entity": "order", "value": "pepperoni"} pizza with a
+    [caffeine]{"entity": "drink", "value": "coffee"}
+
+    - I want a [sausage]{"entity": "order", "value": "pepperoni"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - [sausage]{"entity": "order", "value": "pepperoni"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [sausage]{"entity": "order", "value": "pepperoni"} pizza with a
+    [decaf]{"entity": "drink", "value": "coffee"}
+
+    - I want a [sausage]{"entity": "order", "value": "pepperoni"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - [sausage]{"entity": "order", "value": "pepperoni"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [sausage]{"entity": "order", "value": "pepperoni"} pizza with a
+    [espresso]{"entity": "drink", "value": "coffee"}
+
+    - I want a [vegetable]{"entity": "order", "value": "mushroom"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [vegetable]{"entity": "order", "value": "mushroom"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [vegetable]{"entity": "order", "value": "mushroom"} pizza with a
+    [coke]{"entity": "drink", "value": "coke"}
+
+    - I want a [vegetable]{"entity": "order", "value": "mushroom"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - [vegetable]{"entity": "order", "value": "mushroom"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [vegetable]{"entity": "order", "value": "mushroom"} pizza with a
+    [coffee]{"entity": "drink", "value": "coffee"}
+
+    - I want a [vegetable]{"entity": "order", "value": "mushroom"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [vegetable]{"entity": "order", "value": "mushroom"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [vegetable]{"entity": "order", "value": "mushroom"} pizza with a
+    [coke]{"entity": "drink", "value": "coke"}
+
+    - I want a [vegetable]{"entity": "order", "value": "mushroom"} pizza with a [coca
+    cola]{"entity": "drink", "value": "coke"}
+
+    - [vegetable]{"entity": "order", "value": "mushroom"} pizza with a [coca cola]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [vegetable]{"entity": "order", "value": "mushroom"} pizza with a
+    [coca cola]{"entity": "drink", "value": "coke"}
+
+    - I want a [vegetable]{"entity": "order", "value": "mushroom"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - [vegetable]{"entity": "order", "value": "mushroom"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [vegetable]{"entity": "order", "value": "mushroom"} pizza with a
+    [soda]{"entity": "drink", "value": "coke"}
+
+    - I want a [vegetable]{"entity": "order", "value": "mushroom"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - [vegetable]{"entity": "order", "value": "mushroom"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [vegetable]{"entity": "order", "value": "mushroom"} pizza with a
+    [pop]{"entity": "drink", "value": "coke"}
+
+    - I want a [vegetable]{"entity": "order", "value": "mushroom"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - [vegetable]{"entity": "order", "value": "mushroom"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [vegetable]{"entity": "order", "value": "mushroom"} pizza with a
+    [caffeine]{"entity": "drink", "value": "coffee"}
+
+    - I want a [vegetable]{"entity": "order", "value": "mushroom"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - [vegetable]{"entity": "order", "value": "mushroom"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [vegetable]{"entity": "order", "value": "mushroom"} pizza with a
+    [decaf]{"entity": "drink", "value": "coffee"}
+
+    - I want a [vegetable]{"entity": "order", "value": "mushroom"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - [vegetable]{"entity": "order", "value": "mushroom"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [vegetable]{"entity": "order", "value": "mushroom"} pizza with a
+    [espresso]{"entity": "drink", "value": "coffee"}
+
+    - I want a [veggie]{"entity": "order", "value": "mushroom"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [veggie]{"entity": "order", "value": "mushroom"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [veggie]{"entity": "order", "value": "mushroom"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [veggie]{"entity": "order", "value": "mushroom"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - [veggie]{"entity": "order", "value": "mushroom"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [veggie]{"entity": "order", "value": "mushroom"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [veggie]{"entity": "order", "value": "mushroom"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [veggie]{"entity": "order", "value": "mushroom"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [veggie]{"entity": "order", "value": "mushroom"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [veggie]{"entity": "order", "value": "mushroom"} pizza with a [coca
+    cola]{"entity": "drink", "value": "coke"}
+
+    - [veggie]{"entity": "order", "value": "mushroom"} pizza with a [coca cola]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [veggie]{"entity": "order", "value": "mushroom"} pizza with a [coca
+    cola]{"entity": "drink", "value": "coke"}
+
+    - I want a [veggie]{"entity": "order", "value": "mushroom"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - [veggie]{"entity": "order", "value": "mushroom"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [veggie]{"entity": "order", "value": "mushroom"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [veggie]{"entity": "order", "value": "mushroom"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - [veggie]{"entity": "order", "value": "mushroom"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [veggie]{"entity": "order", "value": "mushroom"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [veggie]{"entity": "order", "value": "mushroom"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - [veggie]{"entity": "order", "value": "mushroom"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [veggie]{"entity": "order", "value": "mushroom"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [veggie]{"entity": "order", "value": "mushroom"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - [veggie]{"entity": "order", "value": "mushroom"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [veggie]{"entity": "order", "value": "mushroom"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [veggie]{"entity": "order", "value": "mushroom"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - [veggie]{"entity": "order", "value": "mushroom"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [veggie]{"entity": "order", "value": "mushroom"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [musroom]{"entity": "order", "value": "mushroom"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [musroom]{"entity": "order", "value": "mushroom"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [musroom]{"entity": "order", "value": "mushroom"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [musroom]{"entity": "order", "value": "mushroom"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - [musroom]{"entity": "order", "value": "mushroom"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [musroom]{"entity": "order", "value": "mushroom"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [musroom]{"entity": "order", "value": "mushroom"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [musroom]{"entity": "order", "value": "mushroom"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [musroom]{"entity": "order", "value": "mushroom"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [musroom]{"entity": "order", "value": "mushroom"} pizza with a [coca
+    cola]{"entity": "drink", "value": "coke"}
+
+    - [musroom]{"entity": "order", "value": "mushroom"} pizza with a [coca cola]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [musroom]{"entity": "order", "value": "mushroom"} pizza with a [coca
+    cola]{"entity": "drink", "value": "coke"}
+
+    - I want a [musroom]{"entity": "order", "value": "mushroom"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - [musroom]{"entity": "order", "value": "mushroom"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [musroom]{"entity": "order", "value": "mushroom"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [musroom]{"entity": "order", "value": "mushroom"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - [musroom]{"entity": "order", "value": "mushroom"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [musroom]{"entity": "order", "value": "mushroom"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [musroom]{"entity": "order", "value": "mushroom"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - [musroom]{"entity": "order", "value": "mushroom"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [musroom]{"entity": "order", "value": "mushroom"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [musroom]{"entity": "order", "value": "mushroom"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - [musroom]{"entity": "order", "value": "mushroom"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [musroom]{"entity": "order", "value": "mushroom"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [musroom]{"entity": "order", "value": "mushroom"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - [musroom]{"entity": "order", "value": "mushroom"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [musroom]{"entity": "order", "value": "mushroom"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [shroom]{"entity": "order", "value": "mushroom"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [shroom]{"entity": "order", "value": "mushroom"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [shroom]{"entity": "order", "value": "mushroom"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [shroom]{"entity": "order", "value": "mushroom"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - [shroom]{"entity": "order", "value": "mushroom"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [shroom]{"entity": "order", "value": "mushroom"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [shroom]{"entity": "order", "value": "mushroom"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [shroom]{"entity": "order", "value": "mushroom"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [shroom]{"entity": "order", "value": "mushroom"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [shroom]{"entity": "order", "value": "mushroom"} pizza with a [coca
+    cola]{"entity": "drink", "value": "coke"}
+
+    - [shroom]{"entity": "order", "value": "mushroom"} pizza with a [coca cola]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [shroom]{"entity": "order", "value": "mushroom"} pizza with a [coca
+    cola]{"entity": "drink", "value": "coke"}
+
+    - I want a [shroom]{"entity": "order", "value": "mushroom"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - [shroom]{"entity": "order", "value": "mushroom"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [shroom]{"entity": "order", "value": "mushroom"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [shroom]{"entity": "order", "value": "mushroom"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - [shroom]{"entity": "order", "value": "mushroom"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [shroom]{"entity": "order", "value": "mushroom"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [shroom]{"entity": "order", "value": "mushroom"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - [shroom]{"entity": "order", "value": "mushroom"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [shroom]{"entity": "order", "value": "mushroom"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [shroom]{"entity": "order", "value": "mushroom"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - [shroom]{"entity": "order", "value": "mushroom"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [shroom]{"entity": "order", "value": "mushroom"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [shroom]{"entity": "order", "value": "mushroom"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - [shroom]{"entity": "order", "value": "mushroom"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [shroom]{"entity": "order", "value": "mushroom"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [healthy]{"entity": "order", "value": "gluten free"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [healthy]{"entity": "order", "value": "gluten free"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [healthy]{"entity": "order", "value": "gluten free"} pizza with
+    a [coke]{"entity": "drink", "value": "coke"}
+
+    - I want a [healthy]{"entity": "order", "value": "gluten free"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - [healthy]{"entity": "order", "value": "gluten free"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [healthy]{"entity": "order", "value": "gluten free"} pizza with
+    a [coffee]{"entity": "drink", "value": "coffee"}
+
+    - I want a [healthy]{"entity": "order", "value": "gluten free"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [healthy]{"entity": "order", "value": "gluten free"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [healthy]{"entity": "order", "value": "gluten free"} pizza with
+    a [coke]{"entity": "drink", "value": "coke"}
+
+    - I want a [healthy]{"entity": "order", "value": "gluten free"} pizza with a [coca
+    cola]{"entity": "drink", "value": "coke"}
+
+    - [healthy]{"entity": "order", "value": "gluten free"} pizza with a [coca cola]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [healthy]{"entity": "order", "value": "gluten free"} pizza with
+    a [coca cola]{"entity": "drink", "value": "coke"}
+
+    - I want a [healthy]{"entity": "order", "value": "gluten free"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - [healthy]{"entity": "order", "value": "gluten free"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [healthy]{"entity": "order", "value": "gluten free"} pizza with
+    a [soda]{"entity": "drink", "value": "coke"}
+
+    - I want a [healthy]{"entity": "order", "value": "gluten free"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - [healthy]{"entity": "order", "value": "gluten free"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [healthy]{"entity": "order", "value": "gluten free"} pizza with
+    a [pop]{"entity": "drink", "value": "coke"}
+
+    - I want a [healthy]{"entity": "order", "value": "gluten free"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - [healthy]{"entity": "order", "value": "gluten free"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [healthy]{"entity": "order", "value": "gluten free"} pizza with
+    a [caffeine]{"entity": "drink", "value": "coffee"}
+
+    - I want a [healthy]{"entity": "order", "value": "gluten free"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - [healthy]{"entity": "order", "value": "gluten free"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [healthy]{"entity": "order", "value": "gluten free"} pizza with
+    a [decaf]{"entity": "drink", "value": "coffee"}
+
+    - I want a [healthy]{"entity": "order", "value": "gluten free"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - [healthy]{"entity": "order", "value": "gluten free"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [healthy]{"entity": "order", "value": "gluten free"} pizza with
+    a [espresso]{"entity": "drink", "value": "coffee"}
+
+    - I want a [gluten-free]{"entity": "order", "value": "gluten free"} pizza with
+    a [coke]{"entity": "drink", "value": "coke"}
+
+    - [gluten-free]{"entity": "order", "value": "gluten free"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [gluten-free]{"entity": "order", "value": "gluten free"} pizza with
+    a [coke]{"entity": "drink", "value": "coke"}
+
+    - I want a [gluten-free]{"entity": "order", "value": "gluten free"} pizza with
+    a [coffee]{"entity": "drink", "value": "coffee"}
+
+    - [gluten-free]{"entity": "order", "value": "gluten free"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [gluten-free]{"entity": "order", "value": "gluten free"} pizza with
+    a [coffee]{"entity": "drink", "value": "coffee"}
+
+    - I want a [gluten-free]{"entity": "order", "value": "gluten free"} pizza with
+    a [coke]{"entity": "drink", "value": "coke"}
+
+    - [gluten-free]{"entity": "order", "value": "gluten free"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [gluten-free]{"entity": "order", "value": "gluten free"} pizza with
+    a [coke]{"entity": "drink", "value": "coke"}
+
+    - I want a [gluten-free]{"entity": "order", "value": "gluten free"} pizza with
+    a [coca cola]{"entity": "drink", "value": "coke"}
+
+    - [gluten-free]{"entity": "order", "value": "gluten free"} pizza with a [coca
+    cola]{"entity": "drink", "value": "coke"}
+
+    - Can I get a [gluten-free]{"entity": "order", "value": "gluten free"} pizza with
+    a [coca cola]{"entity": "drink", "value": "coke"}
+
+    - I want a [gluten-free]{"entity": "order", "value": "gluten free"} pizza with
+    a [soda]{"entity": "drink", "value": "coke"}
+
+    - [gluten-free]{"entity": "order", "value": "gluten free"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [gluten-free]{"entity": "order", "value": "gluten free"} pizza with
+    a [soda]{"entity": "drink", "value": "coke"}
+
+    - I want a [gluten-free]{"entity": "order", "value": "gluten free"} pizza with
+    a [pop]{"entity": "drink", "value": "coke"}
+
+    - [gluten-free]{"entity": "order", "value": "gluten free"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [gluten-free]{"entity": "order", "value": "gluten free"} pizza with
+    a [pop]{"entity": "drink", "value": "coke"}
+
+    - I want a [gluten-free]{"entity": "order", "value": "gluten free"} pizza with
+    a [caffeine]{"entity": "drink", "value": "coffee"}
+
+    - [gluten-free]{"entity": "order", "value": "gluten free"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [gluten-free]{"entity": "order", "value": "gluten free"} pizza with
+    a [caffeine]{"entity": "drink", "value": "coffee"}
+
+    - I want a [gluten-free]{"entity": "order", "value": "gluten free"} pizza with
+    a [decaf]{"entity": "drink", "value": "coffee"}
+
+    - [gluten-free]{"entity": "order", "value": "gluten free"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [gluten-free]{"entity": "order", "value": "gluten free"} pizza with
+    a [decaf]{"entity": "drink", "value": "coffee"}
+
+    - I want a [gluten-free]{"entity": "order", "value": "gluten free"} pizza with
+    a [espresso]{"entity": "drink", "value": "coffee"}
+
+    - [gluten-free]{"entity": "order", "value": "gluten free"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [gluten-free]{"entity": "order", "value": "gluten free"} pizza with
+    a [espresso]{"entity": "drink", "value": "coffee"}
+
+    - I want a [gf]{"entity": "order", "value": "gluten free"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [gf]{"entity": "order", "value": "gluten free"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [gf]{"entity": "order", "value": "gluten free"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [gf]{"entity": "order", "value": "gluten free"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - [gf]{"entity": "order", "value": "gluten free"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [gf]{"entity": "order", "value": "gluten free"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [gf]{"entity": "order", "value": "gluten free"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [gf]{"entity": "order", "value": "gluten free"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [gf]{"entity": "order", "value": "gluten free"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [gf]{"entity": "order", "value": "gluten free"} pizza with a [coca
+    cola]{"entity": "drink", "value": "coke"}
+
+    - [gf]{"entity": "order", "value": "gluten free"} pizza with a [coca cola]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [gf]{"entity": "order", "value": "gluten free"} pizza with a [coca
+    cola]{"entity": "drink", "value": "coke"}
+
+    - I want a [gf]{"entity": "order", "value": "gluten free"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - [gf]{"entity": "order", "value": "gluten free"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [gf]{"entity": "order", "value": "gluten free"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [gf]{"entity": "order", "value": "gluten free"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - [gf]{"entity": "order", "value": "gluten free"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [gf]{"entity": "order", "value": "gluten free"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [gf]{"entity": "order", "value": "gluten free"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - [gf]{"entity": "order", "value": "gluten free"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [gf]{"entity": "order", "value": "gluten free"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [gf]{"entity": "order", "value": "gluten free"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - [gf]{"entity": "order", "value": "gluten free"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [gf]{"entity": "order", "value": "gluten free"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [gf]{"entity": "order", "value": "gluten free"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - [gf]{"entity": "order", "value": "gluten free"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [gf]{"entity": "order", "value": "gluten free"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [pineapple]{"entity": "order", "value": "hawaiian"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [pineapple]{"entity": "order", "value": "hawaiian"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [pineapple]{"entity": "order", "value": "hawaiian"} pizza with a
+    [coke]{"entity": "drink", "value": "coke"}
+
+    - I want a [pineapple]{"entity": "order", "value": "hawaiian"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - [pineapple]{"entity": "order", "value": "hawaiian"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [pineapple]{"entity": "order", "value": "hawaiian"} pizza with a
+    [coffee]{"entity": "drink", "value": "coffee"}
+
+    - I want a [pineapple]{"entity": "order", "value": "hawaiian"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [pineapple]{"entity": "order", "value": "hawaiian"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [pineapple]{"entity": "order", "value": "hawaiian"} pizza with a
+    [coke]{"entity": "drink", "value": "coke"}
+
+    - I want a [pineapple]{"entity": "order", "value": "hawaiian"} pizza with a [coca
+    cola]{"entity": "drink", "value": "coke"}
+
+    - [pineapple]{"entity": "order", "value": "hawaiian"} pizza with a [coca cola]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [pineapple]{"entity": "order", "value": "hawaiian"} pizza with a
+    [coca cola]{"entity": "drink", "value": "coke"}
+
+    - I want a [pineapple]{"entity": "order", "value": "hawaiian"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - [pineapple]{"entity": "order", "value": "hawaiian"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [pineapple]{"entity": "order", "value": "hawaiian"} pizza with a
+    [soda]{"entity": "drink", "value": "coke"}
+
+    - I want a [pineapple]{"entity": "order", "value": "hawaiian"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - [pineapple]{"entity": "order", "value": "hawaiian"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [pineapple]{"entity": "order", "value": "hawaiian"} pizza with a
+    [pop]{"entity": "drink", "value": "coke"}
+
+    - I want a [pineapple]{"entity": "order", "value": "hawaiian"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - [pineapple]{"entity": "order", "value": "hawaiian"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [pineapple]{"entity": "order", "value": "hawaiian"} pizza with a
+    [caffeine]{"entity": "drink", "value": "coffee"}
+
+    - I want a [pineapple]{"entity": "order", "value": "hawaiian"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - [pineapple]{"entity": "order", "value": "hawaiian"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [pineapple]{"entity": "order", "value": "hawaiian"} pizza with a
+    [decaf]{"entity": "drink", "value": "coffee"}
+
+    - I want a [pineapple]{"entity": "order", "value": "hawaiian"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - [pineapple]{"entity": "order", "value": "hawaiian"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [pineapple]{"entity": "order", "value": "hawaiian"} pizza with a
+    [espresso]{"entity": "drink", "value": "coffee"}
+
+    - I want a [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza with
+    a [coke]{"entity": "drink", "value": "coke"}
+
+    - [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
 
     - Can I get a [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza
+    with a [coke]{"entity": "drink", "value": "coke"}
 
-    - I want a [sweet]{"entity": "order", "value": "hawaiian"} pizza
+    - I want a [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza with
+    a [coffee]{"entity": "drink", "value": "coffee"}
 
-    - [sweet]{"entity": "order", "value": "hawaiian"} pizza
+    - [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
 
-    - Can I get a [sweet]{"entity": "order", "value": "hawaiian"} pizza'
+    - Can I get a [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza
+    with a [coffee]{"entity": "drink", "value": "coffee"}
+
+    - I want a [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza with
+    a [coke]{"entity": "drink", "value": "coke"}
+
+    - [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza
+    with a [coke]{"entity": "drink", "value": "coke"}
+
+    - I want a [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza with
+    a [coca cola]{"entity": "drink", "value": "coke"}
+
+    - [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza with a [coca
+    cola]{"entity": "drink", "value": "coke"}
+
+    - Can I get a [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza
+    with a [coca cola]{"entity": "drink", "value": "coke"}
+
+    - I want a [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza with
+    a [soda]{"entity": "drink", "value": "coke"}
+
+    - [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza
+    with a [soda]{"entity": "drink", "value": "coke"}
+
+    - I want a [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza with
+    a [pop]{"entity": "drink", "value": "coke"}
+
+    - [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza
+    with a [pop]{"entity": "drink", "value": "coke"}
+
+    - I want a [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza with
+    a [caffeine]{"entity": "drink", "value": "coffee"}
+
+    - [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza
+    with a [caffeine]{"entity": "drink", "value": "coffee"}
+
+    - I want a [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza with
+    a [decaf]{"entity": "drink", "value": "coffee"}
+
+    - [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza
+    with a [decaf]{"entity": "drink", "value": "coffee"}
+
+    - I want a [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza with
+    a [espresso]{"entity": "drink", "value": "coffee"}
+
+    - [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza
+    with a [espresso]{"entity": "drink", "value": "coffee"}
+
+    - I want a [sweet]{"entity": "order", "value": "hawaiian"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [sweet]{"entity": "order", "value": "hawaiian"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [sweet]{"entity": "order", "value": "hawaiian"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [sweet]{"entity": "order", "value": "hawaiian"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - [sweet]{"entity": "order", "value": "hawaiian"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [sweet]{"entity": "order", "value": "hawaiian"} pizza with a [coffee]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [sweet]{"entity": "order", "value": "hawaiian"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - [sweet]{"entity": "order", "value": "hawaiian"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [sweet]{"entity": "order", "value": "hawaiian"} pizza with a [coke]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [sweet]{"entity": "order", "value": "hawaiian"} pizza with a [coca
+    cola]{"entity": "drink", "value": "coke"}
+
+    - [sweet]{"entity": "order", "value": "hawaiian"} pizza with a [coca cola]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [sweet]{"entity": "order", "value": "hawaiian"} pizza with a [coca
+    cola]{"entity": "drink", "value": "coke"}
+
+    - I want a [sweet]{"entity": "order", "value": "hawaiian"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - [sweet]{"entity": "order", "value": "hawaiian"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [sweet]{"entity": "order", "value": "hawaiian"} pizza with a [soda]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [sweet]{"entity": "order", "value": "hawaiian"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - [sweet]{"entity": "order", "value": "hawaiian"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - Can I get a [sweet]{"entity": "order", "value": "hawaiian"} pizza with a [pop]{"entity":
+    "drink", "value": "coke"}
+
+    - I want a [sweet]{"entity": "order", "value": "hawaiian"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - [sweet]{"entity": "order", "value": "hawaiian"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [sweet]{"entity": "order", "value": "hawaiian"} pizza with a [caffeine]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [sweet]{"entity": "order", "value": "hawaiian"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - [sweet]{"entity": "order", "value": "hawaiian"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [sweet]{"entity": "order", "value": "hawaiian"} pizza with a [decaf]{"entity":
+    "drink", "value": "coffee"}
+
+    - I want a [sweet]{"entity": "order", "value": "hawaiian"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - [sweet]{"entity": "order", "value": "hawaiian"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}
+
+    - Can I get a [sweet]{"entity": "order", "value": "hawaiian"} pizza with a [espresso]{"entity":
+    "drink", "value": "coffee"}'
   intent: share_all
+- examples: '- I want a [cheese]{"entity": "order", "value": "cheese"} pizza.
+
+    - [cheese]{"entity": "order", "value": "cheese"} pizza please!
+
+    - Can I get a [cheese]{"entity": "order", "value": "cheese"} pizza?
+
+    - I want a [pepperoni]{"entity": "order", "value": "pepperoni"} pizza.
+
+    - [pepperoni]{"entity": "order", "value": "pepperoni"} pizza please!
+
+    - Can I get a [pepperoni]{"entity": "order", "value": "pepperoni"} pizza?
+
+    - I want a [mushroom]{"entity": "order", "value": "mushroom"} pizza.
+
+    - [mushroom]{"entity": "order", "value": "mushroom"} pizza please!
+
+    - Can I get a [mushroom]{"entity": "order", "value": "mushroom"} pizza?
+
+    - I want a [gluten free]{"entity": "order", "value": "gluten free"} pizza.
+
+    - [gluten free]{"entity": "order", "value": "gluten free"} pizza please!
+
+    - Can I get a [gluten free]{"entity": "order", "value": "gluten free"} pizza?
+
+    - I want a [hawaiian]{"entity": "order", "value": "hawaiian"} pizza.
+
+    - [hawaiian]{"entity": "order", "value": "hawaiian"} pizza please!
+
+    - Can I get a [hawaiian]{"entity": "order", "value": "hawaiian"} pizza?
+
+    - I want a [chz]{"entity": "order", "value": "cheese"} pizza.
+
+    - [chz]{"entity": "order", "value": "cheese"} pizza please!
+
+    - Can I get a [chz]{"entity": "order", "value": "cheese"} pizza?
+
+    - I want a [cheez]{"entity": "order", "value": "cheese"} pizza.
+
+    - [cheez]{"entity": "order", "value": "cheese"} pizza please!
+
+    - Can I get a [cheez]{"entity": "order", "value": "cheese"} pizza?
+
+    - I want a [mozzarella]{"entity": "order", "value": "cheese"} pizza.
+
+    - [mozzarella]{"entity": "order", "value": "cheese"} pizza please!
+
+    - Can I get a [mozzarella]{"entity": "order", "value": "cheese"} pizza?
+
+    - I want a [fromage]{"entity": "order", "value": "cheese"} pizza.
+
+    - [fromage]{"entity": "order", "value": "cheese"} pizza please!
+
+    - Can I get a [fromage]{"entity": "order", "value": "cheese"} pizza?
+
+    - I want a [cheesy]{"entity": "order", "value": "cheese"} pizza.
+
+    - [cheesy]{"entity": "order", "value": "cheese"} pizza please!
+
+    - Can I get a [cheesy]{"entity": "order", "value": "cheese"} pizza?
+
+    - I want a [peperoni]{"entity": "order", "value": "pepperoni"} pizza.
+
+    - [peperoni]{"entity": "order", "value": "pepperoni"} pizza please!
+
+    - Can I get a [peperoni]{"entity": "order", "value": "pepperoni"} pizza?
+
+    - I want a [meat]{"entity": "order", "value": "pepperoni"} pizza.
+
+    - [meat]{"entity": "order", "value": "pepperoni"} pizza please!
+
+    - Can I get a [meat]{"entity": "order", "value": "pepperoni"} pizza?
+
+    - I want a [sausage]{"entity": "order", "value": "pepperoni"} pizza.
+
+    - [sausage]{"entity": "order", "value": "pepperoni"} pizza please!
+
+    - Can I get a [sausage]{"entity": "order", "value": "pepperoni"} pizza?
+
+    - I want a [vegetable]{"entity": "order", "value": "mushroom"} pizza.
+
+    - [vegetable]{"entity": "order", "value": "mushroom"} pizza please!
+
+    - Can I get a [vegetable]{"entity": "order", "value": "mushroom"} pizza?
+
+    - I want a [veggie]{"entity": "order", "value": "mushroom"} pizza.
+
+    - [veggie]{"entity": "order", "value": "mushroom"} pizza please!
+
+    - Can I get a [veggie]{"entity": "order", "value": "mushroom"} pizza?
+
+    - I want a [musroom]{"entity": "order", "value": "mushroom"} pizza.
+
+    - [musroom]{"entity": "order", "value": "mushroom"} pizza please!
+
+    - Can I get a [musroom]{"entity": "order", "value": "mushroom"} pizza?
+
+    - I want a [shroom]{"entity": "order", "value": "mushroom"} pizza.
+
+    - [shroom]{"entity": "order", "value": "mushroom"} pizza please!
+
+    - Can I get a [shroom]{"entity": "order", "value": "mushroom"} pizza?
+
+    - I want a [healthy]{"entity": "order", "value": "gluten free"} pizza.
+
+    - [healthy]{"entity": "order", "value": "gluten free"} pizza please!
+
+    - Can I get a [healthy]{"entity": "order", "value": "gluten free"} pizza?
+
+    - I want a [gluten-free]{"entity": "order", "value": "gluten free"} pizza.
+
+    - [gluten-free]{"entity": "order", "value": "gluten free"} pizza please!
+
+    - Can I get a [gluten-free]{"entity": "order", "value": "gluten free"} pizza?
+
+    - I want a [gf]{"entity": "order", "value": "gluten free"} pizza.
+
+    - [gf]{"entity": "order", "value": "gluten free"} pizza please!
+
+    - Can I get a [gf]{"entity": "order", "value": "gluten free"} pizza?
+
+    - I want a [pineapple]{"entity": "order", "value": "hawaiian"} pizza.
+
+    - [pineapple]{"entity": "order", "value": "hawaiian"} pizza please!
+
+    - Can I get a [pineapple]{"entity": "order", "value": "hawaiian"} pizza?
+
+    - I want a [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza.
+
+    - [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza please!
+
+    - Can I get a [ham and pineapple]{"entity": "order", "value": "hawaiian"} pizza?
+
+    - I want a [sweet]{"entity": "order", "value": "hawaiian"} pizza.
+
+    - [sweet]{"entity": "order", "value": "hawaiian"} pizza please!
+
+    - Can I get a [sweet]{"entity": "order", "value": "hawaiian"} pizza?'
+  intent: share_order
+- examples: '- I want to drink [coke]{"entity": "drink", "value": "coke"}.
+
+    - [coke]{"entity": "drink", "value": "coke"} with ice please!
+
+    - Can I get [coke]{"entity": "drink", "value": "coke"} to drink?
+
+    - I want to drink [coffee]{"entity": "drink", "value": "coffee"}.
+
+    - [coffee]{"entity": "drink", "value": "coffee"} with ice please!
+
+    - Can I get [coffee]{"entity": "drink", "value": "coffee"} to drink?
+
+    - I want to drink [coke]{"entity": "drink", "value": "coke"}.
+
+    - [coke]{"entity": "drink", "value": "coke"} with ice please!
+
+    - Can I get [coke]{"entity": "drink", "value": "coke"} to drink?
+
+    - I want to drink [coca cola]{"entity": "drink", "value": "coke"}.
+
+    - [coca cola]{"entity": "drink", "value": "coke"} with ice please!
+
+    - Can I get [coca cola]{"entity": "drink", "value": "coke"} to drink?
+
+    - I want to drink [soda]{"entity": "drink", "value": "coke"}.
+
+    - [soda]{"entity": "drink", "value": "coke"} with ice please!
+
+    - Can I get [soda]{"entity": "drink", "value": "coke"} to drink?
+
+    - I want to drink [pop]{"entity": "drink", "value": "coke"}.
+
+    - [pop]{"entity": "drink", "value": "coke"} with ice please!
+
+    - Can I get [pop]{"entity": "drink", "value": "coke"} to drink?
+
+    - I want to drink [caffeine]{"entity": "drink", "value": "coffee"}.
+
+    - [caffeine]{"entity": "drink", "value": "coffee"} with ice please!
+
+    - Can I get [caffeine]{"entity": "drink", "value": "coffee"} to drink?
+
+    - I want to drink [decaf]{"entity": "drink", "value": "coffee"}.
+
+    - [decaf]{"entity": "drink", "value": "coffee"} with ice please!
+
+    - Can I get [decaf]{"entity": "drink", "value": "coffee"} to drink?
+
+    - I want to drink [espresso]{"entity": "drink", "value": "coffee"}.
+
+    - [espresso]{"entity": "drink", "value": "coffee"} with ice please!
+
+    - Can I get [espresso]{"entity": "drink", "value": "coffee"} to drink?'
+  intent: share_drink

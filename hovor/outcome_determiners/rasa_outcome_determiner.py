@@ -5,7 +5,6 @@ import requests
 import json
 import spacy
 import random
-from copy import deepcopy
 from nltk.corpus import wordnet
 
 LABELS = spacy.load("en_core_web_md").get_pipe("ner").labels
@@ -107,9 +106,6 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                     entity_requirements = self.full_outcomes[out.name]["entity_requirements"]
                     if entity_requirements:
                         updated_intent = frozenset(entity_requirements.items())
-                    # for i in range(len(r["intent_ranking"])):
-                    #     if r["intent_ranking"][i]["name"] == intent:
-                    #         r["intent_ranking"][i]["name"] = updated_intent
             intent_to_outcome_map[updated_intent] = out
 
         for i in range(len(r["intent_ranking"])):
@@ -118,24 +114,21 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                 r["intent_ranking"][i] = {"name": frozenset({v[1:]: "found" for v in self.intents[extracted_intent["name"]]["variables"]}.items()), "confidence": extracted_intent["confidence"]}
 
         self.initialize_extracted_entities(r["entities"])
-        chosen_intent = None
         entities = {}
         for intent in r["intent_ranking"]:
+            chosen_intent = None
             if intent["name"] in intent_to_outcome_map:
                 # if this intent expects entities, make sure we extract them
                 if type(intent["name"]) == frozenset:
                     entities = self.extract_entities(intent, progress)
                     # if no entities were successfully extracted
                     if {entities[e]["sample"] for e in entities} != {None}:
-                        # stop looking for a suitable intent if we found all entities
                         chosen_intent = intent
-                        # adjust to match clarity if necessary
-                        key = {}
-                        for entity, entity_config in entities.items():
-                            key[entity] = entity_config["certainty"]
-                        if "maybe-found" in key.values() or "didnt-find" in key.values():
-                            chosen_intent["name"] = frozenset(key.items())
-                        break
+                        chosen_intent["name"] = frozenset({k : v["certainty"] for k, v in entities.items() if v["sample"]}.items())
+                        # stop looking for a suitable intent as we have found one that maps to a valid outcome :)
+                        # note that this check allows you to use full or partial information depending on how you set up your actions
+                        if chosen_intent["name"] in intent_to_outcome_map:
+                            break
                 else:        
                     if intent["confidence"] > THRESHOLD:
                         # stop looking for a suitable intent if the intent extracted doesn't require entities
@@ -212,5 +205,6 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
             return extracted_info
         else:
             raise NotImplementedError("Cant sample from type: " + entity_type)
+        extracted_info["certainty"] = "didnt-find"
         extracted_info["sample"] = None
         return extracted_info

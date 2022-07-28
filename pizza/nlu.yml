@@ -24321,9 +24321,65 @@ nlu:
 
     - Can I get [espresso]{"entity": "drink", "value": "coffee"} to drink?'
   intent: share_drink
-- examples: '- I want to have $side on the side.
+- examples: '- I want to have [fries]{"entity": "side", "value": "fries"} on the side.
 
-    - $side on the side please!
+    - [fries]{"entity": "side", "value": "fries"} on the side please!
 
-    - Can I get $side on the side?'
+    - Can I get [fries]{"entity": "side", "value": "fries"} on the side?
+
+    - I want to have [salad]{"entity": "side", "value": "salad"} on the side.
+
+    - [salad]{"entity": "side", "value": "salad"} on the side please!
+
+    - Can I get [salad]{"entity": "side", "value": "salad"} on the side?
+
+    - I want to have [french fries]{"entity": "side", "value": "fries"} on the side.
+
+    - [french fries]{"entity": "side", "value": "fries"} on the side please!
+
+    - Can I get [french fries]{"entity": "side", "value": "fries"} on the side?
+
+    - I want to have [potato wedges]{"entity": "side", "value": "fries"} on the side.
+
+    - [potato wedges]{"entity": "side", "value": "fries"} on the side please!
+
+    - Can I get [potato wedges]{"entity": "side", "value": "fries"} on the side?
+
+    - I want to have [crisps]{"entity": "side", "value": "fries"} on the side.
+
+    - [crisps]{"entity": "side", "value": "fries"} on the side please!
+
+    - Can I get [crisps]{"entity": "side", "value": "fries"} on the side?
+
+    - I want to have [chips]{"entity": "side", "value": "fries"} on the side.
+
+    - [chips]{"entity": "side", "value": "fries"} on the side please!
+
+    - Can I get [chips]{"entity": "side", "value": "fries"} on the side?
+
+    - I want to have [healthy side]{"entity": "side", "value": "salad"} on the side.
+
+    - [healthy side]{"entity": "side", "value": "salad"} on the side please!
+
+    - Can I get [healthy side]{"entity": "side", "value": "salad"} on the side?
+
+    - I want to have [lettuce and tomatoes]{"entity": "side", "value": "salad"} on
+    the side.
+
+    - [lettuce and tomatoes]{"entity": "side", "value": "salad"} on the side please!
+
+    - Can I get [lettuce and tomatoes]{"entity": "side", "value": "salad"} on the
+    side?
+
+    - I want to have [greek salad]{"entity": "side", "value": "salad"} on the side.
+
+    - [greek salad]{"entity": "side", "value": "salad"} on the side please!
+
+    - Can I get [greek salad]{"entity": "side", "value": "salad"} on the side?
+
+    - I want to have [caesar salad]{"entity": "side", "value": "salad"} on the side.
+
+    - [caesar salad]{"entity": "side", "value": "salad"} on the side please!
+
+    - Can I get [caesar salad]{"entity": "side", "value": "salad"} on the side?'
   intent: share_side

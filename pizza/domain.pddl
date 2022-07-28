@@ -14,21 +14,21 @@
         (have-message)
         (force-statement)
     )
-    (:action ask-pizza_flavour
+    (:action force-all
         :parameters()
         :precondition
             (and
-                (not (have_pizza_flavour))
-                (not (maybe-have_drink))
-                (not (force-statement))
-                (not (have_drink))
-                (not (maybe-have_pizza_flavour))
                 (not (have_side))
+                (not (have_pizza_flavour))
+                (not (maybe-have_pizza_flavour))
+                (not (have_drink))
+                (not (maybe-have_drink))
                 (not (maybe-have_side))
+                (not (force-statement))
             )
         :effect
-            (labeled-oneof validate-slot-fill
-                (outcome pizza_flavour_found-drink_found-side_found
+            (labeled-oneof validate
+                (outcome valid
                     (and
                         (have_pizza_flavour)
                         (not (maybe-have_pizza_flavour))
@@ -36,208 +36,6 @@
                         (not (maybe-have_drink))
                         (have_side)
                         (not (maybe-have_side))
-                    )
-                )
-                (outcome pizza_flavour_found-drink_found-side_maybe-found
-                    (and
-                        (have_pizza_flavour)
-                        (not (maybe-have_pizza_flavour))
-                        (have_drink)
-                        (not (maybe-have_drink))
-                        (not (have_side))
-                        (maybe-have_side)
-                    )
-                )
-                (outcome pizza_flavour_found-drink_found
-                    (and
-                        (have_pizza_flavour)
-                        (not (maybe-have_pizza_flavour))
-                        (have_drink)
-                        (not (maybe-have_drink))
-                    )
-                )
-                (outcome pizza_flavour_found-drink_maybe-found-side_found
-                    (and
-                        (have_pizza_flavour)
-                        (not (maybe-have_pizza_flavour))
-                        (not (have_drink))
-                        (maybe-have_drink)
-                        (have_side)
-                        (not (maybe-have_side))
-                    )
-                )
-                (outcome pizza_flavour_found-drink_maybe-found-side_maybe-found
-                    (and
-                        (have_pizza_flavour)
-                        (not (maybe-have_pizza_flavour))
-                        (not (have_drink))
-                        (maybe-have_drink)
-                        (not (have_side))
-                        (maybe-have_side)
-                    )
-                )
-                (outcome pizza_flavour_found-drink_maybe-found
-                    (and
-                        (have_pizza_flavour)
-                        (not (maybe-have_pizza_flavour))
-                        (not (have_drink))
-                        (maybe-have_drink)
-                    )
-                )
-                (outcome pizza_flavour_found-side_found
-                    (and
-                        (have_pizza_flavour)
-                        (not (maybe-have_pizza_flavour))
-                        (have_side)
-                        (not (maybe-have_side))
-                    )
-                )
-                (outcome pizza_flavour_found-side_maybe-found
-                    (and
-                        (have_pizza_flavour)
-                        (not (maybe-have_pizza_flavour))
-                        (not (have_side))
-                        (maybe-have_side)
-                    )
-                )
-                (outcome pizza_flavour_found
-                    (and
-                        (have_pizza_flavour)
-                        (not (maybe-have_pizza_flavour))
-                    )
-                )
-                (outcome pizza_flavour_maybe-found-drink_found-side_found
-                    (and
-                        (not (have_pizza_flavour))
-                        (maybe-have_pizza_flavour)
-                        (have_drink)
-                        (not (maybe-have_drink))
-                        (have_side)
-                        (not (maybe-have_side))
-                    )
-                )
-                (outcome pizza_flavour_maybe-found-drink_found-side_maybe-found
-                    (and
-                        (not (have_pizza_flavour))
-                        (maybe-have_pizza_flavour)
-                        (have_drink)
-                        (not (maybe-have_drink))
-                        (not (have_side))
-                        (maybe-have_side)
-                    )
-                )
-                (outcome pizza_flavour_maybe-found-drink_found
-                    (and
-                        (not (have_pizza_flavour))
-                        (maybe-have_pizza_flavour)
-                        (have_drink)
-                        (not (maybe-have_drink))
-                    )
-                )
-                (outcome pizza_flavour_maybe-found-drink_maybe-found-side_found
-                    (and
-                        (not (have_pizza_flavour))
-                        (maybe-have_pizza_flavour)
-                        (not (have_drink))
-                        (maybe-have_drink)
-                        (have_side)
-                        (not (maybe-have_side))
-                    )
-                )
-                (outcome pizza_flavour_maybe-found-drink_maybe-found-side_maybe-found
-                    (and
-                        (not (have_pizza_flavour))
-                        (maybe-have_pizza_flavour)
-                        (not (have_drink))
-                        (maybe-have_drink)
-                        (not (have_side))
-                        (maybe-have_side)
-                    )
-                )
-                (outcome pizza_flavour_maybe-found-drink_maybe-found
-                    (and
-                        (not (have_pizza_flavour))
-                        (maybe-have_pizza_flavour)
-                        (not (have_drink))
-                        (maybe-have_drink)
-                    )
-                )
-                (outcome pizza_flavour_maybe-found-side_found
-                    (and
-                        (not (have_pizza_flavour))
-                        (maybe-have_pizza_flavour)
-                        (have_side)
-                        (not (maybe-have_side))
-                    )
-                )
-                (outcome pizza_flavour_maybe-found-side_maybe-found
-                    (and
-                        (not (have_pizza_flavour))
-                        (maybe-have_pizza_flavour)
-                        (not (have_side))
-                        (maybe-have_side)
-                    )
-                )
-                (outcome pizza_flavour_maybe-found
-                    (and
-                        (not (have_pizza_flavour))
-                        (maybe-have_pizza_flavour)
-                    )
-                )
-                (outcome drink_found-side_found
-                    (and
-                        (have_drink)
-                        (not (maybe-have_drink))
-                        (have_side)
-                        (not (maybe-have_side))
-                    )
-                )
-                (outcome drink_found-side_maybe-found
-                    (and
-                        (have_drink)
-                        (not (maybe-have_drink))
-                        (not (have_side))
-                        (maybe-have_side)
-                    )
-                )
-                (outcome drink_found
-                    (and
-                        (have_drink)
-                        (not (maybe-have_drink))
-                    )
-                )
-                (outcome drink_maybe-found-side_found
-                    (and
-                        (not (have_drink))
-                        (maybe-have_drink)
-                        (have_side)
-                        (not (maybe-have_side))
-                    )
-                )
-                (outcome drink_maybe-found-side_maybe-found
-                    (and
-                        (not (have_drink))
-                        (maybe-have_drink)
-                        (not (have_side))
-                        (maybe-have_side)
-                    )
-                )
-                (outcome drink_maybe-found
-                    (and
-                        (not (have_drink))
-                        (maybe-have_drink)
-                    )
-                )
-                (outcome side_found
-                    (and
-                        (have_side)
-                        (not (maybe-have_side))
-                    )
-                )
-                (outcome side_maybe-found
-                    (and
-                        (not (have_side))
-                        (maybe-have_side)
                     )
                 )
                 (outcome fallback
@@ -252,11 +50,11 @@
         :parameters()
         :precondition
             (and
-                (have_drink)
-                (not (maybe-have_drink))
                 (have_side)
                 (have_pizza_flavour)
                 (not (maybe-have_pizza_flavour))
+                (not (maybe-have_drink))
+                (have_drink)
                 (not (maybe-have_side))
             )
         :effect
@@ -272,8 +70,8 @@
         :parameters()
         :precondition
             (and
-                (force-statement)
                 (have-message)
+                (force-statement)
             )
         :effect
             (labeled-oneof reset
@@ -281,186 +79,6 @@
                     (and
                         (not (have-message))
                         (not (force-statement))
-                    )
-                )
-            )
-    )
-    (:action clarify__pizza_flavour
-        :parameters()
-        :precondition
-            (and
-                (maybe-have_pizza_flavour)
-                (not (have_pizza_flavour))
-                (not (force-statement))
-            )
-        :effect
-            (labeled-oneof validate-clarification
-                (outcome confirm
-                    (and
-                        (have_pizza_flavour)
-                        (not (maybe-have_pizza_flavour))
-                    )
-                )
-                (outcome deny
-                    (and
-                        (not (have_pizza_flavour))
-                        (not (maybe-have_pizza_flavour))
-                    )
-                )
-                (outcome fallback
-                    (and
-                        (have-message)
-                        (force-statement)
-                    )
-                )
-            )
-    )
-    (:action clarify__drink
-        :parameters()
-        :precondition
-            (and
-                (maybe-have_drink)
-                (not (force-statement))
-                (not (have_drink))
-            )
-        :effect
-            (labeled-oneof validate-clarification
-                (outcome confirm
-                    (and
-                        (have_drink)
-                        (not (maybe-have_drink))
-                    )
-                )
-                (outcome deny
-                    (and
-                        (not (have_drink))
-                        (not (maybe-have_drink))
-                    )
-                )
-                (outcome fallback
-                    (and
-                        (have-message)
-                        (force-statement)
-                    )
-                )
-            )
-    )
-    (:action clarify__side
-        :parameters()
-        :precondition
-            (and
-                (not (have_side))
-                (maybe-have_side)
-                (not (force-statement))
-            )
-        :effect
-            (labeled-oneof validate-clarification
-                (outcome confirm
-                    (and
-                        (have_side)
-                        (not (maybe-have_side))
-                    )
-                )
-                (outcome deny
-                    (and
-                        (not (have_side))
-                        (not (maybe-have_side))
-                    )
-                )
-                (outcome fallback
-                    (and
-                        (have-message)
-                        (force-statement)
-                    )
-                )
-            )
-    )
-    (:action single_slot__pizza_flavour
-        :parameters()
-        :precondition
-            (and
-                (not (have_pizza_flavour))
-                (not (force-statement))
-                (not (maybe-have_pizza_flavour))
-            )
-        :effect
-            (labeled-oneof validate-clarification
-                (outcome fill-slot
-                    (and
-                        (have_pizza_flavour)
-                        (not (maybe-have_pizza_flavour))
-                    )
-                )
-                (outcome slot-unclear
-                    (and
-                        (not (have_pizza_flavour))
-                        (maybe-have_pizza_flavour)
-                    )
-                )
-                (outcome fallback
-                    (and
-                        (have-message)
-                        (force-statement)
-                    )
-                )
-            )
-    )
-    (:action single_slot__drink
-        :parameters()
-        :precondition
-            (and
-                (not (force-statement))
-                (not (maybe-have_drink))
-                (not (have_drink))
-            )
-        :effect
-            (labeled-oneof validate-clarification
-                (outcome fill-slot
-                    (and
-                        (have_drink)
-                        (not (maybe-have_drink))
-                    )
-                )
-                (outcome slot-unclear
-                    (and
-                        (not (have_drink))
-                        (maybe-have_drink)
-                    )
-                )
-                (outcome fallback
-                    (and
-                        (have-message)
-                        (force-statement)
-                    )
-                )
-            )
-    )
-    (:action single_slot__side
-        :parameters()
-        :precondition
-            (and
-                (not (have_side))
-                (not (force-statement))
-                (not (maybe-have_side))
-            )
-        :effect
-            (labeled-oneof validate-clarification
-                (outcome fill-slot
-                    (and
-                        (have_side)
-                        (not (maybe-have_side))
-                    )
-                )
-                (outcome slot-unclear
-                    (and
-                        (not (have_side))
-                        (maybe-have_side)
-                    )
-                )
-                (outcome fallback
-                    (and
-                        (have-message)
-                        (force-statement)
                     )
                 )
             )

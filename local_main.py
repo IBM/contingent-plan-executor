@@ -14,7 +14,7 @@ import requests
 
 initialize_local_environment()
 
-setup_hovor_rasa("pizza", train=False)
+setup_hovor_rasa("pizza", train=True)
 subprocess.Popen("./rasa_setup.sh", shell=True)
 
 configuration_provider = JsonConfigurationProvider("./pizza/pizza")

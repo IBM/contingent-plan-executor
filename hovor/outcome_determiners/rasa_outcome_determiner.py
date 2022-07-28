@@ -79,8 +79,8 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
             extracted_info = self.extract_entity(entity)
             if extracted_info:
                 extracted_info = RasaOutcomeDeterminer._make_entity_sample(entity, extracted_info, progress)
-                if not extracted_info["sample"]:
-                    return
+                # if not extracted_info["sample"]:
+                #     return
             else:
                 extracted_info = {"certainty": "didnt-find", "sample": None}               
             # TODO: instead, check if we can map the entities to an outcome
@@ -88,6 +88,7 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
             # else:
             #     return
             entities[entity] = extracted_info
+        
         return entities
 
     def rank_groups(self, outcome_groups, progress):   

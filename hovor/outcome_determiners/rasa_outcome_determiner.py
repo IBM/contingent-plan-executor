@@ -108,8 +108,8 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
 
         self.initialize_extracted_entities(r["entities"])
         entities = {}
+        chosen_intent = None
         for intent in r["intent_ranking"]:
-            chosen_intent = None
             if intent["name"] in intent_to_outcome_map:
                 # if this intent expects entities, make sure we extract them
                 if type(intent["name"]) == frozenset:
@@ -122,6 +122,9 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                         # note that this check allows you to use full or partial information depending on how you set up your actions
                         if chosen_intent["name"] in intent_to_outcome_map:
                             break
+                        else:
+                            # need to reassign to None in case we break on the last intent
+                            chosen_intent = None
                 else:        
                     if intent["confidence"] > THRESHOLD:
                         # stop looking for a suitable intent if the intent extracted doesn't require entities

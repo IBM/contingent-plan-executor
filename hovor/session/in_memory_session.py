@@ -94,7 +94,7 @@ class InMemorySession(SessionBase):
                 else:
                     for outcfg in self.configuration._configuration_data["actions"][self.current_action.name]["effect"]["outcomes"]:
                         if outcfg["name"] == progress.final_outcome_name:
-                            self.configuration._configuration_data["actions"]["dialogue_statement"]["message_variants"] = [outcfg["response"]]
+                            self.configuration._configuration_data["actions"]["dialogue_statement"]["message_variants"] = outcfg["response"]
                             break
         self._update_action()
 

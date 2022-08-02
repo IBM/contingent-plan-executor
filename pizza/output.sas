@@ -4,7 +4,7 @@ end_version
 begin_metric
 0
 end_metric
-12
+13
 begin_variable
 var0
 -1
@@ -65,25 +65,32 @@ begin_variable
 var8
 -1
 2
-Atom pizza_and_drink()
-NegatedAtom pizza_and_drink()
+Atom allow_single_slot_drink()
+NegatedAtom allow_single_slot_drink()
 end_variable
 begin_variable
 var9
+-1
+2
+Atom allow_single_slot_pizza_flavour()
+NegatedAtom allow_single_slot_pizza_flavour()
+end_variable
+begin_variable
+var10
+-1
+2
+Atom allow_single_slot_side()
+NegatedAtom allow_single_slot_side()
+end_variable
+begin_variable
+var11
 -1
 2
 Atom maybe_pizza()
 NegatedAtom maybe_pizza()
 end_variable
 begin_variable
-var10
--1
-2
-Atom just_side()
-NegatedAtom just_side()
-end_variable
-begin_variable
-var11
+var12
 -1
 2
 Atom goal()
@@ -103,53 +110,59 @@ begin_state
 1
 1
 1
+1
 end_state
 begin_goal
 1
-11 0
+12 0
 end_goal
 47
 begin_operator
-ask-pizza_flavour_DETDUP_validate-slot-fill-EQ-drink_found 
-6
-0 1
+ask-order_DETDUP_validate-slot-fill-EQ-drink_found 
+5
 4 1
 6 1
 3 1
 5 1
 7 1
-1
+5
+0 9 -1 0
+0 10 -1 0
+0 0 1 0
+0 1 -1 0
 0 2 1 0
 1
 end_operator
 begin_operator
-ask-pizza_flavour_DETDUP_validate-slot-fill-EQ-drink_found-side_found 
+ask-order_DETDUP_validate-slot-fill-EQ-drink_found-side_found 
 5
 0 1
 4 1
 3 1
 5 1
 7 1
-2
+3
+0 9 -1 0
 0 2 1 0
 0 6 1 0
 1
 end_operator
 begin_operator
-ask-pizza_flavour_DETDUP_validate-slot-fill-EQ-drink_found-side_maybe-found 
+ask-order_DETDUP_validate-slot-fill-EQ-drink_found-side_maybe-found 
 5
 0 1
 4 1
 6 1
 3 1
 5 1
-2
+3
+0 9 -1 0
 0 2 1 0
 0 7 1 0
 1
 end_operator
 begin_operator
-ask-pizza_flavour_DETDUP_validate-slot-fill-EQ-drink_maybe-found 
+ask-order_DETDUP_validate-slot-fill-EQ-drink_maybe-found 
 6
 0 1
 2 1
@@ -157,38 +170,42 @@ ask-pizza_flavour_DETDUP_validate-slot-fill-EQ-drink_maybe-found
 6 1
 5 1
 7 1
-1
+3
+0 9 -1 0
+0 10 -1 0
 0 3 1 0
 1
 end_operator
 begin_operator
-ask-pizza_flavour_DETDUP_validate-slot-fill-EQ-drink_maybe-found-side_found 
+ask-order_DETDUP_validate-slot-fill-EQ-drink_maybe-found-side_found 
 5
 0 1
 2 1
 4 1
 5 1
 7 1
-2
+3
+0 9 -1 0
 0 6 1 0
 0 3 1 0
 1
 end_operator
 begin_operator
-ask-pizza_flavour_DETDUP_validate-slot-fill-EQ-drink_maybe-found-side_maybe-found 
+ask-order_DETDUP_validate-slot-fill-EQ-drink_maybe-found-side_maybe-found 
 5
 0 1
 2 1
 4 1
 6 1
 5 1
-2
+3
+0 9 -1 0
 0 3 1 0
 0 7 1 0
 1
 end_operator
 begin_operator
-ask-pizza_flavour_DETDUP_validate-slot-fill-EQ-fallback 
+ask-order_DETDUP_validate-slot-fill-EQ-fallback 
 6
 2 1
 4 1
@@ -202,257 +219,271 @@ ask-pizza_flavour_DETDUP_validate-slot-fill-EQ-fallback
 1
 end_operator
 begin_operator
-ask-pizza_flavour_DETDUP_validate-slot-fill-EQ-pizza_flavour_found 
-6
-0 1
+ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_found 
+5
 2 1
 6 1
 3 1
 5 1
 7 1
-1
-0 4 1 0
-1
-end_operator
-begin_operator
-ask-pizza_flavour_DETDUP_validate-slot-fill-EQ-pizza_flavour_found-drink_found 
 5
-0 1
-6 1
-3 1
-5 1
-7 1
-3
-0 2 1 0
-0 4 1 0
 0 8 -1 0
-1
-end_operator
-begin_operator
-ask-pizza_flavour_DETDUP_validate-slot-fill-EQ-pizza_flavour_found-drink_found-side_found 
-4
-0 1
-3 1
-5 1
-7 1
-3
-0 2 1 0
-0 4 1 0
-0 6 1 0
-1
-end_operator
-begin_operator
-ask-pizza_flavour_DETDUP_validate-slot-fill-EQ-pizza_flavour_found-drink_found-side_maybe-found 
-4
-0 1
-6 1
-3 1
-5 1
-3
-0 2 1 0
-0 4 1 0
-0 7 1 0
-1
-end_operator
-begin_operator
-ask-pizza_flavour_DETDUP_validate-slot-fill-EQ-pizza_flavour_found-drink_maybe-found 
-5
-0 1
-2 1
-6 1
-5 1
-7 1
-2
-0 4 1 0
-0 3 1 0
-1
-end_operator
-begin_operator
-ask-pizza_flavour_DETDUP_validate-slot-fill-EQ-pizza_flavour_found-drink_maybe-found-side_found 
-4
-0 1
-2 1
-5 1
-7 1
-3
-0 4 1 0
-0 6 1 0
-0 3 1 0
-1
-end_operator
-begin_operator
-ask-pizza_flavour_DETDUP_validate-slot-fill-EQ-pizza_flavour_found-drink_maybe-found-side_maybe-found 
-4
-0 1
-2 1
-6 1
-5 1
-3
-0 4 1 0
-0 3 1 0
-0 7 1 0
-1
-end_operator
-begin_operator
-ask-pizza_flavour_DETDUP_validate-slot-fill-EQ-pizza_flavour_found-side_found 
-5
-0 1
-2 1
-3 1
-5 1
-7 1
-2
-0 4 1 0
-0 6 1 0
-1
-end_operator
-begin_operator
-ask-pizza_flavour_DETDUP_validate-slot-fill-EQ-pizza_flavour_found-side_maybe-found 
-5
-0 1
-2 1
-6 1
-3 1
-5 1
-2
-0 4 1 0
-0 7 1 0
-1
-end_operator
-begin_operator
-ask-pizza_flavour_DETDUP_validate-slot-fill-EQ-pizza_flavour_maybe-found 
-6
-0 1
-2 1
-4 1
-6 1
-3 1
-7 1
-2
-0 5 1 0
-0 9 -1 0
-1
-end_operator
-begin_operator
-ask-pizza_flavour_DETDUP_validate-slot-fill-EQ-pizza_flavour_maybe-found-drink_found 
-5
-0 1
-4 1
-6 1
-3 1
-7 1
-2
-0 2 1 0
-0 5 1 0
-1
-end_operator
-begin_operator
-ask-pizza_flavour_DETDUP_validate-slot-fill-EQ-pizza_flavour_maybe-found-drink_found-side_found 
-4
-0 1
-4 1
-3 1
-7 1
-3
-0 2 1 0
-0 6 1 0
-0 5 1 0
-1
-end_operator
-begin_operator
-ask-pizza_flavour_DETDUP_validate-slot-fill-EQ-pizza_flavour_maybe-found-drink_found-side_maybe-found 
-4
-0 1
-4 1
-6 1
-3 1
-3
-0 2 1 0
-0 5 1 0
-0 7 1 0
-1
-end_operator
-begin_operator
-ask-pizza_flavour_DETDUP_validate-slot-fill-EQ-pizza_flavour_maybe-found-drink_maybe-found 
-5
-0 1
-2 1
-4 1
-6 1
-7 1
-2
-0 3 1 0
-0 5 1 0
-1
-end_operator
-begin_operator
-ask-pizza_flavour_DETDUP_validate-slot-fill-EQ-pizza_flavour_maybe-found-drink_maybe-found-side_found 
-4
-0 1
-2 1
-4 1
-7 1
-3
-0 6 1 0
-0 3 1 0
-0 5 1 0
-1
-end_operator
-begin_operator
-ask-pizza_flavour_DETDUP_validate-slot-fill-EQ-pizza_flavour_maybe-found-drink_maybe-found-side_maybe-found 
-4
-0 1
-2 1
-4 1
-6 1
-3
-0 3 1 0
-0 5 1 0
-0 7 1 0
-1
-end_operator
-begin_operator
-ask-pizza_flavour_DETDUP_validate-slot-fill-EQ-pizza_flavour_maybe-found-side_found 
-5
-0 1
-2 1
-4 1
-3 1
-7 1
-2
-0 6 1 0
-0 5 1 0
-1
-end_operator
-begin_operator
-ask-pizza_flavour_DETDUP_validate-slot-fill-EQ-pizza_flavour_maybe-found-side_maybe-found 
-5
-0 1
-2 1
-4 1
-6 1
-3 1
-2
-0 5 1 0
-0 7 1 0
-1
-end_operator
-begin_operator
-ask-pizza_flavour_DETDUP_validate-slot-fill-EQ-side_found 
-6
-0 1
-2 1
-4 1
-3 1
-5 1
-7 1
-2
-0 6 1 0
 0 10 -1 0
+0 0 1 0
+0 1 -1 0
+0 4 1 0
 1
 end_operator
 begin_operator
-ask-pizza_flavour_DETDUP_validate-slot-fill-EQ-side_maybe-found 
+ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_found-drink_found 
+5
+0 1
+6 1
+3 1
+5 1
+7 1
+3
+0 10 -1 0
+0 2 1 0
+0 4 1 0
+1
+end_operator
+begin_operator
+ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_found-drink_found-side_found 
+4
+0 1
+3 1
+5 1
+7 1
+3
+0 2 1 0
+0 4 1 0
+0 6 1 0
+1
+end_operator
+begin_operator
+ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_found-drink_found-side_maybe-found 
+4
+0 1
+6 1
+3 1
+5 1
+3
+0 2 1 0
+0 4 1 0
+0 7 1 0
+1
+end_operator
+begin_operator
+ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_found-drink_maybe-found 
+5
+0 1
+2 1
+6 1
+5 1
+7 1
+3
+0 10 -1 0
+0 4 1 0
+0 3 1 0
+1
+end_operator
+begin_operator
+ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_found-drink_maybe-found-side_found 
+4
+0 1
+2 1
+5 1
+7 1
+3
+0 4 1 0
+0 6 1 0
+0 3 1 0
+1
+end_operator
+begin_operator
+ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_found-drink_maybe-found-side_maybe-found 
+4
+0 1
+2 1
+6 1
+5 1
+3
+0 4 1 0
+0 3 1 0
+0 7 1 0
+1
+end_operator
+begin_operator
+ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_found-side_found 
+5
+0 1
+2 1
+3 1
+5 1
+7 1
+3
+0 8 -1 0
+0 4 1 0
+0 6 1 0
+1
+end_operator
+begin_operator
+ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_found-side_maybe-found 
+5
+0 1
+2 1
+6 1
+3 1
+5 1
+3
+0 8 -1 0
+0 4 1 0
+0 7 1 0
+1
+end_operator
+begin_operator
+ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_maybe-found 
+6
+0 1
+2 1
+4 1
+6 1
+3 1
+7 1
+4
+0 8 -1 0
+0 10 -1 0
+0 5 1 0
+0 11 -1 0
+1
+end_operator
+begin_operator
+ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_maybe-found-drink_found 
+5
+0 1
+4 1
+6 1
+3 1
+7 1
+3
+0 10 -1 0
+0 2 1 0
+0 5 1 0
+1
+end_operator
+begin_operator
+ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_maybe-found-drink_found-side_found 
+4
+0 1
+4 1
+3 1
+7 1
+3
+0 2 1 0
+0 6 1 0
+0 5 1 0
+1
+end_operator
+begin_operator
+ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_maybe-found-drink_found-side_maybe-found 
+4
+0 1
+4 1
+6 1
+3 1
+3
+0 2 1 0
+0 5 1 0
+0 7 1 0
+1
+end_operator
+begin_operator
+ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_maybe-found-drink_maybe-found 
+5
+0 1
+2 1
+4 1
+6 1
+7 1
+3
+0 10 -1 0
+0 3 1 0
+0 5 1 0
+1
+end_operator
+begin_operator
+ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_maybe-found-drink_maybe-found-side_found 
+4
+0 1
+2 1
+4 1
+7 1
+3
+0 6 1 0
+0 3 1 0
+0 5 1 0
+1
+end_operator
+begin_operator
+ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_maybe-found-drink_maybe-found-side_maybe-found 
+4
+0 1
+2 1
+4 1
+6 1
+3
+0 3 1 0
+0 5 1 0
+0 7 1 0
+1
+end_operator
+begin_operator
+ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_maybe-found-side_found 
+5
+0 1
+2 1
+4 1
+3 1
+7 1
+3
+0 8 -1 0
+0 6 1 0
+0 5 1 0
+1
+end_operator
+begin_operator
+ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_maybe-found-side_maybe-found 
+5
+0 1
+2 1
+4 1
+6 1
+3 1
+3
+0 8 -1 0
+0 5 1 0
+0 7 1 0
+1
+end_operator
+begin_operator
+ask-order_DETDUP_validate-slot-fill-EQ-side_found 
+5
+2 1
+4 1
+3 1
+5 1
+7 1
+5
+0 8 -1 0
+0 9 -1 0
+0 0 1 0
+0 1 -1 0
+0 6 1 0
+1
+end_operator
+begin_operator
+ask-order_DETDUP_validate-slot-fill-EQ-side_maybe-found 
 6
 0 1
 2 1
@@ -460,7 +491,9 @@ ask-pizza_flavour_DETDUP_validate-slot-fill-EQ-side_maybe-found
 6 1
 3 1
 5 1
-1
+3
+0 8 -1 0
+0 9 -1 0
 0 7 1 0
 1
 end_operator
@@ -478,7 +511,8 @@ clarify__drink_DETDUP_validate-clarification-EQ-deny
 2
 0 1
 2 1
-1
+2
+0 8 -1 0
 0 3 0 1
 1
 end_operator
@@ -506,7 +540,8 @@ clarify__pizza_flavour_DETDUP_validate-clarification-EQ-deny
 2
 0 1
 4 1
-1
+2
+0 9 -1 0
 0 5 0 1
 1
 end_operator
@@ -534,7 +569,8 @@ clarify__side_DETDUP_validate-clarification-EQ-deny
 2
 0 1
 6 1
-1
+2
+0 10 -1 0
 0 7 0 1
 1
 end_operator
@@ -558,7 +594,7 @@ complete_DETDUP_finish-EQ-assign-goal
 5 1
 7 1
 1
-0 11 -1 0
+0 12 -1 0
 1
 end_operator
 begin_operator
@@ -570,8 +606,9 @@ dialogue_statement_DETDUP_reset-EQ-lock
 1
 end_operator
 begin_operator
-single_slot__drink_DETDUP_validate-clarification-EQ-fallback 
-2
+single_slot__drink_DETDUP_validate-slot-fill-EQ-fallback 
+3
+8 0
 2 1
 3 1
 2
@@ -580,17 +617,20 @@ single_slot__drink_DETDUP_validate-clarification-EQ-fallback
 1
 end_operator
 begin_operator
-single_slot__drink_DETDUP_validate-clarification-EQ-fill-slot 
-2
-0 1
-3 1
+single_slot__drink_DETDUP_validate-slot-fill-EQ-fill-slot 
 1
+3 1
+4
+0 8 0 1
+0 0 1 0
+0 1 -1 0
 0 2 1 0
 1
 end_operator
 begin_operator
-single_slot__drink_DETDUP_validate-clarification-EQ-slot-unclear 
-2
+single_slot__drink_DETDUP_validate-slot-fill-EQ-slot-unclear 
+3
+8 0
 0 1
 2 1
 1
@@ -598,8 +638,9 @@ single_slot__drink_DETDUP_validate-clarification-EQ-slot-unclear
 1
 end_operator
 begin_operator
-single_slot__pizza_flavour_DETDUP_validate-clarification-EQ-fallback 
-2
+single_slot__pizza_flavour_DETDUP_validate-slot-fill-EQ-fallback 
+3
+9 0
 4 1
 5 1
 2
@@ -608,27 +649,30 @@ single_slot__pizza_flavour_DETDUP_validate-clarification-EQ-fallback
 1
 end_operator
 begin_operator
-single_slot__pizza_flavour_DETDUP_validate-clarification-EQ-fill-slot 
-2
-0 1
-5 1
+single_slot__pizza_flavour_DETDUP_validate-slot-fill-EQ-fill-slot 
 1
+5 1
+4
+0 9 0 1
+0 0 1 0
+0 1 -1 0
 0 4 1 0
 1
 end_operator
 begin_operator
-single_slot__pizza_flavour_DETDUP_validate-clarification-EQ-slot-unclear 
-2
+single_slot__pizza_flavour_DETDUP_validate-slot-fill-EQ-slot-unclear 
+3
+9 0
 0 1
 4 1
-2
+1
 0 5 1 0
-0 9 -1 0
 1
 end_operator
 begin_operator
-single_slot__side_DETDUP_validate-clarification-EQ-fallback 
-2
+single_slot__side_DETDUP_validate-slot-fill-EQ-fallback 
+3
+10 0
 6 1
 7 1
 2
@@ -637,18 +681,20 @@ single_slot__side_DETDUP_validate-clarification-EQ-fallback
 1
 end_operator
 begin_operator
-single_slot__side_DETDUP_validate-clarification-EQ-fill-slot 
-2
-0 1
+single_slot__side_DETDUP_validate-slot-fill-EQ-fill-slot 
+1
 7 1
-2
+4
+0 10 0 1
+0 0 1 0
+0 1 -1 0
 0 6 1 0
-0 10 -1 0
 1
 end_operator
 begin_operator
-single_slot__side_DETDUP_validate-clarification-EQ-slot-unclear 
-2
+single_slot__side_DETDUP_validate-slot-fill-EQ-slot-unclear 
+3
+10 0
 0 1
 6 1
 1

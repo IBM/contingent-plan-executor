@@ -24,12 +24,12 @@
         :parameters()
         :precondition
             (and
-                (have_side)
-                (have_pizza_flavour)
-                (not (maybe-have_side))
-                (not (maybe-have_drink))
                 (have_drink)
+                (not (maybe-have_drink))
+                (have_side)
                 (not (maybe-have_pizza_flavour))
+                (not (maybe-have_side))
+                (have_pizza_flavour)
             )
         :effect
             (labeled-oneof finish
@@ -44,8 +44,8 @@
         :parameters()
         :precondition
             (and
-                (force-statement)
                 (have-message)
+                (force-statement)
             )
         :effect
             (labeled-oneof reset
@@ -61,13 +61,13 @@
         :parameters()
         :precondition
             (and
-                (not (force-statement))
-                (not (maybe-have_side))
-                (not (maybe-have_drink))
                 (not (have_side))
-                (not (have_pizza_flavour))
-                (not (have_drink))
+                (not (maybe-have_drink))
                 (not (maybe-have_pizza_flavour))
+                (not (have_drink))
+                (not (maybe-have_side))
+                (not (have_pizza_flavour))
+                (not (force-statement))
             )
         :effect
             (labeled-oneof validate-slot-fill
@@ -326,10 +326,10 @@
         :parameters()
         :precondition
             (and
-                (not (have_side))
-                (not (maybe-have_side))
                 (not (force-statement))
+                (not (have_side))
                 (allow_single_slot_side)
+                (not (maybe-have_side))
             )
         :effect
             (labeled-oneof validate-slot-fill
@@ -360,10 +360,10 @@
         :parameters()
         :precondition
             (and
-                (not (maybe-have_drink))
                 (allow_single_slot_drink)
                 (not (force-statement))
                 (not (have_drink))
+                (not (maybe-have_drink))
             )
         :effect
             (labeled-oneof validate-slot-fill
@@ -394,10 +394,10 @@
         :parameters()
         :precondition
             (and
-                (not (force-statement))
                 (not (have_pizza_flavour))
-                (allow_single_slot_pizza_flavour)
+                (not (force-statement))
                 (not (maybe-have_pizza_flavour))
+                (allow_single_slot_pizza_flavour)
             )
         :effect
             (labeled-oneof validate-slot-fill
@@ -428,9 +428,9 @@
         :parameters()
         :precondition
             (and
+                (not (have_pizza_flavour))
                 (not (force-statement))
                 (maybe-have_pizza_flavour)
-                (not (have_pizza_flavour))
             )
         :effect
             (labeled-oneof validate-clarification
@@ -459,8 +459,8 @@
         :parameters()
         :precondition
             (and
-                (not (force-statement))
                 (maybe-have_drink)
+                (not (force-statement))
                 (not (have_drink))
             )
         :effect
@@ -490,9 +490,9 @@
         :parameters()
         :precondition
             (and
+                (not (force-statement))
                 (not (have_side))
                 (maybe-have_side)
-                (not (force-statement))
             )
         :effect
             (labeled-oneof validate-clarification

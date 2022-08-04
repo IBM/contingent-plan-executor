@@ -142,7 +142,7 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
             ranked_groups = [i for i in r["intent_ranking"] if i["name"] in intent_to_outcome_map]
             ranked_groups = [{"name": chosen_intent, "confidence": 1.0}] + ranked_groups
             ranked_groups = [(intent_to_outcome_map[intent["name"]], intent["confidence"]) for intent in ranked_groups]     
-        DEBUG("\t top random ranking for group '%s'" % (chosen_intent))
+        #DEBUG("\t top random ranking for group '%s'" % (chosen_intent))
         return ranked_groups, progress
 
     @classmethod

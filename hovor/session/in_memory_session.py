@@ -1,9 +1,8 @@
 from copy import deepcopy
-
-from hovor.planning.partial_state import PartialState
 from hovor.runtime.context import Context
 from hovor.session.session_base import SessionBase
 from hovor import DEBUG
+from hovor.actions.semantic_similarity import semantic_similarity, softmax_action_confidences
 
 
 class InMemorySession(SessionBase):
@@ -73,8 +72,11 @@ class InMemorySession(SessionBase):
         next_state = progress.actual_state
         next_context = progress.actual_context
 
+        # get all actions that are applicable from this state
+        applicable_actions = self.get_applicable_actions()
         n1 = self._current_node
 
+        # update the current state, context, and node
         self._current_state = next_state
         self._current_context = deepcopy(next_context)
         self._current_node = self.plan.get_next_node(self._current_node, self._current_state,
@@ -94,18 +96,36 @@ class InMemorySession(SessionBase):
                 else:
                     for outcfg in self.configuration._configuration_data["actions"][self.current_action.name]["effect"]["outcomes"]:
                         if outcfg["name"] == progress.final_outcome_name:
-                            self.configuration._configuration_data["actions"]["dialogue_statement"]["message_variants"] = outcfg["response"]
+                            self.configuration._configuration_data["actions"]["dialogue_statement"]["message_variants"] = outcfg["response_variants"]
                             break
         self._update_action()
-
+        if self._current_action.action_type in ["message", "dialogue"]:
+            action_confidences = self.get_action_confidences(self._current_action._utterance.split("HOVOR: ")[1], applicable_actions)
+            print("\n\nACTION CONFIDENCES:\n")
+            for key, value in action_confidences.items():
+                print(f"{key}: {value}")
+            print("\n\n")
         self._delta_history.append(progress)
-        self._print_update_report()
+        #self._print_update_report()
 
     def update_action_result(self, result):
         self._current_action_result = result
 
     def get_context_copy(self):
         return deepcopy(self._current_context)
+
+    def get_applicable_actions(self):
+        applicable_actions = set()
+        for outcome in self._current_node.named_children:
+            applicable_actions.add(self.plan.get_next_node(self._current_node, self._current_state, outcome[0]).action_name)
+        return applicable_actions
+
+    def get_action_confidences(self, source_sentence, applicable_actions):
+        action_message_map = {act: self.configuration._configuration_data["actions"][act]["message_variants"] for act in applicable_actions if self.configuration._configuration_data["actions"][act]["message_variants"]}
+        confidences = {}
+        for action, messages in action_message_map.items():
+            confidences[action] = semantic_similarity(source_sentence, messages)
+        return softmax_action_confidences({k: v for k, v in sorted(confidences.items(), key=lambda item: item[1], reverse=True)})
 
     def _update_action(self):
         self._current_action = self._configuration_provider.create_action(self._current_node, self._current_state,

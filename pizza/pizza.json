@@ -543,7 +543,9 @@
                         "intent": {
                             "pizza_flavour": "found"
                         },
-                        "response": "Pizza has been logged.",
+                        "response_variants": [
+                            "Pizza has been logged."
+                        ],
                         "name": "ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_found",
                         "assignments": {
                             "$pizza_flavour": "found"
@@ -912,7 +914,9 @@
                         "intent": {
                             "drink": "found"
                         },
-                        "response": "Drink has been logged.",
+                        "response_variants": [
+                            "Drink has been logged."
+                        ],
                         "name": "ask-order_DETDUP_validate-slot-fill-EQ-drink_found",
                         "assignments": {
                             "$drink": "found"
@@ -1029,7 +1033,9 @@
                         "intent": {
                             "side": "found"
                         },
-                        "response": "Side has been logged.",
+                        "response_variants": [
+                            "Side has been logged."
+                        ],
                         "name": "ask-order_DETDUP_validate-slot-fill-EQ-side_found",
                         "assignments": {
                             "$side": "found"
@@ -1144,7 +1150,7 @@
                         "intent": {
                             "side": "found"
                         },
-                        "response": [
+                        "response_variants": [
                             "Side has been logged."
                         ],
                         "name": "single_slot__side_DETDUP_validate-slot-fill-EQ-fill-slot",
@@ -1244,7 +1250,7 @@
                         "intent": {
                             "drink": "found"
                         },
-                        "response": [
+                        "response_variants": [
                             "Drink has been logged."
                         ],
                         "name": "single_slot__drink_DETDUP_validate-slot-fill-EQ-fill-slot",
@@ -1344,7 +1350,7 @@
                         "intent": {
                             "pizza_flavour": "found"
                         },
-                        "response": [
+                        "response_variants": [
                             "Pizza order has been logged."
                         ],
                         "name": "single_slot__pizza_flavour_DETDUP_validate-slot-fill-EQ-fill-slot",

@@ -64,7 +64,7 @@ def progress_with_outcome(session, final_progress):
 
     session.update_by(final_progress)
 
-    DEBUG("\t session context: %s" % session.get_context_copy())
+    #DEBUG("\t session context: %s" % session.get_context_copy())
     return session.current_action
 
 

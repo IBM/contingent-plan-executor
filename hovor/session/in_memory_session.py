@@ -121,6 +121,8 @@ class InMemorySession(SessionBase):
         return applicable_actions
 
     def get_action_confidences(self, source_sentence, applicable_actions):
+        if len(applicable_actions) == 1:
+            return {list(applicable_actions)[0]: 1.0}
         action_message_map = {act: self.configuration._configuration_data["actions"][act]["message_variants"] for act in applicable_actions if self.configuration._configuration_data["actions"][act]["message_variants"]}
         confidences = {}
         for action, messages in action_message_map.items():

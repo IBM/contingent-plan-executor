@@ -15,16 +15,16 @@ def query(payload):
     return response.json()
 
 def semantic_similarity(source_sentence: str, sentences: List[str]):
-    return query(
+    return 1.0 if source_sentence in sentences else sum(query(
     {
         "inputs": {
             "source_sentence": source_sentence,
             "sentences": sentences
         }
-    })
+    }))/len(sentences)
 
 def softmax_action_confidences(action_confidences: Dict):
-    softmax_conversions = [array[0] for array in softmax(list(action_confidences.values()))]
+    softmax_conversions = list(softmax(list(action_confidences.values())))
     index = 0
     for action in action_confidences:
         action_confidences[action] = softmax_conversions[index]

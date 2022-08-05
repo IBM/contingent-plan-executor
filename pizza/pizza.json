@@ -42,14 +42,6 @@
             "type": "flag",
             "config": false
         },
-        "pizza_and_drink": {
-            "type": "flag",
-            "config": false
-        },
-        "just_side": {
-            "type": "flag",
-            "config": false
-        },
         "maybe_pizza": {
             "type": "flag",
             "config": false
@@ -59,18 +51,6 @@
             "config": false
         },
         "force-statement": {
-            "type": "flag",
-            "config": false
-        },
-        "allow_single_slot_side": {
-            "type": "flag",
-            "config": false
-        },
-        "allow_single_slot_drink": {
-            "type": "flag",
-            "config": false
-        },
-        "allow_single_slot_pizza_flavour": {
             "type": "flag",
             "config": false
         }
@@ -149,6 +129,120 @@
         }
     },
     "actions": {
+        "force-all": {
+            "type": "dialogue",
+            "subtype": "dialogue disambiguation",
+            "message_variants": [
+                "What would you like to order? Please specify your choice of pizza, drink, and side."
+            ],
+            "fallback_message_variants": [
+                "Sorry, that isn't a valid order.",
+                "I didn't quite get your order. Can you tell me again?"
+            ],
+            "condition": [
+                [
+                    "pizza_flavour",
+                    "Unknown"
+                ],
+                [
+                    "drink",
+                    "Unknown"
+                ],
+                [
+                    "side",
+                    "Unknown"
+                ],
+                [
+                    "force-statement",
+                    false
+                ]
+            ],
+            "effect": {
+                "global-outcome-name": "validate",
+                "type": "oneof",
+                "outcomes": [
+                    {
+                        "updates": {
+                            "pizza_flavour": {
+                                "value": "$pizza_flavour",
+                                "known": true,
+                                "certainty": "Known",
+                                "interpretation": "spel"
+                            },
+                            "drink": {
+                                "value": "$drink",
+                                "known": true,
+                                "certainty": "Known",
+                                "interpretation": "spel"
+                            },
+                            "side": {
+                                "value": "$side",
+                                "known": true,
+                                "certainty": "Known",
+                                "interpretation": "spel"
+                            }
+                        },
+                        "intent": "share_all",
+                        "name": "force-all_DETDUP_validate-EQ-valid",
+                        "assignments": {
+                            "$pizza_flavour": "found",
+                            "$drink": "found",
+                            "$side": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "have-message": {
+                                "value": true,
+                                "interpretation": "json"
+                            },
+                            "force-statement": {
+                                "value": true,
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "fallback",
+                        "name": "force-all_DETDUP_validate-EQ-fallback",
+                        "assignments": {}
+                    }
+                ]
+            },
+            "clarify": {
+                "pizza_flavour": {
+                    "message_variants": [
+                        "Do you want a $pizza_flavour pizza?"
+                    ]
+                },
+                "drink": {
+                    "message_variants": [
+                        "Would you like to drink $drink?"
+                    ]
+                },
+                "side": {
+                    "message_variants": [
+                        "Would you like to have $side on the side?"
+                    ]
+                }
+            },
+            "intents": {
+                "share_all": {
+                    "variables": [
+                        "$pizza_flavour",
+                        "$drink",
+                        "$side"
+                    ],
+                    "utterances": [
+                        "I want a $pizza_flavour pizza with a $drink and $side.",
+                        "$pizza_flavour pizza with a $drink and $side please!",
+                        "Can I get a $pizza_flavour pizza with a $drink and $side?"
+                    ]
+                },
+                "fallback": {
+                    "variables": [],
+                    "utterances": []
+                }
+            }
+        },
         "complete": {
             "type": "system",
             "message_variants": [
@@ -227,1186 +321,11 @@
                 }
             }
         },
-        "ask-order": {
-            "type": "dialogue",
-            "subtype": "dialogue disambiguation",
-            "message_variants": [
-                "What would you like to order? Please specify your choice of pizza, drink, and side."
-            ],
-            "fallback_message_variants": [
-                "Sorry, that isn't a valid order.",
-                "I didn't quite get your order. Can you tell me again?"
-            ],
-            "condition": [
-                [
-                    "pizza_flavour",
-                    null
-                ],
-                [
-                    "pizza_flavour",
-                    "Unknown"
-                ],
-                [
-                    "drink",
-                    null
-                ],
-                [
-                    "drink",
-                    "Unknown"
-                ],
-                [
-                    "side",
-                    null
-                ],
-                [
-                    "side",
-                    "Unknown"
-                ],
-                [
-                    "force-statement",
-                    false
-                ]
-            ],
-            "effect": {
-                "global-outcome-name": "validate-slot-fill",
-                "type": "oneof",
-                "outcomes": [
-                    {
-                        "updates": {
-                            "pizza_flavour": {
-                                "value": "$pizza_flavour",
-                                "known": true,
-                                "certainty": "Known",
-                                "interpretation": "spel"
-                            },
-                            "drink": {
-                                "value": "$drink",
-                                "known": true,
-                                "certainty": "Known",
-                                "interpretation": "spel"
-                            },
-                            "side": {
-                                "value": "$side",
-                                "known": true,
-                                "certainty": "Known",
-                                "interpretation": "spel"
-                            }
-                        },
-                        "intent": "share_all",
-                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_found-drink_found-side_found",
-                        "assignments": {
-                            "$pizza_flavour": "found",
-                            "$drink": "found",
-                            "$side": "found"
-                        }
-                    },
-                    {
-                        "updates": {
-                            "pizza_flavour": {
-                                "value": "$pizza_flavour",
-                                "known": true,
-                                "certainty": "Known",
-                                "interpretation": "spel"
-                            },
-                            "drink": {
-                                "value": "$drink",
-                                "known": true,
-                                "certainty": "Known",
-                                "interpretation": "spel"
-                            },
-                            "side": {
-                                "value": "$side",
-                                "known": "maybe",
-                                "certainty": "Uncertain",
-                                "interpretation": "spel"
-                            }
-                        },
-                        "intent": {
-                            "pizza_flavour": "found",
-                            "drink": "found",
-                            "side": "maybe-found"
-                        },
-                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_found-drink_found-side_maybe-found",
-                        "assignments": {
-                            "$pizza_flavour": "found",
-                            "$drink": "found",
-                            "$side": "maybe-found"
-                        }
-                    },
-                    {
-                        "updates": {
-                            "pizza_flavour": {
-                                "value": "$pizza_flavour",
-                                "known": true,
-                                "certainty": "Known",
-                                "interpretation": "spel"
-                            },
-                            "drink": {
-                                "value": "$drink",
-                                "known": true,
-                                "certainty": "Known",
-                                "interpretation": "spel"
-                            },
-                            "allow_single_slot_side": {
-                                "value": true,
-                                "interpretation": "json"
-                            }
-                        },
-                        "intent": {
-                            "pizza_flavour": "found",
-                            "drink": "found"
-                        },
-                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_found-drink_found",
-                        "assignments": {
-                            "$pizza_flavour": "found",
-                            "$drink": "found"
-                        }
-                    },
-                    {
-                        "updates": {
-                            "pizza_flavour": {
-                                "value": "$pizza_flavour",
-                                "known": true,
-                                "certainty": "Known",
-                                "interpretation": "spel"
-                            },
-                            "drink": {
-                                "value": "$drink",
-                                "known": "maybe",
-                                "certainty": "Uncertain",
-                                "interpretation": "spel"
-                            },
-                            "side": {
-                                "value": "$side",
-                                "known": true,
-                                "certainty": "Known",
-                                "interpretation": "spel"
-                            }
-                        },
-                        "intent": {
-                            "pizza_flavour": "found",
-                            "drink": "maybe-found",
-                            "side": "found"
-                        },
-                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_found-drink_maybe-found-side_found",
-                        "assignments": {
-                            "$pizza_flavour": "found",
-                            "$drink": "maybe-found",
-                            "$side": "found"
-                        }
-                    },
-                    {
-                        "updates": {
-                            "pizza_flavour": {
-                                "value": "$pizza_flavour",
-                                "known": true,
-                                "certainty": "Known",
-                                "interpretation": "spel"
-                            },
-                            "drink": {
-                                "value": "$drink",
-                                "known": "maybe",
-                                "certainty": "Uncertain",
-                                "interpretation": "spel"
-                            },
-                            "side": {
-                                "value": "$side",
-                                "known": "maybe",
-                                "certainty": "Uncertain",
-                                "interpretation": "spel"
-                            }
-                        },
-                        "intent": {
-                            "pizza_flavour": "found",
-                            "drink": "maybe-found",
-                            "side": "maybe-found"
-                        },
-                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_found-drink_maybe-found-side_maybe-found",
-                        "assignments": {
-                            "$pizza_flavour": "found",
-                            "$drink": "maybe-found",
-                            "$side": "maybe-found"
-                        }
-                    },
-                    {
-                        "updates": {
-                            "pizza_flavour": {
-                                "value": "$pizza_flavour",
-                                "known": true,
-                                "certainty": "Known",
-                                "interpretation": "spel"
-                            },
-                            "drink": {
-                                "value": "$drink",
-                                "known": "maybe",
-                                "certainty": "Uncertain",
-                                "interpretation": "spel"
-                            },
-                            "allow_single_slot_side": {
-                                "value": true,
-                                "interpretation": "json"
-                            }
-                        },
-                        "intent": {
-                            "pizza_flavour": "found",
-                            "drink": "maybe-found"
-                        },
-                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_found-drink_maybe-found",
-                        "assignments": {
-                            "$pizza_flavour": "found",
-                            "$drink": "maybe-found"
-                        }
-                    },
-                    {
-                        "updates": {
-                            "pizza_flavour": {
-                                "value": "$pizza_flavour",
-                                "known": true,
-                                "certainty": "Known",
-                                "interpretation": "spel"
-                            },
-                            "side": {
-                                "value": "$side",
-                                "known": true,
-                                "certainty": "Known",
-                                "interpretation": "spel"
-                            },
-                            "allow_single_slot_drink": {
-                                "value": true,
-                                "interpretation": "json"
-                            }
-                        },
-                        "intent": {
-                            "pizza_flavour": "found",
-                            "side": "found"
-                        },
-                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_found-side_found",
-                        "assignments": {
-                            "$pizza_flavour": "found",
-                            "$side": "found"
-                        }
-                    },
-                    {
-                        "updates": {
-                            "pizza_flavour": {
-                                "value": "$pizza_flavour",
-                                "known": true,
-                                "certainty": "Known",
-                                "interpretation": "spel"
-                            },
-                            "side": {
-                                "value": "$side",
-                                "known": "maybe",
-                                "certainty": "Uncertain",
-                                "interpretation": "spel"
-                            },
-                            "allow_single_slot_drink": {
-                                "value": true,
-                                "interpretation": "json"
-                            }
-                        },
-                        "intent": {
-                            "pizza_flavour": "found",
-                            "side": "maybe-found"
-                        },
-                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_found-side_maybe-found",
-                        "assignments": {
-                            "$pizza_flavour": "found",
-                            "$side": "maybe-found"
-                        }
-                    },
-                    {
-                        "updates": {
-                            "pizza_flavour": {
-                                "value": "$pizza_flavour",
-                                "known": true,
-                                "certainty": "Known",
-                                "interpretation": "spel"
-                            },
-                            "allow_single_slot_drink": {
-                                "value": true,
-                                "interpretation": "json"
-                            },
-                            "allow_single_slot_side": {
-                                "value": true,
-                                "interpretation": "json"
-                            },
-                            "have-message": {
-                                "value": true,
-                                "interpretation": "json"
-                            },
-                            "force-statement": {
-                                "value": true,
-                                "interpretation": "json"
-                            }
-                        },
-                        "intent": {
-                            "pizza_flavour": "found"
-                        },
-                        "response_variants": [
-                            "Pizza has been logged."
-                        ],
-                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_found",
-                        "assignments": {
-                            "$pizza_flavour": "found"
-                        }
-                    },
-                    {
-                        "updates": {
-                            "pizza_flavour": {
-                                "value": "$pizza_flavour",
-                                "known": "maybe",
-                                "certainty": "Uncertain",
-                                "interpretation": "spel"
-                            },
-                            "drink": {
-                                "value": "$drink",
-                                "known": true,
-                                "certainty": "Known",
-                                "interpretation": "spel"
-                            },
-                            "side": {
-                                "value": "$side",
-                                "known": true,
-                                "certainty": "Known",
-                                "interpretation": "spel"
-                            }
-                        },
-                        "intent": {
-                            "pizza_flavour": "maybe-found",
-                            "drink": "found",
-                            "side": "found"
-                        },
-                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_maybe-found-drink_found-side_found",
-                        "assignments": {
-                            "$pizza_flavour": "maybe-found",
-                            "$drink": "found",
-                            "$side": "found"
-                        }
-                    },
-                    {
-                        "updates": {
-                            "pizza_flavour": {
-                                "value": "$pizza_flavour",
-                                "known": "maybe",
-                                "certainty": "Uncertain",
-                                "interpretation": "spel"
-                            },
-                            "drink": {
-                                "value": "$drink",
-                                "known": true,
-                                "certainty": "Known",
-                                "interpretation": "spel"
-                            },
-                            "side": {
-                                "value": "$side",
-                                "known": "maybe",
-                                "certainty": "Uncertain",
-                                "interpretation": "spel"
-                            }
-                        },
-                        "intent": {
-                            "pizza_flavour": "maybe-found",
-                            "drink": "found",
-                            "side": "maybe-found"
-                        },
-                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_maybe-found-drink_found-side_maybe-found",
-                        "assignments": {
-                            "$pizza_flavour": "maybe-found",
-                            "$drink": "found",
-                            "$side": "maybe-found"
-                        }
-                    },
-                    {
-                        "updates": {
-                            "pizza_flavour": {
-                                "value": "$pizza_flavour",
-                                "known": "maybe",
-                                "certainty": "Uncertain",
-                                "interpretation": "spel"
-                            },
-                            "drink": {
-                                "value": "$drink",
-                                "known": true,
-                                "certainty": "Known",
-                                "interpretation": "spel"
-                            },
-                            "allow_single_slot_side": {
-                                "value": true,
-                                "interpretation": "json"
-                            }
-                        },
-                        "intent": {
-                            "pizza_flavour": "maybe-found",
-                            "drink": "found"
-                        },
-                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_maybe-found-drink_found",
-                        "assignments": {
-                            "$pizza_flavour": "maybe-found",
-                            "$drink": "found"
-                        }
-                    },
-                    {
-                        "updates": {
-                            "pizza_flavour": {
-                                "value": "$pizza_flavour",
-                                "known": "maybe",
-                                "certainty": "Uncertain",
-                                "interpretation": "spel"
-                            },
-                            "drink": {
-                                "value": "$drink",
-                                "known": "maybe",
-                                "certainty": "Uncertain",
-                                "interpretation": "spel"
-                            },
-                            "side": {
-                                "value": "$side",
-                                "known": true,
-                                "certainty": "Known",
-                                "interpretation": "spel"
-                            }
-                        },
-                        "intent": {
-                            "pizza_flavour": "maybe-found",
-                            "drink": "maybe-found",
-                            "side": "found"
-                        },
-                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_maybe-found-drink_maybe-found-side_found",
-                        "assignments": {
-                            "$pizza_flavour": "maybe-found",
-                            "$drink": "maybe-found",
-                            "$side": "found"
-                        }
-                    },
-                    {
-                        "updates": {
-                            "pizza_flavour": {
-                                "value": "$pizza_flavour",
-                                "known": "maybe",
-                                "certainty": "Uncertain",
-                                "interpretation": "spel"
-                            },
-                            "drink": {
-                                "value": "$drink",
-                                "known": "maybe",
-                                "certainty": "Uncertain",
-                                "interpretation": "spel"
-                            },
-                            "side": {
-                                "value": "$side",
-                                "known": "maybe",
-                                "certainty": "Uncertain",
-                                "interpretation": "spel"
-                            }
-                        },
-                        "intent": {
-                            "pizza_flavour": "maybe-found",
-                            "drink": "maybe-found",
-                            "side": "maybe-found"
-                        },
-                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_maybe-found-drink_maybe-found-side_maybe-found",
-                        "assignments": {
-                            "$pizza_flavour": "maybe-found",
-                            "$drink": "maybe-found",
-                            "$side": "maybe-found"
-                        }
-                    },
-                    {
-                        "updates": {
-                            "pizza_flavour": {
-                                "value": "$pizza_flavour",
-                                "known": "maybe",
-                                "certainty": "Uncertain",
-                                "interpretation": "spel"
-                            },
-                            "drink": {
-                                "value": "$drink",
-                                "known": "maybe",
-                                "certainty": "Uncertain",
-                                "interpretation": "spel"
-                            },
-                            "allow_single_slot_side": {
-                                "value": true,
-                                "interpretation": "json"
-                            }
-                        },
-                        "intent": {
-                            "pizza_flavour": "maybe-found",
-                            "drink": "maybe-found"
-                        },
-                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_maybe-found-drink_maybe-found",
-                        "assignments": {
-                            "$pizza_flavour": "maybe-found",
-                            "$drink": "maybe-found"
-                        }
-                    },
-                    {
-                        "updates": {
-                            "pizza_flavour": {
-                                "value": "$pizza_flavour",
-                                "known": "maybe",
-                                "certainty": "Uncertain",
-                                "interpretation": "spel"
-                            },
-                            "side": {
-                                "value": "$side",
-                                "known": true,
-                                "certainty": "Known",
-                                "interpretation": "spel"
-                            },
-                            "allow_single_slot_drink": {
-                                "value": true,
-                                "interpretation": "json"
-                            }
-                        },
-                        "intent": {
-                            "pizza_flavour": "maybe-found",
-                            "side": "found"
-                        },
-                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_maybe-found-side_found",
-                        "assignments": {
-                            "$pizza_flavour": "maybe-found",
-                            "$side": "found"
-                        }
-                    },
-                    {
-                        "updates": {
-                            "pizza_flavour": {
-                                "value": "$pizza_flavour",
-                                "known": "maybe",
-                                "certainty": "Uncertain",
-                                "interpretation": "spel"
-                            },
-                            "side": {
-                                "value": "$side",
-                                "known": "maybe",
-                                "certainty": "Uncertain",
-                                "interpretation": "spel"
-                            },
-                            "allow_single_slot_drink": {
-                                "value": true,
-                                "interpretation": "json"
-                            }
-                        },
-                        "intent": {
-                            "pizza_flavour": "maybe-found",
-                            "side": "maybe-found"
-                        },
-                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_maybe-found-side_maybe-found",
-                        "assignments": {
-                            "$pizza_flavour": "maybe-found",
-                            "$side": "maybe-found"
-                        }
-                    },
-                    {
-                        "updates": {
-                            "pizza_flavour": {
-                                "value": "$pizza_flavour",
-                                "known": "maybe",
-                                "certainty": "Uncertain",
-                                "interpretation": "spel"
-                            },
-                            "maybe_pizza": {
-                                "value": true,
-                                "interpretation": "json"
-                            },
-                            "allow_single_slot_drink": {
-                                "value": true,
-                                "interpretation": "json"
-                            },
-                            "allow_single_slot_side": {
-                                "value": true,
-                                "interpretation": "json"
-                            }
-                        },
-                        "intent": {
-                            "pizza_flavour": "maybe-found"
-                        },
-                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-pizza_flavour_maybe-found",
-                        "assignments": {
-                            "$pizza_flavour": "maybe-found"
-                        }
-                    },
-                    {
-                        "updates": {
-                            "drink": {
-                                "value": "$drink",
-                                "known": true,
-                                "certainty": "Known",
-                                "interpretation": "spel"
-                            },
-                            "side": {
-                                "value": "$side",
-                                "known": true,
-                                "certainty": "Known",
-                                "interpretation": "spel"
-                            },
-                            "allow_single_slot_pizza_flavour": {
-                                "value": true,
-                                "interpretation": "json"
-                            }
-                        },
-                        "intent": {
-                            "drink": "found",
-                            "side": "found"
-                        },
-                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-drink_found-side_found",
-                        "assignments": {
-                            "$drink": "found",
-                            "$side": "found"
-                        }
-                    },
-                    {
-                        "updates": {
-                            "drink": {
-                                "value": "$drink",
-                                "known": true,
-                                "certainty": "Known",
-                                "interpretation": "spel"
-                            },
-                            "side": {
-                                "value": "$side",
-                                "known": "maybe",
-                                "certainty": "Uncertain",
-                                "interpretation": "spel"
-                            },
-                            "allow_single_slot_pizza_flavour": {
-                                "value": true,
-                                "interpretation": "json"
-                            }
-                        },
-                        "intent": {
-                            "drink": "found",
-                            "side": "maybe-found"
-                        },
-                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-drink_found-side_maybe-found",
-                        "assignments": {
-                            "$drink": "found",
-                            "$side": "maybe-found"
-                        }
-                    },
-                    {
-                        "updates": {
-                            "drink": {
-                                "value": "$drink",
-                                "known": true,
-                                "certainty": "Known",
-                                "interpretation": "spel"
-                            },
-                            "allow_single_slot_pizza_flavour": {
-                                "value": true,
-                                "interpretation": "json"
-                            },
-                            "allow_single_slot_side": {
-                                "value": true,
-                                "interpretation": "json"
-                            },
-                            "have-message": {
-                                "value": true,
-                                "interpretation": "json"
-                            },
-                            "force-statement": {
-                                "value": true,
-                                "interpretation": "json"
-                            }
-                        },
-                        "intent": {
-                            "drink": "found"
-                        },
-                        "response_variants": [
-                            "Drink has been logged."
-                        ],
-                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-drink_found",
-                        "assignments": {
-                            "$drink": "found"
-                        }
-                    },
-                    {
-                        "updates": {
-                            "drink": {
-                                "value": "$drink",
-                                "known": "maybe",
-                                "certainty": "Uncertain",
-                                "interpretation": "spel"
-                            },
-                            "side": {
-                                "value": "$side",
-                                "known": true,
-                                "certainty": "Known",
-                                "interpretation": "spel"
-                            },
-                            "allow_single_slot_pizza_flavour": {
-                                "value": true,
-                                "interpretation": "json"
-                            }
-                        },
-                        "intent": {
-                            "drink": "maybe-found",
-                            "side": "found"
-                        },
-                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-drink_maybe-found-side_found",
-                        "assignments": {
-                            "$drink": "maybe-found",
-                            "$side": "found"
-                        }
-                    },
-                    {
-                        "updates": {
-                            "drink": {
-                                "value": "$drink",
-                                "known": "maybe",
-                                "certainty": "Uncertain",
-                                "interpretation": "spel"
-                            },
-                            "side": {
-                                "value": "$side",
-                                "known": "maybe",
-                                "certainty": "Uncertain",
-                                "interpretation": "spel"
-                            },
-                            "allow_single_slot_pizza_flavour": {
-                                "value": true,
-                                "interpretation": "json"
-                            }
-                        },
-                        "intent": {
-                            "drink": "maybe-found",
-                            "side": "maybe-found"
-                        },
-                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-drink_maybe-found-side_maybe-found",
-                        "assignments": {
-                            "$drink": "maybe-found",
-                            "$side": "maybe-found"
-                        }
-                    },
-                    {
-                        "updates": {
-                            "drink": {
-                                "value": "$drink",
-                                "known": "maybe",
-                                "certainty": "Uncertain",
-                                "interpretation": "spel"
-                            },
-                            "allow_single_slot_pizza_flavour": {
-                                "value": true,
-                                "interpretation": "json"
-                            },
-                            "allow_single_slot_side": {
-                                "value": true,
-                                "interpretation": "json"
-                            }
-                        },
-                        "intent": {
-                            "drink": "maybe-found"
-                        },
-                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-drink_maybe-found",
-                        "assignments": {
-                            "$drink": "maybe-found"
-                        }
-                    },
-                    {
-                        "updates": {
-                            "side": {
-                                "value": "$side",
-                                "known": true,
-                                "certainty": "Known",
-                                "interpretation": "spel"
-                            },
-                            "allow_single_slot_pizza_flavour": {
-                                "value": true,
-                                "interpretation": "json"
-                            },
-                            "allow_single_slot_drink": {
-                                "value": true,
-                                "interpretation": "json"
-                            },
-                            "have-message": {
-                                "value": true,
-                                "interpretation": "json"
-                            },
-                            "force-statement": {
-                                "value": true,
-                                "interpretation": "json"
-                            }
-                        },
-                        "intent": {
-                            "side": "found"
-                        },
-                        "response_variants": [
-                            "Side has been logged."
-                        ],
-                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-side_found",
-                        "assignments": {
-                            "$side": "found"
-                        }
-                    },
-                    {
-                        "updates": {
-                            "side": {
-                                "value": "$side",
-                                "known": "maybe",
-                                "certainty": "Uncertain",
-                                "interpretation": "spel"
-                            },
-                            "allow_single_slot_pizza_flavour": {
-                                "value": true,
-                                "interpretation": "json"
-                            },
-                            "allow_single_slot_drink": {
-                                "value": true,
-                                "interpretation": "json"
-                            }
-                        },
-                        "intent": {
-                            "side": "maybe-found"
-                        },
-                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-side_maybe-found",
-                        "assignments": {
-                            "$side": "maybe-found"
-                        }
-                    },
-                    {
-                        "updates": {
-                            "have-message": {
-                                "value": true,
-                                "interpretation": "json"
-                            },
-                            "force-statement": {
-                                "value": true,
-                                "interpretation": "json"
-                            }
-                        },
-                        "intent": "fallback",
-                        "name": "ask-order_DETDUP_validate-slot-fill-EQ-fallback",
-                        "assignments": {}
-                    }
-                ]
-            },
-            "intents": {
-                "share_all": {
-                    "variables": [
-                        "$pizza_flavour",
-                        "$drink",
-                        "$side"
-                    ],
-                    "utterances": [
-                        "I want a $pizza_flavour pizza with a $drink and $side.",
-                        "$pizza_flavour pizza with a $drink and $side please!",
-                        "Can I get a $pizza_flavour pizza with a $drink and $side?"
-                    ]
-                },
-                "fallback": {
-                    "variables": [],
-                    "utterances": []
-                }
-            }
-        },
-        "single_slot__side": {
-            "type": "dialogue",
-            "subtype": "dialogue disambiguation",
-            "message_variants": [
-                "What would you like to have on the side?"
-            ],
-            "condition": [
-                [
-                    "side",
-                    "Unknown"
-                ],
-                [
-                    "allow_single_slot_side",
-                    true
-                ],
-                [
-                    "force-statement",
-                    false
-                ]
-            ],
-            "effect": {
-                "global-outcome-name": "validate-slot-fill",
-                "type": "oneof",
-                "outcomes": [
-                    {
-                        "updates": {
-                            "side": {
-                                "value": "$side",
-                                "known": true,
-                                "certainty": "Known",
-                                "interpretation": "spel"
-                            },
-                            "allow_single_slot_side": {
-                                "value": false,
-                                "interpretation": "json"
-                            },
-                            "have-message": {
-                                "value": true,
-                                "interpretation": "json"
-                            },
-                            "force-statement": {
-                                "value": true,
-                                "interpretation": "json"
-                            }
-                        },
-                        "intent": {
-                            "side": "found"
-                        },
-                        "response_variants": [
-                            "Side has been logged."
-                        ],
-                        "name": "single_slot__side_DETDUP_validate-slot-fill-EQ-fill-slot",
-                        "assignments": {
-                            "$side": "found"
-                        }
-                    },
-                    {
-                        "updates": {
-                            "side": {
-                                "value": "$side",
-                                "known": "maybe",
-                                "certainty": "Uncertain",
-                                "interpretation": "spel"
-                            }
-                        },
-                        "intent": {
-                            "side": "maybe-found"
-                        },
-                        "name": "single_slot__side_DETDUP_validate-slot-fill-EQ-slot-unclear",
-                        "assignments": {
-                            "$side": "maybe-found"
-                        }
-                    },
-                    {
-                        "updates": {
-                            "have-message": {
-                                "value": true,
-                                "interpretation": "json"
-                            },
-                            "force-statement": {
-                                "value": true,
-                                "interpretation": "json"
-                            }
-                        },
-                        "intent": "fallback",
-                        "name": "single_slot__side_DETDUP_validate-slot-fill-EQ-fallback",
-                        "assignments": {}
-                    }
-                ]
-            },
-            "fallback_message_variants": [
-                "Sorry, that isn't a valid side."
-            ],
-            "intents": {
-                "fallback": {
-                    "variables": [],
-                    "utterances": []
-                }
-            }
-        },
-        "single_slot__drink": {
-            "type": "dialogue",
-            "subtype": "dialogue disambiguation",
-            "message_variants": [
-                "What kind of drink would you like?"
-            ],
-            "condition": [
-                [
-                    "drink",
-                    "Unknown"
-                ],
-                [
-                    "allow_single_slot_drink",
-                    true
-                ],
-                [
-                    "force-statement",
-                    false
-                ]
-            ],
-            "effect": {
-                "global-outcome-name": "validate-slot-fill",
-                "type": "oneof",
-                "outcomes": [
-                    {
-                        "updates": {
-                            "drink": {
-                                "value": "$drink",
-                                "known": true,
-                                "certainty": "Known",
-                                "interpretation": "spel"
-                            },
-                            "allow_single_slot_drink": {
-                                "value": false,
-                                "interpretation": "json"
-                            },
-                            "have-message": {
-                                "value": true,
-                                "interpretation": "json"
-                            },
-                            "force-statement": {
-                                "value": true,
-                                "interpretation": "json"
-                            }
-                        },
-                        "intent": {
-                            "drink": "found"
-                        },
-                        "response_variants": [
-                            "Drink has been logged."
-                        ],
-                        "name": "single_slot__drink_DETDUP_validate-slot-fill-EQ-fill-slot",
-                        "assignments": {
-                            "$drink": "found"
-                        }
-                    },
-                    {
-                        "updates": {
-                            "drink": {
-                                "value": "$drink",
-                                "known": "maybe",
-                                "certainty": "Uncertain",
-                                "interpretation": "spel"
-                            }
-                        },
-                        "intent": {
-                            "drink": "maybe-found"
-                        },
-                        "name": "single_slot__drink_DETDUP_validate-slot-fill-EQ-slot-unclear",
-                        "assignments": {
-                            "$drink": "maybe-found"
-                        }
-                    },
-                    {
-                        "updates": {
-                            "have-message": {
-                                "value": true,
-                                "interpretation": "json"
-                            },
-                            "force-statement": {
-                                "value": true,
-                                "interpretation": "json"
-                            }
-                        },
-                        "intent": "fallback",
-                        "name": "single_slot__drink_DETDUP_validate-slot-fill-EQ-fallback",
-                        "assignments": {}
-                    }
-                ]
-            },
-            "fallback_message_variants": [
-                "Sorry, that isn't a valid drink."
-            ],
-            "intents": {
-                "fallback": {
-                    "variables": [],
-                    "utterances": []
-                }
-            }
-        },
-        "single_slot__pizza_flavour": {
-            "type": "dialogue",
-            "subtype": "dialogue disambiguation",
-            "message_variants": [
-                "What type of pizza do you want to order?"
-            ],
-            "condition": [
-                [
-                    "pizza_flavour",
-                    "Unknown"
-                ],
-                [
-                    "allow_single_slot_pizza_flavour",
-                    true
-                ],
-                [
-                    "force-statement",
-                    false
-                ]
-            ],
-            "effect": {
-                "global-outcome-name": "validate-slot-fill",
-                "type": "oneof",
-                "outcomes": [
-                    {
-                        "updates": {
-                            "pizza_flavour": {
-                                "value": "$pizza_flavour",
-                                "known": true,
-                                "certainty": "Known",
-                                "interpretation": "spel"
-                            },
-                            "allow_single_slot_pizza_flavour": {
-                                "value": false,
-                                "interpretation": "json"
-                            },
-                            "have-message": {
-                                "value": true,
-                                "interpretation": "json"
-                            },
-                            "force-statement": {
-                                "value": true,
-                                "interpretation": "json"
-                            }
-                        },
-                        "intent": {
-                            "pizza_flavour": "found"
-                        },
-                        "response_variants": [
-                            "Pizza order has been logged."
-                        ],
-                        "name": "single_slot__pizza_flavour_DETDUP_validate-slot-fill-EQ-fill-slot",
-                        "assignments": {
-                            "$pizza_flavour": "found"
-                        }
-                    },
-                    {
-                        "updates": {
-                            "pizza_flavour": {
-                                "value": "$pizza_flavour",
-                                "known": "maybe",
-                                "certainty": "Uncertain",
-                                "interpretation": "spel"
-                            }
-                        },
-                        "intent": {
-                            "pizza_flavour": "maybe-found"
-                        },
-                        "name": "single_slot__pizza_flavour_DETDUP_validate-slot-fill-EQ-slot-unclear",
-                        "assignments": {
-                            "$pizza_flavour": "maybe-found"
-                        }
-                    },
-                    {
-                        "updates": {
-                            "have-message": {
-                                "value": true,
-                                "interpretation": "json"
-                            },
-                            "force-statement": {
-                                "value": true,
-                                "interpretation": "json"
-                            }
-                        },
-                        "intent": "fallback",
-                        "name": "single_slot__pizza_flavour_DETDUP_validate-slot-fill-EQ-fallback",
-                        "assignments": {}
-                    }
-                ]
-            },
-            "fallback_message_variants": [
-                "Sorry, that isn't a valid pizza order."
-            ],
-            "intents": {
-                "fallback": {
-                    "variables": [],
-                    "utterances": []
-                }
-            }
-        },
         "clarify__pizza_flavour": {
             "type": "dialogue",
             "subtype": "dialogue disambiguation",
             "message_variants": [
-                "I wasn't quite sure about your desired pizza order. Do you want a $pizza_flavour pizza?"
+                "Do you want a $pizza_flavour pizza?"
             ],
             "condition": [
                 [
@@ -1443,10 +362,6 @@
                                 "value": null,
                                 "known": false,
                                 "certainty": "Unknown",
-                                "interpretation": "json"
-                            },
-                            "allow_single_slot_pizza_flavour": {
-                                "value": true,
                                 "interpretation": "json"
                             }
                         },
@@ -1513,7 +428,7 @@
             "type": "dialogue",
             "subtype": "dialogue disambiguation",
             "message_variants": [
-                "I wasn't quite sure about your desired drink. Do you want to drink $drink?"
+                "Would you like to drink $drink?"
             ],
             "condition": [
                 [
@@ -1550,10 +465,6 @@
                                 "value": null,
                                 "known": false,
                                 "certainty": "Unknown",
-                                "interpretation": "json"
-                            },
-                            "allow_single_slot_drink": {
-                                "value": true,
                                 "interpretation": "json"
                             }
                         },
@@ -1620,7 +531,7 @@
             "type": "dialogue",
             "subtype": "dialogue disambiguation",
             "message_variants": [
-                "I wasn't quite sure about your desired side. Would you like to have $side on the side?"
+                "Would you like to have $side on the side?"
             ],
             "condition": [
                 [
@@ -1657,10 +568,6 @@
                                 "value": null,
                                 "known": false,
                                 "certainty": "Unknown",
-                                "interpretation": "json"
-                            },
-                            "allow_single_slot_side": {
-                                "value": true,
                                 "interpretation": "json"
                             }
                         },

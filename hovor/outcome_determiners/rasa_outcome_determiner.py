@@ -1,4 +1,6 @@
 from typing import Dict
+from hovor import outcome_determiners
+from hovor.outcome_determiners import SPACY_LABELS
 from hovor.outcome_determiners.outcome_determiner_base import OutcomeDeterminerBase
 from hovor import DEBUG
 import requests
@@ -7,7 +9,6 @@ import spacy
 import random
 from nltk.corpus import wordnet
 
-LABELS = spacy.load("en_core_web_md").get_pipe("ner").labels
 THRESHOLD = 0.65
 
 class RasaOutcomeDeterminer(OutcomeDeterminerBase):
@@ -34,7 +35,7 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         self.spacy_entities = {}
         self.rasa_entities = {}
         for extracted in entities:
-            if extracted["entity"] in LABELS:
+            if extracted["entity"] in SPACY_LABELS:
                 if extracted["entity"] in self.spacy_entities:
                     self.spacy_entities[extracted["entity"]].append(extracted)
                 else:

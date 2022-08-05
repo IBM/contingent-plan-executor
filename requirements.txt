@@ -7,3 +7,6 @@ json2html
 jsonpickle
 watson-developer-cloud==2.4.0
 ibm-watson==4.0.1
+nltk
+spacy
+rasa

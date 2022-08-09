@@ -3,7 +3,6 @@ import jsonpickle
 from environment import initialize_local_environment
 from hovor.configuration.json_configuration_provider import JsonConfigurationProvider
 from hovor.core import run_interaction
-from setup_hovor_rasa import setup_hovor_rasa
 import subprocess
 import requests
 from requests.exceptions import ConnectionError
@@ -14,8 +13,7 @@ import requests
 
 initialize_local_environment()
 
-setup_hovor_rasa("pizza", train=False)
-subprocess.Popen("./rasa_setup.sh", shell=True)
+subprocess.Popen("rasa run --enable-api -m pizza/pizza-model.tar.gz")
 
 configuration_provider = JsonConfigurationProvider("./pizza/pizza")
 

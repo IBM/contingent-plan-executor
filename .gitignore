@@ -2,3 +2,4 @@ vcap-local.json
 .venv
 __pycache__
 .rasa
+.vscode

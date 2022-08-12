@@ -1,6 +1,5 @@
 from hovor.execution_monitor import EM
 from hovor.runtime.action_result import ActionResult
-from hovor.runtime.fields_container import FieldsContainer
 from hovor.runtime.outcome_determination_progress import OutcomeDeterminationProgress
 from hovor.session.in_memory_session import InMemorySession
 

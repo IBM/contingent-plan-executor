@@ -6,18 +6,14 @@ from hovor.core import run_interaction
 import subprocess
 import requests
 from requests.exceptions import ConnectionError
-
 import json
 
-import requests
 
 initialize_local_environment()
 
-subprocess.Popen("rasa run --enable-api -m pizza/pizza-model.tar.gz")
+subprocess.Popen("rasa run --enable-api -m local_data/pizza/pizza-model.tar.gz")
 
-configuration_provider = JsonConfigurationProvider("./pizza/pizza")
-
-# configuration_provider = JsonConfigurationProvider("./local_data/gold_standard_data/gold")
+configuration_provider = JsonConfigurationProvider("local_data/pizza/pizza")
 
 # test on recoded provider
 json = jsonpickle.encode(configuration_provider)

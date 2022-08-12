@@ -72,8 +72,6 @@ class InMemorySession(SessionBase):
         next_state = progress.actual_state
         next_context = progress.actual_context
 
-        # get all actions that are applicable from this state
-        applicable_actions = self.get_applicable_actions()
         n1 = self._current_node
 
         # update the current state, context, and node
@@ -99,12 +97,12 @@ class InMemorySession(SessionBase):
                             self.configuration._configuration_data["actions"]["dialogue_statement"]["message_variants"] = outcfg["response_variants"]
                             break
         self._update_action()
-        if self._current_action.action_type in ["message", "dialogue"]:
-            action_confidences = self.get_action_confidences(self._current_action._utterance.split("HOVOR: ")[1], applicable_actions)
-            print("\n\nACTION CONFIDENCES:\n")
-            for key, value in action_confidences.items():
-                print(f"{key}: {value}")
-            print("\n\n")
+        # if self._current_action.action_type in ["message", "dialogue"]:
+        #     action_confidences = self.get_action_confidences(self._current_action._utterance.split("HOVOR: ")[1], applicable_actions)
+        #     print("\n\nACTION CONFIDENCES:\n")
+        #     for key, value in action_confidences.items():
+        #         print(f"{key}: {value}")
+        #     print("\n\n")
         self._delta_history.append(progress)
         #self._print_update_report()
 
@@ -113,12 +111,6 @@ class InMemorySession(SessionBase):
 
     def get_context_copy(self):
         return deepcopy(self._current_context)
-
-    def get_applicable_actions(self):
-        applicable_actions = set()
-        for outcome in self._current_node.named_children:
-            applicable_actions.add(self.plan.get_next_node(self._current_node, self._current_state, outcome[0]).action_name)
-        return applicable_actions
 
     def get_action_confidences(self, source_sentence, applicable_actions):
         if len(applicable_actions) == 1:

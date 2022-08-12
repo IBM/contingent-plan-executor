@@ -31,18 +31,6 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
             if self.spacy_entities[method]:
                 return self.spacy_entities[method].pop()
 
-    def initialize_extracted_entities(self, entities: Dict):
-        self.spacy_entities = {}
-        self.rasa_entities = {}
-        for extracted in entities:
-            if extracted["entity"] in SPACY_LABELS:
-                if extracted["entity"] in self.spacy_entities:
-                    self.spacy_entities[extracted["entity"]].append(extracted)
-                else:
-                    self.spacy_entities[extracted["entity"]] = [extracted]
-            else:
-                self.rasa_entities[extracted["entity"]] = extracted 
-
     def extract_entity(self, entity: str):
         # spacy
         if type(self.context_variables[entity]["config"]) == dict:
@@ -71,50 +59,27 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                 certainty = "found"
         return {"extracted": extracted, "value": extracted["value"], "certainty": certainty}
 
-    def extract_entities(self, intent, progress):
+    def extract_entities(self, intent):
         entities = {}
         # get entities from frozenset
         for entity in [f[0] for f in intent["name"]]:
             # raw extract single entity, then validate
             extracted_info = self.extract_entity(entity)
             if extracted_info:
-                extracted_info = RasaOutcomeDeterminer._make_entity_sample(entity, extracted_info, progress)
+                extracted_info = RasaOutcomeDeterminer._make_entity_type_sample(self.context_variables[entity]["type"], self.context_variables[entity]["config"], extracted_info,)
             else:
                 extracted_info = {"certainty": "didnt-find", "sample": None}               
             entities[entity] = extracted_info
         return entities
 
-    def rank_groups(self, outcome_groups, progress):   
-        payload = {'text': progress.json["action_result"]["fields"]["input"]}
-        r = json.loads(requests.post('http://localhost:5005/model/parse', json=payload).text)
-
-        ranked_groups = []
-        intent_to_outcome_map = {}
-        for out in outcome_groups:
-            intent = self.full_outcomes[out.name]["intent"]
-            if type(intent) == dict:
-                updated_intent = frozenset(intent.items())
-            else:
-                updated_intent = intent
-                if len(self.intents[intent]["variables"]) > 0:
-                    entity_requirements = self.full_outcomes[out.name]["entity_requirements"]
-                    if entity_requirements:
-                        updated_intent = frozenset(entity_requirements.items())
-            intent_to_outcome_map[updated_intent] = out
-
-        for i in range(len(r["intent_ranking"])):
-            extracted_intent = r["intent_ranking"][i]
-            if len(self.intents[extracted_intent["name"]]["variables"]) > 0:
-                r["intent_ranking"][i] = {"name": frozenset({v[1:]: "found" for v in self.intents[extracted_intent["name"]]["variables"]}.items()), "confidence": extracted_intent["confidence"]}
-
-        self.initialize_extracted_entities(r["entities"])
+    def extract_intents(self, r, intent_to_outcome_map):
         entities = {}
         chosen_intent = None
         for intent in r["intent_ranking"]:
             if intent["name"] in intent_to_outcome_map:
                 # if this intent expects entities, make sure we extract them
                 if type(intent["name"]) == frozenset:
-                    entities = self.extract_entities(intent, progress)
+                    entities = self.extract_entities(intent)
                     # if no entities were successfully extracted
                     if {entities[e]["sample"] for e in entities} != {None}:
                         chosen_intent = intent
@@ -134,23 +99,65 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         if chosen_intent:
             not_picked = [i for i in r["intent_ranking"] if i["name"] in intent_to_outcome_map]
             not_picked.remove(chosen_intent)
-            ranked_groups = [(intent_to_outcome_map[intent["name"]], intent["confidence"]) for intent in [chosen_intent] + not_picked]
-            for entity, entity_info in entities.items():
-                if "sample" in entity_info:
-                    progress.add_detected_entity(entity, entity_info["sample"])  
+            ranked_groups = [(intent_to_outcome_map[intent["name"]], intent["confidence"]) for intent in [chosen_intent] + not_picked] 
         else:
             chosen_intent = "fallback"
             ranked_groups = [i for i in r["intent_ranking"] if i["name"] in intent_to_outcome_map]
             ranked_groups = [{"name": chosen_intent, "confidence": 1.0}] + ranked_groups
-            ranked_groups = [(intent_to_outcome_map[intent["name"]], intent["confidence"]) for intent in ranked_groups]     
-        #DEBUG("\t top random ranking for group '%s'" % (chosen_intent))
-        return ranked_groups, progress
+            ranked_groups = [(intent_to_outcome_map[intent["name"]], intent["confidence"]) for intent in ranked_groups]
+        return chosen_intent, ranked_groups, entities
 
-    @classmethod
-    def _make_entity_sample(cls, entity, extracted_info, progress):
-        entity_type = progress.get_entity_type(entity)
-        entity_config = progress.get_entity_config(entity)
-        return cls._make_entity_type_sample(entity_type, entity_config, extracted_info)
+    def initialize_extracted_entities(self, entities: Dict):
+        self.spacy_entities = {}
+        self.rasa_entities = {}
+        for extracted in entities:
+            if extracted["entity"] in SPACY_LABELS:
+                if extracted["entity"] in self.spacy_entities:
+                    self.spacy_entities[extracted["entity"]].append(extracted)
+                else:
+                    self.spacy_entities[extracted["entity"]] = [extracted]
+            else:
+                self.rasa_entities[extracted["entity"]] = extracted
+
+    def rename_intents(self, r):
+        for i in range(len(r["intent_ranking"])):
+            extracted_intent = r["intent_ranking"][i]
+            if len(self.intents[extracted_intent["name"]]["variables"]) > 0:
+                r["intent_ranking"][i] = {"name": frozenset({v[1:]: "found" for v in self.intents[extracted_intent["name"]]["variables"]}.items()), "confidence": extracted_intent["confidence"]}
+
+    def get_intent_outcome_map(self, outcome_groups):
+        intent_to_outcome_map = {}
+        for out in outcome_groups:
+            intent = self.full_outcomes[out.name]["intent"]
+            if type(intent) == dict:
+                updated_intent = frozenset(intent.items())
+            else:
+                updated_intent = intent
+                if len(self.intents[intent]["variables"]) > 0:
+                    entity_requirements = self.full_outcomes[out.name]["entity_requirements"]
+                    if entity_requirements:
+                        updated_intent = frozenset(entity_requirements.items())
+            intent_to_outcome_map[updated_intent] = out
+        return intent_to_outcome_map
+
+    def get_final_rankings(self, input, outcome_groups):
+        r = json.loads(requests.post('http://localhost:5005/model/parse', json={"text": input}).text)
+
+        intent_to_outcome_map = self.get_intent_outcome_map(outcome_groups)
+        self.rename_intents(r)
+        self.initialize_extracted_entities(r["entities"])
+    
+        return self.extract_intents(r, intent_to_outcome_map)
+
+    def rank_groups(self, outcome_groups, progress):   
+        chosen_intent, ranked_groups, entities = self.get_final_rankings(progress.json["action_result"]["fields"]["input"], outcome_groups)
+
+        if chosen_intent:
+            for entity, entity_info in entities.items():
+                if "sample" in entity_info:
+                    progress.add_detected_entity(entity, entity_info["sample"]) 
+        DEBUG("\t top random ranking for group '%s'" % (chosen_intent))
+        return ranked_groups, progress
 
     @classmethod
     def _make_entity_type_sample(cls, entity_type, entity_config, extracted_info):

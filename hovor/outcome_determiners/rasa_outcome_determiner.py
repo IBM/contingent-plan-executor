@@ -72,7 +72,7 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
             entities[entity] = extracted_info
         return entities
 
-    def extract_intents(self, r, intent_to_outcome_map):
+    def extract_intents(self, r, intent_to_outcome_map, intent_map):
         entities = {}
         chosen_intent = None
         for intent in r["intent_ranking"]:
@@ -99,13 +99,13 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         if chosen_intent:
             not_picked = [i for i in r["intent_ranking"] if i["name"] in intent_to_outcome_map]
             not_picked.remove(chosen_intent)
-            ranked_groups = [(intent_to_outcome_map[intent["name"]], intent["confidence"]) for intent in [chosen_intent] + not_picked] 
+            intent_ranking = [chosen_intent] + not_picked
         else:
             chosen_intent = "fallback"
-            ranked_groups = [i for i in r["intent_ranking"] if i["name"] in intent_to_outcome_map]
-            ranked_groups = [{"name": chosen_intent, "confidence": 1.0}] + ranked_groups
-            ranked_groups = [(intent_to_outcome_map[intent["name"]], intent["confidence"]) for intent in ranked_groups]
-        return chosen_intent, ranked_groups, entities
+            not_picked = [i for i in r["intent_ranking"] if i["name"] in intent_to_outcome_map]
+            intent_ranking = [{"name": chosen_intent, "confidence": 1.0}] + not_picked
+        ranked_groups = [{"intent": intent_map[intent["name"]]["name"] if intent["name"] in intent_map else intent["name"], "outcome": intent_to_outcome_map[intent["name"]], "confidence": intent["confidence"]} for intent in intent_ranking]
+        return chosen_intent, entities, ranked_groups
 
     def initialize_extracted_entities(self, entities: Dict):
         self.spacy_entities = {}
@@ -120,10 +120,14 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                 self.rasa_entities[extracted["entity"]] = extracted
 
     def rename_intents(self, r):
+        intent_map = {}
         for i in range(len(r["intent_ranking"])):
             extracted_intent = r["intent_ranking"][i]
             if len(self.intents[extracted_intent["name"]]["variables"]) > 0:
-                r["intent_ranking"][i] = {"name": frozenset({v[1:]: "found" for v in self.intents[extracted_intent["name"]]["variables"]}.items()), "confidence": extracted_intent["confidence"]}
+                new_name = frozenset({v[1:]: "found" for v in self.intents[extracted_intent["name"]]["variables"]}.items())
+                intent_map[new_name] = r["intent_ranking"][i]
+                r["intent_ranking"][i] = {"name": new_name, "confidence": extracted_intent["confidence"]}
+        return intent_map        
 
     def get_intent_outcome_map(self, outcome_groups):
         intent_to_outcome_map = {}
@@ -144,14 +148,14 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         r = json.loads(requests.post('http://localhost:5005/model/parse', json={"text": input}).text)
 
         intent_to_outcome_map = self.get_intent_outcome_map(outcome_groups)
-        self.rename_intents(r)
+        intent_map = self.rename_intents(r)
         self.initialize_extracted_entities(r["entities"])
     
-        return self.extract_intents(r, intent_to_outcome_map)
+        return self.extract_intents(r, intent_to_outcome_map, intent_map)
 
     def rank_groups(self, outcome_groups, progress):   
-        chosen_intent, ranked_groups, entities = self.get_final_rankings(progress.json["action_result"]["fields"]["input"], outcome_groups)
-
+        chosen_intent, entities, ranked_groups = self.get_final_rankings(progress.json["action_result"]["fields"]["input"], outcome_groups)
+        ranked_groups = [(intent["outcome"], intent["confidence"]) for intent in ranked_groups]
         if chosen_intent:
             for entity, entity_info in entities.items():
                 if "sample" in entity_info:

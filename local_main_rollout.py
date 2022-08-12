@@ -1,15 +1,11 @@
 from time import sleep
-from environment import initialize_rollout_environment
-from hovor.rollout_core import run_rollout
+from hovor.rollout.rollout_core import run_partial_conversation
 from hovor.configuration.json_configuration_provider import JsonConfigurationProvider
 import subprocess
 import requests
 from requests.exceptions import ConnectionError
-import os
 import json
 
-
-initialize_rollout_environment()
 
 with open("local_data/pizza/pizza_rollout_config.json") as f:
     rollout_cfg = json.load(f)
@@ -23,4 +19,4 @@ while True:
         sleep(0.1)
     else:
         break
-run_rollout(configuration_provider, rollout_cfg, [{"HOVOR": "What would you like to order?"}, {"USER": "I want a cheese pizza with a coke and fries"}])
+run_partial_conversation(3, configuration_provider, rollout_cfg, [{"HOVOR": "What would you like to order?", "USER": "I want a cheese pizza with a coke and fries"}])

@@ -2,51 +2,51 @@
     "actions": {
         "force-all": {
             "condition": [
-                "NegatedAtom have_drink()",
-                "NegatedAtom have_pizza_flavour()",
-                "NegatedAtom maybe-have_pizza_flavour()",
-                "NegatedAtom maybe-have_drink()",
-                "NegatedAtom maybe-have_side()",
                 "NegatedAtom force-statement()",
-                "NegatedAtom have_side()"
+                "NegatedAtom have_drink()",
+                "NegatedAtom have_side()",
+                "NegatedAtom maybe-have_drink()",
+                "NegatedAtom have_pizza_flavour()",
+                "NegatedAtom maybe-have_side()",
+                "NegatedAtom maybe-have_pizza_flavour()"
             ],
             "effect": {
-                "valid": [
-                    "Atom have_drink()",
-                    "NegatedAtom maybe-have_pizza_flavour()",
-                    "Atom have_side()",
+                "force-all_DETDUP_validate-EQ-valid": [
                     "NegatedAtom maybe-have_drink()",
+                    "Atom have_pizza_flavour()",
                     "NegatedAtom maybe-have_side()",
-                    "Atom have_pizza_flavour()"
+                    "Atom have_side()",
+                    "Atom have_drink()",
+                    "NegatedAtom maybe-have_pizza_flavour()"
                 ],
-                "fallback": [
-                    "Atom have-message()",
-                    "Atom force-statement()"
+                "force-all_DETDUP_validate-EQ-fallback": [
+                    "Atom force-statement()",
+                    "Atom have-message()"
                 ]
             }
         },
         "complete": {
             "condition": [
-                "Atom have_drink()",
-                "NegatedAtom maybe-have_pizza_flavour()",
-                "Atom have_side()",
                 "NegatedAtom maybe-have_drink()",
+                "Atom have_pizza_flavour()",
                 "NegatedAtom maybe-have_side()",
-                "Atom have_pizza_flavour()"
+                "Atom have_side()",
+                "Atom have_drink()",
+                "NegatedAtom maybe-have_pizza_flavour()"
             ],
             "effect": {
-                "assign-goal": [
+                "complete_DETDUP_finish-EQ-assign-goal": [
                     "Atom goal()"
                 ]
             }
         },
         "dialogue_statement": {
             "condition": [
-                "Atom have-message()",
-                "Atom force-statement()"
+                "Atom force-statement()",
+                "Atom have-message()"
             ],
             "effect": {
-                "lock": [
+                "dialogue_statement_DETDUP_reset-EQ-lock": [
                     "NegatedAtom force-statement()",
                     "NegatedAtom have-message()"
                 ]
@@ -59,73 +59,73 @@
                 "NegatedAtom have_pizza_flavour()"
             ],
             "effect": {
-                "confirm": [
+                "clarify__pizza_flavour_DETDUP_validate-clarification-EQ-confirm": [
                     "NegatedAtom maybe-have_pizza_flavour()",
                     "Atom have_pizza_flavour()"
                 ],
-                "deny": [
-                    "NegatedAtom have_pizza_flavour()",
-                    "NegatedAtom maybe-have_pizza_flavour()"
+                "clarify__pizza_flavour_DETDUP_validate-clarification-EQ-deny": [
+                    "NegatedAtom maybe-have_pizza_flavour()",
+                    "NegatedAtom have_pizza_flavour()"
                 ],
-                "fallback": [
-                    "Atom have-message()",
-                    "Atom force-statement()"
+                "clarify__pizza_flavour_DETDUP_validate-clarification-EQ-fallback": [
+                    "Atom force-statement()",
+                    "Atom have-message()"
                 ]
             }
         },
         "clarify__drink": {
             "condition": [
                 "Atom maybe-have_drink()",
-                "NegatedAtom have_drink()",
-                "NegatedAtom force-statement()"
+                "NegatedAtom force-statement()",
+                "NegatedAtom have_drink()"
             ],
             "effect": {
-                "confirm": [
+                "clarify__drink_DETDUP_validate-clarification-EQ-confirm": [
                     "Atom have_drink()",
                     "NegatedAtom maybe-have_drink()"
                 ],
-                "deny": [
+                "clarify__drink_DETDUP_validate-clarification-EQ-deny": [
                     "NegatedAtom have_drink()",
                     "NegatedAtom maybe-have_drink()"
                 ],
-                "fallback": [
-                    "Atom have-message()",
-                    "Atom force-statement()"
+                "clarify__drink_DETDUP_validate-clarification-EQ-fallback": [
+                    "Atom force-statement()",
+                    "Atom have-message()"
                 ]
             }
         },
         "clarify__side": {
             "condition": [
                 "NegatedAtom force-statement()",
-                "Atom maybe-have_side()",
-                "NegatedAtom have_side()"
+                "NegatedAtom have_side()",
+                "Atom maybe-have_side()"
             ],
             "effect": {
-                "confirm": [
-                    "Atom have_side()",
-                    "NegatedAtom maybe-have_side()"
+                "clarify__side_DETDUP_validate-clarification-EQ-confirm": [
+                    "NegatedAtom maybe-have_side()",
+                    "Atom have_side()"
                 ],
-                "deny": [
+                "clarify__side_DETDUP_validate-clarification-EQ-deny": [
                     "NegatedAtom maybe-have_side()",
                     "NegatedAtom have_side()"
                 ],
-                "fallback": [
-                    "Atom have-message()",
-                    "Atom force-statement()"
+                "clarify__side_DETDUP_validate-clarification-EQ-fallback": [
+                    "Atom force-statement()",
+                    "Atom have-message()"
                 ]
             }
         }
     },
     "initial_state": [
-        "NegatedAtom have_drink()",
-        "NegatedAtom have_pizza_flavour()",
-        "NegatedAtom maybe-have_pizza_flavour()",
-        "NegatedAtom maybe-have_drink()",
-        "NegatedAtom maybe-have_side()",
-        "NegatedAtom have-message()",
         "NegatedAtom force-statement()",
-        "NegatedAtom maybe_pizza()",
+        "NegatedAtom have_drink()",
         "NegatedAtom have_side()",
-        "NegatedAtom goal()"
+        "NegatedAtom maybe-have_drink()",
+        "NegatedAtom have-message()",
+        "NegatedAtom have_pizza_flavour()",
+        "NegatedAtom goal()",
+        "NegatedAtom maybe_pizza()",
+        "NegatedAtom maybe-have_side()",
+        "NegatedAtom maybe-have_pizza_flavour()"
     ]
 }

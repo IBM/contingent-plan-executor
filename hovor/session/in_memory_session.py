@@ -2,7 +2,6 @@ from copy import deepcopy
 from hovor.runtime.context import Context
 from hovor.session.session_base import SessionBase
 from hovor import DEBUG
-from hovor.actions.semantic_similarity import semantic_similarity, softmax_action_confidences
 
 
 class InMemorySession(SessionBase):
@@ -97,29 +96,14 @@ class InMemorySession(SessionBase):
                             self.configuration._configuration_data["actions"]["dialogue_statement"]["message_variants"] = outcfg["response_variants"]
                             break
         self._update_action()
-        # if self._current_action.action_type in ["message", "dialogue"]:
-        #     action_confidences = self.get_action_confidences(self._current_action._utterance.split("HOVOR: ")[1], applicable_actions)
-        #     print("\n\nACTION CONFIDENCES:\n")
-        #     for key, value in action_confidences.items():
-        #         print(f"{key}: {value}")
-        #     print("\n\n")
         self._delta_history.append(progress)
-        #self._print_update_report()
+        self._print_update_report()
 
     def update_action_result(self, result):
         self._current_action_result = result
 
     def get_context_copy(self):
         return deepcopy(self._current_context)
-
-    def get_action_confidences(self, source_sentence, applicable_actions):
-        if len(applicable_actions) == 1:
-            return {list(applicable_actions)[0]: 1.0}
-        action_message_map = {act: self.configuration._configuration_data["actions"][act]["message_variants"] for act in applicable_actions if self.configuration._configuration_data["actions"][act]["message_variants"]}
-        confidences = {}
-        for action, messages in action_message_map.items():
-            confidences[action] = semantic_similarity(source_sentence, messages)
-        return softmax_action_confidences({k: v for k, v in sorted(confidences.items(), key=lambda item: item[1], reverse=True)})
 
     def _update_action(self):
         self._current_action = self._configuration_provider.create_action(self._current_node, self._current_state,

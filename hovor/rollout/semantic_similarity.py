@@ -15,7 +15,7 @@ def query(payload):
     return response.json()
 
 def semantic_similarity(source_sentence: str, sentences: List[str]):
-    return 1.0 if source_sentence in sentences else sum(query(
+    return sum(query(
     {
         "inputs": {
             "source_sentence": source_sentence,
@@ -31,6 +31,11 @@ def softmax_action_confidences(action_confidences: Dict):
         index += 1
     return action_confidences
 
-
-if __name__ == "__main__":
-    print(semantic_similarity("I'm very happy", ["I'm filled with happiness", "I'm happy"]))
+def get_action_confidences(configuration_data, source_sentence, applicable_actions):
+    if len(applicable_actions) == 1:
+        return {list(applicable_actions)[0]: 1.0}
+    action_message_map = {act: configuration_data["actions"][act]["message_variants"] for act in applicable_actions if configuration_data["actions"][act]["message_variants"]}
+    confidences = {}
+    for action, messages in action_message_map.items():
+        confidences[action] = semantic_similarity(source_sentence, messages)
+    return softmax_action_confidences({k: v for k, v in sorted(confidences.items(), key=lambda item: item[1], reverse=True)})

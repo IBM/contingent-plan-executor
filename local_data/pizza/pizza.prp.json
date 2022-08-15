@@ -6,7 +6,7 @@
             "0": {
                 "expected_successor": false,
                 "action": "---",
-                "state": "0x1092140",
+                "state": "0x22bb160",
                 "distance": 0,
                 "is_relevant": 1,
                 "is_goal": 1,
@@ -16,7 +16,7 @@
             "1": {
                 "expected_successor": "0",
                 "action": "complete",
-                "state": "0x10959a0",
+                "state": "0x22c48b0",
                 "distance": 1,
                 "is_relevant": 0,
                 "is_goal": 0,
@@ -25,13 +25,17 @@
                     {
                         "outcome_label": "complete_DETDUP_finish-EQ-assign-goal",
                         "successor_id": "0"
+                    },
+                    {
+                        "outcome_label": "complete_DETDUP_finish-EQ-fallback",
+                        "successor_id": "3"
                     }
                 ]
             },
             "2": {
                 "expected_successor": "1",
                 "action": "force-all",
-                "state": "0x1095f00",
+                "state": "0x22c0e40",
                 "distance": 2,
                 "is_relevant": 0,
                 "is_goal": 0,
@@ -39,7 +43,7 @@
                 "successors": [
                     {
                         "outcome_label": "force-all_DETDUP_validate-EQ-fallback",
-                        "successor_id": "3"
+                        "successor_id": "4"
                     },
                     {
                         "outcome_label": "force-all_DETDUP_validate-EQ-valid",
@@ -48,9 +52,24 @@
                 ]
             },
             "3": {
+                "expected_successor": "1",
+                "action": "dialogue_statement",
+                "state": "0x22c38b0",
+                "distance": 2,
+                "is_relevant": 0,
+                "is_goal": 0,
+                "is_sc": 1,
+                "successors": [
+                    {
+                        "outcome_label": "dialogue_statement_DETDUP_reset-EQ-lock",
+                        "successor_id": "1"
+                    }
+                ]
+            },
+            "4": {
                 "expected_successor": "2",
                 "action": "dialogue_statement",
-                "state": "0x1098a00",
+                "state": "0x22c32b0",
                 "distance": 3,
                 "is_relevant": 0,
                 "is_goal": 0,
@@ -70,9 +89,14 @@
                 "0"
             ],
             [
-                "2",
+                "1",
                 ">",
                 "3"
+            ],
+            [
+                "2",
+                ">",
+                "4"
             ],
             [
                 "2",
@@ -82,25 +106,38 @@
             [
                 "3",
                 ">",
+                "1"
+            ],
+            [
+                "4",
+                ">",
                 "2"
             ]
         ],
         "states": {
-            "0x1092140": [
+            "0x22bb160": [
                 "Atom goal()"
             ],
-            "0x10959a0": [
+            "0x22c48b0": [
                 "Atom have_drink()",
                 "Atom have_pizza_flavour()",
-                "Atom have_side()"
+                "Atom have_side()",
+                "NegatedAtom force-statement()"
             ],
-            "0x1095f00": [
+            "0x22c0e40": [
                 "NegatedAtom have_drink()",
                 "NegatedAtom have_pizza_flavour()",
                 "NegatedAtom have_side()",
                 "NegatedAtom force-statement()"
             ],
-            "0x1098a00": [
+            "0x22c38b0": [
+                "Atom have_drink()",
+                "Atom have_pizza_flavour()",
+                "Atom have_side()",
+                "Atom force-statement()",
+                "Atom have-message()"
+            ],
+            "0x22c32b0": [
                 "NegatedAtom have_drink()",
                 "NegatedAtom have_pizza_flavour()",
                 "NegatedAtom have_side()",

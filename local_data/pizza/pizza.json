@@ -46,6 +46,10 @@
             "type": "flag",
             "config": false
         },
+        "end": {
+            "type": "flag",
+            "config": false
+        },
         "have-message": {
             "type": "flag",
             "config": false
@@ -244,7 +248,7 @@
             }
         },
         "complete": {
-            "type": "system",
+            "type": "dialogue",
             "message_variants": [
                 "Goal completed."
             ],
@@ -260,6 +264,10 @@
                 [
                     "side",
                     "Known"
+                ],
+                [
+                    "force-statement",
+                    false
                 ]
             ],
             "effect": {
@@ -276,8 +284,33 @@
                         "name": "complete_DETDUP_finish-EQ-assign-goal",
                         "intent": null,
                         "assignments": {}
+                    },
+                    {
+                        "updates": {
+                            "have-message": {
+                                "value": true,
+                                "interpretation": "json"
+                            },
+                            "force-statement": {
+                                "value": true,
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "fallback",
+                        "name": "complete_DETDUP_finish-EQ-fallback",
+                        "assignments": {}
                     }
                 ]
+            },
+            "fallback_message_variants": [
+                "Sorry, I couldn't understand that input.",
+                "I couldn't quite get that."
+            ],
+            "intents": {
+                "fallback": {
+                    "variables": [],
+                    "utterances": []
+                }
             }
         },
         "dialogue_statement": {

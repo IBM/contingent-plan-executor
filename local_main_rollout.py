@@ -1,22 +1,41 @@
 from time import sleep
-from hovor.rollout.rollout_core import run_partial_conversation
+from hovor.rollout.rollout_core import Rollout
 from hovor.configuration.json_configuration_provider import JsonConfigurationProvider
 import subprocess
 import requests
 from requests.exceptions import ConnectionError
 import json
+from pathlib import Path
 
 
-with open("local_data/pizza/pizza_rollout_config.json") as f:
-    rollout_cfg = json.load(f)
-configuration_provider = JsonConfigurationProvider("local_data/pizza/pizza")
+def run_local_rollout(output_files_path, domain):
+    with open(f"{output_files_path}/{domain}/{domain}_rollout_config.json") as f:
+        rollout_cfg = json.load(f)
 
-subprocess.Popen("rasa run --enable-api -m local_data/pizza/pizza-model.tar.gz")
-while True:
-    try:
-        requests.post('http://localhost:5005/model/parse', json={"text": ""})
-    except ConnectionError:
-        sleep(0.1)
-    else:
-        break
-run_partial_conversation(3, configuration_provider, rollout_cfg, [{"HOVOR": "What would you like to order?", "USER": "I want a cheese pizza with a coke and fries"}])
+    configuration_provider = JsonConfigurationProvider(f"{output_files_path}/{domain}/{domain}")
+    subprocess.Popen(["rasa", "run", "--enable-api", "-m", f"{output_files_path}/{domain}/{domain}-model.tar.gz"])
+    while True:
+        try:
+            requests.post("http://localhost:5005/model/parse", json={"text": ""})
+        except ConnectionError:
+            sleep(0.1)
+        else:
+            break
+    
+    rollout = Rollout(configuration_provider, rollout_cfg)
+
+    # print(run_partial_conversation(
+    #     configuration_provider,
+    #     rollout_cfg,
+    #     [
+    #         {"HOVOR": "What do you want to order?"},
+    #         {"USER": "sfsdfds"},
+    #         {"HOVOR": "I didn't get that."},
+    #         {"HOVOR": "What do you want to order?"},
+    #         {"USER": "I want a cheese pizza with a coke and fries"},
+    #         {"HOVOR": "Goal reached."},
+    #     ],
+    # ))
+
+if __name__ == "__main__":
+    run_local_rollout(str((Path(__file__).parent.parent / "plan4dial/output_files").resolve()), "pizza")

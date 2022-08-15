@@ -32,8 +32,6 @@ def softmax_action_confidences(action_confidences: Dict):
     return action_confidences
 
 def get_action_confidences(configuration_data, source_sentence, applicable_actions):
-    if len(applicable_actions) == 1:
-        return {list(applicable_actions)[0]: 1.0}
     action_message_map = {act: configuration_data["actions"][act]["message_variants"] for act in applicable_actions if configuration_data["actions"][act]["message_variants"]}
     confidences = {}
     for action, messages in action_message_map.items():

@@ -30,10 +30,3 @@ def softmax_action_confidences(action_confidences: Dict):
         action_confidences[action] = softmax_conversions[index]
         index += 1
     return action_confidences
-
-def get_action_confidences(configuration_data, source_sentence, applicable_actions):
-    action_message_map = {act: configuration_data["actions"][act]["message_variants"] for act in applicable_actions if configuration_data["actions"][act]["message_variants"]}
-    confidences = {}
-    for action, messages in action_message_map.items():
-        confidences[action] = semantic_similarity(source_sentence, messages)
-    return softmax_action_confidences({k: v for k, v in sorted(confidences.items(), key=lambda item: item[1], reverse=True)})

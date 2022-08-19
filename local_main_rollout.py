@@ -15,6 +15,8 @@ def run_local_rollout(output_files_path, domain):
 
     #configuration_provider = JsonConfigurationProvider(f"{output_files_path}/{domain}/{domain}")
     configuration_provider = JsonConfigurationProvider('C:\\Users\\Rebecca\\Desktop\\pizza')
+    configuration_provider.check_all_action_builders()
+
     #subprocess.Popen(["rasa", "run", "--enable-api", "-m", f"{output_files_path}/{domain}/{domain}-model.tar.gz"])
     subprocess.Popen(["rasa", "run", "--enable-api", "-m", 'C:\\Users\\Rebecca\\Desktop\\pizza-model.tar.gz'])
     while True:

@@ -53,6 +53,7 @@ class Rollout:
                 if f"NegatedAtom {raw_f}()" in self.current_state:
                     self.current_state.remove(f"NegatedAtom {raw_f}()")
                 self.current_state.add(f)
+        return "Atom goal()" in self.current_state
 
     def update_state_applicable_actions(self, 
         most_conf_act,

@@ -211,6 +211,9 @@ def map_action_to_outcome_determiner(action):
     if a == "system" and st == "Logic based determination":
         return "logic_outcome_determiner"
 
+    if a == "system" and st == "Context dependent determination":
+        return "context_dependent_outcome_determiner"
+
     if a == "system" or a == "api" or a == "goal_achieved":
         return "random_outcome_determiner"
 

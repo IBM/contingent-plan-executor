@@ -11,14 +11,15 @@ import json
 
 initialize_local_environment()
 
-subprocess.Popen("rasa run --enable-api -m local_data/pizza/pizza-model.tar.gz")
-
-configuration_provider = JsonConfigurationProvider("local_data/pizza/pizza")
+#configuration_provider = JsonConfigurationProvider("local_data/pizza/pizza")
+configuration_provider = JsonConfigurationProvider('C:\\Users\\Rebecca\\Desktop\\pizza')
 
 # test on recoded provider
 json = jsonpickle.encode(configuration_provider)
 configuration_provider = jsonpickle.decode(json)
 configuration_provider.check_all_action_builders()
+
+subprocess.Popen(["rasa", "run", "--enable-api", "-m", 'C:\\Users\\Rebecca\\Desktop\\test-model.tar.gz'])
 
 while True:
     try:

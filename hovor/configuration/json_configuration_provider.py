@@ -6,6 +6,7 @@ from hovor.configuration.configuration_provider_base import ConfigurationProvide
 from hovor.configuration.json_configuration_postprocessing import hovor_config_postprocess
 from hovor.effects.assign_entity_effect import AssignEntityEffect
 from hovor.outcome_determiners import all_entities, ws_action_outcome_determiner_config
+from hovor.outcome_determiners.context_dependent_outcome_determiner import ContextDependentOutcomeDeterminer
 from hovor.outcome_determiners.context_entity_outcome_determiner import ContextEntityOutcomeDeterminer
 from hovor.outcome_determiners.logic_outcome_determiner import LogicOutcomeDeterminer
 from hovor.outcome_determiners.outcome_determination_info import OutcomeDeterminationInfo
@@ -235,6 +236,9 @@ class JsonConfigurationProvider(ConfigurationProviderBase):
         outcome_determiner_name = outcome_config["outcome_determiner"]
         if outcome_determiner_name == "random_outcome_determiner":
             return RandomOutcomeDeterminer()
+
+        if outcome_determiner_name == "context_dependent_outcome_determiner":
+            return ContextDependentOutcomeDeterminer()
 
         if outcome_determiner_name == "context_entity_outcome_determiner":
             entity_definitions = {}

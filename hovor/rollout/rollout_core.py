@@ -77,7 +77,7 @@ class Rollout:
         prev_action=None,
         prev_intent_out=None,
     ):
-        if prev_action:
+        if prev_action and prev_intent_out:
             data = self.configuration_provider._configuration_data
             # if a dialogue statement is possible, update the message variants according to the previous action
             if "dialogue_statement" in self.applicable_actions:
@@ -95,6 +95,20 @@ class Rollout:
 
         return self.get_action_confidences(utterance["HOVOR"])
 
+    def update_if_message_action(self, most_conf_act):
+        act_type = self.configuration_provider._configuration_data["actions"][most_conf_act]["type"]
+        if act_type != "dialogue":
+            if act_type == "message":
+                self.update_state_applicable_actions(
+                    most_conf_act,
+                    self.configuration_provider._create_outcome_group(
+                        most_conf_act, self.configuration_provider._configuration_data["actions"][most_conf_act]["effect"]
+                    ).name,
+                )
+            else:
+                raise NotImplementedError(
+                    f"Cannot handle the outcome group {act_type}"
+                )
 
     def run_partial_conversation(self, conversation):
         data = self.configuration_provider._configuration_data
@@ -111,19 +125,7 @@ class Rollout:
                 if len(conversation) != 0:
                     most_conf_act = list(most_conf_act.keys())[0]
                     # doesn't need/take user input; state/applicable actions must be updated manually
-                    act_type = data["actions"][most_conf_act]["type"]
-                    if act_type != "dialogue":
-                        if act_type == "message":
-                            self.update_state_applicable_actions(
-                                most_conf_act,
-                                self.configuration_provider._create_outcome_group(
-                                    most_conf_act, data["actions"][most_conf_act]["effect"]
-                                ).name,
-                            )
-                        else:
-                            raise NotImplementedError(
-                                f"Cannot handle the outcome group {act_type}"
-                            )
+                    self.update_if_message_action(most_conf_act)
             else:
                 most_conf_intent_out = self.get_highest_intents(most_conf_act, utterance)
                 if len(conversation) > 0:
@@ -132,5 +134,4 @@ class Rollout:
                         most_conf_act,
                         most_conf_intent_out["outcome"].name,
                     )
-
         return most_conf_act if "HOVOR" in utterance else most_conf_intent_out

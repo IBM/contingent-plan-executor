@@ -1,12 +1,14 @@
 from time import sleep
 from hovor.rollout.rollout_core import Rollout
 from hovor.configuration.json_configuration_provider import JsonConfigurationProvider
+from environment import initialize_local_environment
 import subprocess
 import requests
 from requests.exceptions import ConnectionError
 import json
 from pathlib import Path
 
+initialize_local_environment()
 
 def run_local_rollout(output_files_path, domain):
     #with open(f"{output_files_path}/{domain}/{domain}_rollout_config.json") as f:

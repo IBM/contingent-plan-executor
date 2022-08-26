@@ -1,5 +1,5 @@
 from hovor.outcome_determiners.rasa_outcome_determiner import RasaOutcomeDeterminer
-from hovor.rollout.semantic_similarity import softmax_action_confidences, semantic_similarity
+from hovor.rollout.semantic_similarity import softmax_confidences, semantic_similarity
 
 
 class Rollout:
@@ -28,6 +28,10 @@ class Rollout:
         chosen_intent, entities, ranked_groups = rasa_outcome_determiner.get_final_rankings(
             utterance["USER"], outcome_groups
         )
+        ranked_groups = sorted(ranked_groups, key=lambda item: item["confidence"], reverse=True)
+        softmax_rankings = softmax_confidences({ranking["intent"] : ranking["confidence"] for ranking in ranked_groups})
+        for ranking in ranked_groups:
+            ranking["confidence"] = softmax_rankings[ranking["intent"]]
         return ranked_groups
 
 
@@ -69,7 +73,7 @@ class Rollout:
         confidences = {}
         for action, messages in action_message_map.items():
             confidences[action] = semantic_similarity(source_sentence, messages)
-        return softmax_action_confidences({k: v for k, v in sorted(confidences.items(), key=lambda item: item[1], reverse=True)})
+        return softmax_confidences({k: v for k, v in sorted(confidences.items(), key=lambda item: item[1], reverse=True)})
 
 
     def update_action_get_confidences(self, 

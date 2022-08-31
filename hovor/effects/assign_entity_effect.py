@@ -31,8 +31,13 @@ class AssignEntityEffect(object):
                 # spel evaluation may fail for some reasons
                 return False
         else:
-            value = self.value
-
+            if self.value in [True, False, None]:
+                value = self.value
+            else:
+                if self.entity in determination_result._fields: 
+                    value = determination_result._fields[self.entity]
+                else:
+                    return False
         context.set_field(self.entity, value)
         return True
 

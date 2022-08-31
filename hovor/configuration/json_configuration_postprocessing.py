@@ -214,7 +214,10 @@ def map_action_to_outcome_determiner(action):
     if a == "system" and st == "Context dependent determination":
         return "context_dependent_outcome_determiner"
 
-    if a == "system" or a == "api" or a == "goal_achieved":
+    if a == "system":
+        return "default_system_outcome_determiner"
+
+    if a == "api" or a == "goal_achieved":
         return "random_outcome_determiner"
 
     if a == "dialogue":

@@ -239,7 +239,7 @@ class JsonConfigurationProvider(ConfigurationProviderBase):
             return RandomOutcomeDeterminer()
 
         if outcome_determiner_name == "context_dependent_outcome_determiner":
-            return ContextDependentOutcomeDeterminer()
+            return ContextDependentOutcomeDeterminer(self._configuration_data["context-variables"])
 
         if outcome_determiner_name == "default_system_outcome_determiner":
             return DefaultSystemOutcomeDeterminer()

@@ -5,15 +5,9 @@ class ContextDependentOutcomeDeterminer(OutcomeDeterminerBase):
     def __init__(self, context_variables):
         self.context_variables = context_variables
 
-# TODO: FIX
-    def check_known_status(self, ctx_var, known, current_state):
-        is_fflag = self.context_variables[ctx_var]["known"]["type"] == "fflag"
-        if known == True:
-            return (f"NegatedAtom have_{ctx_var}()" not in current_state and f"Atom maybe-have_{ctx_var}()" not in current_state) if is_fflag else (f"NegatedAtom have_{ctx_var}()" not in current_state)
-        elif known == False:
-            return (f"Atom have_{ctx_var}()" not in current_state and f"Atom maybe-have_{ctx_var}()" not in current_state) if is_fflag else (f"Atom have_{ctx_var}()" not in current_state)
-        elif known == "maybe":
-            return (f"Atom maybe-have_{ctx_var}()" not in current_state or f"NegatedAtom have_{ctx_var}()" not in current_state)
+    @staticmethod
+    def known_to_certainty(known):
+        return ("Known" if known else "Unknown") if type(known) == bool else "Uncertain"
 
     def rank_groups(self, outcome_groups, progress):
         ranked_groups = []
@@ -23,14 +17,25 @@ class ContextDependentOutcomeDeterminer(OutcomeDeterminerBase):
             evaluated_condition = True
             for ctx_var, ctx_var_cfg in conditions.items():
                 if "value" in ctx_var_cfg:
-                    if progress.actual_context._fields[ctx_var] != ctx_var_cfg["value"]:
-                        evaluated_condition = False
+                    evaluated_condition = progress.actual_context._fields[ctx_var] == ctx_var_cfg["value"]
+                    if not evaluated_condition:
                         break
                 if "known" in ctx_var_cfg:
-                    positive = progress.actual_state.get_positive_fluents()
-                    evaluated_condition = self.check_known_status(ctx_var, ctx_var_cfg["known"], progress.actual_state.fluents)
-                    if not evaluated_condition:
-                        break                
+                    # iterate through the outcomes executed so far
+                    # the last "certainty" setting will indicate the current certainty of the variable
+                    certainty = None
+                    for outcome in progress._session.delta_history:
+                        if outcome._edge:
+                            if ctx_var in outcome._edge.info["updates"]:
+                                if "certainty" in outcome._edge.info["updates"][ctx_var]:
+                                    certainty = outcome._edge.info["updates"][ctx_var]["certainty"]
+                                    evaluated_condition = certainty == ContextDependentOutcomeDeterminer.known_to_certainty(ctx_var_cfg["known"])
+                                    if not evaluated_condition:
+                                        break         
+                    # if the certainty was never changed, then known being anything other than False also fails
+                    if not certainty and ctx_var_cfg["known"] != False:
+                        evaluated_condition = False
+                        break
             confidence = 1.0 if evaluated_condition else 0.0
             if confidence == 1.0:
                 for update_var, update_config in outcome_description["updates"].items():

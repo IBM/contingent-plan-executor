@@ -112,7 +112,8 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
             # raw extract single entity, then validate
             extracted_info = self.extract_entity(entity)
             if extracted_info:
-                extracted_info = RasaOutcomeDeterminer._make_entity_type_sample(
+                extracted_info = self._make_entity_type_sample(
+                    entity,
                     self.context_variables[entity]["type"],
                     self.context_variables[entity]["config"],
                     extracted_info,
@@ -270,8 +271,7 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         DEBUG("\t top random ranking for group '%s'" % (chosen_intent))
         return ranked_groups, progress
 
-    @classmethod
-    def _make_entity_type_sample(cls, entity_type, entity_config, extracted_info):
+    def _make_entity_type_sample(self, entity, entity_type, entity_config, extracted_info):
         entity_value = extracted_info["value"]
         if entity_type == "enum":
             # lowercase all strings in entity_config, map back to original casing
@@ -281,43 +281,45 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                 extracted_info["sample"] = entity_config[entity_value]
                 return extracted_info
             else:
-                extracted_info["certainty"] = "maybe-found"
-                for syn in wordnet.synsets(entity_value):
-                    for option in entity_config:
-                        if option in syn._definition.lower():
-                            extracted_info["sample"] = entity_config[option]
-                            return extracted_info
-                    for lemma in syn.lemmas():
-                        for p in lemma.pertainyms():
-                            p = p.name().lower()
-                            if p in entity_config:
-                                extracted_info["sample"] = entity_config[p]
-                                return extracted_info
-                        for d in lemma.derivationally_related_forms():
-                            d = d.name().lower()
-                            if d in entity_config:
-                                extracted_info["sample"] = entity_config[d]
-                                return extracted_info
-                    for hyp in syn.hypernyms():
-                        hyp = RasaOutcomeDeterminer.parse_synset_name(hyp).lower()
-                        if hyp in entity_config:
-                            extracted_info["sample"] = entity_config[hyp]
-                            return extracted_info
-                    for hyp in syn.hyponyms():
-                        hyp = RasaOutcomeDeterminer.parse_synset_name(hyp).lower()
-                        if hyp in entity_config:
-                            extracted_info["sample"] = entity_config[hyp]
-                            return extracted_info
-                    for hol in syn.member_holonyms():
-                        hol = RasaOutcomeDeterminer.parse_synset_name(hol).lower()
-                        if hol in entity_config:
-                            extracted_info["sample"] = entity_config[hol]
-                            return extracted_info
-                    for hol in syn.root_hypernyms():
-                        hol = RasaOutcomeDeterminer.parse_synset_name(hol).lower()
-                        if hol in entity_config:
-                            extracted_info["sample"] = entity_config[hol]
-                            return extracted_info
+                if "known" in self.context_variables[entity]:
+                    if self.context_variables[entity]["known"]["type"] == "fflag":
+                        extracted_info["certainty"] = "maybe-found"
+                        for syn in wordnet.synsets(entity_value):
+                            for option in entity_config:
+                                if option in syn._definition.lower():
+                                    extracted_info["sample"] = entity_config[option]
+                                    return extracted_info
+                            for lemma in syn.lemmas():
+                                for p in lemma.pertainyms():
+                                    p = p.name().lower()
+                                    if p in entity_config:
+                                        extracted_info["sample"] = entity_config[p]
+                                        return extracted_info
+                                for d in lemma.derivationally_related_forms():
+                                    d = d.name().lower()
+                                    if d in entity_config:
+                                        extracted_info["sample"] = entity_config[d]
+                                        return extracted_info
+                            for hyp in syn.hypernyms():
+                                hyp = RasaOutcomeDeterminer.parse_synset_name(hyp).lower()
+                                if hyp in entity_config:
+                                    extracted_info["sample"] = entity_config[hyp]
+                                    return extracted_info
+                            for hyp in syn.hyponyms():
+                                hyp = RasaOutcomeDeterminer.parse_synset_name(hyp).lower()
+                                if hyp in entity_config:
+                                    extracted_info["sample"] = entity_config[hyp]
+                                    return extracted_info
+                            for hol in syn.member_holonyms():
+                                hol = RasaOutcomeDeterminer.parse_synset_name(hol).lower()
+                                if hol in entity_config:
+                                    extracted_info["sample"] = entity_config[hol]
+                                    return extracted_info
+                            for hol in syn.root_hypernyms():
+                                hol = RasaOutcomeDeterminer.parse_synset_name(hol).lower()
+                                if hol in entity_config:
+                                    extracted_info["sample"] = entity_config[hol]
+                                    return extracted_info
         elif entity_type == "json":
             extracted_info["sample"] = extracted_info["value"]
             return extracted_info

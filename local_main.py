@@ -19,7 +19,7 @@ json = jsonpickle.encode(configuration_provider)
 configuration_provider = jsonpickle.decode(json)
 configuration_provider.check_all_action_builders()
 
-subprocess.Popen(["rasa", "run", "--enable-api", "-m", "C:\\Users\\Rebecca\\Desktop\\plan4dial\\output_files\\tutorial_bot_simplified\\tutorial_bot_simplified-model.tar.gz"])
+#subprocess.Popen(["rasa", "run", "--enable-api", "-m", "C:\\Users\\Rebecca\\Desktop\\plan4dial\\output_files\\tutorial_bot_simplified\\tutorial_bot_simplified-model.tar.gz"])
 
 while True:
     try:

@@ -55,6 +55,18 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
             if self.spacy_entities[method]:
                 return self.spacy_entities[method].pop()
 
+    def initialize_extracted_entities(self, entities: Dict):
+        self.spacy_entities = {}
+        self.rasa_entities = {}
+        for extracted in entities:
+            if extracted["entity"] in SPACY_LABELS:
+                if extracted["entity"] in self.spacy_entities:
+                    self.spacy_entities[extracted["entity"]].append(extracted)
+                else:
+                    self.spacy_entities[extracted["entity"]] = [extracted]
+            else:
+                self.rasa_entities[extracted["entity"]] = extracted
+
     def extract_entity(self, entity: str):
         # spacy
         if type(self.context_variables[entity]["config"]) == dict:
@@ -160,6 +172,15 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                     intent.confidence = 1.0
                 else:
                     intent.confidence = 0
+        else:
+            # in the case that there are multiple intents with the same name and confidence
+            # because we're going by entity assignment, we only want the intent that reflects
+            # our extracted entity assignment to be chosen. i.e. at this point, an intent share_cuisine where
+            # cuisine is "found" and the sister intent share_cuisine where cuisine is "maybe-found" will
+            # have the same confidence, but we only want the right one to be chosen.
+            for intent in intents:
+                if intent.name == chosen_intent.name and intent.entity_assignments != chosen_intent.entity_assignments:
+                    intent.confidence = 0
         # rearrange intent ranking
         intents.remove(chosen_intent)
         intents = [chosen_intent] + intents
@@ -172,18 +193,6 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
             for intent in intents
         ]
         return chosen_intent.name, entities, ranked_groups
-
-    def initialize_extracted_entities(self, entities: Dict):
-        self.spacy_entities = {}
-        self.rasa_entities = {}
-        for extracted in entities:
-            if extracted["entity"] in SPACY_LABELS:
-                if extracted["entity"] in self.spacy_entities:
-                    self.spacy_entities[extracted["entity"]].append(extracted)
-                else:
-                    self.spacy_entities[extracted["entity"]] = [extracted]
-            else:
-                self.rasa_entities[extracted["entity"]] = extracted
 
     def create_intents(self, r, outcome_groups):
         intent_ranking = {
@@ -244,10 +253,20 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         ranked_groups = [
             (intent["outcome"], intent["confidence"]) for intent in ranked_groups
         ]
+        # shouldn't only add samples for extracted entities; some outcomes don't
+        # extract entities themselves but update the values of existing entities
         if chosen_intent:
             for entity, entity_info in entities.items():
                 if "sample" in entity_info:
                     progress.add_detected_entity(entity, entity_info["sample"])
+            outcome_description = progress.get_description(ranked_groups[0][0].name)
+            for update_var, update_config in outcome_description["updates"].items():
+                if "value" in update_config and update_var not in entities:
+                    if progress.get_entity_type(update_var) == "enum":
+                        value = update_config["value"]
+                        if update_config["value"] == f"${update_var}":
+                            value = progress.actual_context._fields[update_var]
+                        progress.add_detected_entity(update_var, value)
         DEBUG("\t top random ranking for group '%s'" % (chosen_intent))
         return ranked_groups, progress
 
@@ -255,49 +274,49 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
     def _make_entity_type_sample(cls, entity_type, entity_config, extracted_info):
         entity_value = extracted_info["value"]
         if entity_type == "enum":
-            # lowercase all strings in entity_config
-            entity_config = [e.lower() for e in entity_config]
+            # lowercase all strings in entity_config, map back to original casing
+            entity_config = {e.lower(): e for e in entity_config}
             entity_value = entity_value.lower()
             if entity_value in entity_config:
-                extracted_info["sample"] = entity_value
+                extracted_info["sample"] = entity_config[entity_value]
                 return extracted_info
             else:
                 extracted_info["certainty"] = "maybe-found"
                 for syn in wordnet.synsets(entity_value):
                     for option in entity_config:
                         if option in syn._definition.lower():
-                            extracted_info["sample"] = option
+                            extracted_info["sample"] = entity_config[option]
                             return extracted_info
                     for lemma in syn.lemmas():
                         for p in lemma.pertainyms():
-                            p = p.name()
-                            if p.lower() in entity_config:
-                                extracted_info["sample"] = p
+                            p = p.name().lower()
+                            if p in entity_config:
+                                extracted_info["sample"] = entity_config[p]
                                 return extracted_info
                         for d in lemma.derivationally_related_forms():
-                            d = d.name()
-                            if d.lower() in entity_config:
-                                extracted_info["sample"] = d
+                            d = d.name().lower()
+                            if d in entity_config:
+                                extracted_info["sample"] = entity_config[d]
                                 return extracted_info
                     for hyp in syn.hypernyms():
-                        hyp = RasaOutcomeDeterminer.parse_synset_name(hyp)
-                        if hyp.lower() in entity_config:
-                            extracted_info["sample"] = hyp
+                        hyp = RasaOutcomeDeterminer.parse_synset_name(hyp).lower()
+                        if hyp in entity_config:
+                            extracted_info["sample"] = entity_config[hyp]
                             return extracted_info
                     for hyp in syn.hyponyms():
-                        hyp = RasaOutcomeDeterminer.parse_synset_name(hyp)
-                        if hyp.lower() in entity_config:
-                            extracted_info["sample"] = hyp
+                        hyp = RasaOutcomeDeterminer.parse_synset_name(hyp).lower()
+                        if hyp in entity_config:
+                            extracted_info["sample"] = entity_config[hyp]
                             return extracted_info
                     for hol in syn.member_holonyms():
-                        hol = RasaOutcomeDeterminer.parse_synset_name(hol)
-                        if hol.lower() in entity_config:
-                            extracted_info["sample"] = hol
+                        hol = RasaOutcomeDeterminer.parse_synset_name(hol).lower()
+                        if hol in entity_config:
+                            extracted_info["sample"] = entity_config[hol]
                             return extracted_info
                     for hol in syn.root_hypernyms():
-                        hol = RasaOutcomeDeterminer.parse_synset_name(hol)
-                        if hol.lower() in entity_config:
-                            extracted_info["sample"] = hol
+                        hol = RasaOutcomeDeterminer.parse_synset_name(hol).lower()
+                        if hol in entity_config:
+                            extracted_info["sample"] = entity_config[hol]
                             return extracted_info
         elif entity_type == "json":
             extracted_info["sample"] = extracted_info["value"]

@@ -239,7 +239,7 @@ class JsonConfigurationProvider(ConfigurationProviderBase):
             return RandomOutcomeDeterminer()
 
         if outcome_determiner_name == "context_dependent_outcome_determiner":
-            return ContextDependentOutcomeDeterminer(self._configuration_data["context-variables"])
+            return ContextDependentOutcomeDeterminer(self._configuration_data["context_variables"])
 
         if outcome_determiner_name == "default_system_outcome_determiner":
             return DefaultSystemOutcomeDeterminer()
@@ -262,7 +262,7 @@ class JsonConfigurationProvider(ConfigurationProviderBase):
                 # if entity not in all_entities:
                 #     all_entities[entity] = None  # update the set/dict of all entities
                 entity_definitions[entity] = self._get_entity_type_specification(entity)
-            return RasaOutcomeDeterminer(outcome_config["outcomes"], self._configuration_data["context-variables"], self._configuration_data["intents"])
+            return RasaOutcomeDeterminer(outcome_config["outcomes"], self._configuration_data["context_variables"], self._configuration_data["intents"])
 
 
         if outcome_determiner_name == "regex_disambiguation_outcome_determiner":
@@ -327,7 +327,7 @@ class JsonConfigurationProvider(ConfigurationProviderBase):
             "entity_configs": entity_configs,
             "entity_initial_assignments": entity_initial_assignments
         }
-        variables = self._configuration_data["context-variables"]
+        variables = self._configuration_data["context_variables"]
         for variable, variable_configuration in variables.items():
             type = variable_configuration["type"]
             domain_types[type] = type

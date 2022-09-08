@@ -24,7 +24,7 @@ class Rollout:
         data = self.configuration_provider._configuration_data
         rasa_outcome_determiner = RasaOutcomeDeterminer(
             data["actions"][action]["effect"]["outcomes"],
-            data["context-variables"],
+            data["context_variables"],
             data["intents"],
         )
         outcome_groupe_config = self.configuration_provider._create_outcome_group(

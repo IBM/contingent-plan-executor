@@ -30,3 +30,9 @@ def softmax_confidences(confidences: Dict):
         confidences[action] = softmax_conversions[index]
         index += 1
     return confidences
+
+def normalize_confidences(confidences: Dict):
+    total = sum(confidences.values())
+    for action in confidences:
+        confidences[action] = confidences[action]/total
+    return confidences

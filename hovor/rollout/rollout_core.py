@@ -1,5 +1,5 @@
 from hovor.outcome_determiners.rasa_outcome_determiner import RasaOutcomeDeterminer
-from hovor.rollout.semantic_similarity import softmax_confidences, semantic_similarity
+from hovor.rollout.semantic_similarity import softmax_confidences, semantic_similarity, normalize_confidences
 from hovor.planning.outcome_groups.deterministic_outcome_group import DeterministicOutcomeGroup
 from hovor.planning.outcome_groups.or_outcome_group import OrOutcomeGroup
 
@@ -27,17 +27,17 @@ class Rollout:
             data["context_variables"],
             data["intents"],
         )
-        outcome_groupe_config = self.configuration_provider._create_outcome_group(
+        outcome_group_config = self.configuration_provider._create_outcome_group(
             action, data["actions"][action]["effect"]
         )
-        if type(outcome_groupe_config) == DeterministicOutcomeGroup:
-            outcome_groups = [outcome_groupe_config]
-        elif type(outcome_groupe_config) == OrOutcomeGroup:
+        if type(outcome_group_config) == DeterministicOutcomeGroup:
+            outcome_groups = [outcome_group_config]
+        elif type(outcome_group_config) == OrOutcomeGroup:
             outcome_groups = self.configuration_provider._create_outcome_group(
                 action, data["actions"][action]["effect"]
             )._outcome_groups
         else:
-            raise AssertionError(f"Cannot handle the outcome group of type {type(outcome_groupe_config)}")
+            raise AssertionError(f"Cannot handle the outcome group of type {type(outcome_group_config)}")
         chosen_intent, entities, ranked_groups = rasa_outcome_determiner.get_final_rankings(
             utterance["USER"], outcome_groups
         )
@@ -86,7 +86,7 @@ class Rollout:
         confidences = {}
         for action, messages in action_message_map.items():
             confidences[action] = semantic_similarity(source_sentence, messages)
-        return softmax_confidences({k: v for k, v in sorted(confidences.items(), key=lambda item: item[1], reverse=True)})
+        return normalize_confidences({k: v for k, v in sorted(confidences.items(), key=lambda item: item[1], reverse=True)})
 
 
     def update_action_get_confidences(self, 

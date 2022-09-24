@@ -6,7 +6,7 @@ import subprocess
 import jsonpickle
 
 def create_validate_json_config_prov(output_files_path):
-    configuration_provider = JsonConfigurationProvider(output_files_path)
+    configuration_provider = JsonConfigurationProvider(f"{output_files_path}/data")
     # test on recoded provider
     json = jsonpickle.encode(configuration_provider)
     configuration_provider = jsonpickle.decode(json)

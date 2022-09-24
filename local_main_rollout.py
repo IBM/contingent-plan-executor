@@ -12,7 +12,7 @@ def create_rollout(output_files_path):
 
 
 if __name__ == "__main__":
-    dirname = "C:\\Users\\Rebecca\\Desktop\\plan4dial\\plan4dial\\local_data\\gold_standard_bot"
+    dirname = "C:\\Users\\Rebecca\\Desktop\\output_files"
     initialize_local_run(dirname, False)
     rollout = create_rollout(dirname)
     print(rollout.run_partial_conversation(

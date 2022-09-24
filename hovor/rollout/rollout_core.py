@@ -18,7 +18,7 @@ class Rollout:
         self.update_applicable_actions()
 
     def get_reached_goal(self):
-        return "Atom goal()" in self.current_state
+        return "(goal)" in self.current_state
 
     def get_highest_intents(self, action, utterance):
         data = self.configuration_provider._configuration_data
@@ -61,15 +61,14 @@ class Rollout:
 
     def update_state(self, new_fluents):
         for f in new_fluents:
-            if "NegatedAtom" in f:
-                raw_f = f.split("NegatedAtom ")[1][:-2]
-                if f"Atom {raw_f}()" in self.current_state:
-                    self.current_state.remove(f"Atom {raw_f}()")
+            if f[:6] == "(not (" and f[-2:] == "))":
+                raw_f = f.split("(not ")[1][:-1]
+                if raw_f in self.current_state:
+                    self.current_state.remove(raw_f)
                 self.current_state.add(f)
             else:
-                raw_f = f.split("Atom ")[1][:-2]
-                if f"NegatedAtom {raw_f}()" in self.current_state:
-                    self.current_state.remove(f"NegatedAtom {raw_f}()")
+                if f"(not {f})" in self.current_state:
+                    self.current_state.remove(f"(not {f})")
                 self.current_state.add(f)
 
     def update_state_applicable_actions(self, 
@@ -133,7 +132,6 @@ class Rollout:
                 return most_conf_intent_out
 
     def run_partial_conversation(self, conversation):
-        data = self.configuration_provider._configuration_data
         most_conf_intent_out = {"intent": None, "outcome": None, "confidence": None}
         most_conf_act = None
         while len(conversation) > 0:

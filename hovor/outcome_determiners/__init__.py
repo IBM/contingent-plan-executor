@@ -1,6 +1,4 @@
 import nltk
-import subprocess
-from time import sleep
 import spacy
 
 ws_action_outcome_determiner_config = []

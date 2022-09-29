@@ -17,7 +17,10 @@ class ContextDependentOutcomeDeterminer(OutcomeDeterminerBase):
             evaluated_condition = True
             for ctx_var, ctx_var_cfg in conditions.items():
                 if "value" in ctx_var_cfg:
-                    evaluated_condition = progress.actual_context._fields[ctx_var] == ctx_var_cfg["value"]
+                    # break + indicate failure if the condition fails
+                    if not progress.actual_context._fields[ctx_var] == ctx_var_cfg["value"]:
+                        evaluated_condition = False
+                        break
                 if "known" in ctx_var_cfg:
                     # iterate through the outcomes executed so far
                     # the last "certainty" setting will indicate the current certainty of the variable
@@ -27,10 +30,10 @@ class ContextDependentOutcomeDeterminer(OutcomeDeterminerBase):
                             if ctx_var in outcome._edge.info["updates"]:
                                 if "certainty" in outcome._edge.info["updates"][ctx_var]:
                                     certainty = outcome._edge.info["updates"][ctx_var]["certainty"]
-                    evaluated_condition = certainty == ContextDependentOutcomeDeterminer.known_to_certainty(ctx_var_cfg["known"])
-                # break if any of the conditions fail
-                if not evaluated_condition:
-                    break     
+                    # break + indicate failure if the condition fails
+                    if not certainty == ContextDependentOutcomeDeterminer.known_to_certainty(ctx_var_cfg["known"]):
+                        evaluated_condition = False
+                        break   
             confidence = 1.0 if evaluated_condition else 0.0
             if confidence == 1.0:
                 for update_var, update_config in outcome_description["updates"].items():

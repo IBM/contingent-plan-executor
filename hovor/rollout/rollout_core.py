@@ -38,7 +38,7 @@ class Rollout:
             )._outcome_groups
         else:
             raise AssertionError(f"Cannot handle the outcome group of type {type(outcome_group_config)}")
-        chosen_intent, entities, ranked_groups = rasa_outcome_determiner.get_final_rankings(
+        _, _, ranked_groups = rasa_outcome_determiner.get_final_rankings(
             utterance["USER"], outcome_groups
         )
         ranked_groups = sorted(ranked_groups, key=lambda item: item["confidence"], reverse=True)

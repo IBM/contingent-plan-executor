@@ -6,7 +6,7 @@ import subprocess
 import jsonpickle
 
 def create_validate_json_config_prov(output_files_path):
-    configuration_provider = JsonConfigurationProvider(f"{output_files_path}/data")
+    configuration_provider = JsonConfigurationProvider(f"{output_files_path}\\data")
     # test on recoded provider
     json = jsonpickle.encode(configuration_provider)
     configuration_provider = jsonpickle.decode(json)
@@ -14,7 +14,7 @@ def create_validate_json_config_prov(output_files_path):
     return configuration_provider
 
 def _run_rasa_model_server(output_files_path):
-    subprocess.Popen(["rasa", "run", "--enable-api", "-m", f"{output_files_path}/nlu_model.tar.gz"])
+    #subprocess.Popen(f"rasa run --enable-api -m {output_files_path}/nlu_model.tar.gz", shell=True)
     while True:
         try:
             requests.post("http://localhost:5005/model/parse", json={"text": ""})

@@ -70,18 +70,20 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
     def extract_entity(self, entity: str):
         # spacy
         if type(self.context_variables[entity]["config"]) == dict:
-            if self.context_variables[entity]["config"]["extraction"] == "spacy":
-                extracted = self.find_spacy_entity(
-                    self.context_variables[entity]["config"]["method"].upper()
-                )
-                if not extracted:
-                    # if we can't parse with spacy, try with Rasa (may also return None)
-                    extracted = self.find_rasa_entity(entity)
+            # can be either "method" (like spacy) or "pattern" (like a regex)
+            if "method" in self.context_variables[entity]["config"]["extraction"]:
+                if self.context_variables[entity]["config"]["extraction"]["method"] == "spacy":
+                    extracted = self.find_spacy_entity(
+                        self.context_variables[entity]["config"]["extraction"]["config_method"].upper()
+                    )
                     if not extracted:
-                        return
-                    certainty = "maybe-found"
-                else:
-                    certainty = "found"
+                        # if we can't parse with spacy, try with Rasa (may also return None)
+                        extracted = self.find_rasa_entity(entity)
+                        if not extracted:
+                            return
+                        certainty = "maybe-found"
+                    else:
+                        certainty = "found"
         # rasa
         else:
             extracted = self.find_rasa_entity(entity)
@@ -210,6 +212,9 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
             if type(out_intent) == dict:
                 entity_requirements = frozenset(out_intent.items())
                 for intent in intent_ranking:
+                    # skip over rasa's fallback intent if it comes up
+                    if intent == "nlu_fallback":
+                        continue
                     variables = [v[1:] for v in self.intents[intent]["variables"]]
                     detected = False not in {
                         entity_map[0] in variables for entity_map in entity_requirements

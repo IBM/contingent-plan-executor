@@ -11,6 +11,7 @@ import json
 import random
 from nltk.corpus import wordnet
 from typing import Union
+from textblob import TextBlob
 
 THRESHOLD = 0.65
 
@@ -289,6 +290,13 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                 if "known" in self.context_variables[entity]:
                     if self.context_variables[entity]["known"]["type"] == "fflag":
                         extracted_info["certainty"] = "maybe-found"
+                        # first try correcting spelling
+                        spell_corrected_e_val = TextBlob(entity_value).correct().raw.lower()
+                        if spell_corrected_e_val != entity_value:
+                            if spell_corrected_e_val in entity_config:
+                                extracted_info["sample"] = entity_config[spell_corrected_e_val]
+                                return extracted_info
+                        # as a last ditch effort, try to use wordnet to decipher what the user meant
                         for syn in wordnet.synsets(entity_value):
                             for option in entity_config:
                                 if option in syn._definition.lower():

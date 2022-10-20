@@ -4,8 +4,8 @@ from hovor.execution_monitor import run_outcome_determination, progress_with_out
 from hovor.runtime.action_result import ActionResult
 
 
-def run(user_inputs):
-    json_cfg = initialize_local_run("C:\\Users\\Rebecca\\Desktop\\plan4dial\\plan4dial\\local_data\\gold_standard_bot\\output_files", True)
+def run(output_files_path, user_inputs):
+    json_cfg = initialize_local_run(output_files_path, True)
     session = initialize_session(json_cfg)
     cur_act = session.current_action
     while session.current_action.action_type != "goal_achieved":
@@ -23,4 +23,14 @@ def run(user_inputs):
         cur_act = progress_with_outcome(session, final_progress)
     print("end")
 
-run(["wfewefewfwe", "I have a high budget and I want a fun atmosphere", "yes", "I have a gluten-free allergy", "I want to Mexico", "yes", "I want to eat Italian", "no"])
+def test_local_bot(output_files_path):
+    inputs = {
+        "get-location": ["wfeklwfeewf", "I am located in Toronto"],
+        "get-cuisine": ["xvcbsdmv", "I want to Mexico", "I want to eat dessert"],
+        "get-have-allergy": ["wlefgjwlfe", "yes", "no"],
+        "get-allergy": ["lwkfjwelw", "I have a dairy-free allergy"],
+        "get-outing": ["fwljwefklwe", ]
+    }
+
+if __name__ == "__main__":
+    run("C:\\Users\\Rebecca\\Desktop\\plan4dial\\plan4dial\\local_data\\gold_standard_bot\\output_files", ["wfewefewfwe", "I have a high budget and I want a fun atmosphere", "yes", "I have a gluten-free allergy", "I want to Mexico", "yes", "I want to eat Italian", "no"])

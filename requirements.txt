@@ -10,3 +10,4 @@ ibm-watson
 nltk
 spacy
 rasa
+textblob

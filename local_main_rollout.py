@@ -12,19 +12,24 @@ def create_rollout(output_files_path):
 
 
 if __name__ == "__main__":
-    dirname = "C:\\Users\\Rebecca\\Desktop\\output_files"
+    dirname = "C:\\Users\\Rebecca\\Desktop\\plan4dial\\plan4dial\\local_data\\rollout_no_system_gold_standard_bot\\output_files"
     initialize_local_run(dirname, False)
     rollout = create_rollout(dirname)
     print(rollout.run_partial_conversation(
-        [
-            {"HOVOR": "What do you want to order?"},
-            {"USER": "sfsdfds"},
-            {"HOVOR": "I didn't get that."},
-            {"HOVOR": "What do you want to order?"},
-            {"USER": "I want a cheese pizza with a coke and fries"},
-            {"HOVOR": "Goal reached."},
-            {"HOVOR": "Order has been logged as`:` cheese pizza with a coke to drink and fries on the side."},
-            {"HOVOR": "Have a nice day!"}
-        ],
-    ))
+            [
+                {"HOVOR": "Hello I am a Pizza bot what toppings do you want?"}, 
+                {"USER": "I want it to have pepperoni"}, 
+                {"HOVOR":"Ok what size do you want?"},
+                {"USER": "I want a large pizza."}, 
+                {"HOVOR": "What side do you want with your order?"},
+                {"USER": "I want to have fries on the side."}, 
+                {"HOVOR":"What drink do you want with your order?"},
+                {"USER": "I want to drink coke."}, 
+                {"HOVOR":"What base do you want for your pizza?"},
+                {"USER": "I want a pizza with a ranch base"}, 
+                {"HOVOR":"Ordering a pizza of size large with ranch as a base and pepperoni as toppings, as well as a coke and fries."},
+                {"USER": "Thanks!"}, 
+            ],
+        )
+    )
     print(rollout.get_reached_goal())

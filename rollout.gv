@@ -1,47 +1,47 @@
 strict digraph {
 	0 [label=START fillcolor=darkolivegreen3 style=filled]
-	1 [label="get-drink" fillcolor=skyblue style=filled]
+	1 [label="get-toppings" fillcolor=skyblue style=filled]
 	0 -> 1
-	2 [label="get-side" fillcolor=skyblue style=filled]
+	2 [label="get-base" fillcolor=skyblue style=filled]
 	0 -> 2
-	3 [label="get-size" fillcolor=skyblue style=filled]
+	3 [label="get-side" fillcolor=skyblue style=filled]
 	0 -> 3
-	4 [label="get-base" fillcolor=skyblue style=filled]
+	4 [label="get-size" fillcolor=skyblue style=filled]
 	0 -> 4
-	5 [label="get-toppings" fillcolor=skyblue style=filled]
+	5 [label="get-drink" fillcolor=skyblue style=filled]
 	0 -> 5
-	0 -> 5 [color=red]
+	0 -> 1 [color=red]
 	6 [label=share_toppings fillcolor=lightgoldenrod1 style=filled]
-	5 -> 6
+	1 -> 6
 	7 [label=fallback fillcolor=lightgoldenrod1 style=filled]
-	5 -> 7
-	5 -> 6 [color=red]
-	8 [label="get-size" fillcolor=skyblue style=filled]
+	1 -> 7
+	1 -> 6 [color=red]
+	8 [label="get-base" fillcolor=skyblue style=filled]
 	6 -> 8
-	9 [label="get-base" fillcolor=skyblue style=filled]
+	9 [label="get-side" fillcolor=skyblue style=filled]
 	6 -> 9
 	10 [label="get-drink" fillcolor=skyblue style=filled]
 	6 -> 10
-	11 [label="get-side" fillcolor=skyblue style=filled]
+	11 [label="get-size" fillcolor=skyblue style=filled]
 	6 -> 11
-	6 -> 8 [color=red]
+	6 -> 11 [color=red]
 	12 [label=share_size fillcolor=lightgoldenrod1 style=filled]
-	8 -> 12
+	11 -> 12
 	13 [label=fallback fillcolor=lightgoldenrod1 style=filled]
-	8 -> 13
-	8 -> 12 [color=red]
+	11 -> 13
+	11 -> 12 [color=red]
 	14 [label="get-base" fillcolor=skyblue style=filled]
 	12 -> 14
-	15 [label="get-drink" fillcolor=skyblue style=filled]
+	15 [label="get-side" fillcolor=skyblue style=filled]
 	12 -> 15
-	16 [label="get-side" fillcolor=skyblue style=filled]
+	16 [label="get-drink" fillcolor=skyblue style=filled]
 	12 -> 16
-	12 -> 16 [color=red]
+	12 -> 15 [color=red]
 	17 [label=share_side fillcolor=lightgoldenrod1 style=filled]
-	16 -> 17
+	15 -> 17
 	18 [label=fallback fillcolor=lightgoldenrod1 style=filled]
-	16 -> 18
-	16 -> 17 [color=red]
+	15 -> 18
+	15 -> 17 [color=red]
 	19 [label="get-base" fillcolor=skyblue style=filled]
 	17 -> 19
 	20 [label="get-drink" fillcolor=skyblue style=filled]
@@ -64,6 +64,6 @@ strict digraph {
 	24 -> 26
 	24 -> 26 [color=red]
 	27 [label=thank fillcolor=lightgoldenrod1 style=filled]
-	26 -> 27
+	26 -> 27 [color=red]
 	27 [label=thank fillcolor=darkolivegreen3 style=filled]
 }

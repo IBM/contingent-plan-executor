@@ -174,7 +174,7 @@ class Rollout:
                         parent = correct_act_id
                         if message_act:
                             graph.node(str(correct_act_id + 1), most_conf_intent_out["intent"], fillcolor="lightgoldenrod1", style="filled")
-                            graph.edge(str(correct_act_id), str(correct_act_id + 1))
+                            graph.edge(str(correct_act_id), str(correct_act_id + 1), color="red")
                             parent += 1
                         print(graph.source)
             else:

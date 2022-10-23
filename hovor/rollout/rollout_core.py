@@ -2,6 +2,7 @@ from hovor.outcome_determiners.rasa_outcome_determiner import RasaOutcomeDetermi
 from hovor.rollout.semantic_similarity import softmax_confidences, semantic_similarity, normalize_confidences
 from hovor.planning.outcome_groups.deterministic_outcome_group import DeterministicOutcomeGroup
 from hovor.planning.outcome_groups.or_outcome_group import OrOutcomeGroup
+from graphviz import Digraph
 
 
 class Rollout:
@@ -131,12 +132,27 @@ class Rollout:
             else:
                 return most_conf_intent_out
 
-    def run_partial_conversation(self, conversation):
+    def rollout_conversation(self, conversation, build_graph: bool = False):
         most_conf_intent_out = {"intent": None, "outcome": None, "confidence": None}
         most_conf_act = None
+        if build_graph:
+            # for node ids
+            idx = 0
+            parent = 0
+            graph = Digraph(strict=True)
+            graph.node(str(idx), "START", fillcolor="darkolivegreen3", style="filled")
         while len(conversation) > 0:
             utterance = conversation.pop(0)
             if "HOVOR" in utterance:
+                # add to the graph all the applicable actions
+                if build_graph:
+                    label_map = {}
+                    for act in self.applicable_actions:
+                        idx += 1
+                        graph.node(str(idx), act, fillcolor="skyblue", style="filled")
+                        graph.edge(str(parent), str(idx))
+                        label_map[act] = idx
+                    print(graph.source)
                 most_conf_act = self.update_action_get_confidences(
                     utterance,
                     most_conf_act,
@@ -146,9 +162,30 @@ class Rollout:
                 # update if either when the conversation is not yet over, OR if there is only one last action
                 if len(conversation) > 0 or len(most_conf_act) == 1:
                     most_conf_act = list(most_conf_act.keys())[0]
+                    message_act = False
                     # doesn't need/take user input; state/applicable actions must be updated manually
-                    most_conf_intent_out = self.update_if_message_action(most_conf_act, most_conf_intent_out)
+                    intent_updated = self.update_if_message_action(most_conf_act, most_conf_intent_out)
+                    if intent_updated != most_conf_intent_out:
+                        most_conf_intent_out = intent_updated
+                        message_act = True
+                    if build_graph:
+                        correct_act_id = label_map[most_conf_act]
+                        graph.edge(str(parent), str(correct_act_id), color="red")
+                        parent = correct_act_id
+                        if message_act:
+                            graph.node(str(correct_act_id + 1), most_conf_intent_out["intent"], fillcolor="lightgoldenrod1", style="filled")
+                            graph.edge(str(correct_act_id), str(correct_act_id + 1))
+                            parent += 1
+                        print(graph.source)
             else:
+                if build_graph:
+                    label_map = {}
+                    for intent in self.configuration_provider._configuration_data["actions"][most_conf_act]["intents"]:
+                        idx += 1
+                        graph.node(str(idx), intent, fillcolor="lightgoldenrod1", style="filled")
+                        graph.edge(str(parent), str(idx))
+                        label_map[intent] = idx
+                    print(graph.source)
                 most_conf_intent_out = self.get_highest_intents(most_conf_act, utterance)
                 # update if either when the conversation is not yet over, OR if there is only one last intent
                 if len(conversation) > 0 or len(most_conf_intent_out) == 1:
@@ -157,4 +194,13 @@ class Rollout:
                         most_conf_act,
                         most_conf_intent_out["outcome"],
                     )
-        return most_conf_act if "HOVOR" in utterance else most_conf_intent_out
+                    if build_graph:
+                        graph.edge(str(parent), str(label_map[most_conf_intent_out["intent"]]), color="red")
+                        parent = label_map[most_conf_intent_out["intent"]]
+        final = most_conf_act if "HOVOR" in utterance and not message_act else most_conf_intent_out
+        if build_graph:
+            if self.get_reached_goal():
+                node = final["intent"] if type(final) == dict else final
+                graph.node(str(parent), node, fillcolor="darkolivegreen3", style="filled")
+            graph.render("rollout.gv", view=True)
+        return 

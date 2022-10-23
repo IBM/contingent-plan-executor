@@ -2,6 +2,7 @@ from hovor.rollout.rollout_core import Rollout
 from environment import initialize_local_environment
 from hovor.local_run_utils import create_validate_json_config_prov, initialize_local_run
 import json
+from typing import List
 
 initialize_local_environment()
 
@@ -10,12 +11,17 @@ def create_rollout(output_files_path):
         rollout_cfg = json.load(f)
     return Rollout(create_validate_json_config_prov(output_files_path), rollout_cfg)
 
+def run_partial_conversation_locally(output_files_path: str, partial_conversation: List[str], build_graph: bool = False) -> bool:
+    initialize_local_run(output_files_path, False)
+    rollout = create_rollout(output_files_path)
+    rollout.rollout_conversation(partial_conversation, build_graph)
+    return rollout.get_reached_goal()
+
 
 if __name__ == "__main__":
-    dirname = "C:\\Users\\Rebecca\\Desktop\\plan4dial\\plan4dial\\local_data\\rollout_no_system_gold_standard_bot\\output_files"
-    initialize_local_run(dirname, False)
-    rollout = create_rollout(dirname)
-    print(rollout.run_partial_conversation(
+    print(
+        run_partial_conversation_locally(
+            "C:\\Users\\Rebecca\\Desktop\\plan4dial\\plan4dial\\local_data\\rollout_no_system_gold_standard_bot\\output_files",
             [
                 {"HOVOR": "Hello I am a Pizza bot what toppings do you want?"}, 
                 {"USER": "I want it to have pepperoni"}, 
@@ -28,8 +34,7 @@ if __name__ == "__main__":
                 {"HOVOR":"What base do you want for your pizza?"},
                 {"USER": "I want a pizza with a ranch base"}, 
                 {"HOVOR":"Ordering a pizza of size large with ranch as a base and pepperoni as toppings, as well as a coke and fries."},
-                {"USER": "Thanks!"}, 
             ],
-        )
+            True
     )
-    print(rollout.get_reached_goal())
+)

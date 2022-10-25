@@ -1,6 +1,6 @@
 from hovor.rollout.rollout_core import Rollout
 from environment import initialize_local_environment
-from hovor.local_run_utils import create_validate_json_config_prov, initialize_local_run
+from local_run_utils import create_validate_json_config_prov, initialize_local_run
 import json
 from typing import List
 

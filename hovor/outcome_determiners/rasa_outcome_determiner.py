@@ -168,10 +168,10 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                     # stop looking for a suitable intent if the intent extracted doesn't require entities
                     chosen_intent = intent
                     break
-        # if we have a fallback, assign all other confidences to 0
+        # if we have a fallback/message, assign all other confidences to 0
         if not chosen_intent:
             for intent in intents:
-                if intent.name == "fallback":
+                if intent.name in ["fallback", "utter_dialogue_statement"]:
                     chosen_intent = intent
                     intent.confidence = 1.0
                 else:
@@ -203,6 +203,7 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
             ranking["name"]: ranking["confidence"] for ranking in r["intent_ranking"]
         }
         intent_ranking["fallback"] = 0
+        intent_ranking["utter_dialogue_statement"] = 0
         intents = []
         for out in outcome_groups:
             out_intent = self.full_outcomes[out.name]["intent"]

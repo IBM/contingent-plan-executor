@@ -176,8 +176,5 @@ class Rollout:
         if build_graph:
             if self.get_reached_goal():
                 graph_gen.complete_conversation()
-                # node = final["intent"] if type(final) == dict else final
-                # graph_gen.create_from_parent([node], "darkolivegreen3", node)
-                # graph_gen.graph.node()
             graph_gen.graph.render("rollout.gv", view=True)
         return final

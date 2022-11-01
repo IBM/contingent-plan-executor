@@ -2,7 +2,7 @@ from typing import List, Dict
 import requests
 import numpy as np
 
-api_token = "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"
+api_token = ""
 API_URL = "https://api-inference.huggingface.co/models/sentence-transformers/all-MiniLM-L6-v2"
 headers = {"Authorization": f"Bearer {api_token}"}
 

@@ -134,7 +134,7 @@ def beam_search(k, conversation, output_files_path):
                 elif "HOVOR" in conversation[i].keys():
                     given_conv[beam] = beams[beam].rollout_cfg.update_action_get_confidences(conversation[i], beams[beam].last_action.name, beams[beam].last_intent.name, beams[beam].last_intent.outcome)
                     for index, (key, val) in enumerate(given_conv[beam].items()):
-                        score = sum(beams[beam].scores) + log(probs)
+                        score = sum(beams[beam].scores) + log(val)
                         outputs.append(Action(key, val, beam, score.real))
                         print(outputs)
             #sort the new lsit keeping track of each thread instead of the outputs
@@ -289,7 +289,7 @@ conversation = [{"HOVOR": "Hello I am a Pizza bot what toppings do you want?"},
                 {'HOVOR':"What base do you want for your pizza?"},
                 {"USER": "I want a pizza with a ranch base"}, 
                 {"HOVOR":"Ordering a pizza of size large with ranch as a base and pepperoni as toppings, as well as a coke and fries."},
-
+                {"USER": "Thanks"}
 ]
 
 test2 =[{"HOVOR": "Hello I am a Pizza bot what toppings do you want?"}, 

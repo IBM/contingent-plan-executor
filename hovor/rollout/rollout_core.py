@@ -3,7 +3,6 @@ from hovor.rollout.semantic_similarity import softmax_confidences, semantic_simi
 from hovor.rollout.graph_setup import GraphGenerator
 from hovor.planning.outcome_groups.deterministic_outcome_group import DeterministicOutcomeGroup
 from hovor.planning.outcome_groups.or_outcome_group import OrOutcomeGroup
-from graphviz import Digraph
 
 
 class Rollout:
@@ -25,6 +24,7 @@ class Rollout:
     def get_highest_intents(self, action, utterance):
         data = self.configuration_provider._configuration_data
         rasa_outcome_determiner = RasaOutcomeDeterminer(
+            action,
             data["actions"][action]["effect"]["outcomes"],
             data["context_variables"],
             data["intents"],

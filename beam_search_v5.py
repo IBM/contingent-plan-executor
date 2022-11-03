@@ -90,7 +90,7 @@ def create_rollout_from_old(rollout_cfg, output_files_path):
     return new_rollout
 
 
-def beam_search(k, conversation, output_files_path):
+def beam_search(k, max_fallbacks, conversation, output_files_path):
     beams = []
     graph_gen = BeamSearchGraphGenerator(k)
     for i in range(len(conversation)): 
@@ -255,6 +255,15 @@ def beam_search(k, conversation, output_files_path):
                         beams[new_beam].rankings.append(intent)
                         graph_gen.create_nodes_highlight_k([intent.name], "lightgoldenrod1", beams[new_beam].last_action.name, new_beam, [intent.name])
 
+            for beam in range(k):
+                fallbacks = 0
+                for ranking in beams[beam].rankings:
+                    if type(ranking) == Intent and ranking.name == "fallback":
+                        fallbacks += 1
+                if fallbacks >= max_fallbacks:
+                    # prune the beam ??
+                    beams[beam].scores = [log(0.00000001)]
+
                 #print("New Beam Actions", beams)
 
     #print("Final beams", beams)
@@ -289,7 +298,7 @@ conversation = [{"HOVOR": "Hello I am a Pizza bot what toppings do you want?"},
                 {'HOVOR':"What base do you want for your pizza?"},
                 {"USER": "I want a pizza with a ranch base"}, 
                 {"HOVOR":"Ordering a pizza of size large with ranch as a base and pepperoni as toppings, as well as a coke and fries."},
-                {"USER": "Thanks"}
+             
 ]
 
 test2 =[{"HOVOR": "Hello I am a Pizza bot what toppings do you want?"}, 
@@ -327,7 +336,8 @@ test1= [{"HOVOR": "Hello I am a Pizza bot how are you!"},
 
 if __name__ == "__main__":
     beam_search(
-        3,
+        4,
+        1,
         conversation,
         "C:\\Users\\Rebecca\\Desktop\\plan4dial\\plan4dial\\local_data\\rollout_no_system_gold_standard_bot\\output_files"
     )

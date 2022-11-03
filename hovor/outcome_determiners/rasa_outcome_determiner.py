@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from typing import Dict
+from operator import attrgetter
 from hovor.outcome_determiners import SPACY_LABELS
 from hovor.outcome_determiners.outcome_determiner_base import OutcomeDeterminerBase
 from hovor.planning.outcome_groups.deterministic_outcome_group import (
@@ -38,7 +39,8 @@ class Intent:
 class RasaOutcomeDeterminer(OutcomeDeterminerBase):
     """Determiner"""
 
-    def __init__(self, full_outcomes, context_variables, intents):
+    def __init__(self, action_name, full_outcomes, context_variables, intents):
+        self.action_name = action_name
         self.full_outcomes = {outcome["name"]: outcome for outcome in full_outcomes}
         self.context_variables = context_variables
         self.intents = intents
@@ -160,23 +162,17 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                     # note that this check allows you to use full or partial information depending on how you set up your actions
                     if chosen_intent in intents:
                         break
-                    else:
-                        # need to reassign to None in case we break on the last intent
-                        chosen_intent = None
+                # need to reassign to None because we only get here if for some reason we weren't
+                # able to extract the intent correctly
+                chosen_intent = None
+                # an intent with entities we were not able to extract gets a confidence of 0
+                intent.confidence = 0.0
             else:
                 if intent.confidence > THRESHOLD:
                     # stop looking for a suitable intent if the intent extracted doesn't require entities
                     chosen_intent = intent
                     break
-        # if we have a fallback/message, assign all other confidences to 0
-        if not chosen_intent:
-            for intent in intents:
-                if intent.name in ["fallback", "utter_dialogue_statement"]:
-                    chosen_intent = intent
-                    intent.confidence = 1.0
-                else:
-                    intent.confidence = 0
-        else:
+        if chosen_intent:
             # in the case that there are multiple intents with the same name and confidence
             # because we're going by entity assignment, we only want the intent that reflects
             # our extracted entity assignment to be chosen. i.e. at this point, an intent share_cuisine where
@@ -185,9 +181,24 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
             for intent in intents:
                 if intent.name == chosen_intent.name and intent.entity_assignments != chosen_intent.entity_assignments:
                     intent.confidence = 0
+        else:
+            if self.action_name == "dialogue_statement":
+                for intent in intents:
+                    if intent.name == "utter_dialogue_statement":
+                        chosen_intent = intent
+                        intent.confidence = 1.0
+            else:
+                for intent in intents:
+                    if intent.name == "fallback":
+                        chosen_intent = intent
+        for intent in intents:
+            if intent.name == "fallback":
+                intent.confidence = 1 - max(intents, key=attrgetter("confidence")).confidence
+
         # rearrange intent ranking
-        intents.remove(chosen_intent)
-        intents = [chosen_intent] + intents
+        intents.sort()
+        # intents.remove(chosen_intent)
+        # intents = [chosen_intent] + intents
         ranked_groups = [
             {
                 "intent": intent.name,

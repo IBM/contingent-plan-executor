@@ -168,10 +168,9 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                 # an intent with entities we were not able to extract gets a confidence of 0
                 intent.confidence = 0.0
             else:
-                if intent.confidence > THRESHOLD:
-                    # stop looking for a suitable intent if the intent extracted doesn't require entities
-                    chosen_intent = intent
-                    break
+                # stop looking for a suitable intent if the intent extracted doesn't require entities
+                chosen_intent = intent
+                break
         if chosen_intent:
             # in the case that there are multiple intents with the same name and confidence
             # because we're going by entity assignment, we only want the intent that reflects
@@ -213,6 +212,7 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         intent_ranking = {
             ranking["name"]: ranking["confidence"] for ranking in r["intent_ranking"]
         }
+        # TODO: remove these?
         intent_ranking["fallback"] = 0
         intent_ranking["utter_dialogue_statement"] = 0
         intents = []

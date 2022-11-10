@@ -116,22 +116,20 @@ class Rollout:
 
         return self.get_action_confidences(utterance["HOVOR"])
 
-    def update_if_message_action(self, most_conf_act, most_conf_intent_out=None):
-        if most_conf_intent_out:
-            act_type = self.configuration_provider._configuration_data["actions"][most_conf_act]["type"]
-            if act_type == "message":
-                action_eff =  self.configuration_provider._configuration_data["actions"][most_conf_act]["effect"]
-                self.update_state_applicable_actions(
-                    most_conf_act,
-                    self.configuration_provider._create_outcome_group(
-                        most_conf_act, action_eff
-                    ).name
-                )
-                return {"intent": action_eff["outcomes"][0]["intent"],
-                        "outcome": action_eff["outcomes"][0]["name"],
-                        "confidence": 1.0}
-            else:
-                return most_conf_intent_out
+    def update_if_message_action(self, most_conf_act):
+        act_type = self.configuration_provider._configuration_data["actions"][most_conf_act]["type"]
+        if act_type == "message":
+            action_eff =  self.configuration_provider._configuration_data["actions"][most_conf_act]["effect"]
+            self.update_state_applicable_actions(
+                most_conf_act,
+                self.configuration_provider._create_outcome_group(
+                    most_conf_act, action_eff
+                ).name
+            )
+            return {"intent": action_eff["outcomes"][0]["intent"],
+                    "outcome": action_eff["outcomes"][0]["name"],
+                    "confidence": 1.0}
+
 
     def rollout_conversation(self, conversation, build_graph: bool = False):
         most_conf_intent_out = {"intent": None, "outcome": None, "confidence": None}

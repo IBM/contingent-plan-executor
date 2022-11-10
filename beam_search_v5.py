@@ -103,14 +103,25 @@ def beam_search(k, max_fallbacks, conversation, output_files_path):
                 action = Action(key, val, index, log(val))
                 outputs.append(action)         
             print("OUTPUTS", outputs)
-
+            # if there are less starting actions than there are beams, duplicate the best action until we reach k
+            while len(outputs) < k:
+                outputs.append(outputs[0])
             action_names = [action.name for action in outputs]
             start = "START"
-            for beam in range(k):
+            for beam in range(k): 
                 first_score = [log(outputs[beam].probability)]
                 beams.append(Beam(beam, outputs[beam], None, [outputs[beam]], create_rollout(output_files_path), first_score))
                 # assign each chosen value to a distinct beam
                 graph_gen.create_nodes_highlight_k([outputs[beam].name], "skyblue", start, beam, [outputs[beam].name])
+
+                # need in case of message actions at the beginning 
+                result = beams[beam].rollout_cfg.update_if_message_action(beams[beam].last_action.name)
+                if result:
+                    intent = Intent(name=result["intent"], probability=result["confidence"], outcome=result["outcome"], beam=beam, score = log(result["confidence"])+beams[beam].last_action.score)
+                    beams[beam].last_intent = intent
+                    beams[beam].rankings.append(intent)
+                    graph_gen.create_nodes_highlight_k([intent.name], "lightgoldenrod1", beams[beam].last_action.name, beam, [intent.name])
+
 
             # generate nodes that won't be picked
             graph_gen.create_from_parent(action_names[k:], "skyblue")
@@ -178,7 +189,7 @@ def beam_search(k, max_fallbacks, conversation, output_files_path):
                     graph_beam_chosen_map[at_beam].append(next_intent.name)
 
                 for beam, chosen_intents in graph_beam_chosen_map.items():
-                    graph_gen.create_nodes_highlight_k(list(beams[beam].rollout_cfg.configuration_provider._configuration_data["actions"][beams[beam].last_action.name]["intents"].keys()), "lightgoldenrod1", beams[beam].last_action.name, beam, chosen_intents)
+                    graph_gen.create_nodes_highlight_k(list(beams[beam].rollout_cfg.configuration_provider._configuration_data["actions"][beams[beam].last_action.name]["intents"].keys()), "lightgoldenrod1", beams[beam].rankings[-1].name, beam, chosen_intents)
 
 
                 # print("Holders", beam_holders)
@@ -227,7 +238,7 @@ def beam_search(k, max_fallbacks, conversation, output_files_path):
                     graph_beam_chosen_map[at_beam].append(next_action.name)
 
                 for beam, chosen_acts in graph_beam_chosen_map.items():
-                    graph_gen.create_nodes_highlight_k(beams[beam].rollout_cfg.applicable_actions, "skyblue", beams[beam].last_intent.name, beam, chosen_acts)
+                    graph_gen.create_nodes_highlight_k(beams[beam].rollout_cfg.applicable_actions, "skyblue", beams[beam].rankings[-1].name, beam, chosen_acts)
 
 
 
@@ -247,10 +258,10 @@ def beam_search(k, max_fallbacks, conversation, output_files_path):
                     old_beam_placement = list_actions[new_beam].beam
                     graph_gen.beams.append(BeamSearchGraphGenerator.Beam({k: v for k, v in graph_beams_copy[old_beam_placement].parent_nodes_id_map.items()}))
 
-
-                    result = beams[new_beam].rollout_cfg.update_if_message_action(beams[new_beam].last_action.name, {"intent": beams[new_beam].last_intent.name, "outcome": beams[new_beam].last_intent.outcome, "confidence": beams[new_beam].last_intent.probability, "score": list_scores[new_beam]})
-                    intent = Intent(name=result["intent"], probability=result["confidence"], outcome=result["outcome"], beam=new_beam, score = log(result["confidence"])+beams[new_beam].last_action.score)
-                    if intent != beams[new_beam].last_intent:
+                    
+                    result = beams[new_beam].rollout_cfg.update_if_message_action(beams[new_beam].last_action.name)
+                    if result:
+                        intent = Intent(name=result["intent"], probability=result["confidence"], outcome=result["outcome"], beam=new_beam, score = log(result["confidence"])+beams[new_beam].last_action.score)
                         beams[new_beam].last_intent = intent
                         beams[new_beam].rankings.append(intent)
                         graph_gen.create_nodes_highlight_k([intent.name], "lightgoldenrod1", beams[new_beam].last_action.name, new_beam, [intent.name])
@@ -333,11 +344,34 @@ test1= [{"HOVOR": "Hello I am a Pizza bot how are you!"},
                 {"USER": "Thanks!"}, 
 
 ]
+icaps_conversation = [
+    {"HOVOR": "Welcome to ICAPS 2022!"},
+    {"HOVOR": "Are you available at 7?"},
+    {"USER": "dedeergregre"},
+    {"HOVOR": "I didn't get your input"},
+    {"HOVOR": "Are you available at 7?"},
+    {"USER": "No"},
+    {"HOVOR": "Are you available at 8?"},
+    {"USER": "Yes"},
+    {"HOVOR": "Do you want to attend the ICAPS social?"},
+    {"USER": "Yes"},
+    {"HOVOR": "Are you available at 9?"},
+    {"USER": "Yes"},
+    {"HOVOR": "Are you interested in either Planning Representations and Scheduling or Verification?"},
+    {"USER": "I want to learn about Verification!"},
+    {"HOVOR": "Are you available at 10?"},
+    {"USER": "Yes, I am!"},
+    {"HOVOR": "Are you interested in either Reinforcement Learning or Heuristics in Classical Planning?"},
+    {"USER": "I want to learn about RL."},
+    {"HOVOR": "Are you available at 11?"},
+    {"USER": "No."},
+    {"HOVOR": "Enjoy your morning!"}
+]
 
 if __name__ == "__main__":
     beam_search(
         4,
         1,
-        conversation,
-        "C:\\Users\\Rebecca\\Desktop\\plan4dial\\plan4dial\\local_data\\rollout_no_system_gold_standard_bot\\output_files"
+        icaps_conversation,
+        "C:\\Users\\Rebecca\\Desktop\\plan4dial\\plan4dial\\local_data\\rollout_no_system_icaps_bot\\output_files"
     )

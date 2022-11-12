@@ -49,13 +49,17 @@ class BeamSearchGraphGenerator(GraphGenerator):
         self._set_last_chosen(self.beams[beam].parent_nodes_id_map[node])
 
     def create_nodes_highlight_k(self, nodes: Iterable[str], fillcolor: str, parent: str, beam: int, k_chosen: Iterable[str]):
+        # have to create the parent before potentially making changes to the map to prevent
+        # overwriting in the case where you have a node "A" connected to a parent "A"
+        # (otherwise you attach the node to itself)
+        parent = self.beams[beam].parent_nodes_id_map[parent]
         for node in nodes:
             edge_color = "black"
             self._inc_idx()
             self.graph.node(self._idx, node, fillcolor=fillcolor, style="filled")
-
+ 
             if node in k_chosen:
                 edge_color = "red"
                 self.beams[beam].parent_nodes_id_map[node] = self._idx
-            self.graph.edge(self.beams[beam].parent_nodes_id_map[parent], self._idx, color=edge_color)
+            self.graph.edge(parent, self._idx, color=edge_color)
             

@@ -345,33 +345,23 @@ test1= [{"HOVOR": "Hello I am a Pizza bot how are you!"},
 
 ]
 icaps_conversation = [
-    {"HOVOR": "Welcome to ICAPS 2022!"},
-    {"HOVOR": "Are you available at 7?"},
-    {"USER": "dedeergregre"},
-    {"HOVOR": "I didn't get your input"},
-    {"HOVOR": "Are you available at 7?"},
-    {"USER": "No"},
-    {"HOVOR": "Are you available at 8?"},
-    {"USER": "Yes"},
-    {"HOVOR": "Do you want to attend the ICAPS social?"},
-    {"USER": "Yes"},
-    {"HOVOR": "Are you available at 9?"},
-    {"USER": "Yes"},
-    {"HOVOR": "Are you interested in either Planning Representations and Scheduling or Verification?"},
-    {"USER": "I want to learn about Verification!"},
-    {"HOVOR": "Are you available at 10?"},
-    {"USER": "Yes, I am!"},
-    {"HOVOR": "Are you interested in either Reinforcement Learning or Heuristics in Classical Planning?"},
-    {"USER": "I want to learn about RL."},
-    {"HOVOR": "Are you available at 11?"},
-    {"USER": "No."},
-    {"HOVOR": "Enjoy your morning!"}
+    {"HOVOR": "What invited talk do you want to see on Day 1? You can learn about Factored Transition Systems or the applications of Multi-Agent Path Finding."},
+    {"USER": "I want to see the talk on Factored Transition Systems."},
+    {"HOVOR": "What session do you want to see in the morning? The sessions available are on Planning Representations and Scheduling, Verification, RL, or Heuristics."},
+    {"USER": "I'm really interested in RL!"},
+    {"HOVOR": "What session do you want to see in the early afternoon? Your options are: Model-Based Reasoning, Learning for Scheduling Applications, Search, and Optimal Planning."},
+    {"USER": "Please schedule me in to watch the talk on Model-Based Reasoning."},
+    {"HOVOR": "What session do you want to see in the afternoon? You can learn about Problem Reformulation, Heuristics/Search, Multi-Agent Path Finding, or DL."},
+    {"USER": "The session on heuristic search."},
+    {"HOVOR": "What session do you want to see in the evening? Sessions available cover Probabilistic Planning, Multi-Agent Planning/Scheduling, HTNs, and Rewards in RL."},
+    {"USER": "Definitely the session on HTNs."},
+    {"HOVOR": "Thank you, enjoy your day!"},
 ]
 
 if __name__ == "__main__":
     beam_search(
-        4,
-        1,
+        3,
+        2,
         icaps_conversation,
         "C:\\Users\\Rebecca\\Desktop\\plan4dial\\plan4dial\\local_data\\rollout_no_system_icaps_bot\\output_files"
     )

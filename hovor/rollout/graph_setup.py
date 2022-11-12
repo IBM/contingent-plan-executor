@@ -16,13 +16,13 @@ class GraphGenerator:
         self._parent = str(new_id)
 
     def complete_conversation(self):
-        self.create_from_parent(["GOAL REACHED"], "darkolivegreen3", "GOAL REACHED")
+        self.create_from_parent({"GOAL REACHED": 1.0}, "darkolivegreen3", "GOAL REACHED")
 
-    def create_from_parent(self, nodes: Iterable[str], fillcolor: str, new_parent: str = None):
-        for node in nodes:
+    def create_from_parent(self, nodes: Dict[str, float], fillcolor: str, new_parent: str = None):
+        for node, conf in nodes.items():
             edge_color = "black"
             self._inc_idx()
-            self.graph.node(self._idx, node, fillcolor=fillcolor, style="filled")
+            self.graph.node(self._idx, f"{node}\n{conf}", fillcolor=fillcolor, style="filled")
             if new_parent:
                 if node == new_parent:
                     new_parent_id = self._idx
@@ -48,15 +48,15 @@ class BeamSearchGraphGenerator(GraphGenerator):
     def set_last_chosen(self, node: str, beam: int):
         self._set_last_chosen(self.beams[beam].parent_nodes_id_map[node])
 
-    def create_nodes_highlight_k(self, nodes: Iterable[str], fillcolor: str, parent: str, beam: int, k_chosen: Iterable[str]):
+    def create_nodes_highlight_k(self, nodes: Dict[str, float], fillcolor: str, parent: str, beam: int, k_chosen: Iterable[str]):
         # have to create the parent before potentially making changes to the map to prevent
         # overwriting in the case where you have a node "A" connected to a parent "A"
         # (otherwise you attach the node to itself)
         parent = self.beams[beam].parent_nodes_id_map[parent]
-        for node in nodes:
+        for node, conf in nodes.items():
             edge_color = "black"
             self._inc_idx()
-            self.graph.node(self._idx, node, fillcolor=fillcolor, style="filled")
+            self.graph.node(self._idx, f"{node}\n{conf}", fillcolor=fillcolor, style="filled")
  
             if node in k_chosen:
                 edge_color = "red"

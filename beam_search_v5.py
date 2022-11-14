@@ -88,7 +88,6 @@ def beam_search(k, max_fallbacks, conversation, output_files_path):
             # if there are less starting actions than there are beams, duplicate the best action until we reach k
             while len(outputs) < k:
                 outputs.append(outputs[0])
-            start = "START"
             for beam in range(k):
                 first_score = [log(outputs[beam].probability)]
                 beams.append(
@@ -105,7 +104,7 @@ def beam_search(k, max_fallbacks, conversation, output_files_path):
                 graph_gen.create_nodes_highlight_k(
                     {outputs[beam].name: round(outputs[beam].probability, 4)},
                     "skyblue",
-                    start,
+                    "START",
                     beam,
                     [outputs[beam].name],
                 )
@@ -258,7 +257,7 @@ def beam_search(k, max_fallbacks, conversation, output_files_path):
                     # grab the old beam placement
                     old_beam_placement = list_intents[new_beam].beam
                     graph_gen.beams.append(
-                        BeamSearchGraphGenerator.Beam(
+                        BeamSearchGraphGenerator.GraphBeam(
                             {
                                 k: v
                                 for k, v in graph_beams_copy[
@@ -338,7 +337,7 @@ def beam_search(k, max_fallbacks, conversation, output_files_path):
                     # grab the old beam placement
                     old_beam_placement = list_actions[new_beam].beam
                     graph_gen.beams.append(
-                        BeamSearchGraphGenerator.Beam(
+                        BeamSearchGraphGenerator.GraphBeam(
                             {
                                 k: v
                                 for k, v in graph_beams_copy[
@@ -399,6 +398,15 @@ def beam_search(k, max_fallbacks, conversation, output_files_path):
             graph_gen.complete_conversation()
         # print(final_probs)
         # print(sum(final_probs))
+        head = "0"
+        for elem in beams[final].rankings:
+            tail = head
+            # id must be > than the head to prevent referencing previous nodes with the same name
+            head = graph_gen.beams[final].parent_nodes_id_map[elem.name].pop(0)
+            while int(head) <= int(tail):
+                head = graph_gen.beams[final].parent_nodes_id_map[elem.name].pop(0)
+            graph_gen.graph.edge(tail, head, style="solid")
+            # graph_gen.graph.render(f"beam_search.gv", view=True)
     graph_gen.graph.render(f"beam_search.gv", view=True)
 
 

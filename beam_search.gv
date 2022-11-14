@@ -1,14 +1,14 @@
-digraph {
+strict digraph {
 	0 [label=START fillcolor=darkolivegreen3 style=filled]
 	1 [label="get-invited-talk
 0.2961" fillcolor=skyblue style=filled]
-	0 -> 1 [color=red]
+	0 -> 1 [color=darkgreen style=dashed]
 	2 [label="get-afternoon-session
 0.1936" fillcolor=skyblue style=filled]
-	0 -> 2 [color=red]
+	0 -> 2 [color=darkgreen style=dashed]
 	3 [label="get-evening-session
 0.1752" fillcolor=skyblue style=filled]
-	0 -> 3 [color=red]
+	0 -> 3 [color=darkgreen style=dashed]
 	4 [label="get-morning-session
 0.1694" fillcolor=skyblue style=filled]
 	0 -> 4 [color=black]
@@ -17,167 +17,203 @@ digraph {
 	0 -> 5 [color=black]
 	6 [label="share-invited-talk
 0.7311" fillcolor=lightgoldenrod1 style=filled]
-	1 -> 6 [color=red]
+	1 -> 6 [color=darkgreen style=dashed]
 	7 [label="fallback
 0.2689" fillcolor=lightgoldenrod1 style=filled]
-	1 -> 7 [color=black]
+	1 -> 7 [color=grey25 style=solid]
 	8 [label="share-afternoon-session
 0.2689" fillcolor=lightgoldenrod1 style=filled]
-	2 -> 8 [color=black]
+	2 -> 8 [color=grey25 style=solid]
 	9 [label="fallback
 0.7311" fillcolor=lightgoldenrod1 style=filled]
-	2 -> 9 [color=red]
+	2 -> 9 [color=darkgreen style=dashed]
 	10 [label="share-evening-session
 0.2689" fillcolor=lightgoldenrod1 style=filled]
-	3 -> 10 [color=black]
+	3 -> 10 [color=grey25 style=solid]
 	11 [label="fallback
 0.7311" fillcolor=lightgoldenrod1 style=filled]
-	3 -> 11 [color=red]
-	12 [label="get-early-afternoon-session
-0.2545" fillcolor=skyblue style=filled]
-	6 -> 12 [color=red]
-	13 [label="get-afternoon-session
+	3 -> 11 [color=darkgreen style=dashed]
+	12 [label="get-afternoon-session
 0.228" fillcolor=skyblue style=filled]
-	6 -> 13 [color=black]
-	14 [label="get-morning-session
-0.2764" fillcolor=skyblue style=filled]
-	6 -> 14 [color=red]
-	15 [label="get-evening-session
+	6 -> 12 [color=grey25 style=solid]
+	13 [label="get-early-afternoon-session
+0.2545" fillcolor=skyblue style=filled]
+	6 -> 13 [color=darkgreen style=dashed]
+	14 [label="get-evening-session
 0.2411" fillcolor=skyblue style=filled]
-	6 -> 15 [color=red]
+	6 -> 14 [color=darkgreen style=dashed]
+	15 [label="get-morning-session
+0.2764" fillcolor=skyblue style=filled]
+	6 -> 15 [color=darkgreen style=dashed]
 	16 [label="dialogue_statement
 1.0" fillcolor=skyblue style=filled]
-	9 -> 16 [color=black]
+	9 -> 16 [color=grey25 style=solid]
 	17 [label="dialogue_statement
 1.0" fillcolor=skyblue style=filled]
-	11 -> 17 [color=black]
+	11 -> 17 [color=grey25 style=solid]
 	18 [label="share-morning-session
 0.731" fillcolor=lightgoldenrod1 style=filled]
-	14 -> 18 [color=red]
+	15 -> 18 [color=darkgreen style=dashed]
 	19 [label="fallback
 0.269" fillcolor=lightgoldenrod1 style=filled]
-	14 -> 19 [color=black]
+	15 -> 19 [color=grey25 style=solid]
 	20 [label="share-early-afternoon-session
 0.2689" fillcolor=lightgoldenrod1 style=filled]
-	12 -> 20 [color=black]
+	13 -> 20 [color=grey25 style=solid]
 	21 [label="fallback
 0.7311" fillcolor=lightgoldenrod1 style=filled]
-	12 -> 21 [color=red]
+	13 -> 21 [color=darkgreen style=dashed]
 	22 [label="share-evening-session
 0.2689" fillcolor=lightgoldenrod1 style=filled]
-	15 -> 22 [color=black]
+	14 -> 22 [color=grey25 style=solid]
 	23 [label="fallback
 0.7311" fillcolor=lightgoldenrod1 style=filled]
-	15 -> 23 [color=red]
-	24 [label="get-early-afternoon-session
-0.3757" fillcolor=skyblue style=filled]
-	18 -> 24 [color=red]
-	25 [label="get-afternoon-session
+	14 -> 23 [color=darkgreen style=dashed]
+	24 [label="get-afternoon-session
 0.2977" fillcolor=skyblue style=filled]
-	18 -> 25 [color=red]
+	18 -> 24 [color=darkgreen style=dashed]
+	25 [label="get-early-afternoon-session
+0.3757" fillcolor=skyblue style=filled]
+	18 -> 25 [color=darkgreen style=dashed]
 	26 [label="get-evening-session
 0.3266" fillcolor=skyblue style=filled]
-	18 -> 26 [color=red]
+	18 -> 26 [color=darkgreen style=dashed]
 	27 [label="dialogue_statement
 1.0" fillcolor=skyblue style=filled]
-	21 -> 27 [color=black]
+	21 -> 27 [color=grey25 style=solid]
 	28 [label="dialogue_statement
 1.0" fillcolor=skyblue style=filled]
-	23 -> 28 [color=black]
+	23 -> 28 [color=grey25 style=solid]
 	29 [label="share-early-afternoon-session
 0.7311" fillcolor=lightgoldenrod1 style=filled]
-	24 -> 29 [color=red]
+	25 -> 29 [color=darkgreen style=dashed]
 	30 [label="fallback
 0.2689" fillcolor=lightgoldenrod1 style=filled]
-	24 -> 30 [color=black]
+	25 -> 30 [color=grey25 style=solid]
 	31 [label="share-evening-session
 0.2689" fillcolor=lightgoldenrod1 style=filled]
-	26 -> 31 [color=black]
+	26 -> 31 [color=grey25 style=solid]
 	32 [label="fallback
 0.7311" fillcolor=lightgoldenrod1 style=filled]
-	26 -> 32 [color=red]
+	26 -> 32 [color=darkgreen style=dashed]
 	33 [label="share-afternoon-session
 0.2689" fillcolor=lightgoldenrod1 style=filled]
-	25 -> 33 [color=black]
+	24 -> 33 [color=grey25 style=solid]
 	34 [label="fallback
 0.7311" fillcolor=lightgoldenrod1 style=filled]
-	25 -> 34 [color=red]
+	24 -> 34 [color=darkgreen style=dashed]
 	35 [label="get-afternoon-session
 0.5481" fillcolor=skyblue style=filled]
-	29 -> 35 [color=red]
+	29 -> 35 [color=darkgreen style=dashed]
 	36 [label="get-evening-session
 0.4519" fillcolor=skyblue style=filled]
-	29 -> 36 [color=red]
+	29 -> 36 [color=darkgreen style=dashed]
 	37 [label="dialogue_statement
 1.0" fillcolor=skyblue style=filled]
-	32 -> 37 [color=red]
+	32 -> 37 [color=darkgreen style=dashed]
 	38 [label="dialogue_statement
 1.0" fillcolor=skyblue style=filled]
-	34 -> 38 [color=black]
+	34 -> 38 [color=grey25 style=solid]
 	39 [label="utter_dialogue_statement
 1.0" fillcolor=lightgoldenrod1 style=filled]
-	37 -> 39 [color=red]
+	37 -> 39 [color=darkgreen style=dashed]
 	40 [label="share-afternoon-session
 0.731" fillcolor=lightgoldenrod1 style=filled]
-	35 -> 40 [color=red]
+	35 -> 40 [color=darkgreen style=dashed]
 	41 [label="fallback
 0.269" fillcolor=lightgoldenrod1 style=filled]
-	35 -> 41 [color=red]
+	35 -> 41 [color=darkgreen style=dashed]
 	42 [label="share-evening-session
 0.2689" fillcolor=lightgoldenrod1 style=filled]
-	36 -> 42 [color=black]
+	36 -> 42 [color=grey25 style=solid]
 	43 [label="fallback
 0.7311" fillcolor=lightgoldenrod1 style=filled]
-	36 -> 43 [color=red]
+	36 -> 43 [color=darkgreen style=dashed]
 	44 [label="utter_dialogue_statement
 1.0" fillcolor=lightgoldenrod1 style=filled]
-	39 -> 44 [color=black]
+	39 -> 44 [color=grey25 style=solid]
 	45 [label="get-evening-session
 1.0" fillcolor=skyblue style=filled]
-	40 -> 45 [color=red]
+	40 -> 45 [color=darkgreen style=dashed]
 	46 [label="dialogue_statement
 1.0" fillcolor=skyblue style=filled]
-	43 -> 46 [color=red]
+	43 -> 46 [color=darkgreen style=dashed]
 	47 [label="dialogue_statement
 1.0" fillcolor=skyblue style=filled]
-	41 -> 47 [color=red]
+	41 -> 47 [color=darkgreen style=dashed]
 	48 [label="utter_dialogue_statement
 1.0" fillcolor=lightgoldenrod1 style=filled]
-	46 -> 48 [color=red]
+	46 -> 48 [color=darkgreen style=dashed]
 	49 [label="utter_dialogue_statement
 1.0" fillcolor=lightgoldenrod1 style=filled]
-	47 -> 49 [color=red]
+	47 -> 49 [color=darkgreen style=dashed]
 	50 [label="share-evening-session
 0.7311" fillcolor=lightgoldenrod1 style=filled]
-	45 -> 50 [color=red]
+	45 -> 50 [color=darkgreen style=dashed]
 	51 [label="fallback
 0.2689" fillcolor=lightgoldenrod1 style=filled]
-	45 -> 51 [color=red]
+	45 -> 51 [color=darkgreen style=dashed]
 	52 [label="utter_dialogue_statement
 1.0" fillcolor=lightgoldenrod1 style=filled]
-	48 -> 52 [color=red]
+	48 -> 52 [color=darkgreen style=dashed]
 	53 [label="utter_dialogue_statement
 1.0" fillcolor=lightgoldenrod1 style=filled]
-	49 -> 53 [color=black]
+	49 -> 53 [color=grey25 style=solid]
 	54 [label="complete
 1.0" fillcolor=skyblue style=filled]
-	50 -> 54 [color=red]
+	50 -> 54 [color=darkgreen style=dashed]
 	55 [label="dialogue_statement
 1.0" fillcolor=skyblue style=filled]
-	51 -> 55 [color=red]
+	51 -> 55 [color=darkgreen style=dashed]
 	56 [label="get-afternoon-session
 0.4006" fillcolor=skyblue style=filled]
-	52 -> 56 [color=black]
+	52 -> 56 [color=grey25 style=solid]
 	57 [label="get-evening-session
 0.5994" fillcolor=skyblue style=filled]
-	52 -> 57 [color=red]
+	52 -> 57 [color=darkgreen style=dashed]
 	58 [label="thank
 1.0" fillcolor=lightgoldenrod1 style=filled]
-	54 -> 58 [color=red]
+	54 -> 58 [color=darkgreen style=dashed]
 	59 [label="utter_dialogue_statement
 1.0" fillcolor=lightgoldenrod1 style=filled]
-	55 -> 59 [color=red]
+	55 -> 59 [color=darkgreen style=dashed]
 	60 [label="GOAL REACHED
 1.0" fillcolor=darkolivegreen3 style=filled]
-	58 -> 60 [color=red]
+	58 -> 60 [color=forestgreen]
+	0 -> 1 [style=solid]
+	1 -> 6 [style=solid]
+	6 -> 15 [style=solid]
+	15 -> 18 [style=solid]
+	18 -> 25 [style=solid]
+	25 -> 29 [style=solid]
+	29 -> 35 [style=solid]
+	35 -> 40 [style=solid]
+	40 -> 45 [style=solid]
+	45 -> 50 [style=solid]
+	50 -> 54 [style=solid]
+	54 -> 58 [style=solid]
+	0 -> 1 [style=solid]
+	1 -> 6 [style=solid]
+	6 -> 15 [style=solid]
+	15 -> 18 [style=solid]
+	18 -> 25 [style=solid]
+	25 -> 29 [style=solid]
+	29 -> 35 [style=solid]
+	35 -> 40 [style=solid]
+	40 -> 45 [style=solid]
+	45 -> 51 [style=solid]
+	51 -> 55 [style=solid]
+	55 -> 59 [style=solid]
+	0 -> 1 [style=solid]
+	1 -> 6 [style=solid]
+	6 -> 15 [style=solid]
+	15 -> 18 [style=solid]
+	18 -> 25 [style=solid]
+	25 -> 29 [style=solid]
+	29 -> 36 [style=solid]
+	36 -> 43 [style=solid]
+	43 -> 46 [style=solid]
+	46 -> 48 [style=solid]
+	48 -> 52 [style=solid]
+	52 -> 57 [style=solid]
 }

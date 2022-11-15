@@ -70,7 +70,7 @@ def create_rollout_from_old(rollout_cfg, output_files_path):
     return new_rollout
 
 
-def beam_search(k, max_fallbacks, conversation, output_files_path):
+def beam_search(k, max_fallbacks, conversation, output_files_path, filename):
     beams = []
     graph_gen = BeamSearchGraphGenerator(k)
     for i in range(len(conversation)):
@@ -407,7 +407,7 @@ def beam_search(k, max_fallbacks, conversation, output_files_path):
                 head = graph_gen.beams[final].parent_nodes_id_map[elem.name].pop(0)
             graph_gen.graph.edge(tail, head, style="solid")
             # graph_gen.graph.render(f"beam_search.gv", view=True)
-    graph_gen.graph.render(f"beam_search.gv", view=True)
+    graph_gen.graph.render(f"{filename}.gv", view=True)
 
 
 conversation = [
@@ -472,24 +472,49 @@ icaps_conversation = [
     },
     {"USER": "I'm really interested in RL!"},
     {
-        "HOVOR": "What session do you want to see in the early afternoon? Your options are: Model-Based Reasoning, Learning for Scheduling Applications, Search, and Optimal Planning."
+        "HOVOR": "What session do you want to see in the afternoon? Your options are: Model-Based Reasoning, Learning for Scheduling Applications, Search, and Optimal Planning."
     },
     {"USER": "Please schedule me in to watch the talk on Model-Based Reasoning."},
+    {"HOVOR": "Thank you, enjoy your day!"},
+]
+icaps_conversation_drop = [
     {
-        "HOVOR": "What session do you want to see in the afternoon? You can learn about Problem Reformulation, Heuristics/Search, Multi-Agent Path Finding, or DL."
+        "HOVOR": "What invited talk do you want to see on Day 1? You can learn about Factored Transition Systems or the applications of Multi-Agent Path Finding."
     },
-    {"USER": "The session on heuristic search."},
+    {"USER": "I want to see the talk on"},
     {
-        "HOVOR": "What session do you want to see in the evening? Sessions available cover Probabilistic Planning, Multi-Agent Planning/Scheduling, HTNs, and Rewards in RL."
+        "HOVOR": "What session do you want to see in the morning? The sessions available are on Planning Representations and Scheduling, Verification, RL, or Heuristics."
     },
-    {"USER": "Definitely the session on HTNs."},
+    {"USER": "I'm really interested in RL!"},
+    {
+        "HOVOR": "What session do you want to see in the afternoon? Your options are: Model-Based Reasoning, Learning for Scheduling Applications, Search, and Optimal Planning."
+    },
+    {"USER": "Please schedule me in to watch the talk on Model-Based Reasoning."},
     {"HOVOR": "Thank you, enjoy your day!"},
 ]
 
+
 if __name__ == "__main__":
+    # TODO: RUN RASA MODEL
+    output_dir = "C:\\Users\\Rebecca\\Desktop\\plan4dial\\plan4dial\\local_data\\rollout_no_system_icaps_bot_mini\\output_files"
     beam_search(
         3,
         1,
         icaps_conversation,
-        "C:\\Users\\Rebecca\\Desktop\\plan4dial\\plan4dial\\local_data\\rollout_no_system_icaps_bot\\output_files",
+        output_dir,
+        "icaps_gold"
+    )
+    beam_search(
+        3,
+        1,
+        icaps_conversation_drop,
+        output_dir,
+        "icaps_crash"
+    )
+    beam_search(
+        3,
+        3,
+        icaps_conversation,
+        output_dir,
+        "icaps_hi_f"
     )

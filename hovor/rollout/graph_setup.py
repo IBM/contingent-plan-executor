@@ -7,7 +7,7 @@ class GraphGenerator:
         self._idx = "0"
         self._parent = "0"
         self.graph = Digraph(strict = True)
-        self.graph.node(self._idx, "START", fillcolor="darkolivegreen3", style="filled")
+        self.graph.node(self._idx, "START", fillcolor="darkolivegreen3", style="filled", fontsize="50")
 
     def _inc_idx(self, inc: int = 1):
         self._idx = str(int(self._idx) + inc)
@@ -20,13 +20,13 @@ class GraphGenerator:
 
     def create_from_parent(self, nodes: Dict[str, float], fillcolor: str, new_parent: str = None):
         for node, conf in nodes.items():
-            edge_color, penwidth = "grey45", "1.0"
+            edge_color, penwidth = "grey45", "5.0"
             self._inc_idx()
-            self.graph.node(self._idx, f"{node}\n{conf}", fillcolor=fillcolor, style="filled")
+            self.graph.node(self._idx, f"{node}\n{conf}", fillcolor=fillcolor, style="filled", fontsize="50")
             if new_parent:
                 if node == new_parent:
                     new_parent_id = self._idx
-                    edge_color, penwidth = "forestgreen", "3.0"
+                    edge_color, penwidth = "forestgreen", "10.0"
             self.graph.edge(self._parent, self._idx, color=edge_color, penwidth=penwidth)
         if new_parent:
             self._set_last_chosen(new_parent_id)
@@ -53,16 +53,16 @@ class BeamSearchGraphGenerator(GraphGenerator):
         # (otherwise you attach the node to itself)
         parent = self.beams[beam].parent_nodes_id_map[parent][-1]
         for node, conf in nodes.items():
-            edge_color, style, penwidth = "grey45", "solid", "1.0"
+            edge_color, arrowhead, penwidth = "grey45", "none", "5.0"
             self._inc_idx()
-            self.graph.node(self._idx, f"{node}: {conf}", fillcolor=fillcolor, style="filled")
+            self.graph.node(self._idx, f"{node}\n{conf}", fillcolor=fillcolor, style="filled", fontsize="50")
  
             if node in k_chosen:
-                edge_color, style, penwidth = "forestgreen", "dashed", "3.0"
+                edge_color, arrowhead, penwidth = "purple", "normal", "10.0"
                 # create the list if it doesn't exist yet, otherwise add to it
                 if node not in self.beams[beam].parent_nodes_id_map:
                     self.beams[beam].parent_nodes_id_map[node] = []
                 self.beams[beam].parent_nodes_id_map[node].append(self._idx)
                 
-            self.graph.edge(parent, self._idx, color=edge_color, style=style, penwidth=penwidth)
+            self.graph.edge(parent, self._idx, color=edge_color, penwidth=penwidth, arrowhead=arrowhead)
             

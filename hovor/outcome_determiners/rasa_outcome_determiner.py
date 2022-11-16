@@ -183,7 +183,7 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         else:
             if self.action_name == "dialogue_statement":
                 for intent in intents:
-                    if intent.name == "utter_dialogue_statement":
+                    if intent.name == "utter_ds":
                         chosen_intent = intent
                         intent.confidence = 1.0
             else:
@@ -214,7 +214,7 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         }
         # TODO: remove these?
         intent_ranking["fallback"] = 0
-        intent_ranking["utter_dialogue_statement"] = 0
+        intent_ranking["utter_ds"] = 0
         intents = []
         for out in outcome_groups:
             out_intent = self.full_outcomes[out.name]["intent"]

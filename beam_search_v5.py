@@ -405,7 +405,7 @@ def beam_search(k, max_fallbacks, conversation, output_files_path, filename):
             head = graph_gen.beams[final].parent_nodes_id_map[elem.name].pop(0)
             while int(head) <= int(tail):
                 head = graph_gen.beams[final].parent_nodes_id_map[elem.name].pop(0)
-            graph_gen.graph.edge(tail, head, style="solid")
+            graph_gen.graph.edge(tail, head, color="forestgreen", penwidth="10.0", arrowhead="normal")
             # graph_gen.graph.render(f"beam_search.gv", view=True)
     graph_gen.graph.render(f"{filename}.gv", view=True)
 
@@ -497,13 +497,13 @@ icaps_conversation_drop = [
 if __name__ == "__main__":
     # TODO: RUN RASA MODEL
     output_dir = "C:\\Users\\Rebecca\\Desktop\\plan4dial\\plan4dial\\local_data\\rollout_no_system_icaps_bot_mini\\output_files"
-    beam_search(
-        3,
-        1,
-        icaps_conversation,
-        output_dir,
-        "icaps_gold"
-    )
+    # beam_search(
+    #     3,
+    #     1,
+    #     icaps_conversation,
+    #     output_dir,
+    #     "icaps_gold"
+    # )
     beam_search(
         3,
         1,
@@ -511,10 +511,10 @@ if __name__ == "__main__":
         output_dir,
         "icaps_crash"
     )
-    beam_search(
-        3,
-        3,
-        icaps_conversation,
-        output_dir,
-        "icaps_hi_f"
-    )
+    # beam_search(
+    #     3,
+    #     3,
+    #     icaps_conversation,
+    #     output_dir,
+    #     "icaps_hi_f"
+    # )

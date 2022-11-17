@@ -16,13 +16,6 @@ class Action:
     def __lt__(self, other):
         return self.score > other.score
 
-    def __str__(self):
-        return f"action: {self.name}, probability: {self.probability}"
-
-    def __post_init__(self):
-        # sort by scores
-        self.sort_index = self.score
-
 
 @dataclass
 class Intent:
@@ -42,13 +35,6 @@ class Intent:
     def __lt__(self, other):
         return self.score > other.score
 
-    def __str__(self):
-        return f"intent: {self.name}, outcome: {self.outcome}, probability: {self.probability}"
-
-    def __post_init__(self):
-        # sort by scores
-        self.sort_index = self.score
-
 
 @dataclass
 class Beam:
@@ -58,9 +44,6 @@ class Beam:
     rankings: List[Union[Action, Intent]]
     rollout_cfg: Rollout
     scores: list
-
-    def __str__(self):
-        return f"BEAM {self.id}\n" + "\n".join(str(r) for r in self.rankings)
 
 
 def create_rollout_from_old(rollout_cfg, output_files_path):
@@ -74,7 +57,6 @@ def beam_search(k, max_fallbacks, conversation, output_files_path, filename):
     beams = []
     graph_gen = BeamSearchGraphGenerator(k)
     for i in range(len(conversation)):
-        print(conversation[i])
         if i == 0:
             start_rollout = create_rollout(output_files_path)
             starting_values = start_rollout.update_action_get_confidences(
@@ -82,9 +64,7 @@ def beam_search(k, max_fallbacks, conversation, output_files_path, filename):
             )
             outputs = []
             for index, (key, val) in enumerate(starting_values.items()):
-                action = Action(key, val, index, log(val))
-                outputs.append(action)
-            print("OUTPUTS", outputs)
+                outputs.append(Action(key, val, index, log(val)))
             # if there are less starting actions than there are beams, duplicate the best action until we reach k
             while len(outputs) < k:
                 outputs.append(outputs[0])
@@ -124,13 +104,12 @@ def beam_search(k, max_fallbacks, conversation, output_files_path, filename):
                     beams[beam].last_intent = intent
                     beams[beam].rankings.append(intent)
                     graph_gen.create_nodes_highlight_k(
-                        {intent.name : round(intent.probability, 4)},
+                        {intent.name: round(intent.probability, 4)},
                         "lightgoldenrod1",
                         beams[beam].last_action.name,
                         beam,
                         [intent.name],
                     )
-
             # generate nodes that won't be picked
             graph_gen.create_from_parent(
                 {action.name: round(action.probability, 4) for action in outputs[k:]},
@@ -152,7 +131,6 @@ def beam_search(k, max_fallbacks, conversation, output_files_path, filename):
                         # find the score by taking the sum of the current beam thread which should be a list of log(prob)
                         score = sum(beams[beam].scores) + log(probs)
                         outputs.append(Intent(intent, probs, outcome, beam, score.real))
-
                 elif "HOVOR" in conversation[i].keys():
                     given_conv[beam] = beams[
                         beam
@@ -165,16 +143,10 @@ def beam_search(k, max_fallbacks, conversation, output_files_path, filename):
                     for index, (key, val) in enumerate(given_conv[beam].items()):
                         score = sum(beams[beam].scores) + log(val)
                         outputs.append(Action(key, val, beam, score.real))
-                        print(outputs)
-            # sort the new lsit keeping track of each thread instead of the outputs
-            print("OUTPUTS", outputs)
+            # sort the new list keeping track of each thread instead of the outputs
             outputs.sort()
             all_outputs = outputs
             outputs = outputs[0:k]
-            # sorted_out = sorted(outputs)
-            # outputs = sorted_out[0:k]
-            print("SRT OUTPUTS", outputs)
-
             if "USER" in conversation[i].keys():
                 beam_holders = [[] for _ in range(k)]
                 list_intents = []
@@ -207,35 +179,22 @@ def beam_search(k, max_fallbacks, conversation, output_files_path, filename):
                     graph_beam_chosen_map[at_beam].append(next_intent.name)
 
                 for beam, chosen_intents in graph_beam_chosen_map.items():
-                    last_act_intents = list(
-                            beams[beam]
-                            .rollout_cfg.configuration_provider._configuration_data[
-                                "actions"
-                            ][beams[beam].last_action.name]["intents"]
-                            .keys()
-                        )
-                    # please optimize this garbage T_T
-                    last_act_intents_map = {}
-                    for intent in last_act_intents:
-                        for output in all_outputs:
-                            if output.name == intent and output.beam == beam:
-                                last_act_intents_map[intent] = round(output.probability, 4)
-
                     graph_gen.create_nodes_highlight_k(
-                        last_act_intents_map,
+                        # filter ALL outputs by outputs belonging to the current beam
+                        # using the filtered outputs, map intents to probabilities to use in the graph
+                        {
+                            output.name: round(output.probability, 4)
+                            for output in all_outputs
+                            if output.beam == beam
+                        },
                         "lightgoldenrod1",
                         beams[beam].rankings[-1].name,
                         beam,
                         chosen_intents,
                     )
-
-                # print("Holders", beam_holders)
-                # print("Intents", list_intents)
-
                 beams = []
                 graph_beams_copy = graph_gen.beams
                 graph_gen.beams = []
-                # print("Final beams", beams)
                 for new_beam in range(k):
                     beams.append(
                         Beam(
@@ -266,8 +225,6 @@ def beam_search(k, max_fallbacks, conversation, output_files_path, filename):
                             }
                         )
                     )
-                    print()
-                # print("New Beams Intents", beams)
             else:
                 beam_holders = [[] for _ in range(k)]
                 list_intents = []
@@ -297,26 +254,19 @@ def beam_search(k, max_fallbacks, conversation, output_files_path, filename):
                     graph_beam_chosen_map[at_beam].append(next_action.name)
 
                 for beam, chosen_acts in graph_beam_chosen_map.items():
-                    # please optimize this garbage T_T
-                    applicable_acts_map = {}
-                    for act in beams[beam].rollout_cfg.applicable_actions:
-                        for output in all_outputs:
-                            if output.name == act and output.beam == beam:
-                                applicable_acts_map[act] = round(output.probability, 4)
                     graph_gen.create_nodes_highlight_k(
-                        applicable_acts_map,
+                        {
+                            output.name: round(output.probability, 4)
+                            for output in all_outputs
+                            if output.beam == beam
+                        },
                         "skyblue",
                         beams[beam].rankings[-1].name,
                         beam,
                         chosen_acts,
                     )
 
-                # print("Holders", beam_holders)
-                # print("Intents", list_intents)
-                print("Last Rollout", list_rollout)
-
                 beams = []
-                # print("Final beams", beams)
                 graph_beams_copy = graph_gen.beams
                 graph_gen.beams = []
                 for new_beam in range(k):
@@ -375,29 +325,12 @@ def beam_search(k, max_fallbacks, conversation, output_files_path, filename):
                     if type(ranking) == Intent and ranking.name == "fallback":
                         fallbacks += 1
                 if fallbacks >= max_fallbacks:
-                    # prune the beam ??
                     beams[beam].scores = [log(0.00000001)]
 
-                # print("New Beam Actions", beams)
-
-    # print("Final beams", beams)
-
     for final in range(len(beams)):
-        final_path = []
-        final_probs = []
-        print("Final Scores", beams[final].scores)
-        # print("Beam @ ", final , beams[final].rankings)
-        for names in range(len(beams[final].rankings)):
-            final_path.append(beams[final].rankings[names].name)
-            # final_probs.append(log(beams[final].rankings[names].probability))
-        # beams[final].score
-        # print(beams[final].rollout_cfg.get_reached_goal())
-        print(final_path)
         if beams[final].rollout_cfg.get_reached_goal():
             graph_gen.set_last_chosen(beams[final].rankings[-1].name, final)
             graph_gen.complete_conversation()
-        # print(final_probs)
-        # print(sum(final_probs))
         head = "0"
         for elem in beams[final].rankings:
             tail = head
@@ -405,8 +338,9 @@ def beam_search(k, max_fallbacks, conversation, output_files_path, filename):
             head = graph_gen.beams[final].parent_nodes_id_map[elem.name].pop(0)
             while int(head) <= int(tail):
                 head = graph_gen.beams[final].parent_nodes_id_map[elem.name].pop(0)
-            graph_gen.graph.edge(tail, head, color="forestgreen", penwidth="10.0", arrowhead="normal")
-            # graph_gen.graph.render(f"beam_search.gv", view=True)
+            graph_gen.graph.edge(
+                tail, head, color="forestgreen", penwidth="10.0", arrowhead="normal"
+            )
     graph_gen.graph.render(f"{filename}.gv", view=True)
 
 
@@ -497,20 +431,10 @@ icaps_conversation_drop = [
 if __name__ == "__main__":
     # TODO: RUN RASA MODEL
     output_dir = "C:\\Users\\Rebecca\\Desktop\\plan4dial\\plan4dial\\local_data\\rollout_no_system_icaps_bot_mini\\output_files"
-    # beam_search(
-    #     3,
-    #     1,
-    #     icaps_conversation,
-    #     output_dir,
-    #     "icaps_gold"
-    # )
-    beam_search(
-        3,
-        1,
-        icaps_conversation_drop,
-        output_dir,
-        "icaps_crash"
-    )
+    beam_search(3, 1, icaps_conversation, output_dir, "icaps_gold")
+
+    # beam_search(3, 1, icaps_conversation_drop, output_dir, "icaps_crash")
+
     # beam_search(
     #     3,
     #     3,

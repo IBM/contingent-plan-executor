@@ -1,41 +1,43 @@
 from hovor.outcome_determiners.rasa_outcome_determiner import RasaOutcomeDeterminer
 from hovor.rollout.semantic_similarity import softmax_confidences, semantic_similarity, normalize_confidences
 from hovor.rollout.graph_setup import GraphGenerator
+from hovor.rollout.rollout_stub import RolloutBase
 from hovor.planning.outcome_groups.deterministic_outcome_group import DeterministicOutcomeGroup
 from hovor.planning.outcome_groups.or_outcome_group import OrOutcomeGroup
+from typing import Iterable
 
 
-class Rollout:
+class HovorRollout(RolloutBase):
     def __init__(self, configuration_provider, rollout_cfg):
-        self.configuration_provider = configuration_provider
+        self._configuration_provider = configuration_provider
         # convert conditions/effects to sets
         for act_cfg in rollout_cfg["actions"].values():
             act_cfg["condition"] = set(act_cfg["condition"])
             for out, out_vals in act_cfg["effect"].items():
                 act_cfg["effect"][out] = set(out_vals)
-        self.rollout_cfg = rollout_cfg
-        self.current_state = set(self.rollout_cfg["initial_state"])
-        self.applicable_actions = set()
+        self._rollout_cfg = rollout_cfg
+        self._current_state = set(self._rollout_cfg["initial_state"])
+        self._applicable_actions = set()
         self.update_applicable_actions()
-
+    
     def get_reached_goal(self):
         return "(goal)" in self.current_state
 
     def get_highest_intents(self, action, utterance):
-        data = self.configuration_provider._configuration_data
+        data = self._configuration_provider._configuration_data
         rasa_outcome_determiner = RasaOutcomeDeterminer(
             action,
             data["actions"][action]["effect"]["outcomes"],
             data["context_variables"],
             data["intents"],
         )
-        outcome_group_config = self.configuration_provider._create_outcome_group(
+        outcome_group_config = self._configuration_provider._create_outcome_group(
             action, data["actions"][action]["effect"]
         )
         if type(outcome_group_config) == DeterministicOutcomeGroup:
             outcome_groups = [outcome_group_config]
         elif type(outcome_group_config) == OrOutcomeGroup:
-            outcome_groups = self.configuration_provider._create_outcome_group(
+            outcome_groups = self._configuration_provider._create_outcome_group(
                 action, data["actions"][action]["effect"]
             )._outcome_groups
         else:
@@ -53,7 +55,7 @@ class Rollout:
 
     def update_applicable_actions(self):
         # get all applicable actions, disqualifying non-dialogue actions
-        applicable_actions = {act for act in self.rollout_cfg["actions"] if self.rollout_cfg["actions"][act]["condition"].issubset(self.current_state) and self.configuration_provider._configuration_data["actions"][act]["type"]
+        applicable_actions = {act for act in self._rollout_cfg["actions"] if self._rollout_cfg["actions"][act]["condition"].issubset(self.current_state) and self._configuration_provider._configuration_data["actions"][act]["type"]
             in ["dialogue", "message"]}
         if len(applicable_actions) == 0:
             raise NotImplementedError(
@@ -78,12 +80,12 @@ class Rollout:
         outcome_group_name
     ):
         self.update_state(
-            self.rollout_cfg["actions"][most_conf_act]["effect"][outcome_group_name],
+            self._rollout_cfg["actions"][most_conf_act]["effect"][outcome_group_name],
         )
         self.update_applicable_actions()
 
     def get_action_confidences(self, source_sentence):
-        action_message_map = {act: self.configuration_provider._configuration_data["actions"][act]["message_variants"] for act in self.applicable_actions if self.configuration_provider._configuration_data["actions"][act]["message_variants"]}
+        action_message_map = {act: self._configuration_provider._configuration_data["actions"][act]["message_variants"] for act in self.applicable_actions if self._configuration_provider._configuration_data["actions"][act]["message_variants"]}
         confidences = {}
         for action, messages in action_message_map.items():
             confidences[action] = semantic_similarity(source_sentence, messages)
@@ -97,7 +99,7 @@ class Rollout:
         prev_outcome=None
     ):
         if prev_action and prev_intent and prev_outcome:
-            data = self.configuration_provider._configuration_data
+            data = self._configuration_provider._configuration_data
             # if a dialogue statement is possible, update the message variants according to the previous action
             if "dialogue_statement" in self.applicable_actions:
                 if prev_intent == "fallback":
@@ -117,12 +119,12 @@ class Rollout:
         return self.get_action_confidences(utterance["HOVOR"])
 
     def update_if_message_action(self, most_conf_act):
-        act_type = self.configuration_provider._configuration_data["actions"][most_conf_act]["type"]
+        act_type = self._configuration_provider._configuration_data["actions"][most_conf_act]["type"]
         if act_type == "message":
-            action_eff =  self.configuration_provider._configuration_data["actions"][most_conf_act]["effect"]
+            action_eff =  self._configuration_provider._configuration_data["actions"][most_conf_act]["effect"]
             self.update_state_applicable_actions(
                 most_conf_act,
-                self.configuration_provider._create_outcome_group(
+                self._configuration_provider._create_outcome_group(
                     most_conf_act, action_eff
                 ).name
             )
@@ -169,7 +171,7 @@ class Rollout:
                         most_conf_intent_out["outcome"],
                     )
                     if build_graph:
-                        graph_gen.create_from_parent(self.configuration_provider._configuration_data["actions"][most_conf_act]["intents"], "lightgoldenrod1", most_conf_intent_out["intent"])
+                        graph_gen.create_from_parent(self._configuration_provider._configuration_data["actions"][most_conf_act]["intents"], "lightgoldenrod1", most_conf_intent_out["intent"])
         final = most_conf_act if "HOVOR" in utterance and not message_act else most_conf_intent_out
         if build_graph:
             if self.get_reached_goal():

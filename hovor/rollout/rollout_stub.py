@@ -1,21 +1,17 @@
 from abc import ABC, abstractmethod, abstractproperty
 
 
-class RolloutStub(ABC):
-    @abstractproperty
-    def current_state(self):
-        pass
-
-    @abstractproperty
-    def applicable_actions(self):
-        pass    
-
+class RolloutBase(ABC):
     @abstractmethod
-    def get_reached_goal(self):
+    def get_reached_goal(self, *args, **kwargs):
         pass
 
     @abstractmethod
     def get_highest_intents(self, *args, **kwargs):
+        pass
+
+    @abstractmethod
+    def get_action_confidences(self, *args, **kwargs):
         pass
 
     @abstractmethod
@@ -24,8 +20,4 @@ class RolloutStub(ABC):
 
     @abstractmethod
     def update_state(self, *args, **kwargs):
-        pass
-
-    @abstractmethod
-    def get_action_confidences(self, *args, **kwargs):
         pass

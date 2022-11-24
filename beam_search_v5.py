@@ -1,7 +1,7 @@
 from cmath import log
 from dataclasses import dataclass
 from typing import List, Union
-from hovor.rollout.rollout_core import Rollout
+from hovor.rollout.rollout_core import HovorRollout
 from hovor.rollout.graph_setup import BeamSearchGraphGenerator
 from local_main_rollout import create_rollout
 
@@ -42,15 +42,15 @@ class Beam:
     last_action: Union[Action, None]
     last_intent: Union[Intent, None]
     rankings: List[Union[Action, Intent]]
-    rollout_cfg: Rollout
+    rollout: HovorRollout
     scores: list
 
 
 # TODO: CONVERT TO COPY FUNCTION WITHIN ROLLOUT
-def create_rollout_from_old(rollout_cfg, output_files_path):
+def create_rollout_from_old(rollout, output_files_path):
     new_rollout = create_rollout(output_files_path)
-    new_rollout.current_state = {f for f in rollout_cfg.current_state}
-    new_rollout.applicable_actions = {a for a in rollout_cfg.applicable_actions}
+    new_rollout.current_state = {f for f in rollout.current_state}
+    new_rollout.applicable_actions = {a for a in rollout.applicable_actions}
     return new_rollout
 
 
@@ -88,7 +88,7 @@ def beam_search(k, max_fallbacks, conversation, output_files_path, filename):
                 )
 
                 # need in case of message actions at the beginning
-                result = beams[beam].rollout_cfg.update_if_message_action(
+                result = beams[beam].rollout.update_if_message_action(
                     beams[beam].last_action.name
                 )
                 if result:
@@ -119,7 +119,7 @@ def beam_search(k, max_fallbacks, conversation, output_files_path, filename):
             for beam in range(k):
                 # call hovor to predict next for now using dummy function
                 if "USER" in conversation[i].keys():
-                    given_conv[beam] = beams[beam].rollout_cfg.get_highest_intents(
+                    given_conv[beam] = beams[beam].rollout.get_highest_intents(
                         beams[beam].last_action.name, conversation[i]
                     )
                     for val in range(len(given_conv[beam])):
@@ -132,7 +132,7 @@ def beam_search(k, max_fallbacks, conversation, output_files_path, filename):
                 elif "HOVOR" in conversation[i].keys():
                     given_conv[beam] = beams[
                         beam
-                    ].rollout_cfg.update_action_get_confidences(
+                    ].rollout.update_action_get_confidences(
                         conversation[i],
                         beams[beam].last_action.name,
                         beams[beam].last_intent.name,
@@ -162,7 +162,7 @@ def beam_search(k, max_fallbacks, conversation, output_files_path, filename):
                     # carrying thrugh the proper last actions from previous beams
                     last_action = beams[at_beam].last_action
                     list_actions.append(last_action)
-                    last_rollout = beams[at_beam].rollout_cfg
+                    last_rollout = beams[at_beam].rollout
                     list_rollout.append(last_rollout)
 
                     # keeping track of the old beam scores all unadded
@@ -206,7 +206,7 @@ def beam_search(k, max_fallbacks, conversation, output_files_path, filename):
                             list_scores[new_beam],
                         )
                     )
-                    beams[new_beam].rollout_cfg.update_state_applicable_actions(
+                    beams[new_beam].rollout.update_state_applicable_actions(
                         beams[new_beam].last_action.name,
                         beams[new_beam].last_intent.outcome,
                     )
@@ -239,7 +239,7 @@ def beam_search(k, max_fallbacks, conversation, output_files_path, filename):
                     last_intent = beams[at_beam].last_intent
                     list_intents.append(last_intent)
 
-                    last_rollout = beams[at_beam].rollout_cfg
+                    last_rollout = beams[at_beam].rollout
                     list_rollout.append(last_rollout)
 
                     list_scores[seq].extend(beams[at_beam].scores)
@@ -295,7 +295,7 @@ def beam_search(k, max_fallbacks, conversation, output_files_path, filename):
                         )
                     )
 
-                    result = beams[new_beam].rollout_cfg.update_if_message_action(
+                    result = beams[new_beam].rollout.update_if_message_action(
                         beams[new_beam].last_action.name
                     )
                     if result:
@@ -326,7 +326,7 @@ def beam_search(k, max_fallbacks, conversation, output_files_path, filename):
                     beams[beam].scores = [log(0.00000001)]
 
     for final in range(len(beams)):
-        if beams[final].rollout_cfg.get_reached_goal():
+        if beams[final].rollout.get_reached_goal():
             graph_gen.set_last_chosen(beams[final].rankings[-1].name, final)
             graph_gen.complete_conversation()
         head = "0"
@@ -428,7 +428,7 @@ icaps_conversation_drop = [
 
 if __name__ == "__main__":
     # TODO: RUN RASA MODEL
-    output_dir = "C:\\Users\\Rebec\\Downloads\\plan4dial\\plan4dial\\local_data\\rollout_no_system_icaps_bot_mini\\output_files"
+    output_dir = "C:\\Users\\Rebecca\\Desktop\\plan4dial\\plan4dial\\local_data\\rollout_no_system_icaps_bot_mini\\output_files"
     beam_search(3, 1, icaps_conversation, output_dir, "icaps_gold")
 
     # beam_search(3, 1, icaps_conversation_drop, output_dir, "icaps_crash")

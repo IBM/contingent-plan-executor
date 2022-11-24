@@ -46,6 +46,7 @@ class Beam:
     scores: list
 
 
+# TODO: CONVERT TO COPY FUNCTION WITHIN ROLLOUT
 def create_rollout_from_old(rollout_cfg, output_files_path):
     new_rollout = create_rollout(output_files_path)
     new_rollout.current_state = {f for f in rollout_cfg.current_state}
@@ -62,14 +63,11 @@ def beam_search(k, max_fallbacks, conversation, output_files_path, filename):
             starting_values = start_rollout.update_action_get_confidences(
                 conversation[i]
             )
-            outputs = []
-            for index, (key, val) in enumerate(starting_values.items()):
-                outputs.append(Action(key, val, index, log(val)))
+            outputs = [Action(key, val, index, log(val)) for index, (key, val) in enumerate(starting_values.items())]
             # if there are less starting actions than there are beams, duplicate the best action until we reach k
             while len(outputs) < k:
                 outputs.append(outputs[0])
             for beam in range(k):
-                first_score = [log(outputs[beam].probability)]
                 beams.append(
                     Beam(
                         beam,
@@ -77,10 +75,10 @@ def beam_search(k, max_fallbacks, conversation, output_files_path, filename):
                         None,
                         [outputs[beam]],
                         create_rollout(output_files_path),
-                        first_score,
+                        [log(outputs[beam].probability)],
                     )
                 )
-                # assign each chosen value to a distinct beam
+                # add the k actions to the graph
                 graph_gen.create_nodes_highlight_k(
                     {outputs[beam].name: round(outputs[beam].probability, 4)},
                     "skyblue",
@@ -110,7 +108,7 @@ def beam_search(k, max_fallbacks, conversation, output_files_path, filename):
                         beam,
                         [intent.name],
                     )
-            # generate nodes that won't be picked
+            # add the (total actions - k) nodes that won't be picked to the graph
             graph_gen.create_from_parent(
                 {action.name: round(action.probability, 4) for action in outputs[k:]},
                 "skyblue",
@@ -430,7 +428,7 @@ icaps_conversation_drop = [
 
 if __name__ == "__main__":
     # TODO: RUN RASA MODEL
-    output_dir = "C:\\Users\\Rebecca\\Desktop\\plan4dial\\plan4dial\\local_data\\rollout_no_system_icaps_bot_mini\\output_files"
+    output_dir = "C:\\Users\\Rebec\\Downloads\\plan4dial\\plan4dial\\local_data\\rollout_no_system_icaps_bot_mini\\output_files"
     beam_search(3, 1, icaps_conversation, output_dir, "icaps_gold")
 
     # beam_search(3, 1, icaps_conversation_drop, output_dir, "icaps_crash")

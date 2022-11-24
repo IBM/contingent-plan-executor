@@ -11,3 +11,4 @@ nltk
 spacy
 rasa
 textblob
+graphviz

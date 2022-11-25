@@ -46,21 +46,13 @@ class Beam:
     scores: list
 
 
-# TODO: CONVERT TO COPY FUNCTION WITHIN ROLLOUT
-def create_rollout_from_old(rollout, output_files_path):
-    new_rollout = create_rollout(output_files_path)
-    new_rollout.current_state = {f for f in rollout.current_state}
-    new_rollout.applicable_actions = {a for a in rollout.applicable_actions}
-    return new_rollout
-
-
 def beam_search(k, max_fallbacks, conversation, output_files_path, filename):
     beams = []
     graph_gen = BeamSearchGraphGenerator(k)
     for i in range(len(conversation)):
         if i == 0:
             start_rollout = create_rollout(output_files_path)
-            starting_values = start_rollout.update_action_get_confidences(
+            starting_values = start_rollout.get_action_confidences(
                 conversation[i]
             )
             outputs = [Action(key, val, index, log(val)) for index, (key, val) in enumerate(starting_values.items())]
@@ -86,7 +78,6 @@ def beam_search(k, max_fallbacks, conversation, output_files_path, filename):
                     beam,
                     [outputs[beam].name],
                 )
-
                 # need in case of message actions at the beginning
                 result = beams[beam].rollout.update_if_message_action(
                     beams[beam].last_action.name
@@ -132,7 +123,7 @@ def beam_search(k, max_fallbacks, conversation, output_files_path, filename):
                 elif "HOVOR" in conversation[i].keys():
                     given_conv[beam] = beams[
                         beam
-                    ].rollout.update_action_get_confidences(
+                    ].rollout.get_action_confidences(
                         conversation[i],
                         beams[beam].last_action.name,
                         beams[beam].last_intent.name,
@@ -200,13 +191,11 @@ def beam_search(k, max_fallbacks, conversation, output_files_path, filename):
                             list_actions[new_beam],
                             list_intents[new_beam],
                             beam_holders[new_beam],
-                            create_rollout_from_old(
-                                list_rollout[new_beam], output_files_path
-                            ),
+                            list_rollout[new_beam].copy(),
                             list_scores[new_beam],
                         )
                     )
-                    beams[new_beam].rollout.update_state_applicable_actions(
+                    beams[new_beam].rollout.update_state(
                         beams[new_beam].last_action.name,
                         beams[new_beam].last_intent.outcome,
                     )
@@ -274,9 +263,7 @@ def beam_search(k, max_fallbacks, conversation, output_files_path, filename):
                             list_actions[new_beam],
                             list_intents[new_beam],
                             beam_holders[new_beam],
-                            create_rollout_from_old(
-                                list_rollout[new_beam], output_files_path
-                            ),
+                            list_rollout[new_beam].copy(),
                             list_scores[new_beam],
                         )
                     )

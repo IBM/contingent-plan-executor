@@ -4,7 +4,7 @@ from hovor.rollout.graph_setup import GraphGenerator
 from hovor.rollout.rollout_stub import RolloutBase
 from hovor.planning.outcome_groups.deterministic_outcome_group import DeterministicOutcomeGroup
 from hovor.planning.outcome_groups.or_outcome_group import OrOutcomeGroup
-from typing import Iterable
+from copy import deepcopy
 
 
 class HovorRollout(RolloutBase):
@@ -18,10 +18,17 @@ class HovorRollout(RolloutBase):
         self._rollout_cfg = rollout_cfg
         self._current_state = set(self._rollout_cfg["initial_state"])
         self._applicable_actions = set()
-        self.update_applicable_actions()
+        self._update_applicable_actions()
+
+    def copy(self):
+        new = HovorRollout(deepcopy(self._configuration_provider), deepcopy(self._rollout_cfg))
+        new._current_state = deepcopy(self._current_state)
+        new._applicable_actions = deepcopy(self._applicable_actions)
+        return new
+
     
     def get_reached_goal(self):
-        return "(goal)" in self.current_state
+        return "(goal)" in self._current_state
 
     def get_highest_intents(self, action, utterance):
         data = self._configuration_provider._configuration_data
@@ -53,55 +60,56 @@ class HovorRollout(RolloutBase):
         return ranked_groups
 
 
-    def update_applicable_actions(self):
+    def _update_applicable_actions(self):
         # get all applicable actions, disqualifying non-dialogue actions
-        applicable_actions = {act for act in self._rollout_cfg["actions"] if self._rollout_cfg["actions"][act]["condition"].issubset(self.current_state) and self._configuration_provider._configuration_data["actions"][act]["type"]
+        applicable_actions = {act for act in self._rollout_cfg["actions"] if self._rollout_cfg["actions"][act]["condition"].issubset(self._current_state) and self._configuration_provider._configuration_data["actions"][act]["type"]
             in ["dialogue", "message"]}
         if len(applicable_actions) == 0:
             raise NotImplementedError(
                 "No applicable actions found past this point. Note that api and system actions are not currently handled."
             )
-        self.applicable_actions = applicable_actions
+        self._applicable_actions = applicable_actions
 
-    def update_state(self, new_fluents):
+    def _update_state_fluents(self, new_fluents):
         for f in new_fluents:
             if f[:6] == "(not (" and f[-2:] == "))":
                 raw_f = f.split("(not ")[1][:-1]
-                if raw_f in self.current_state:
-                    self.current_state.remove(raw_f)
-                self.current_state.add(f)
+                if raw_f in self._current_state:
+                    self._current_state.remove(raw_f)
+                self._current_state.add(f)
             else:
-                if f"(not {f})" in self.current_state:
-                    self.current_state.remove(f"(not {f})")
-                self.current_state.add(f)
+                if f"(not {f})" in self._current_state:
+                    self._current_state.remove(f"(not {f})")
+                self._current_state.add(f)
 
-    def update_state_applicable_actions(self, 
-        most_conf_act,
-        outcome_group_name
+    # given an outcome, update the state, then the applicable actions in the new state
+    def update_state(self, 
+        last_action,
+        chosen_outcome
     ):
-        self.update_state(
-            self._rollout_cfg["actions"][most_conf_act]["effect"][outcome_group_name],
+        self._update_state_fluents(
+            self._rollout_cfg["actions"][last_action]["effect"][chosen_outcome],
         )
-        self.update_applicable_actions()
+        self._update_applicable_actions()
 
-    def get_action_confidences(self, source_sentence):
-        action_message_map = {act: self._configuration_provider._configuration_data["actions"][act]["message_variants"] for act in self.applicable_actions if self._configuration_provider._configuration_data["actions"][act]["message_variants"]}
+    def get_action_confidences(self, source_sentence, prev_action = None, prev_intent = None, prev_outcome = None):
+        self._check_for_message_updates(prev_action, prev_intent, prev_outcome)
+        action_message_map = {act: self._configuration_provider._configuration_data["actions"][act]["message_variants"] for act in self._applicable_actions if self._configuration_provider._configuration_data["actions"][act]["message_variants"]}
         confidences = {}
         for action, messages in action_message_map.items():
-            confidences[action] = semantic_similarity(source_sentence, messages)
+            confidences[action] = semantic_similarity(source_sentence["HOVOR"], messages)
         return normalize_confidences({k: v for k, v in sorted(confidences.items(), key=lambda item: item[1], reverse=True)})
 
 
-    def update_action_get_confidences(self, 
-        utterance,
-        prev_action=None,
-        prev_intent=None,
-        prev_outcome=None
+    def _check_for_message_updates(self, 
+        prev_action = None,
+        prev_intent = None,
+        prev_outcome = None
     ):
         if prev_action and prev_intent and prev_outcome:
             data = self._configuration_provider._configuration_data
             # if a dialogue statement is possible, update the message variants according to the previous action
-            if "dialogue_statement" in self.applicable_actions:
+            if "dialogue_statement" in self._applicable_actions:
                 if prev_intent == "fallback":
                     if "fallback_message_variants" in data["actions"][prev_action]:
                         data["actions"][
@@ -116,13 +124,12 @@ class HovorRollout(RolloutBase):
                                 "message_variants"
                             ] = outcome["response_variants"]
 
-        return self.get_action_confidences(utterance["HOVOR"])
 
     def update_if_message_action(self, most_conf_act):
         act_type = self._configuration_provider._configuration_data["actions"][most_conf_act]["type"]
         if act_type == "message":
             action_eff =  self._configuration_provider._configuration_data["actions"][most_conf_act]["effect"]
-            self.update_state_applicable_actions(
+            self.update_state(
                 most_conf_act,
                 self._configuration_provider._create_outcome_group(
                     most_conf_act, action_eff
@@ -133,7 +140,8 @@ class HovorRollout(RolloutBase):
                     "confidence": 1.0}
 
 
-    def rollout_conversation(self, conversation, build_graph: bool = False):
+    # can use for partial conversation in a more elaborate version of beam search someday
+    def rollout_conversation_greedy(self, conversation, build_graph: bool = False):
         most_conf_intent_out = {"intent": None, "outcome": None, "confidence": None}
         most_conf_act = None
         if build_graph:
@@ -141,7 +149,7 @@ class HovorRollout(RolloutBase):
         while len(conversation) > 0:
             utterance = conversation.pop(0)
             if "HOVOR" in utterance:
-                most_conf_act = self.update_action_get_confidences(
+                most_conf_act = self.get_action_confidences(
                     utterance,
                     most_conf_act,
                     most_conf_intent_out["intent"],
@@ -158,7 +166,7 @@ class HovorRollout(RolloutBase):
                         message_act = True
                     if build_graph:
                         # add to the graph all the applicable actions, with the path to the chosen node highlighted
-                        graph_gen.create_from_parent(self.applicable_actions, "skyblue", most_conf_act)
+                        graph_gen.create_from_parent(self._applicable_actions, "skyblue", most_conf_act)
                         if message_act:
                             graph_gen.create_from_parent([most_conf_intent_out["intent"]], "lightgoldenrod1", most_conf_intent_out["intent"])
             else:
@@ -166,7 +174,7 @@ class HovorRollout(RolloutBase):
                 # update if either when the conversation is not yet over, OR if there is only one last intent
                 if len(conversation) > 0 or len(most_conf_intent_out) == 1:
                     most_conf_intent_out = most_conf_intent_out[0]
-                    self.update_state_applicable_actions(
+                    self.update_state(
                         most_conf_act,
                         most_conf_intent_out["outcome"],
                     )

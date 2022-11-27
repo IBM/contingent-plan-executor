@@ -21,3 +21,7 @@ class RolloutBase(ABC):
     @abstractmethod
     def update_state(self, *args, **kwargs):
         pass
+
+    @abstractmethod
+    def update_if_message_action(self, *args, **kwargs):
+        pass

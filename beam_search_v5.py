@@ -51,6 +51,7 @@ def beam_search(k, max_fallbacks, conversation, output_files_path, filename):
     graph_gen = BeamSearchGraphGenerator(k)
     for i in range(len(conversation)):
         if i == 0:
+            # TODO: isolate create_rollout as it comes from hovor
             start_rollout = create_rollout(output_files_path)
             starting_values = start_rollout.get_action_confidences(
                 conversation[i]
@@ -411,19 +412,25 @@ icaps_conversation_drop = [
     {"USER": "Please schedule me in to watch the talk on Model-Based Reasoning."},
     {"HOVOR": "Thank you, enjoy your day!"},
 ]
+icaps_conversation_test = [
+    {
+        "HOVOR": "What do you want to do?"
+    },
+    {"USER": "I want to see the talk on Factored Transition Systems."},
+    {
+        "HOVOR": "What session do you want to see in the morning? The sessions available are on Planning Representations and Scheduling, Verification, RL, or Heuristics."
+    },
+    {"USER": "I'm really interested in RL!"},
+    {
+        "HOVOR": "What session do you want to see in the afternoon? Your options are: Model-Based Reasoning, Learning for Scheduling Applications, Search, and Optimal Planning."
+    },
+    {"USER": "Please schedule me in to watch the talk on Model-Based Reasoning."},
+    {"HOVOR": "Thank you, enjoy your day!"},
+]
 
 
 if __name__ == "__main__":
     # TODO: RUN RASA MODEL
     output_dir = "C:\\Users\\Rebecca\\Desktop\\plan4dial\\plan4dial\\local_data\\rollout_no_system_icaps_bot_mini\\output_files"
-    beam_search(3, 1, icaps_conversation, output_dir, "icaps_gold")
-
-    # beam_search(3, 1, icaps_conversation_drop, output_dir, "icaps_crash")
-
-    # beam_search(
-    #     3,
-    #     3,
-    #     icaps_conversation,
-    #     output_dir,
-    #     "icaps_hi_f"
-    # )
+    beam_search(3, 1, icaps_conversation_test, output_dir, "icaps_gold")
+    #beam_search(3, 2, icaps_conversation_test, output_dir, "icaps_hi_f")

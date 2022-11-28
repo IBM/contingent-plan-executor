@@ -412,7 +412,7 @@ icaps_conversation_drop = [
     {"USER": "Please schedule me in to watch the talk on Model-Based Reasoning."},
     {"HOVOR": "Thank you, enjoy your day!"},
 ]
-icaps_conversation_test = [
+icaps_conversation_beam = [
     {
         "HOVOR": "What do you want to do?"
     },
@@ -427,10 +427,24 @@ icaps_conversation_test = [
     {"USER": "Please schedule me in to watch the talk on Model-Based Reasoning."},
     {"HOVOR": "Thank you, enjoy your day!"},
 ]
-
+icaps_conversation_entity_drop = [
+    {
+        "HOVOR": "What invited talk do you want to see on Day 1? You can learn about Factored Transition Systems or the applications of Multi-Agent Path Finding."
+    },
+    {"USER": "I want to see the talk on Factored Transition Systems."},
+    {
+        "HOVOR": "What session do you want to see in the morning? The sessions available are on Planning Representations and Scheduling, Verification, RL, or Heuristics in Classical Planning."
+    },
+    {"USER": "I want to learn more about classical planning and why applying heuristics is useful."},
+    {
+        "HOVOR": "What session do you want to see in the afternoon? Your options are: Model-Based Reasoning, Learning for Scheduling Applications, Search, and Optimal Planning."
+    },
+    {"USER": "Please schedule me in to watch the talk on Model-Based Reasoning."},
+    {"HOVOR": "Thank you, enjoy your day!"},
+]
 
 if __name__ == "__main__":
     # TODO: RUN RASA MODEL
     output_dir = "C:\\Users\\Rebecca\\Desktop\\plan4dial\\plan4dial\\local_data\\rollout_no_system_icaps_bot_mini\\output_files"
-    beam_search(3, 1, icaps_conversation_test, output_dir, "icaps_gold")
-    #beam_search(3, 2, icaps_conversation_test, output_dir, "icaps_hi_f")
+    # beam_search(3, 1, icaps_conversation_entity_drop, output_dir, "icaps_entity_drop_goal")
+    beam_search(3, 2, icaps_conversation_entity_drop, output_dir, "icaps_entity_drop_no_goal")

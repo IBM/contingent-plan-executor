@@ -2,143 +2,143 @@ strict digraph {
 	0 [label=START fillcolor=darkolivegreen3 fontsize=50 style=filled]
 	1 [label="get-
 invited
-0.4698" fillcolor=skyblue fontsize=50 style=filled]
+-0.7555" fillcolor=skyblue fontsize=50 style=filled]
 	0 -> 1 [arrowhead=normal color=purple penwidth=10.0]
 	2 [label="get-
 morning
-0.2688" fillcolor=skyblue fontsize=50 style=filled]
+-1.3139" fillcolor=skyblue fontsize=50 style=filled]
 	0 -> 2 [arrowhead=normal color=purple penwidth=10.0]
 	3 [label="get-
 afternoon
-0.2615" fillcolor=skyblue fontsize=50 style=filled]
+-1.3414" fillcolor=skyblue fontsize=50 style=filled]
 	0 -> 3 [arrowhead=normal color=purple penwidth=10.0]
 	4 [label="share-
 invited
-0.7311" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+-1.0688" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
 	1 -> 4 [arrowhead=normal color=purple penwidth=10.0]
 	5 [label="fallback
-0.2689" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+-2.0688" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
 	1 -> 5 [arrowhead=none color=grey45 penwidth=5.0]
 	6 [label="fallback
-0.7311" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+-1.6272" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
 	2 -> 6 [arrowhead=normal color=purple penwidth=10.0]
 	7 [label="share-
 morning
-0.2689" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+-2.6272" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
 	2 -> 7 [arrowhead=none color=grey45 penwidth=5.0]
 	8 [label="fallback
-0.7311" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+-1.6547" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
 	3 -> 8 [arrowhead=normal color=purple penwidth=10.0]
 	9 [label="share-
 afternoon
-0.2689" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+-2.6547" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
 	3 -> 9 [arrowhead=none color=grey45 penwidth=5.0]
 	10 [label="get-
 morning
-0.5224" fillcolor=skyblue fontsize=50 style=filled]
+-1.7181" fillcolor=skyblue fontsize=50 style=filled]
 	4 -> 10 [arrowhead=normal color=purple penwidth=10.0]
 	11 [label="get-
 afternoon
-0.4776" fillcolor=skyblue fontsize=50 style=filled]
+-1.8079" fillcolor=skyblue fontsize=50 style=filled]
 	4 -> 11 [arrowhead=none color=grey45 penwidth=5.0]
 	12 [label="dialogue_statement
-1.0" fillcolor=skyblue fontsize=50 style=filled]
+-1.6272" fillcolor=skyblue fontsize=50 style=filled]
 	6 -> 12 [arrowhead=normal color=purple penwidth=10.0]
 	13 [label="dialogue_statement
-1.0" fillcolor=skyblue fontsize=50 style=filled]
+-1.6547" fillcolor=skyblue fontsize=50 style=filled]
 	8 -> 13 [arrowhead=normal color=purple penwidth=10.0]
 	14 [label="utter_ds
-1.0" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+-1.6272" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
 	12 -> 14 [arrowhead=normal color=purple penwidth=10.0]
 	15 [label="utter_ds
-1.0" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+-1.6547" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
 	13 -> 15 [arrowhead=normal color=purple penwidth=10.0]
 	16 [label="utter_ds
-1.0" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+-1.6272" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
 	14 -> 16 [arrowhead=normal color=purple penwidth=10.0]
 	17 [label="utter_ds
-1.0" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+-1.6547" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
 	15 -> 17 [arrowhead=normal color=purple penwidth=10.0]
 	18 [label="share-
 morning
-0.7311" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+-2.0313" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
 	10 -> 18 [arrowhead=normal color=purple penwidth=10.0]
 	19 [label="fallback
-0.2689" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+-3.0313" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
 	10 -> 19 [arrowhead=none color=grey45 penwidth=5.0]
 	20 [label="get-
 afternoon
-0.4188" fillcolor=skyblue fontsize=50 style=filled]
+-2.4975" fillcolor=skyblue fontsize=50 style=filled]
 	16 -> 20 [arrowhead=normal color=purple penwidth=10.0]
 	21 [label="get-
 morning
-0.3917" fillcolor=skyblue fontsize=50 style=filled]
+-2.5643" fillcolor=skyblue fontsize=50 style=filled]
 	16 -> 21 [arrowhead=none color=grey45 penwidth=5.0]
 	22 [label="get-
 invited
-0.1895" fillcolor=skyblue fontsize=50 style=filled]
+-3.2907" fillcolor=skyblue fontsize=50 style=filled]
 	16 -> 22 [arrowhead=none color=grey45 penwidth=5.0]
 	23 [label="get-
 afternoon
-0.4188" fillcolor=skyblue fontsize=50 style=filled]
+-2.525" fillcolor=skyblue fontsize=50 style=filled]
 	17 -> 23 [arrowhead=normal color=purple penwidth=10.0]
 	24 [label="get-
 morning
-0.3917" fillcolor=skyblue fontsize=50 style=filled]
+-2.5918" fillcolor=skyblue fontsize=50 style=filled]
 	17 -> 24 [arrowhead=none color=grey45 penwidth=5.0]
 	25 [label="get-
 invited
-0.1895" fillcolor=skyblue fontsize=50 style=filled]
+-3.3182" fillcolor=skyblue fontsize=50 style=filled]
 	17 -> 25 [arrowhead=none color=grey45 penwidth=5.0]
 	26 [label="get-
 afternoon
-1.0" fillcolor=skyblue fontsize=50 style=filled]
+-2.0313" fillcolor=skyblue fontsize=50 style=filled]
 	18 -> 26 [arrowhead=normal color=purple penwidth=10.0]
 	27 [label="share-
 afternoon
-0.7311" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+-2.3446" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
 	26 -> 27 [arrowhead=normal color=purple penwidth=10.0]
 	28 [label="fallback
-0.2689" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+-3.3446" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
 	26 -> 28 [arrowhead=none color=grey45 penwidth=5.0]
 	29 [label="share-
 afternoon
-0.7311" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+-2.8108" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
 	20 -> 29 [arrowhead=normal color=purple penwidth=10.0]
 	30 [label="fallback
-0.2689" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+-3.8108" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
 	20 -> 30 [arrowhead=none color=grey45 penwidth=5.0]
 	31 [label="share-
 afternoon
-0.7311" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+-2.8383" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
 	23 -> 31 [arrowhead=normal color=purple penwidth=10.0]
 	32 [label="fallback
-0.2689" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+-3.8383" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
 	23 -> 32 [arrowhead=none color=grey45 penwidth=5.0]
 	33 [label="complete
-1.0" fillcolor=skyblue fontsize=50 style=filled]
+-2.3446" fillcolor=skyblue fontsize=50 style=filled]
 	27 -> 33 [arrowhead=normal color=purple penwidth=10.0]
 	34 [label="get-
 morning
-0.6038" fillcolor=skyblue fontsize=50 style=filled]
+-3.3153" fillcolor=skyblue fontsize=50 style=filled]
 	29 -> 34 [arrowhead=normal color=purple penwidth=10.0]
 	35 [label="get-
 invited
-0.3962" fillcolor=skyblue fontsize=50 style=filled]
+-3.7366" fillcolor=skyblue fontsize=50 style=filled]
 	29 -> 35 [arrowhead=none color=grey45 penwidth=5.0]
 	36 [label="get-
 morning
-0.6038" fillcolor=skyblue fontsize=50 style=filled]
+-3.3428" fillcolor=skyblue fontsize=50 style=filled]
 	31 -> 36 [arrowhead=normal color=purple penwidth=10.0]
 	37 [label="get-
 invited
-0.3962" fillcolor=skyblue fontsize=50 style=filled]
+-3.7641" fillcolor=skyblue fontsize=50 style=filled]
 	31 -> 37 [arrowhead=none color=grey45 penwidth=5.0]
 	38 [label="thank
-1.0" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+-2.3446" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
 	33 -> 38 [arrowhead=normal color=purple penwidth=10.0]
 	39 [label="GOAL REACHED
-1.0" fillcolor=darkolivegreen3 fontsize=50 style=filled]
+-2.3446" fillcolor=darkolivegreen3 fontsize=50 style=filled]
 	38 -> 39 [color=forestgreen penwidth=10.0]
 	0 -> 1 [arrowhead=normal color=forestgreen penwidth=10.0]
 	1 -> 4 [arrowhead=normal color=forestgreen penwidth=10.0]

@@ -15,8 +15,8 @@ class GraphGenerator:
     def _set_last_chosen(self, new_id):
         self._parent = str(new_id)
 
-    def complete_conversation(self):
-        self.create_from_parent({"GOAL REACHED": 1.0}, "darkolivegreen3", "GOAL REACHED")
+    def complete_conversation(self, final_val):
+        self.create_from_parent({"GOAL REACHED": final_val}, "darkolivegreen3", "GOAL REACHED")
 
     def create_from_parent(self, nodes: Dict[str, float], fillcolor: str, new_parent: str = None):
         for node, conf in nodes.items():

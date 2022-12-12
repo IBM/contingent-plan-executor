@@ -5,11 +5,19 @@ from hovor.rollout.rollout_stub import RolloutBase
 from hovor.planning.outcome_groups.deterministic_outcome_group import DeterministicOutcomeGroup
 from hovor.planning.outcome_groups.or_outcome_group import OrOutcomeGroup
 from copy import deepcopy
+from local_run_utils import create_validate_json_config_prov
+import json
+from environment import initialize_local_environment
+
 
 
 class HovorRollout(RolloutBase):
-    def __init__(self, configuration_provider, rollout_cfg):
-        self._configuration_provider = configuration_provider
+    def __init__(self, output_files_path):
+        initialize_local_environment()
+        self._output_files_path = output_files_path
+        self._configuration_provider = create_validate_json_config_prov(output_files_path)
+        with open(f"{output_files_path}/rollout_config.json") as f:
+            rollout_cfg = json.load(f)
         # convert conditions/effects to sets
         for act_cfg in rollout_cfg["actions"].values():
             act_cfg["condition"] = set(act_cfg["condition"])
@@ -21,7 +29,7 @@ class HovorRollout(RolloutBase):
         self._update_applicable_actions()
 
     def copy(self):
-        new = HovorRollout(deepcopy(self._configuration_provider), deepcopy(self._rollout_cfg))
+        new = HovorRollout(self._output_files_path)
         new._current_state = deepcopy(self._current_state)
         new._applicable_actions = deepcopy(self._applicable_actions)
         return new
@@ -141,6 +149,7 @@ class HovorRollout(RolloutBase):
 
 
     # can use for partial conversation in a more elaborate version of beam search someday
+    # NOTE: since it just takes the highest confidence at each step, the graph shows confidence, not cumulative score
     def rollout_conversation_greedy(self, conversation, build_graph: bool = False):
         most_conf_intent_out = {"intent": None, "outcome": None, "confidence": None}
         most_conf_act = None
@@ -149,40 +158,40 @@ class HovorRollout(RolloutBase):
         while len(conversation) > 0:
             utterance = conversation.pop(0)
             if "HOVOR" in utterance:
-                most_conf_act = self.get_action_confidences(
+                all_acts = self.get_action_confidences(
                     utterance,
                     most_conf_act,
                     most_conf_intent_out["intent"],
                     most_conf_intent_out["outcome"]
                 )
                 # update if either when the conversation is not yet over, OR if there is only one last action
-                if len(conversation) > 0 or len(most_conf_act) == 1:
-                    most_conf_act = list(most_conf_act.keys())[0]
+                if len(conversation) > 0 or len(all_acts) == 1:
+                    most_conf_act = list(all_acts.keys())[0]
                     message_act = False
                     # doesn't need/take user input; state/applicable actions must be updated manually
-                    intent_updated = self.update_if_message_action(most_conf_act, most_conf_intent_out)
-                    if intent_updated != most_conf_intent_out:
+                    intent_updated = self.update_if_message_action(most_conf_act)
+                    if intent_updated:
                         most_conf_intent_out = intent_updated
                         message_act = True
                     if build_graph:
                         # add to the graph all the applicable actions, with the path to the chosen node highlighted
-                        graph_gen.create_from_parent(self._applicable_actions, "skyblue", most_conf_act)
+                        graph_gen.create_from_parent({act: round(conf, 4) for act, conf in all_acts.items()}, "skyblue", most_conf_act)
                         if message_act:
-                            graph_gen.create_from_parent([most_conf_intent_out["intent"]], "lightgoldenrod1", most_conf_intent_out["intent"])
+                            graph_gen.create_from_parent({most_conf_intent_out["intent"]: round(most_conf_intent_out["confidence"], 4)}, "lightgoldenrod1", most_conf_intent_out["intent"])
             else:
-                most_conf_intent_out = self.get_highest_intents(most_conf_act, utterance)
+                all_intents = self.get_highest_intents(most_conf_act, utterance)
                 # update if either when the conversation is not yet over, OR if there is only one last intent
-                if len(conversation) > 0 or len(most_conf_intent_out) == 1:
-                    most_conf_intent_out = most_conf_intent_out[0]
+                if len(conversation) > 0 or len(all_intents) == 1:
+                    most_conf_intent_out = all_intents[0]
                     self.update_state(
                         most_conf_act,
                         most_conf_intent_out["outcome"],
                     )
                     if build_graph:
-                        graph_gen.create_from_parent(self._configuration_provider._configuration_data["actions"][most_conf_act]["intents"], "lightgoldenrod1", most_conf_intent_out["intent"])
+                        graph_gen.create_from_parent({intent["intent"]: round(intent["confidence"], 4) for intent in all_intents}, "lightgoldenrod1", most_conf_intent_out["intent"])
         final = most_conf_act if "HOVOR" in utterance and not message_act else most_conf_intent_out
         if build_graph:
             if self.get_reached_goal():
-                graph_gen.complete_conversation()
+                graph_gen.complete_conversation(1.0)
             graph_gen.graph.render("rollout.gv", view=True)
         return final

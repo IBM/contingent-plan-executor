@@ -1,20 +1,12 @@
 from hovor.rollout.rollout_core import HovorRollout
-from environment import initialize_local_environment
-from local_run_utils import create_validate_json_config_prov, initialize_local_run
-import json
+from local_run_utils import initialize_local_run
 from typing import List
 
-initialize_local_environment()
-
-def create_rollout(output_files_path):
-    with open(f"{output_files_path}/rollout_config.json") as f:
-        rollout_cfg = json.load(f)
-    return HovorRollout(create_validate_json_config_prov(output_files_path), rollout_cfg)
 
 def run_partial_conversation_locally(output_files_path: str, partial_conversation: List[str], build_graph: bool = False) -> bool:
     initialize_local_run(output_files_path, False)
-    rollout = create_rollout(output_files_path)
-    rollout.rollout_conversation(partial_conversation, build_graph)
+    rollout = HovorRollout(output_files_path)
+    rollout.rollout_conversation_greedy(partial_conversation, build_graph)
     return rollout.get_reached_goal()
 
 

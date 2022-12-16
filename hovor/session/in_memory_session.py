@@ -1,5 +1,4 @@
 from copy import deepcopy
-
 from hovor.runtime.context import Context
 from hovor.session.session_base import SessionBase
 from hovor import DEBUG
@@ -15,6 +14,7 @@ class InMemorySession(SessionBase):
         self._current_action = None
         self._current_context = None
         self._delta_history = []
+        self._action_names = {node.action_name for node in self.plan.nodes}
 
     @property
     def plan(self):
@@ -73,6 +73,7 @@ class InMemorySession(SessionBase):
 
         n1 = self._current_node
 
+        # update the current state, context, and node
         self._current_state = next_state
         self._current_context = deepcopy(next_context)
         self._current_node = self.plan.get_next_node(self._current_node, self._current_state,
@@ -83,8 +84,18 @@ class InMemorySession(SessionBase):
         progress.apply_state_update(n2.partial_state)
         progress.associate_edge(n1)
 
+        if self._current_action:
+            if self._current_node.action_name == "dialogue_statement":
+                # currently, we will only get a dialogue statement through a fallback or a response
+                if progress._edge.info["intent"] == "fallback":
+                    if "fallback_message_variants" in self._current_action.config:
+                        self.configuration._configuration_data["actions"]["dialogue_statement"]["message_variants"] = self.configuration._configuration_data["actions"][self.current_action.name]["fallback_message_variants"]
+                else:
+                    for outcfg in self.configuration._configuration_data["actions"][self.current_action.name]["effect"]["outcomes"]:
+                        if outcfg["name"] == progress.final_outcome_name:
+                            self.configuration._configuration_data["actions"]["dialogue_statement"]["message_variants"] = outcfg["response_variants"]
+                            break
         self._update_action()
-
         self._delta_history.append(progress)
         self._print_update_report()
 

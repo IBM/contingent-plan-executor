@@ -23,7 +23,7 @@ class OrOutcomeGroup(OutcomeGroupBase):
             if final_progress is None or not final_progress.is_valid():
                 continue
 
-            DEBUG("\t OR group '%s' chooses child '%s' with confidence '%.2f'" % (self.name, group.name, confidence))
+            #DEBUG("\t OR group '%s' chooses child '%s' with confidence '%.2f'" % (self.name, group.name, confidence))
             return final_progress, confidence
 
         raise AssertionError("No outcome group has valid outcome.")

@@ -1,15 +1,8 @@
-import jsonpickle
-
-from environment import initialize_local_environment
-from hovor.configuration.json_configuration_provider import JsonConfigurationProvider
 from hovor.core import run_interaction
+from local_run_utils import *
 
-initialize_local_environment()
+def run_local_conversation(output_files_path):
+    run_interaction(initialize_local_run(output_files_path))
 
-configuration_provider = JsonConfigurationProvider("./local_data/gold_standard_data/gold")
-# test on recoded provider
-json = jsonpickle.encode(configuration_provider)
-configuration_provider = jsonpickle.decode(json)
-configuration_provider.check_all_action_builders()
-
-run_interaction(configuration_provider)
+if __name__ == "__main__":
+    run_local_conversation("C:\\Users\\Rebecca\\Desktop\\plan4dial\\plan4dial\\local_data\\rollout_no_system_icaps_bot_mini\\output_files")

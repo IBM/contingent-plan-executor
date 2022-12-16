@@ -6,10 +6,13 @@ from hovor.configuration.configuration_provider_base import ConfigurationProvide
 from hovor.configuration.json_configuration_postprocessing import hovor_config_postprocess
 from hovor.effects.assign_entity_effect import AssignEntityEffect
 from hovor.outcome_determiners import all_entities, ws_action_outcome_determiner_config
+from hovor.outcome_determiners.context_dependent_outcome_determiner import ContextDependentOutcomeDeterminer
+from hovor.outcome_determiners.default_system_outcome_determiner import DefaultSystemOutcomeDeterminer
 from hovor.outcome_determiners.context_entity_outcome_determiner import ContextEntityOutcomeDeterminer
 from hovor.outcome_determiners.logic_outcome_determiner import LogicOutcomeDeterminer
 from hovor.outcome_determiners.outcome_determination_info import OutcomeDeterminationInfo
 from hovor.outcome_determiners.random_outcome_determiner import RandomOutcomeDeterminer
+from hovor.outcome_determiners.rasa_outcome_determiner import RasaOutcomeDeterminer
 from hovor.outcome_determiners.regex_workspace_outcome_determiner import RegexWorkspaceOutcomeDeterminer
 from hovor.outcome_determiners.unified_workspace_outcome_determiner import UnifiedWorkspaceOutcomeDeterminer
 from hovor.outcome_determiners.web_call_outcome_determiner import WebCallOutcomeDeterminer
@@ -72,7 +75,7 @@ class JsonConfigurationProvider(ConfigurationProviderBase):
     def _force_build_of_all_action_builders(self):
         for action_name, action_config in self._configuration_data["actions"].items():
             self._create_action_builder(action_name, action_config)
-        UnifiedWorkspaceOutcomeDeterminer.setup_workspace()
+        # UnifiedWorkspaceOutcomeDeterminer.setup_workspace()
 
     def get_node_info(self, node):
         return self._get_action_config(node)
@@ -235,6 +238,12 @@ class JsonConfigurationProvider(ConfigurationProviderBase):
         if outcome_determiner_name == "random_outcome_determiner":
             return RandomOutcomeDeterminer()
 
+        if outcome_determiner_name == "context_dependent_outcome_determiner":
+            return ContextDependentOutcomeDeterminer(self._configuration_data["context_variables"])
+
+        if outcome_determiner_name == "default_system_outcome_determiner":
+            return DefaultSystemOutcomeDeterminer()
+
         if outcome_determiner_name == "context_entity_outcome_determiner":
             entity_definitions = {}
             for entity in outcome_config["entities_to_recognize"]:
@@ -242,9 +251,10 @@ class JsonConfigurationProvider(ConfigurationProviderBase):
                 #     all_entities[entity] = None  # update the set/dict of all entities
                 entity_definitions[entity] = self._get_entity_type_specification(entity)
 
-            return ContextEntityOutcomeDeterminer(action_name, outcome_config["global-outcome-name"],
-                                                  outcome_config["example_utterances"],
-                                                  entity_definitions=entity_definitions)
+            return RandomOutcomeDeterminer()
+            # return ContextEntityOutcomeDeterminer(action_name, outcome_config["global-outcome-name"],
+            #                                       outcome_config["example_utterances"],
+            #                                       entity_definitions=entity_definitions)
 
         if outcome_determiner_name == "disambiguation_outcome_determiner":
             entity_definitions = {}
@@ -252,19 +262,17 @@ class JsonConfigurationProvider(ConfigurationProviderBase):
                 # if entity not in all_entities:
                 #     all_entities[entity] = None  # update the set/dict of all entities
                 entity_definitions[entity] = self._get_entity_type_specification(entity)
+            return RasaOutcomeDeterminer(action_name, outcome_config["outcomes"], self._configuration_data["context_variables"], self._configuration_data["intents"])
 
-            return UnifiedWorkspaceOutcomeDeterminer(action_name, outcome_config["global-outcome-name"], outcome_config[
-                "intents"],
-                                                     entity_definitions)
 
         if outcome_determiner_name == "regex_disambiguation_outcome_determiner":
             entity_definitions = {}
             for entity in outcome_config["entities_to_recognize"]:
                 entity_definitions[entity] = self._get_entity_type_specification(entity)
-
-            return RegexWorkspaceOutcomeDeterminer(action_name, outcome_config["global-outcome-name"], outcome_config[
-                "intents"],
-                                                   entity_definitions)
+            return RandomOutcomeDeterminer()
+            # return RegexWorkspaceOutcomeDeterminer(action_name, outcome_config["global-outcome-name"], outcome_config[
+            #     "intents"],
+            #                                        entity_definitions)
 
         if outcome_determiner_name == "web_call_outcome_determiner":
             return WebCallOutcomeDeterminer()
@@ -319,7 +327,7 @@ class JsonConfigurationProvider(ConfigurationProviderBase):
             "entity_configs": entity_configs,
             "entity_initial_assignments": entity_initial_assignments
         }
-        variables = self._configuration_data["context-variables"]
+        variables = self._configuration_data["context_variables"]
         for variable, variable_configuration in variables.items():
             type = variable_configuration["type"]
             domain_types[type] = type

@@ -6,7 +6,7 @@
             "Please change the title to [regex]{parsed_title:=[\\w ]+}"
         ]
     },
-    "context-variables": {
+    "context_variables": {
         "GOAL": {
             "type": "flag",
             "config": "false",

@@ -5,5 +5,10 @@ cloudant==2.4.0
 flask-cors
 json2html
 jsonpickle
-watson-developer-cloud==2.4.0
-ibm-watson==4.0.1
+watson-developer-cloud
+ibm-watson
+nltk
+spacy
+rasa
+textblob
+graphviz

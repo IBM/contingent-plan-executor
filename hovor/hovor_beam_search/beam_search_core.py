@@ -198,21 +198,21 @@ class BeamSearchExecutor:
             for output in outputs:
                 graph_beam_chosen_map[output.beam].append(output.name)
 
-            for beam, chosen in graph_beam_chosen_map.items():
-                self.graph_gen.create_nodes_highlight_k(
-                    # filter ALL outputs by outputs belonging to the current beam
-                    # using the filtered outputs, map intents to probabilities to use in the graph
-                    {
-                        output.name: round(output.score.real, 4)
-                        for output in all_outputs
-                        if output.beam == beam
-                    },
-                    node_color,
-                    self.beams[beam].rankings[-1].name,
-                    beam,
-                    chosen,
-                )
             if self.build_graph:
+                for beam, chosen in graph_beam_chosen_map.items():
+                    self.graph_gen.create_nodes_highlight_k(
+                        # filter ALL outputs by outputs belonging to the current beam
+                        # using the filtered outputs, map intents to probabilities to use in the graph
+                        {
+                            output.name: round(output.score.real, 4)
+                            for output in all_outputs
+                            if output.beam == beam
+                        },
+                        node_color,
+                        self.beams[beam].rankings[-1].name,
+                        beam,
+                        chosen,
+                    )
                 self.graph_gen.beams = [
                     BeamSearchGraphGenerator.GraphBeam(
                         {

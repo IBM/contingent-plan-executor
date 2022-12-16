@@ -1,7 +1,6 @@
 from hovor.outcome_determiners.rasa_outcome_determiner import RasaOutcomeDeterminer
-from hovor.rollout.semantic_similarity import softmax_confidences, semantic_similarity, normalize_confidences
-from hovor.rollout.graph_setup import GraphGenerator
-from hovor.rollout.rollout_stub import RolloutBase
+from hovor.hovor_beam_search.semantic_similarity import softmax_confidences, semantic_similarity, normalize_confidences
+from hovor.hovor_beam_search.beam_srch_data_structs import RolloutBase, Output
 from hovor.planning.outcome_groups.deterministic_outcome_group import DeterministicOutcomeGroup
 from hovor.planning.outcome_groups.or_outcome_group import OrOutcomeGroup
 from copy import deepcopy
@@ -9,6 +8,23 @@ from local_run_utils import create_validate_json_config_prov
 import json
 from environment import initialize_local_environment
 
+
+class Intent(Output):
+    """Describes an Intent.
+    Args:
+        outcome (str): The outcome chosen from the intent."""
+
+    def __init__(self, name: str, probability: float, beam: int, score: float, outcome: str):
+        super().__init__(name, probability, beam, score)
+        self.outcome = outcome
+
+    def is_fallback(self) -> bool:
+        """Determines if the provided intent is a fallback.
+
+        Returns:
+            bool: True if the intent is a fallback, False otherwise.
+        """
+        return self.name == "fallback"
 
 
 class HovorRollout(RolloutBase):
@@ -37,6 +53,7 @@ class HovorRollout(RolloutBase):
     
     def get_reached_goal(self):
         return "(goal)" in self._current_state
+
 
     def get_highest_intents(self, action, utterance):
         data = self._configuration_provider._configuration_data
@@ -105,7 +122,7 @@ class HovorRollout(RolloutBase):
         action_message_map = {act: self._configuration_provider._configuration_data["actions"][act]["message_variants"] for act in self._applicable_actions if self._configuration_provider._configuration_data["actions"][act]["message_variants"]}
         confidences = {}
         for action, messages in action_message_map.items():
-            confidences[action] = semantic_similarity(source_sentence["HOVOR"], messages)
+            confidences[action] = semantic_similarity(source_sentence["AGENT"], messages)
         return normalize_confidences({k: v for k, v in sorted(confidences.items(), key=lambda item: item[1], reverse=True)})
 
 
@@ -146,52 +163,3 @@ class HovorRollout(RolloutBase):
             return {"intent": action_eff["outcomes"][0]["intent"],
                     "outcome": action_eff["outcomes"][0]["name"],
                     "confidence": 1.0}
-
-
-    # can use for partial conversation in a more elaborate version of beam search someday
-    # NOTE: since it just takes the highest confidence at each step, the graph shows confidence, not cumulative score
-    def rollout_conversation_greedy(self, conversation, build_graph: bool = False):
-        most_conf_intent_out = {"intent": None, "outcome": None, "confidence": None}
-        most_conf_act = None
-        if build_graph:
-           graph_gen = GraphGenerator()
-        while len(conversation) > 0:
-            utterance = conversation.pop(0)
-            if "HOVOR" in utterance:
-                all_acts = self.get_action_confidences(
-                    utterance,
-                    most_conf_act,
-                    most_conf_intent_out["intent"],
-                    most_conf_intent_out["outcome"]
-                )
-                # update if either when the conversation is not yet over, OR if there is only one last action
-                if len(conversation) > 0 or len(all_acts) == 1:
-                    most_conf_act = list(all_acts.keys())[0]
-                    message_act = False
-                    # doesn't need/take user input; state/applicable actions must be updated manually
-                    intent_updated = self.update_if_message_action(most_conf_act)
-                    if intent_updated:
-                        most_conf_intent_out = intent_updated
-                        message_act = True
-                    if build_graph:
-                        # add to the graph all the applicable actions, with the path to the chosen node highlighted
-                        graph_gen.create_from_parent({act: round(conf, 4) for act, conf in all_acts.items()}, "skyblue", most_conf_act)
-                        if message_act:
-                            graph_gen.create_from_parent({most_conf_intent_out["intent"]: round(most_conf_intent_out["confidence"], 4)}, "lightgoldenrod1", most_conf_intent_out["intent"])
-            else:
-                all_intents = self.get_highest_intents(most_conf_act, utterance)
-                # update if either when the conversation is not yet over, OR if there is only one last intent
-                if len(conversation) > 0 or len(all_intents) == 1:
-                    most_conf_intent_out = all_intents[0]
-                    self.update_state(
-                        most_conf_act,
-                        most_conf_intent_out["outcome"],
-                    )
-                    if build_graph:
-                        graph_gen.create_from_parent({intent["intent"]: round(intent["confidence"], 4) for intent in all_intents}, "lightgoldenrod1", most_conf_intent_out["intent"])
-        final = most_conf_act if "HOVOR" in utterance and not message_act else most_conf_intent_out
-        if build_graph:
-            if self.get_reached_goal():
-                graph_gen.complete_conversation(1.0)
-            graph_gen.graph.render("rollout.gv", view=True)
-        return final

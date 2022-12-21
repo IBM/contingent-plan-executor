@@ -32,6 +32,6 @@ def initialize_local_run(output_files_path, get_cfg: bool = True):
     
 def initialize_local_run_simulated(output_files_path, get_cfg: bool = True):
     initialize_local_environment_simulated()
-    _run_rasa_model_server(output_files_path)
+    run_rasa_model_server(output_files_path)
     if get_cfg:
         return create_validate_json_config_prov(output_files_path)

@@ -17,27 +17,15 @@ class LocalDialogueActionSimulated(LocalDialogueAction):
         self.is_external = False
         self._utterance = "HOVOR: " + random.choice(self.config["message_variants"])
         self._utterance = LocalDialogueActionSimulated.replace_pattern_entities(self._utterance, self.context)
+        # this is only used in the deprecated method of generating a response
         with open("/home/jacob/Dev/plan4dial/plan4dial/local_data/gold_standard_bot/output_files/nlu.yml") as fin:
             intents = yaml.safe_load(fin)
         self.intents = intents['nlu']
+        # This is used in the process of generating a response
         with open("/home/jacob/Dev/plan4dial/plan4dial/local_data/gold_standard_bot/output_files/data.json") as fin:
             data = json.load(fin)
         self.data = data
 
-    def fill_params_old(self, intent):
-        """
-        A function to fill parameters in an intent. 
-        TODO: - use regex for this
-        TODO: get examples of tokens from the bot output, probably in the yml
-        """
-        # now remove the parameters from the string
-        intent_example = intent.strip()
-        while '{' in intent_example:
-            start_pos = intent_example.find('{')
-            end_pos = intent_example.find('}')
-            intent_example = intent_example[:start_pos] + intent_example[end_pos+1:]
-        intent_example = intent_example.replace('[', '').replace(']', '').replace('$location', 'Kingston')
-        return intent_example
 
     def fill_params(self, utterance):
         # This regex allows me to grab each part:
@@ -147,15 +135,12 @@ class LocalDialogueActionSimulated(LocalDialogueAction):
     def generate_response_by_data(self):
         """
         A function that picks a random outcome group from self,
-        extracts the required entities in a response,
-        picks a random example of each intent,
-        filters these examples to ones that have the same entities as the required entities,
-        and returns a random choice from the possible examples as the response.
+        and uses the information in data.json to find an appropriate response.
+        It will see if the intent is named directly, otherwise it will look at
+        the required entities and select an intent that has those entities.
 
-        This works well for share_cuisine or share_outing_type,
-        but does not work well when the bot asks if you have allergies Y/N
-        because there are no entities in the deny / confirm entities that can
-        be extracted to match w required entity 'has_allergy'. 
+        This works well and produces a reasonable conversation. It works for intents
+        which don't have entities too. 
         """
         # random_sensible_outcome_group = random.choice(self.outcome_group._outcome_groups)
         current_action_name = self.name

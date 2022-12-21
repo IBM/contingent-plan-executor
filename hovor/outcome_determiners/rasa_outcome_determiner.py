@@ -14,8 +14,6 @@ from nltk.corpus import wordnet
 from typing import Union
 from textblob import TextBlob
 
-THRESHOLD = 0.65
-
 
 @dataclass
 class Intent:

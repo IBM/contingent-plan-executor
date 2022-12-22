@@ -3,7 +3,6 @@ from hovor.execution_monitor_simulator import EM_S
 from hovor.runtime.action_result import ActionResult
 from hovor.runtime.outcome_determination_progress import OutcomeDeterminationProgress
 from hovor.session.in_memory_session import InMemorySession
-import time
 import datetime
 
 def run_interaction(configuration_provider):

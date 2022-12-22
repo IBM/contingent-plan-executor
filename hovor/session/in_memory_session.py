@@ -62,7 +62,7 @@ class InMemorySession(SessionBase):
         next_context = progress.actual_context
         self._current_context = deepcopy(next_context)
         self._delta_history.append(progress)
-        # self._print_update_report()
+        self._print_update_report()
 
     def update_by(self, progress):
         if self != progress._session:
@@ -97,7 +97,7 @@ class InMemorySession(SessionBase):
                             break
         self._update_action()
         self._delta_history.append(progress)
-        # self._print_update_report()
+        self._print_update_report()
 
     def update_action_result(self, result):
         self._current_action_result = result

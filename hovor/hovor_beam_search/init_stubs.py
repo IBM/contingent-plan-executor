@@ -55,7 +55,7 @@ class HovorRollout(RolloutBase):
         return "(goal)" in self._current_state
 
 
-    def get_highest_intents(self, action, utterance):
+    def get_intent_confidences(self, action, utterance):
         data = self._configuration_provider._configuration_data
         rasa_outcome_determiner = RasaOutcomeDeterminer(
             action,

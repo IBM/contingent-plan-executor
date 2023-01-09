@@ -4,6 +4,8 @@ from graphviz import Digraph
 
 class GraphGenerator:
     def __init__(self):
+        """Builds a basic graph with graphviz.
+        """
         self._idx = "0"
         self._parent = "0"
         self.graph = Digraph(strict = True)
@@ -35,12 +37,19 @@ class GraphGenerator:
 class BeamSearchGraphGenerator(GraphGenerator):
     class GraphBeam:
         def __init__(self, parent_nodes_id_map: Dict = None):
+            """Inner class that holds the id maps for each beam so that any node
+            can be easily referenced.
+            """
             if not parent_nodes_id_map:
                 parent_nodes_id_map = {"START": ["0"]}
-            self.parent_nodes_id_map = {name: [id for id in ids] for name, ids in parent_nodes_id_map.items()}
-
+            self.parent_nodes_id_map = {name: [idx for idx in ids] for name, ids in parent_nodes_id_map.items()}
         
-    def __init__(self, k: int): 
+    def __init__(self, k: int):
+        """Handles building a graph for beam search.
+
+        Args:
+            k (int): The k value for the beam search.
+        """
         super().__init__()
         self.beams = [self.GraphBeam() for _ in range(k)]
 
@@ -50,7 +59,7 @@ class BeamSearchGraphGenerator(GraphGenerator):
     def create_nodes_highlight_k(self, nodes: Dict[str, float], fillcolor: str, parent: str, beam: int, k_chosen: Iterable[str]):
         # have to access the parent ID before potentially making changes to the map to prevent
         # overwriting in the case where you have a node "A" connected to a parent "A"
-        # (otherwise you attach the node to itself)
+        # (otherwise you would attach the node to itself)
         parent = self.beams[beam].parent_nodes_id_map[parent][-1]
         for node, conf in nodes.items():
             edge_color, arrowhead, penwidth = "grey45", "none", "5.0"

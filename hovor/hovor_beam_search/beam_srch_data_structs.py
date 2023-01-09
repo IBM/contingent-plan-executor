@@ -1,31 +1,97 @@
 from dataclasses import dataclass
-from typing import List, Union
+from typing import List, Union, Dict
 from abc import ABC, abstractmethod
 
 
 class RolloutBase(ABC):
     @abstractmethod
-    def get_reached_goal(self, *args, **kwargs):
+    def get_reached_goal(self, *args, **kwargs) -> bool:
+        """Returns if the beam reached the goal.
+
+        Returns:
+            bool: True if the corresponding beam reached the goal, False 
+                otherwise.
+        """
         pass
 
     @abstractmethod
-    def get_highest_intents(self, *args, **kwargs):
+    def get_intent_confidences(self, *args, **kwargs) -> List[Dict]:
+        """Returns (all) the intent confidences that match a user utterance.
+        NOTE: Do not just return the k highest intents, because the top k are
+        selected based on overall score, not just the singular confidence.
+
+        Returns:
+            List[Dict]: The intent/confidence map. Return in the format:
+                '''
+                [
+                    {
+                        "intent": INTENT_NAME (str),
+                        "outcome": OUTCOME_NAME (str),
+                        "confidence": CONFIDENCE (float)
+                    },
+                    # continue for each intent
+                    {
+                        ...
+                    }
+                ]
+                '''
+        """
         pass
 
     @abstractmethod
-    def get_action_confidences(self, *args, **kwargs):
+    def get_action_confidences(self, *args, **kwargs) -> Dict:
+        """Returns (all) the action confidences that match an agent utterance.
+        NOTE: Do not just return the k highest actions, because the top k are
+        selected based on overall score, not just the singular confidence.
+
+        Returns:
+            Dict: The action confidence map. Return in the format:
+                '''
+                {
+                    ACTION_NAME (str): CONFIDENCE (float),
+                    # continue for each action
+                    ...
+                }
+                '''
+                NOTE: Insertion order of dictionary values is maintained as of
+                Python 3.7.
+        """ 
         pass
 
     @abstractmethod
     def _update_applicable_actions(self, *args, **kwargs):
+        """Updates which actions are applicable in the current state."""
         pass
 
     @abstractmethod
     def update_state(self, *args, **kwargs):
+        """Update the state (including applicable actions, so 
+        _update_applicable_actions(...) should be called here).
+        """
         pass
 
     @abstractmethod
-    def update_if_message_action(self, *args, **kwargs):
+    def update_if_message_action(self, *args, **kwargs) -> Union[Dict, None]:
+        """Checks if the provided action is a "message" action, meaning it only
+        has one outcome. If that's the case, the outcome must be automatically
+        executed as it won't take (or need) user input to be determined.
+        This execution is already handled within the beam search algorithm; this
+        function just needs to return the associated intent. So:
+ 
+        - Check if the action is a "message" action
+            - If it is, update the state with the single outcome and return a 
+            single intent in the form
+                {
+                    "intent": INTENT_NAME (str),
+                    "outcome": OUTCOME_NAME (str),
+                    "confidence": CONFIDENCE (float)
+                }
+            - Otherwise, just return None.
+
+        Returns:
+            Union[Dict, None]: The associated intent if the action is a "message"
+                action; None otherwise.
+        """
         pass
 
 

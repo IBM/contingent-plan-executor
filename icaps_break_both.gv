@@ -1,0 +1,132 @@
+strict digraph {
+	0 [label=START fillcolor=darkolivegreen3 fontsize=50 style=filled]
+	1 [label="get-invited
+-0.7555" fillcolor=skyblue fontsize=50 style=filled]
+	0 -> 1 [arrowhead=normal color=purple penwidth=10.0]
+	2 [label="get-morning
+-1.3139" fillcolor=skyblue fontsize=50 style=filled]
+	0 -> 2 [arrowhead=normal color=purple penwidth=10.0]
+	3 [label="get-afternoon
+-1.3414" fillcolor=skyblue fontsize=50 style=filled]
+	0 -> 3 [arrowhead=normal color=purple penwidth=10.0]
+	4 [label="share-invited
+-1.0688" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+	1 -> 4 [arrowhead=normal color=purple penwidth=10.0]
+	5 [label="fallback
+-2.0688" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+	1 -> 5 [arrowhead=none color=grey45 penwidth=5.0]
+	6 [label="fallback
+-1.6272" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+	2 -> 6 [arrowhead=normal color=purple penwidth=10.0]
+	7 [label="share-morning
+-2.6272" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+	2 -> 7 [arrowhead=none color=grey45 penwidth=5.0]
+	8 [label="fallback
+-1.6547" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+	3 -> 8 [arrowhead=normal color=purple penwidth=10.0]
+	9 [label="share-afternoon
+-2.6547" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+	3 -> 9 [arrowhead=none color=grey45 penwidth=5.0]
+	10 [label="get-afternoon
+-1.7416" fillcolor=skyblue fontsize=50 style=filled]
+	4 -> 10 [arrowhead=normal color=purple penwidth=10.0]
+	11 [label="get-morning
+-1.7828" fillcolor=skyblue fontsize=50 style=filled]
+	4 -> 11 [arrowhead=normal color=purple penwidth=10.0]
+	12 [label="dialogue_statement
+-18.4207" fillcolor=skyblue fontsize=50 style=filled]
+	6 -> 12 [arrowhead=normal color=purple penwidth=10.0]
+	13 [label="dialogue_statement
+-18.4207" fillcolor=skyblue fontsize=50 style=filled]
+	8 -> 13 [arrowhead=none color=grey45 penwidth=5.0]
+	14 [label="utter_ds
+-18.4207" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+	12 -> 14 [arrowhead=normal color=purple penwidth=10.0]
+	15 [label="fallback
+-2.0548" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+	10 -> 15 [arrowhead=normal color=purple penwidth=10.0]
+	16 [label="share-afternoon
+-3.0548" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+	10 -> 16 [arrowhead=normal color=purple penwidth=10.0]
+	17 [label="fallback
+-2.096" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+	11 -> 17 [arrowhead=normal color=purple penwidth=10.0]
+	18 [label="share-morning
+-3.096" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+	11 -> 18 [arrowhead=none color=grey45 penwidth=5.0]
+	19 [label="utter_ds
+-18.4207" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+	14 -> 19 [arrowhead=none color=grey45 penwidth=5.0]
+	20 [label="dialogue_statement
+-18.4207" fillcolor=skyblue fontsize=50 style=filled]
+	15 -> 20 [arrowhead=normal color=purple penwidth=10.0]
+	21 [label="dialogue_statement
+-18.4207" fillcolor=skyblue fontsize=50 style=filled]
+	17 -> 21 [arrowhead=normal color=purple penwidth=10.0]
+	22 [label="get-morning
+-3.0548" fillcolor=skyblue fontsize=50 style=filled]
+	16 -> 22 [arrowhead=normal color=purple penwidth=10.0]
+	23 [label="utter_ds
+-18.4207" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+	20 -> 23 [arrowhead=normal color=purple penwidth=10.0]
+	24 [label="utter_ds
+-18.4207" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+	21 -> 24 [arrowhead=normal color=purple penwidth=10.0]
+	25 [label="fallback
+-3.3681" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+	22 -> 25 [arrowhead=normal color=purple penwidth=10.0]
+	26 [label="share-morning
+-4.3681" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+	22 -> 26 [arrowhead=normal color=purple penwidth=10.0]
+	27 [label="utter_ds
+-18.4207" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+	23 -> 27 [arrowhead=normal color=purple penwidth=10.0]
+	28 [label="utter_ds
+-18.4207" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+	24 -> 28 [arrowhead=none color=grey45 penwidth=5.0]
+	29 [label="dialogue_statement
+-18.4207" fillcolor=skyblue fontsize=50 style=filled]
+	25 -> 29 [arrowhead=normal color=purple penwidth=10.0]
+	30 [label="complete
+-4.3681" fillcolor=skyblue fontsize=50 style=filled]
+	26 -> 30 [arrowhead=normal color=purple penwidth=10.0]
+	31 [label="get-morning
+-19.0463" fillcolor=skyblue fontsize=50 style=filled]
+	27 -> 31 [arrowhead=normal color=purple penwidth=10.0]
+	32 [label="get-afternoon
+-19.1862" fillcolor=skyblue fontsize=50 style=filled]
+	27 -> 32 [arrowhead=none color=grey45 penwidth=5.0]
+	33 [label="thank
+-4.3681" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+	30 -> 33 [arrowhead=normal color=purple penwidth=10.0]
+	34 [label="utter_ds
+-18.4207" fillcolor=lightgoldenrod1 fontsize=50 style=filled]
+	29 -> 34 [arrowhead=normal color=purple penwidth=10.0]
+	35 [label="GOAL REACHED
+-4.3681" fillcolor=darkolivegreen3 fontsize=50 style=filled]
+	33 -> 35 [color=forestgreen penwidth=10.0]
+	0 -> 1 [arrowhead=normal color=forestgreen penwidth=10.0]
+	1 -> 4 [arrowhead=normal color=forestgreen penwidth=10.0]
+	4 -> 10 [arrowhead=normal color=forestgreen penwidth=10.0]
+	10 -> 16 [arrowhead=normal color=forestgreen penwidth=10.0]
+	16 -> 22 [arrowhead=normal color=forestgreen penwidth=10.0]
+	22 -> 26 [arrowhead=normal color=forestgreen penwidth=10.0]
+	26 -> 30 [arrowhead=normal color=forestgreen penwidth=10.0]
+	30 -> 33 [arrowhead=normal color=forestgreen penwidth=10.0]
+	0 -> 1 [arrowhead=normal color=forestgreen penwidth=10.0]
+	1 -> 4 [arrowhead=normal color=forestgreen penwidth=10.0]
+	4 -> 10 [arrowhead=normal color=forestgreen penwidth=10.0]
+	10 -> 16 [arrowhead=normal color=forestgreen penwidth=10.0]
+	16 -> 22 [arrowhead=normal color=forestgreen penwidth=10.0]
+	22 -> 25 [arrowhead=normal color=forestgreen penwidth=10.0]
+	25 -> 29 [arrowhead=normal color=forestgreen penwidth=10.0]
+	29 -> 34 [arrowhead=normal color=forestgreen penwidth=10.0]
+	0 -> 1 [arrowhead=normal color=forestgreen penwidth=10.0]
+	1 -> 4 [arrowhead=normal color=forestgreen penwidth=10.0]
+	4 -> 10 [arrowhead=normal color=forestgreen penwidth=10.0]
+	10 -> 15 [arrowhead=normal color=forestgreen penwidth=10.0]
+	15 -> 20 [arrowhead=normal color=forestgreen penwidth=10.0]
+	20 -> 23 [arrowhead=normal color=forestgreen penwidth=10.0]
+	23 -> 27 [arrowhead=normal color=forestgreen penwidth=10.0]
+	27 -> 31 [arrowhead=normal color=forestgreen penwidth=10.0]
+}

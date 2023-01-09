@@ -1,6 +1,6 @@
 from hovor.outcome_determiners.rasa_outcome_determiner import RasaOutcomeDeterminer
 from hovor.hovor_beam_search.semantic_similarity import softmax_confidences, semantic_similarity, normalize_confidences
-from hovor.hovor_beam_search.beam_srch_data_structs import RolloutBase, Output
+from hovor.hovor_beam_search.data_structs import RolloutBase, Output
 from hovor.planning.outcome_groups.deterministic_outcome_group import DeterministicOutcomeGroup
 from hovor.planning.outcome_groups.or_outcome_group import OrOutcomeGroup
 from copy import deepcopy

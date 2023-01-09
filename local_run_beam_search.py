@@ -1,4 +1,4 @@
-from hovor.hovor_beam_search.beam_search_core import BeamSearchExecutor
+from hovor.hovor_beam_search.core import BeamSearchExecutor
 from local_run_utils import initialize_local_run
 
 

@@ -1,16 +1,23 @@
 from dataclasses import dataclass
-from typing import List, Union, Dict
+from typing import List, Optional, Dict
 from abc import ABC, abstractmethod
 
 
 class RolloutBase(ABC):
+    """Abstract "rollout" class to be inherited. Houses all the functions that
+    calculate action and intent confidences and keep track of + update the
+    current state.
+
+    Args:
+        ABC (class): Used to create an abstract class.
+    """
     @abstractmethod
     def get_reached_goal(self, *args, **kwargs) -> bool:
         """Returns if the beam reached the goal.
 
         Returns:
-            bool: True if the corresponding beam reached the goal, False 
-                otherwise.
+            bool: True if the corresponding beam reached the goal, False
+            otherwise.
         """
         pass
 
@@ -22,19 +29,20 @@ class RolloutBase(ABC):
 
         Returns:
             List[Dict]: The intent/confidence map. Return in the format:
-                '''
-                [
-                    {
-                        "intent": INTENT_NAME (str),
-                        "outcome": OUTCOME_NAME (str),
-                        "confidence": CONFIDENCE (float)
-                    },
-                    # continue for each intent
-                    {
-                        ...
-                    }
-                ]
-                '''
+
+                .. code-block:: python
+
+                    [
+                        {
+                            "intent": INTENT_NAME (str),
+                            "outcome": OUTCOME_NAME (str),
+                            "confidence": CONFIDENCE (float)
+                        },
+                        # continue for each intent
+                        {
+                            ...
+                        }
+                    ]
         """
         pass
 
@@ -46,16 +54,18 @@ class RolloutBase(ABC):
 
         Returns:
             Dict: The action confidence map. Return in the format:
-                '''
-                {
-                    ACTION_NAME (str): CONFIDENCE (float),
-                    # continue for each action
-                    ...
-                }
-                '''
+
+                .. code-block:: python
+
+                    {
+                        ACTION_NAME (str): CONFIDENCE (float),
+                        # continue for each action
+                        ...
+                    }
+               
                 NOTE: Insertion order of dictionary values is maintained as of
                 Python 3.7.
-        """ 
+        """
         pass
 
     @abstractmethod
@@ -65,32 +75,39 @@ class RolloutBase(ABC):
 
     @abstractmethod
     def update_state(self, *args, **kwargs):
-        """Update the state (including applicable actions, so 
-        _update_applicable_actions(...) should be called here).
+        """Update the state (including applicable actions, so
+        :py:func:`_update_applicable_actions 
+        <beam_search.beam_srch_data_structs.RolloutBase._update_applicable_actions>`
+        should be called here).
         """
         pass
 
     @abstractmethod
-    def update_if_message_action(self, *args, **kwargs) -> Union[Dict, None]:
+    def update_if_message_action(self, *args, **kwargs) -> Optional[Dict]:
         """Checks if the provided action is a "message" action, meaning it only
         has one outcome. If that's the case, the outcome must be automatically
         executed as it won't take (or need) user input to be determined.
         This execution is already handled within the beam search algorithm; this
         function just needs to return the associated intent. So:
- 
-        - Check if the action is a "message" action
-            - If it is, update the state with the single outcome and return a 
-            single intent in the form
+
+        * Check if the action is a "message" action
+
+           * | If it is, update the state with the single outcome and return a
+               single intent in the form
+
+             .. code-block:: python
+
                 {
                     "intent": INTENT_NAME (str),
                     "outcome": OUTCOME_NAME (str),
                     "confidence": CONFIDENCE (float)
                 }
-            - Otherwise, just return None.
+
+        * Otherwise, just return None.
 
         Returns:
-            Union[Dict, None]: The associated intent if the action is a "message"
-                action; None otherwise.
+            Optional[Dict]: The associated intent if the action is a "message"
+            action; None otherwise.
         """
         pass
 
@@ -98,21 +115,22 @@ class RolloutBase(ABC):
 class Output:
     """Describes an output, which is either an action or intent. Sorts based on
     cumulative score.
+
     Args:
         name (str): The name of the output.
         probability (float): The confidence this output occurred.
-        beam (int): The beam that the output initially belonged to, which does 
-            not change if the beam order/id becomes shifted. This is because 
+        beam (int): The beam that the output initially belonged to, which does
+            not change if the beam order/id becomes shifted. This is because
             the beam attribute is only important at the point where the output
             is chosen so we can add the output to that beam's rankings.
-
             For example, if an Output from beam 0 is chosen, but this output is
-            the second best option, the reconstructed beam will be beam 1, but 
-            the Output's beam id will still be 0, indicating which beam the 
+            the second best option, the reconstructed beam will be beam 1, but
+            the Output's beam id will still be 0, indicating which beam the
             output originated from at that point.
         score (float): The cumulative score of the beam up to and including the
             output.
     """
+
     def __init__(self, name: str, probability: float, beam: int, score: float):
         self.name = name
         self.probability = probability
@@ -122,17 +140,24 @@ class Output:
     def __lt__(self, other):
         return self.score > other.score
 
+
 class Action(Output):
     """Describes an Action."""
+
     def __init__(self, name: str, probability: float, beam: int, score: float):
         super().__init__(name, probability, beam, score)
 
+
 class Intent(Output, ABC):
     """Describes an Intent.
-    Args:
-        outcome (str): The outcome chosen from the intent."""
 
-    def __init__(self, name: str, probability: float, beam: int, score: float, outcome: str):
+    Args:
+        outcome (str): The outcome chosen from the intent.
+    """
+
+    def __init__(
+        self, name: str, probability: float, beam: int, score: float, outcome: str
+    ):
         super().__init__(name, probability, beam, score)
         self.outcome = outcome
 
@@ -145,17 +170,18 @@ class Intent(Output, ABC):
         """
         pass
 
+
 @dataclass
 class Beam:
     """Describes a beam.
 
     Args:
-        last_action (Union[Action, None]): The last action that occurred. 
+        last_action (Optional[Action]): The last action that occurred.
             Can be None upon initiation.
-        last_intent (Union[Intent, None]): The last intent that occurred.
+        last_intent (Optional[Intent]): The last intent that occurred.
             Can be None upon initiation.
         rankings (List[Output]): The list of actions or intents in the beam.
-        rollout (RolloutBase): Handles retrieving action and intent 
+        rollout (RolloutBase): Handles retrieving action and intent
             confidences, updating the state/applicable actions, etc. This
             stub class should be implemented with functions that reflect your
             particular chatbot.
@@ -163,8 +189,8 @@ class Beam:
         fallbacks (int): The number of fallbacks that have occurred in the beam
             so far.
     """
-    last_action: Union[Action, None]
-    last_intent: Union[Intent, None]
+    last_action: Optional[Action]
+    last_intent: Optional[Intent]
     rankings: List[Output]
     rollout: RolloutBase
     scores: List[float]

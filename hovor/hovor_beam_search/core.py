@@ -1,33 +1,45 @@
 from cmath import log
 from typing import List, Union, Dict
-from hovor.hovor_beam_search.beam_srch_data_structs import *
+from hovor.hovor_beam_search.data_structs import *
 from hovor.hovor_beam_search.init_stubs import *
 from hovor.hovor_beam_search.graph_setup import BeamSearchGraphGenerator
 
 
 class BeamSearchExecutor:
-    def __init__(self, k: int, max_fallbacks: int, conversation: List[Dict[str, str]], build_graph: bool = True, graph_file: str = None, **kwargs):
-        """Class that houses all information needed to execute the beam search
-        algorithm.
+    """Class that houses all information needed to execute the beam search
+    algorithm.
 
-        Args:
-            k (int): The number of beams to use.
-            max_fallbacks (int): The maximum number of fallbacks that can occur
-                in any beam before the probability is tanked by resetting the 
-                score to the log of a low number epsilon.
-            conversation (List[Dict[str, str]]): The self.conversation to be 
-                explored. Should be in the format
-                    [
-                        {"AGENT": "Hi!"},
-                        {"USER": "Hello."}
-                    ]
-            build_graph (bool): Indicates if diagrams are to be compiled. 
-                Defaults to True.
-            graph_file (str): The file where the image will be 
-                generated.
-            **kwargs: Any parameters necessary to instantiate your 
-                RolloutBase class.
-        """
+    Args:
+        k (int): The number of beams to use.
+        max_fallbacks (int): The maximum number of fallbacks that can occur
+            in any beam before the probability is tanked by resetting the
+            score to the log of a low number epsilon.
+        conversation (List[Dict[str, str]]): The self.conversation to be
+            explored. Should be in the format
+
+            .. code-block:: python
+
+                [
+                    {"AGENT": "Hi!"},
+                    {"USER": "Hello."}
+                ]
+
+        build_graph (bool): Indicates if diagrams are to be compiled.
+            Defaults to True.
+        graph_file (str): The file where the image will be
+            generated.
+        **kwargs: Any parameters necessary to instantiate your
+            Rollout class.
+    """
+    def __init__(
+        self,
+        k: int,
+        max_fallbacks: int,
+        conversation: List[Dict[str, str]],
+        build_graph: bool = True,
+        graph_file: str = None,
+        **kwargs,
+    ):
         self.k = k
         self.max_fallbacks = max_fallbacks
         self.conversation = conversation
@@ -52,8 +64,10 @@ class BeamSearchExecutor:
     @max_fallbacks.setter
     def max_fallbacks(self, value: int):
         if value < 1:
-            raise ValueError("The number of fallbacks needed to tank a beam must be a positive integer.")
-        self._max_fallbacks = value   
+            raise ValueError(
+                "The number of fallbacks needed to tank a beam must be a positive integer."
+            )
+        self._max_fallbacks = value
 
     def _prep_for_new_search(self):
         """Resets the beams and graph generator to begin a new search."""
@@ -81,7 +95,7 @@ class BeamSearchExecutor:
                     probability=result["confidence"],
                     beam=i,
                     score=log(result["confidence"]) + self.beams[i].last_action.score,
-                    outcome=result["outcome"]
+                    outcome=result["outcome"],
                 )
                 # update the last intent and rankings and add it to the beam
                 self.beams[i].last_intent = intent
@@ -95,16 +109,17 @@ class BeamSearchExecutor:
                         [intent.name],
                     )
 
-
-    def _reconstruct_beam_w_output(self, outputs: List[Union[Action, Intent]]) -> List[Beam]:
+    def _reconstruct_beam_w_output(
+        self, outputs: List[Union[Action, Intent]]
+    ) -> List[Beam]:
         """Reconstructs/creates new beams given the top k outputs determined.
         Note: The outputs cannot simply be appended to the appropriate beam
         as it often occurs that a single beam will be "extended" more than once
         and those options need to be stored as new, separate beams.
 
         Args:
-            outputs (List[Union[Action, Intent]]): The top k actions or 
-                intents that match the last utterance. 
+            outputs (List[Union[Action, Intent]]): The top k actions or
+                intents that match the last utterance.
 
         Returns:
             List[Beam]: The new Beams with the outputs added.
@@ -118,11 +133,11 @@ class BeamSearchExecutor:
             fallbacks = self.beams[at_beam].fallbacks
             # if we're dealing with actions
             if actions:
-                # set the last action to the output and keep the last intent 
+                # set the last action to the output and keep the last intent
                 # the same
                 last_action = outputs[i]
                 last_intent = self.beams[at_beam].last_intent
-            # otherwise, do the reverse and update the # of fallbacks 
+            # otherwise, do the reverse and update the # of fallbacks
             # if necessary
             else:
                 last_intent = outputs[i]
@@ -130,16 +145,17 @@ class BeamSearchExecutor:
                 if outputs[i].is_fallback():
                     fallbacks += 1
             # update the rankings and scores and create a new Beam
-            new_beams.append(Beam(
-                last_action,
-                last_intent,
-                self.beams[at_beam].rankings + [outputs[i]],
-                self.beams[at_beam].rollout.copy(),
-                self.beams[at_beam].scores + [log(outputs[i].probability)],
-                fallbacks
-            ))
+            new_beams.append(
+                Beam(
+                    last_action,
+                    last_intent,
+                    self.beams[at_beam].rankings + [outputs[i]],
+                    self.beams[at_beam].rollout.copy(),
+                    self.beams[at_beam].scores + [log(outputs[i].probability)],
+                    fallbacks,
+                )
+            )
         return new_beams
-
 
     def beam_search(self):
         """The main beam search algorithm.
@@ -157,7 +173,7 @@ class BeamSearchExecutor:
             Action(name=key, probability=val, beam=index, score=log(val))
             for index, (key, val) in enumerate(starting_values.items())
         ]
-        # if there are less starting actions than there are beams, duplicate 
+        # if there are less starting actions than there are beams, duplicate
         # the best action until we reach self.k
         while len(outputs) < self.k:
             outputs.append(outputs[0])
@@ -171,7 +187,7 @@ class BeamSearchExecutor:
                     [outputs[beam]],
                     HovorRollout(**self.rollout_param),
                     [log(outputs[beam].probability)],
-                    0
+                    0,
                 )
             )
             if self.build_graph:
@@ -187,7 +203,10 @@ class BeamSearchExecutor:
         if self.build_graph:
             # add the (total actions - k) nodes that won't be picked to the graph
             self.graph_gen.create_from_parent(
-                {action.name: round(action.score.real, 4) for action in outputs[self.k:]},
+                {
+                    action.name: round(action.score.real, 4)
+                    for action in outputs[self.k :]
+                },
                 "skyblue",
             )
         # iterate through all utterances (the first was already observed)
@@ -205,7 +224,7 @@ class BeamSearchExecutor:
                     )
                     # create beam search "Intents" given the output
                     for intent_cfg in all_intent_confs:
-                        # find the score by taking the sum of the current 
+                        # find the score by taking the sum of the current
                         # beam thread which should be a list of log(prob)
                         outputs.append(
                             Intent(
@@ -242,7 +261,7 @@ class BeamSearchExecutor:
             # store all the outputs (only to use in graph creation) before
             # splicing the top k
             all_outputs = outputs
-            outputs = outputs[0:self.k]
+            outputs = outputs[0 : self.k]
 
             if self.build_graph:
                 # for the graph: track which nodes are "chosen" for each beam
@@ -252,9 +271,9 @@ class BeamSearchExecutor:
                     graph_beam_chosen_map[output.beam].append(output.name)
                 for beam, chosen in graph_beam_chosen_map.items():
                     self.graph_gen.create_nodes_highlight_k(
-                        # filter ALL outputs by outputs belonging to the 
+                        # filter ALL outputs by outputs belonging to the
                         # current beam
-                        # using the filtered outputs, map intents to 
+                        # using the filtered outputs, map intents to
                         # probabilities to use in the graph
                         {
                             output.name: round(output.score.real, 4)
@@ -270,13 +289,11 @@ class BeamSearchExecutor:
                 # the reconstructed beams. we have to do this because again,
                 # outputs cannot just be appended to beams, as multiple outputs
                 # could have been chosen from a single previous beam. so, the
-                # "graph" beams need to be updated to match the current 
+                # "graph" beams need to be updated to match the current
                 # structure.
                 self.graph_gen.beams = [
                     BeamSearchGraphGenerator.GraphBeam(
-                        self.graph_gen.beams[
-                                output.beam
-                            ].parent_nodes_id_map
+                        self.graph_gen.beams[output.beam].parent_nodes_id_map
                     )
                     for output in outputs
                 ]
@@ -311,12 +328,20 @@ class BeamSearchExecutor:
                 head = "0"
                 for elem in self.beams[i].rankings:
                     tail = head
-                    # beam_id must be > than the head to prevent referencing 
+                    # beam_id must be > than the head to prevent referencing
                     # previous nodes with the same name
                     head = self.graph_gen.beams[i].parent_nodes_id_map[elem.name].pop(0)
                     while int(head) <= int(tail):
-                        head = self.graph_gen.beams[i].parent_nodes_id_map[elem.name].pop(0)
+                        head = (
+                            self.graph_gen.beams[i]
+                            .parent_nodes_id_map[elem.name]
+                            .pop(0)
+                        )
                     self.graph_gen.graph.edge(
-                        tail, head, color="forestgreen", penwidth="10.0", arrowhead="normal"
+                        tail,
+                        head,
+                        color="forestgreen",
+                        penwidth="10.0",
+                        arrowhead="normal",
                     )
             self.graph_gen.graph.render(f"{self.graph_file}.gv", view=True)

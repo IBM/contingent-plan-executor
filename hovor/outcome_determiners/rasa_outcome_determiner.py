@@ -42,6 +42,9 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         self.full_outcomes = {outcome["name"]: outcome for outcome in full_outcomes}
         self.context_variables = context_variables
         self.intents = intents
+        # cache the extracted entities so we don't have to extract anything multiple times
+        self.extracted_entities = {}
+
 
     @staticmethod
     def parse_synset_name(synset):
@@ -112,54 +115,33 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         entities = {}
         # get entities from frozenset
         for entity in {f[0] for f in intent.entity_assignments}:
-            # raw extract single entity, then validate
-            extracted_info = self.extract_entity(entity)
-            if extracted_info:
-                extracted_info = self._make_entity_type_sample(
-                    entity,
-                    self.context_variables[entity]["type"],
-                    self.context_variables[entity]["config"],
-                    extracted_info,
-                )
+            if entity in self.extracted_entities:
+                entities[entity] = self.extracted_entities[entity]
             else:
-                extracted_info = {"certainty": "didnt-find", "sample": None}
-            entities[entity] = extracted_info
+                # raw extract single entity, then validate
+                extracted_info = self.extract_entity(entity)
+                if extracted_info:
+                    extracted_info = self._make_entity_type_sample(
+                        entity,
+                        self.context_variables[entity]["type"],
+                        self.context_variables[entity]["config"],
+                        extracted_info,
+                    )
+                    if extracted_info["sample"] != None:
+                        entities[entity] = extracted_info
+                        self.extracted_entities[entity] = extracted_info
         return entities
 
     def extract_intents(self, intents):
         entities = {}
         chosen_intent = None
-        entity_assignment_to_out = {
-            intent.entity_assignments: intent.outcome
-            for intent in intents
-            if intent.entity_assignments
-        }
         for intent in intents:
             # if this intent expects entities, make sure we extract them
             if intent.entity_assignments != None:
                 entities = self.extract_entities(intent)
-                # if no entities were successfully extracted
-                if {entities[e]["sample"] for e in entities} != {None}:
-                    # construct the intent we found
-                    # re-assign the entity assignments to what we were actually able to extract
-                    # re-assign the outcome to what matches our entity assignments
-                    extracted_entity_assignments = frozenset(
-                        {
-                            k: v["certainty"]
-                            for k, v in entities.items()
-                            if v["sample"]
-                        }.items()
-                    )
-                    chosen_intent = Intent(
-                        intent.name,
-                        extracted_entity_assignments,
-                        entity_assignment_to_out[extracted_entity_assignments],
-                        intent.confidence,
-                    )
-                    # stop looking for a suitable intent as we have found one that maps to a valid outcome :)
-                    # note that this check allows you to use full or partial information depending on how you set up your actions
-                    if chosen_intent in intents:
-                        break
+                if intent.entity_assignments == frozenset({entity: entities[entity]["certainty"] for entity in entities}.items()):
+                    chosen_intent = intent
+                    break
                 # need to reassign to None because we only get here if for some reason we weren't
                 # able to extract the intent correctly
                 chosen_intent = None
@@ -216,7 +198,6 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         intents = []
         for out in outcome_groups:
             out_intent = self.full_outcomes[out.name]["intent"]
-
             # if dealing with a complex dict intent (i.e. {"cuisine": "maybe-found"}, then check to see
             # if any of the extracted intents require each of the entities mentioned). i.e. for the example
             # mentioned, the intent share_cuisine requires
@@ -274,8 +255,7 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         # extract entities themselves but update the values of existing entities
         if chosen_intent:
             for entity, entity_info in entities.items():
-                if "sample" in entity_info:
-                    progress.add_detected_entity(entity, entity_info["sample"])
+                progress.add_detected_entity(entity, entity_info["sample"])
             outcome_description = progress.get_description(ranked_groups[0][0].name)
             for update_var, update_config in outcome_description["updates"].items():
                 if "value" in update_config and update_var not in entities:

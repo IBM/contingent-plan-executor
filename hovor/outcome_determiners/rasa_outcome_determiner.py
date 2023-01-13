@@ -18,14 +18,14 @@ from textblob import TextBlob
 @dataclass
 class Intent:
     name: str
-    entity_assignments: Union[frozenset, None]
+    entity_reqs: Union[frozenset, None]
     outcome: DeterministicOutcomeGroup
     confidence: float
 
     def __eq__(self, other):
         return (
             self.name == other.name
-            and self.entity_assignments == other.entity_assignments
+            and self.entity_reqs == other.entity_reqs
             and self.outcome == other.outcome
             and self.confidence == other.confidence
         )
@@ -114,7 +114,7 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
     def extract_entities(self, intent):
         entities = {}
         # get entities from frozenset
-        for entity in {f[0] for f in intent.entity_assignments}:
+        for entity in {f[0] for f in intent.entity_reqs}:
             if entity in self.extracted_entities:
                 entities[entity] = self.extracted_entities[entity]
             else:
@@ -129,24 +129,116 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                     )
                     if extracted_info["sample"] != None:
                         entities[entity] = extracted_info
-                        self.extracted_entities[entity] = extracted_info
+                    self.extracted_entities[entity] = extracted_info
         return entities
+
+    def filter_intents(self, r, outcome_groups):
+        # make outcome groups accessible by name
+        outcome_groups = {out.name : out for out in outcome_groups}
+        intents_detected = {ranking["name"]: ranking["confidence"] for ranking in r["intent_ranking"]}
+        entities_detected = {ranking["entity"] for ranking in r["entities"]}            
+        intents = []
+        for out, out_cfg in self.full_outcomes.items():
+            # check to make sure this intent was at least DETECTED by rasa
+            if out_cfg["intent"] in intents_detected:
+                if self.intents[out_cfg["intent"]]["variables"]:
+                    # if this intent has variables, check to ensure the variables being assigned to in this outcome
+                    # have at least been DETECTED by rasa. note that we allow some flexibility, as in the case of
+                    # slot_fill actions, an intent can extract up to 2 possible variables, but in one "version" 
+                    # of the intent, it may only extract one and use other actions (clarify/single slots) to extract
+                    # the rest.
+                    # we also only want to consider assignments that are variables of the intent, as outcomes often
+                    # have other updates for existing entities.
+                    entity_reqs = {e[1:]:cert for e, cert in out_cfg["assignments"].items() if e in self.intents[out_cfg["intent"]]["variables"]}
+
+                    for e in entity_reqs:
+                        if self.context_variables[e]["type"] == "json":
+                            cfg = self.context_variables[e]["config"]["extraction"]
+                            if cfg["method"] == "spacy":
+                                met = cfg["config_method"].upper()
+                                if met in entities_detected:
+                                    entities_detected.remove(met)
+                                    entities_detected.add(e)
+
+                    if set(entity_reqs.keys()).issubset(entities_detected):
+                        intents.append(
+                            Intent(
+                                out_cfg["intent"],
+                                # use the assignments key so we get the required certainty for each entity
+                                frozenset(entity_reqs.items()),
+                                outcome_groups[out],
+                                intents_detected[out_cfg["intent"]]
+                            )
+                        )
+                else:
+                    intents.append(
+                        Intent(
+                            out_cfg["intent"],
+                            None,
+                            outcome_groups[out],
+                            intents_detected[out_cfg["intent"]]
+                        )
+                    )
+            elif out_cfg["intent"] == "fallback":
+                intents.append(
+                    Intent(
+                        "fallback",
+                        None,
+                        outcome_groups[out],
+                        0
+                    )
+                )
+
+
+        # intents = []
+        # for out in outcome_groups:
+        #     out_intent = self.full_outcomes[out.name]["intent"]
+        #     # if dealing with a complex dict intent (i.e. {"cuisine": "maybe-found"}, then check to see
+        #     # if any of the extracted intents require each of the entities mentioned). i.e. for the example
+        #     # mentioned, the intent share_cuisine requires
+        #     if type(out_intent) == dict:
+        #         entity_requirements = frozenset(out_intent.items())
+        #         for intent in intent_ranking:
+        #             variables = [v[1:] for v in self.intents[intent]["variables"]]
+        #             detected = False not in {
+        #                 entity_map[0] in variables for entity_map in entity_requirements
+        #             }
+        #             if detected:
+        #                 out_intent = intent
+        #                 break
+        #     else:
+        #         variables = [v[1:] for v in self.intents[out_intent]["variables"]]
+        #         entity_requirements = (
+        #             frozenset({v: "found" for v in variables}.items())
+        #             if len(variables) > 0
+        #             else None
+        #         )
+        #         detected = out_intent in intent_ranking
+        #     # we only want to consider intents from each outcome that rasa has detected
+        #     if detected:
+        #         intents.append(
+        #             Intent(
+        #                 out_intent, entity_requirements, out, intent_ranking[out_intent]
+        #             )
+        #         )
+        intents.sort()
+        return intents
 
     def extract_intents(self, intents):
         entities = {}
         chosen_intent = None
         for intent in intents:
             # if this intent expects entities, make sure we extract them
-            if intent.entity_assignments != None:
+            if intent.entity_reqs != None:
                 entities = self.extract_entities(intent)
-                if intent.entity_assignments == frozenset({entity: entities[entity]["certainty"] for entity in entities}.items()):
+                if intent.entity_reqs == frozenset({entity: entities[entity]["certainty"] for entity in entities if entities[entity]["certainty"] != "didnt-find"}.items()):
                     chosen_intent = intent
                     break
                 # need to reassign to None because we only get here if for some reason we weren't
                 # able to extract the intent correctly
                 chosen_intent = None
                 # an intent with entities we were not able to extract gets a confidence of 0
-                intent.confidence = 0.0
+                intent.confidence = 0
             else:
                 # stop looking for a suitable intent if the intent extracted doesn't require entities
                 chosen_intent = intent
@@ -158,26 +250,24 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
             # cuisine is "found" and the sister intent share_cuisine where cuisine is "maybe-found" will
             # have the same confidence, but we only want the right one to be chosen.
             for intent in intents:
-                if intent.name == chosen_intent.name and intent.entity_assignments != chosen_intent.entity_assignments:
+                if intent.name == chosen_intent.name and intent.entity_reqs != chosen_intent.entity_reqs:
                     intent.confidence = 0
         else:
+            # TODO: we should not even get here... dialogue statement should be
+            # handled as a system action
             if self.action_name == "dialogue_statement":
                 for intent in intents:
                     if intent.name == "utter_ds":
                         chosen_intent = intent
                         intent.confidence = 1.0
-            else:
-                for intent in intents:
-                    if intent.name == "fallback":
-                        chosen_intent = intent
+
         for intent in intents:
             if intent.name == "fallback":
                 intent.confidence = 1 - max(intents, key=attrgetter("confidence")).confidence
 
         # rearrange intent ranking
         intents.sort()
-        # intents.remove(chosen_intent)
-        # intents = [chosen_intent] + intents
+
         ranked_groups = [
             {
                 "intent": intent.name,
@@ -188,49 +278,6 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         ]
         return chosen_intent.name, entities, ranked_groups
 
-    def create_intents(self, r, outcome_groups):
-        intent_ranking = {
-            ranking["name"]: ranking["confidence"] for ranking in r["intent_ranking"]
-        }
-        # TODO: remove these?
-        intent_ranking["fallback"] = 0
-        intent_ranking["utter_ds"] = 0
-        intents = []
-        for out in outcome_groups:
-            out_intent = self.full_outcomes[out.name]["intent"]
-            # if dealing with a complex dict intent (i.e. {"cuisine": "maybe-found"}, then check to see
-            # if any of the extracted intents require each of the entities mentioned). i.e. for the example
-            # mentioned, the intent share_cuisine requires
-            if type(out_intent) == dict:
-                entity_requirements = frozenset(out_intent.items())
-                for intent in intent_ranking:
-                    # skip over rasa's fallback intent if it comes up
-                    if intent == "nlu_fallback":
-                        continue
-                    variables = [v[1:] for v in self.intents[intent]["variables"]]
-                    detected = False not in {
-                        entity_map[0] in variables for entity_map in entity_requirements
-                    }
-                    if detected:
-                        out_intent = intent
-                        break
-            else:
-                variables = [v[1:] for v in self.intents[out_intent]["variables"]]
-                entity_requirements = (
-                    frozenset({v: "found" for v in variables}.items())
-                    if len(variables) > 0
-                    else None
-                )
-                detected = out_intent in intent_ranking
-            # we only want to consider intents from each outcome that rasa has detected
-            if detected:
-                intents.append(
-                    Intent(
-                        out_intent, entity_requirements, out, intent_ranking[out_intent]
-                    )
-                )
-        intents.sort()
-        return intents
 
     def get_final_rankings(self, input, outcome_groups):
         r = json.loads(
@@ -238,10 +285,8 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                 "http://localhost:5005/model/parse", json={"text": input}
             ).text
         )
-
-        intents = self.create_intents(r, outcome_groups)
+        intents = self.filter_intents(r, outcome_groups)
         self.initialize_extracted_entities(r["entities"])
-
         return self.extract_intents(intents)
 
     def rank_groups(self, outcome_groups, progress):

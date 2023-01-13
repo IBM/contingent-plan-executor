@@ -188,39 +188,6 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                         0
                     )
                 )
-
-
-        # intents = []
-        # for out in outcome_groups:
-        #     out_intent = self.full_outcomes[out.name]["intent"]
-        #     # if dealing with a complex dict intent (i.e. {"cuisine": "maybe-found"}, then check to see
-        #     # if any of the extracted intents require each of the entities mentioned). i.e. for the example
-        #     # mentioned, the intent share_cuisine requires
-        #     if type(out_intent) == dict:
-        #         entity_requirements = frozenset(out_intent.items())
-        #         for intent in intent_ranking:
-        #             variables = [v[1:] for v in self.intents[intent]["variables"]]
-        #             detected = False not in {
-        #                 entity_map[0] in variables for entity_map in entity_requirements
-        #             }
-        #             if detected:
-        #                 out_intent = intent
-        #                 break
-        #     else:
-        #         variables = [v[1:] for v in self.intents[out_intent]["variables"]]
-        #         entity_requirements = (
-        #             frozenset({v: "found" for v in variables}.items())
-        #             if len(variables) > 0
-        #             else None
-        #         )
-        #         detected = out_intent in intent_ranking
-        #     # we only want to consider intents from each outcome that rasa has detected
-        #     if detected:
-        #         intents.append(
-        #             Intent(
-        #                 out_intent, entity_requirements, out, intent_ranking[out_intent]
-        #             )
-        #         )
         intents.sort()
         return intents
 

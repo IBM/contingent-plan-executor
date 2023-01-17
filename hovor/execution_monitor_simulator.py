@@ -4,7 +4,7 @@ from hovor.runtime.outcome_determination_progress import OutcomeDeterminationPro
 from hovor import DEBUG
 
 
-def EM_S(session, action_execution_result, log_out=None):
+def EM_S(session, action_execution_result, log_out=None, convo_logs=[]):
     """
     Top-level execution monitor code that will loop until we have an external
     action execution call to make. We assume that this is entered when a new
@@ -48,14 +48,30 @@ def EM_S(session, action_execution_result, log_out=None):
             # Here it should write the utterance from the bot and the response from the simulator
             # using the action._utterance and the action_execution_result.input
 
-            if log_out is not None:
+            # if log_out is not None:
+            #     if hasattr(action, '_utterance'):
+            #         log_out.write(action._utterance + '\n')
+            #     try:
+            #         log_out.write(action_execution_result._fields['input'] + '\n')
+            #     except KeyError:
+            #         # No user input for this action result. 
+            #         pass
+            if convo_logs != []:
                 if hasattr(action, '_utterance'):
-                    log_out.write(action._utterance + '\n')
+                    # convo_log.write_message(entity='HOVOR', message=action._utterance)
+                    agent_message = action._utterance
+                else:
+                    agent_message = None
                 try:
-                    log_out.write(action_execution_result._fields['input'] + '\n')
+                    # convo_log.write_message(entity='USER', message=action_execution_result._fields['input'])
+                    user_message = action_execution_result._fields['input']
                 except KeyError:
                     # No user input for this action result. 
-                    pass
+                    user_message = None
+                # write the pair to the log
+                for convo_log in convo_logs:
+                    convo_log.write_diologue_pair(agent_message=agent_message, user_message=user_message)
+
             
 
             # now if it was an action that asked the user for something, the action_execution_result will have the user's response

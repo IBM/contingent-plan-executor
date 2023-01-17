@@ -86,38 +86,27 @@ def simulate_interaction(configuration_provider):
     print("SIMULATING INTERACTION")
     print("-" * 20 + "\n")
 
-    
-
     timestamp = datetime.datetime.now()
- 
     str_date_time = timestamp.strftime(r"%d-%m-%Y-%H-%M-%S-%f")
     print("Current timestamp", str_date_time)
 
     convo_logs = [JsonConversationLog(), SimpleTextConversationLog()]
 
-
-    # with open(f'simulated_conversation_{str_date_time}.txt', 'w') as log_out:
-        # log_out.writelines(['SIMULATING INTERACTION', "-" * 20 + "\n"])
-        # convo_log.write_message(entity='sys', message='SIMULATING INTERACTION ' + "-" * 20)
-
     session = initialize_session(configuration_provider)
     last_execution_result = session.current_action.execute()  # initial action execution
 
     if hasattr(session.current_action, '_utterance'):
-        # log_out.write(session.current_action._utterance + '\n')
-        # convo_log.write_message(entity='HOVOR', message=session.current_action._utterance)
         agent_message = session.current_action._utterance
     else:
         agent_message = None
 
     try:
-        # log_out.write(last_execution_result._fields['input'] + '\n')
-        # convo_log.write_message(entity='USER', message=last_execution_result._fields['input'])
         user_message = last_execution_result._fields['input']
     except KeyError:
         # No user input for this action result. 
         user_message=None
     
+    # write the diologue pair to each conversation log
     for convo_log in convo_logs:
         convo_log.write_diologue_pair(agent_message=agent_message, user_message=user_message)
 
@@ -135,8 +124,6 @@ def simulate_interaction(configuration_provider):
 
     print("\n" + "-" * 20)
     print("INTERACTION END")
-    # convo_log.write_message(entity='sys', message="\n" + "-" * 20)
-    # convo_log.write_message(entity='sys', message="INTERACTION END")
     for convo_log in convo_logs:
         convo_log.save_conversation_to_file(f'simulated_conversation_{str_date_time}')
 

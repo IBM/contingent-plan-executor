@@ -219,14 +219,6 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
             for intent in intents:
                 if intent.name == chosen_intent.name and intent.entity_reqs != chosen_intent.entity_reqs:
                     intent.confidence = 0
-        else:
-            # TODO: we should not even get here... dialogue statement should be
-            # handled as a system action
-            if self.action_name == "dialogue_statement":
-                for intent in intents:
-                    if intent.name == "utter_ds":
-                        chosen_intent = intent
-                        intent.confidence = 1.0
 
         for intent in intents:
             if intent.name == "fallback":

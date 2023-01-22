@@ -1,4 +1,4 @@
-from hovor.hovor_beam_search.beam_search_core import BeamSearchExecutor
+from hovor.hovor_beam_search.core import BeamSearchExecutor
 from local_run_utils import initialize_local_run
 
 
@@ -10,12 +10,12 @@ if __name__ == "__main__":
         {
             "AGENT": "What invited talk do you want to see on Day 1? You can learn about Factored Transition Systems or the applications of Multi-Agent Path Finding."
         },
-        {"USER": "beam want to see the talk on Factored Transition Systems."},
+        {"USER": "I want to see the talk on Factored Transition Systems."},
         {
             "AGENT": "What session do you want to see in the morning? The sessions available are on Planning Representations and Scheduling, Verification, RL, or Heuristics in Classical Planning."
         },
         {
-            "USER": "beam want to learn more about classical planning and why applying heuristics is useful."
+            "USER": "I want to learn more about classical planning and why applying heuristics is useful."
         },
         {
             "AGENT": "What session do you want to see in the afternoon? Your options are: Model-Based Reasoning, Learning for Scheduling Applications, Search, and Optimal Planning."
@@ -27,10 +27,10 @@ if __name__ == "__main__":
         {
             "AGENT": "What invited talk do you want to see on Day 1? You can learn about Factored Transition Systems or the applications of Multi-Agent Path Finding."
         },
-        {"USER": "beam want to see the talk on Factored Transition Systems."},
+        {"USER": "I want to see the talk on Factored Transition Systems."},
         {"AGENT": "And then? What after the invited talk?"},
         {
-            "USER": "beam want to learn more about classical planning and why applying heuristics is useful."
+            "USER": "I want to learn more about classical planning and why applying heuristics is useful."
         },
         {
             "AGENT": "What session do you want to see in the afternoon? Your options are: Model-Based Reasoning, Learning for Scheduling Applications, Search, and Optimal Planning."

@@ -25,37 +25,7 @@ class LocalDialogueActionSimulated(LocalDialogueAction):
         #     intents = yaml.safe_load(fin)
         # self.intents = intents['nlu']
         # This is used in the process of generating a response
-        with open("/home/jacob/Dev/plan4dial/plan4dial/local_data/gold_standard_bot/output_files/data.json") as fin:
-            data = json.load(fin)
-        self.data = data
-
-    def fill_params(self, utterance):
-        # This regex allows me to grab each part:
-        # re.sub(r'\[(.*?)\]\{\"entity\": \"(.*?)\", \"value\": \"(.*?)\"\}', r'\3', chosen_example)
-
-        # This regex will replace the []{} block and the stuff inside with just
-        # the stuff inside the []
-        return re.sub(r'\[(.*?)\]\{(.*?)\}', r'\1', utterance)
-
-    def get_entities_from_string(self, example):
-        # takes in something like:
-
-        # I have a [low]{"entity": "budget", "value": "low"} budget
-        # and I would prefer a [high-energy]{"entity": "outing_type",
-        # "value": "high-energy"} atmosphere today.
-
-        # and returns the required entities
-        # this will get the json part of the entity in the example:
-        entity_jsons = [s.group() for s in re.finditer(r'\{(.*?)\}', example)]
-        entity_dicts = [json.loads(s) for s in entity_jsons]
-        return entity_dicts
-
-    def get_entity_names_from_string(self, example):
-        entity_dicts = self.get_entities_from_string(example)
-        return [x['entity'] for x in entity_dicts]
-
-    def get_intent_examples(self, intent):
-        return [s.strip() for s in intent['examples'].strip('-').strip().split('\n-')]
+        self.data_for_sim = args[0]['data_for_sim']
 
     def example_spacy_entity(self, category):
         """
@@ -88,7 +58,7 @@ class LocalDialogueActionSimulated(LocalDialogueAction):
         return random.choice(examples[category.upper()])
 
     def get_random_value_for_var(self, var_name):
-        cv = self.data['context_variables'][var_name]
+        cv = self.data_for_sim['context_variables'][var_name]
         if cv['type'] == 'enum':
             return random.choice(cv['config'])
         elif cv['type'] == 'json' and cv['config']['extraction']['method'] == 'spacy':
@@ -111,32 +81,6 @@ class LocalDialogueActionSimulated(LocalDialogueAction):
             s = s.replace('$'+var_names[i], random_var_values[i], 1)
         return s
 
-    def generate_response_by_required_entities(self):
-        """
-        A function that picks a random outcome group from self,
-        extracts the required entities in a response,
-        picks a random example of each intent,
-        filters these examples to ones that have the same entities as the required entities,
-        and returns a random choice from the possible examples as the response.
-
-        This works well for share_cuisine or share_outing_type,
-        but does not work well when the bot asks if you have allergies Y/N
-        because there are no entities in the deny / confirm entities that can
-        be extracted to match w required entity 'has_allergy'. 
-        """
-        random_sensible_outcome_group = random.choice(
-            self.outcome_group._outcome_groups)
-        entities_needed = random_sensible_outcome_group.required_present_entities
-
-        random_example_per_intent = [random.choice(
-            self.get_intent_examples(i)) for i in self.intents]
-        possible_examples = [x for x in random_example_per_intent if set(
-            self.get_entity_names_from_string(x)) == entities_needed]
-        chosen_example = random.choice(possible_examples)
-
-        simulated_input = self.fill_params(chosen_example)
-        return simulated_input
-
     def generate_response_by_data(self):
         """
         A function that picks a random outcome group from self,
@@ -148,11 +92,11 @@ class LocalDialogueActionSimulated(LocalDialogueAction):
         which don't have entities too. 
         """
         current_action_name = self.name
-        possible_outcomes = self.data['actions'][current_action_name]['effect']['outcomes']
+        possible_outcomes = self.data_for_sim['actions'][current_action_name]['effect']['outcomes']
         outcome_intent_names = [outcome['intent']
                                 for outcome in possible_outcomes]
         possible_intent_names = [
-            intent_name for intent_name in outcome_intent_names if self.data['intents'][intent_name]['type'] != 'fallback']
+            intent_name for intent_name in outcome_intent_names if self.data_for_sim['intents'][intent_name]['type'] != 'fallback']
         random_outcome_intent_name = random.choice(possible_intent_names)
         if isinstance(random_outcome_intent_name, str):
             # get the intent name and find the intent in data.json
@@ -160,7 +104,7 @@ class LocalDialogueActionSimulated(LocalDialogueAction):
             # use regex to replace variable with random variable from enum values
             # in data.json
             # done
-            random_intent = self.data['intents'][random_outcome_intent_name]
+            random_intent = self.data_for_sim['intents'][random_outcome_intent_name]
             if len(random_intent['utterances']) != 0:
                 random_utterance = random.choice(random_intent['utterances'])
                 simulated_input = self.fill_dollar_vars(random_utterance)
@@ -171,11 +115,11 @@ class LocalDialogueActionSimulated(LocalDialogueAction):
             # we need to grab the keys and find an intent which has these vars
             var_names = random_outcome_intent_name.keys()
             possible_intent_names = []
-            for intent_name in self.data['intents'].keys():
-                if set(self.data['intents'][intent_name]['variables']) == {'$'+s for s in var_names} and self.data['intents'][intent_name]['type'] != 'fallback':
+            for intent_name in self.data_for_sim['intents'].keys():
+                if set(self.data_for_sim['intents'][intent_name]['variables']) == {'$'+s for s in var_names} and self.data_for_sim['intents'][intent_name]['type'] != 'fallback':
                     possible_intent_names.append(intent_name)
             random_intent_name = random.choice(possible_intent_names)
-            random_intent_data = self.data['intents'][random_intent_name]
+            random_intent_data = self.data_for_sim['intents'][random_intent_name]
             random_utterance = random.choice(random_intent_data['utterances'])
             simulated_input = self.fill_dollar_vars(random_utterance)
         else:

@@ -1,7 +1,5 @@
 import random
 import re
-import yaml
-import json
 
 from hovor.actions.local_dialogue_action import LocalDialogueAction
 from hovor.outcome_determiners.random_outcome_determiner import RandomOutcomeDeterminer
@@ -20,10 +18,6 @@ class LocalDialogueActionSimulated(LocalDialogueAction):
             random.choice(self.config["message_variants"])
         self._utterance = LocalDialogueActionSimulated.replace_pattern_entities(
             self._utterance, self.context)
-        # this is only used in the deprecated method of generating a response
-        # with open("/home/jacob/Dev/plan4dial/plan4dial/local_data/gold_standard_bot/output_files/nlu.yml") as fin:
-        #     intents = yaml.safe_load(fin)
-        # self.intents = intents['nlu']
         # This is used in the process of generating a response
         self.data_for_sim = args[0]['data_for_sim']
 
@@ -111,19 +105,8 @@ class LocalDialogueActionSimulated(LocalDialogueAction):
             else:
                 # must be fallback, there are no utterances for this intent
                 simulated_input = "I'm not sure."
-        elif isinstance(random_outcome_intent_name, dict):
-            # we need to grab the keys and find an intent which has these vars
-            var_names = random_outcome_intent_name.keys()
-            possible_intent_names = []
-            for intent_name in self.data_for_sim['intents'].keys():
-                if set(self.data_for_sim['intents'][intent_name]['variables']) == {'$'+s for s in var_names} and self.data_for_sim['intents'][intent_name]['type'] != 'fallback':
-                    possible_intent_names.append(intent_name)
-            random_intent_name = random.choice(possible_intent_names)
-            random_intent_data = self.data_for_sim['intents'][random_intent_name]
-            random_utterance = random.choice(random_intent_data['utterances'])
-            simulated_input = self.fill_dollar_vars(random_utterance)
         else:
-            raise TypeError('Expected the intent to be string or dict. ')
+            raise TypeError('Expected the intent to be string.')
 
         return simulated_input
 

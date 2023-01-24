@@ -87,6 +87,8 @@ class JsonConfigurationProvider(ConfigurationProviderBase):
     def create_action(self, node, state, context):
         action_name = node.action_name
         action_config = self._configuration_data["actions"][action_name]
+        # adding a full copy of the data.json data to be used for simulation
+        action_config.update({"data_for_sim": self._configuration_data})
         builder = self._create_action_builder(action_name, action_config)
 
         return builder(state, context)

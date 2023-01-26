@@ -223,6 +223,7 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         for intent in intents:
             if intent.name == "fallback":
                 intent.confidence = 1 - max(intents, key=attrgetter("confidence")).confidence
+                break
 
         # rearrange intent ranking
         intents.sort()

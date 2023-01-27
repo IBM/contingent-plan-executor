@@ -274,7 +274,10 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
 
     def _make_entity_type_sample(self, entity, entity_type, entity_config, extracted_info):
         entity_value = extracted_info["value"]
-        if entity_type == "enum":
+        json_entity_w_opts = entity_type == "json" and "options" in entity_config
+        if json_entity_w_opts:
+            entity_config = entity_config["options"]
+        if json_entity_w_opts or entity_type == "enum":
             # lowercase all strings in entity_config, map back to original casing
             entity_config = {e.lower(): e for e in entity_config}
             entity_value = entity_value.lower()
@@ -288,8 +291,9 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                         # first try correcting spelling
                         spell_corrected_e_val = TextBlob(entity_value).correct().raw.lower()
                         if spell_corrected_e_val != entity_value:
-                            if spell_corrected_e_val in entity_config:
-                                extracted_info["sample"] = entity_config[spell_corrected_e_val]
+                            entity_value = spell_corrected_e_val
+                            if entity_value in entity_config:
+                                extracted_info["sample"] = entity_config[entity_value]
                                 return extracted_info
                         # as a last ditch effort, try to use wordnet to decipher what the user meant
                         for syn in wordnet.synsets(entity_value):

@@ -85,7 +85,7 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                 extracted = random.choice(extracted)
                 certainty = "maybe-found"
             else:
-                return
+                return None, None
         else:
             certainty = "found"
         return extracted, certainty
@@ -98,7 +98,7 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
             # if we can't parse with spacy, try with Rasa (may also return None)
             extracted = self.find_rasa_entity(entity)
             if not extracted:
-                return
+                return None, None
             certainty = "maybe-found"
         else:
             certainty = "found"
@@ -117,11 +117,12 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         # rasa
         else:
             extracted, certainty = self.try_rasa_then_spacy(entity)
-        return {
-            "extracted": extracted,
-            "value": extracted["value"],
-            "certainty": certainty,
-        }
+        if extracted:
+            return {
+                "extracted": extracted,
+                "value": extracted["value"],
+                "certainty": certainty,
+            }
 
     def extract_entities(self, intent):
         entities = {}
@@ -148,40 +149,24 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         # make outcome groups accessible by name
         outcome_groups = {out.name : out for out in outcome_groups}
         intents_detected = {ranking["name"]: ranking["confidence"] for ranking in r["intent_ranking"]}
-        entities_detected = {ranking["entity"] for ranking in r["entities"]}            
         intents = []
         for out, out_cfg in self.full_outcomes.items():
             # check to make sure this intent was at least DETECTED by rasa
             if out_cfg["intent"] in intents_detected:
                 if self.intents[out_cfg["intent"]]["variables"]:
-                    # if this intent has variables, check to ensure the variables being assigned to in this outcome
-                    # have at least been DETECTED by rasa. note that we allow some flexibility, as in the case of
-                    # slot_fill actions, an intent can extract up to 2 possible variables, but in one "version" 
-                    # of the intent, it may only extract one and use other actions (clarify/single slots) to extract
-                    # the rest.
-                    # we also only want to consider assignments that are variables of the intent, as outcomes often
+                    # we only want to consider assignments that are variables of the intent, as outcomes often
                     # have other updates for existing entities.
                     entity_reqs = {e[1:]:cert for e, cert in out_cfg["assignments"].items() if e in self.intents[out_cfg["intent"]]["variables"]}
 
-                    for e in entity_reqs:
-                        if self.context_variables[e]["type"] == "json":
-                            cfg = self.context_variables[e]["config"]["extraction"]
-                            if cfg["method"] == "spacy":
-                                met = cfg["config_method"].upper()
-                                if met in entities_detected:
-                                    entities_detected.remove(met)
-                                    entities_detected.add(e)
-
-                    if set(entity_reqs.keys()).issubset(entities_detected):
-                        intents.append(
-                            Intent(
-                                out_cfg["intent"],
-                                # use the assignments key so we get the required certainty for each entity
-                                frozenset(entity_reqs.items()),
-                                outcome_groups[out],
-                                intents_detected[out_cfg["intent"]]
-                            )
+                    intents.append(
+                        Intent(
+                            out_cfg["intent"],
+                            # use the assignments key so we get the required certainty for each entity
+                            frozenset(entity_reqs.items()),
+                            outcome_groups[out],
+                            intents_detected[out_cfg["intent"]]
                         )
+                    )
                 else:
                     intents.append(
                         Intent(
@@ -276,7 +261,7 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
             outcome_description = progress.get_description(ranked_groups[0][0].name)
             for update_var, update_config in outcome_description["updates"].items():
                 if "value" in update_config and update_var not in entities:
-                    if progress.get_entity_type(update_var) == "enum":
+                    if progress.get_entity_type(update_var) in ["json", "enum"]:
                         value = update_config["value"]
                         if update_config["value"] == f"${update_var}":
                             value = progress.actual_context._fields[update_var]

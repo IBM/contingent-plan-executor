@@ -13,6 +13,7 @@ import random
 from nltk.corpus import wordnet
 from typing import Union
 from textblob import TextBlob
+import re
 
 
 @dataclass
@@ -71,40 +72,51 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
             else:
                 self.rasa_entities[extracted["entity"]] = extracted
 
+    def try_rasa_then_spacy(self, entity):
+        extracted = self.find_rasa_entity(entity)
+        if not extracted:
+            if self.spacy_entities.values():
+                extracted = []
+                extracted.extend(
+                    val
+                    for method_vals in self.spacy_entities.values()
+                    for val in method_vals
+                )
+                extracted = random.choice(extracted)
+                certainty = "maybe-found"
+            else:
+                return
+        else:
+            certainty = "found"
+        return extracted, certainty
+
+    def try_spacy_then_rasa(self, entity):
+        extracted = self.find_spacy_entity(
+            self.context_variables[entity]["config"]["extraction"]["config_method"].upper()
+        )
+        if not extracted:
+            # if we can't parse with spacy, try with Rasa (may also return None)
+            extracted = self.find_rasa_entity(entity)
+            if not extracted:
+                return
+            certainty = "maybe-found"
+        else:
+            certainty = "found"
+        return extracted, certainty
+
     def extract_entity(self, entity: str):
-        # spacy
+        # for "complex" json configurations
         if type(self.context_variables[entity]["config"]) == dict:
             # can be either "method" (like spacy) or "pattern" (like a regex)
             if "method" in self.context_variables[entity]["config"]["extraction"]:
-                if self.context_variables[entity]["config"]["extraction"]["method"] == "spacy":
-                    extracted = self.find_spacy_entity(
-                        self.context_variables[entity]["config"]["extraction"]["config_method"].upper()
-                    )
-                    if not extracted:
-                        # if we can't parse with spacy, try with Rasa (may also return None)
-                        extracted = self.find_rasa_entity(entity)
-                        if not extracted:
-                            return
-                        certainty = "maybe-found"
-                    else:
-                        certainty = "found"
+                method = self.context_variables[entity]["config"]["extraction"]["method"]
+                if method == "spacy":
+                    extracted, certainty = self.try_spacy_then_rasa(entity)
+                elif method == "regex":
+                    extracted, certainty = self.try_rasa_then_spacy(entity)
         # rasa
         else:
-            extracted = self.find_rasa_entity(entity)
-            if not extracted:
-                if self.spacy_entities.values():
-                    extracted = []
-                    extracted.extend(
-                        val
-                        for method_vals in self.spacy_entities.values()
-                        for val in method_vals
-                    )
-                    extracted = random.choice(extracted)
-                    certainty = "maybe-found"
-                else:
-                    return
-            else:
-                certainty = "found"
+            extracted, certainty = self.try_rasa_then_spacy(entity)
         return {
             "extracted": extracted,
             "value": extracted["value"],
@@ -274,10 +286,11 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
 
     def _make_entity_type_sample(self, entity, entity_type, entity_config, extracted_info):
         entity_value = extracted_info["value"]
-        json_entity_w_opts = entity_type == "json" and "options" in entity_config
-        if json_entity_w_opts:
+        # entity is extracted with spacy and has options specified
+        spacy_w_opts = (entity_config["extraction"]["method"] == "spacy" and "options" in entity_config) if entity_type == "json" else False
+        if spacy_w_opts:
             entity_config = entity_config["options"]
-        if json_entity_w_opts or entity_type == "enum":
+        if spacy_w_opts or entity_type == "enum":
             # lowercase all strings in entity_config, map back to original casing
             entity_config = {e.lower(): e for e in entity_config}
             entity_value = entity_value.lower()
@@ -333,8 +346,14 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                                     extracted_info["sample"] = entity_config[hol]
                                     return extracted_info
         elif entity_type == "json":
-            extracted_info["sample"] = extracted_info["value"]
-            return extracted_info
+            if entity_config["extraction"]["method"] == "regex":
+                match = re.search(entity_config["extraction"]["pattern"], entity_value)
+                if match:
+                    extracted_info["sample"] = entity_value
+                    return extracted_info
+            else:
+                extracted_info["sample"] = entity_value
+                return extracted_info
         else:
             raise NotImplementedError("Cant sample from type: " + entity_type)
         extracted_info["certainty"] = "didnt-find"

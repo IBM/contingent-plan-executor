@@ -20,8 +20,3 @@ class DialogueAction(ActionBase):
 
     def _end_execution_callback(self, action_result, info):
         action_result.set_field("input", info)
-
-    def write_to_workspace(self, workspace_node, workspace_writer):
-        message_variants = self.config["message_variants"]
-        return LocalDialogueAction.write_message_variants_to_workspace_node(message_variants, workspace_node)
-

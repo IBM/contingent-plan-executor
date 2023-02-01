@@ -25,7 +25,3 @@ class OutcomeGroupBase(object):
         """
 
         raise NotImplementedError("has to be overriden")
-
-    def write_to_workspace(self, workspace_node, workspace_writer):
-        raise NotImplementedError("Outcome group " + self.name + ", implemented by " + str(
-            type(self)) + " does not support workspace deployment yet.")

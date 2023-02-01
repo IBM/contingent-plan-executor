@@ -2,8 +2,6 @@ import random
 import re
 
 from hovor.actions.local_dialogue_action import LocalDialogueAction
-from hovor.outcome_determiners.random_outcome_determiner import RandomOutcomeDeterminer
-from hovor.outcome_determiners.workspace_outcome_determiner import WorkspaceOutcomeDeterminer
 
 
 class LocalDialogueActionSimulated(LocalDialogueAction):

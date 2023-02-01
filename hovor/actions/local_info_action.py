@@ -12,8 +12,3 @@ class LocalInfoAction(ActionBase):
 
     def _end_execution_callback(self, action_result, info):
         pass
-
-    def write_to_workspace(self, workspace_node, workspace_writer):
-        if workspace_writer.is_debug_logging_enabled:
-            workspace_node["output"] = "action simulation: " + str(self.config)
-        return workspace_node

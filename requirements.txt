@@ -5,8 +5,6 @@ cloudant==2.4.0
 flask-cors
 json2html
 jsonpickle
-watson-developer-cloud
-ibm-watson
 nltk
 spacy
 rasa

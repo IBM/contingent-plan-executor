@@ -2,8 +2,6 @@ import random
 import re
 
 from hovor.actions.action_base import ActionBase
-from hovor.outcome_determiners.random_outcome_determiner import RandomOutcomeDeterminer
-from hovor.outcome_determiners.workspace_outcome_determiner import WorkspaceOutcomeDeterminer
 
 
 class LocalDialogueAction(ActionBase):
@@ -52,22 +50,3 @@ class LocalDialogueAction(ActionBase):
             result.append(groups[0])
 
         return result
-
-    def write_to_workspace(self, workspace_node, workspace_writer):
-        message_variants = self.config["message_variants"]
-        return LocalDialogueAction.write_message_variants_to_workspace_node(message_variants, workspace_node)
-
-    @classmethod
-    def write_message_variants_to_workspace_node(cls, message_variants, workspace_node):
-        patterns = []
-        for pattern in message_variants:
-            entity_tags = LocalDialogueAction.get_pattern_entities(pattern)
-            entity_tags = sorted(entity_tags, key=lambda e: len(e), reverse=True)
-
-            current_pattern = "HOVOR: " + pattern
-            for entity_tag in entity_tags:
-                current_pattern = current_pattern.replace(entity_tag, f"<? $entities.{entity_tag[1:]} ?>")
-
-            patterns.append(current_pattern)
-        workspace_node["output"] = patterns
-        return workspace_node

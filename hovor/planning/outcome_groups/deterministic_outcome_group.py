@@ -35,24 +35,3 @@ class DeterministicOutcomeGroup(OutcomeGroupBase):
         initial_progress.apply_effect(self.name)
         initial_progress.finalize(self.name)
         return initial_progress, 1
-
-    def write_to_workspace(self, workspace_node, workspace_writer):
-
-        outcome_determination_info = workspace_writer.get_outcome_determination_info(self.name)
-        group_node = workspace_writer.write_new_node(self.name + "-eff", parent=workspace_node)
-
-        for effect in outcome_determination_info.context_effects:
-            effect.write_to_workspace_node(group_node)
-
-        target_node = None
-        for name, child in workspace_writer.current_plan_node.named_children:
-            if name == self.name:
-                target_node = child
-
-        if target_node is None:
-            raise AssertionError("Cannot find child node.")
-
-        if workspace_writer.has_parent(target_node):
-            workspace_writer.write_jump(group_node, target_node)
-        else:
-            workspace_writer.write_direct_child(group_node, target_node)

@@ -1130,35 +1130,3 @@ def get_view_function(url, method='GET'):
     except KeyError:
         # no view is associated with the endpoint
         return (None, None)
-
-
-def assign_wa_credentials(plan_json_config):
-    # assign WA workspace credentials to system
-    UnifiedWorkspaceOutcomeDeterminer.WORKSPACE_NAME = plan_json_config['hovor_config']['short_name']
-    UnifiedWorkspaceOutcomeDeterminer.authenticator = IAMAuthenticator(plan_json_config['wa_credentials']['key'])
-    UnifiedWorkspaceOutcomeDeterminer.assistant = AssistantV1(
-        version='2019-02-28',
-        authenticator=UnifiedWorkspaceOutcomeDeterminer.authenticator
-    )
-    UnifiedWorkspaceOutcomeDeterminer.assistant.set_service_url(plan_json_config['wa_credentials']['api'])
-
-    # In case it is needed in the future, below defaults to EJ's account
-    # UnifiedWorkspaceOutcomeDeterminer.WORKSPACE_NAME = plan_json_config['hovor_config']['short_name']
-    # if 'key' in plan_json_config['wa_credentials'] and 'api' in plan_json_config['wa_credentials'] and \
-    #         plan_json_config['wa_credentials']['key'] != '' and plan_json_config['wa_credentials']['api'] != '':
-    #     creds = plan_json_config['wa_credentials']
-    #     UnifiedWorkspaceOutcomeDeterminer.authenticator = IAMAuthenticator(creds['key'])
-    #     UnifiedWorkspaceOutcomeDeterminer.assistant = AssistantV1(
-    #         version='2019-02-28',
-    #         authenticator=UnifiedWorkspaceOutcomeDeterminer.authenticator
-    #     )
-    #     UnifiedWorkspaceOutcomeDeterminer.assistant.set_service_url(creds['api'])
-    # else:
-    #     UnifiedWorkspaceOutcomeDeterminer.authenticator = IAMAuthenticator(
-    #         '4QymnfEtdAo4oRse2gHWmqV9JRTEZOHtWyGZJo5baSmr')
-    #     UnifiedWorkspaceOutcomeDeterminer.assistant = AssistantV1(
-    #         version='2019-02-28',
-    #         authenticator=UnifiedWorkspaceOutcomeDeterminer.authenticator
-    #     )
-    #     UnifiedWorkspaceOutcomeDeterminer.assistant.set_service_url(
-    #         'https://gateway.watsonplatform.net/assistant/api')

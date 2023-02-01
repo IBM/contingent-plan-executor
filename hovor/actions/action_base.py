@@ -1,5 +1,4 @@
 from hovor.runtime.action_result import ActionResult
-from hovor.wa_deployment.workspace_configuration_writer import WorkspaceConfigurationWriter
 
 
 class ActionBase(object):
@@ -73,9 +72,6 @@ class ActionBase(object):
 
         return result
 
-    def write_to_workspace(self, workspace_node, workspace_writer: WorkspaceConfigurationWriter):
-        raise NotImplementedError("Action " + self.name + ", implemented by " + str(
-            type(self)) + " does not support workspace deployment yet.")
 
     @classmethod
     def register_action(cls, prefix, action_factory):

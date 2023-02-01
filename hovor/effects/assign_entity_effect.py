@@ -1,9 +1,3 @@
-import re
-
-from hovor.outcome_determiners.spel_evaluator import SpelEvaluator
-from hovor.runtime.fields_container import FieldsContainer
-
-
 class AssignEntityEffect(object):
     def __init__(self, entity, value_config):
         if entity.startswith("$"):
@@ -40,48 +34,3 @@ class AssignEntityEffect(object):
                     return False
         context.set_field(self.entity, value)
         return True
-
-    def _evaluate_spel(self, spel, context, determination_result):
-
-        # TODO: Address the chrooting fully and properly instead of this workaround
-        spel = spel.replace('$action_result.', '$')
-        spel = spel.replace('$entities.', '$')
-
-        joined_fields = FieldsContainer(context, determination_result)
-
-        if spel == "null":
-            return None, True
-
-        is_simple_reference = re.match("^[$][.a-zA-Z01-9_-]+$", spel) is not None
-        if is_simple_reference:
-            # field access will be evaluted faster locally
-            reference = spel[1:]
-            if not joined_fields.has_field(reference):
-                return None, False
-
-            return joined_fields.get_field(reference), True
-
-        fields_dump = joined_fields.dump()
-        return SpelEvaluator.evaluate(spel, fields_dump), True
-
-    def write_to_workspace_node(self, workspace_node):
-        context = workspace_node["context"]
-        if "entities" not in context:
-            context["entities"] = {}
-
-        v = self.value
-
-        if isinstance(v, str):
-            # Make sure everything is chroot'd properly
-            for root in v.split('$')[1:]:
-                assert (root[:len('entities.')] == 'entities.') or \
-                        (root[:len('action_result.')] == 'action_result.'), \
-                        "Error: Missing a valid chroot for variable in %s" % v
-            chrooted_spel = self.value
-        elif self.value is None or isinstance(v, (int, bool, float)):
-            # keep the value unchanged
-            chrooted_spel = self.value
-        else:
-            chrooted_spel = str(self.value)
-
-        context["entities"][self.entity] = chrooted_spel

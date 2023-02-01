@@ -36,7 +36,3 @@ class OutcomeDeterminerBase(object):
                 raise NotImplementedError("Outcome listing for group %s is not implemented yet." % group)
 
         return result
-
-    def write_to_workspace(self, parent_group, workspace_node, outcome_groups, workspace_writer):
-        raise NotImplementedError("OutcomeDeterminer implemented by " + str(
-            type(self)) + " does not support workspace deployment yet.")

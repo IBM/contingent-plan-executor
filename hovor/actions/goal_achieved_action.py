@@ -13,7 +13,3 @@ class GoalAchievedAction(ActionBase):
 
     def end_execution(self, result, info=None):
         print("GOAL ACHIEVED")
-
-    def write_to_workspace(self, workspace_node, workspace_writer):
-        workspace_node["output"] = "GOAL ACHIEVED"
-        return workspace_node

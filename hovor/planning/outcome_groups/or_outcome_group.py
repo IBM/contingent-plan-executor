@@ -27,7 +27,3 @@ class OrOutcomeGroup(OutcomeGroupBase):
             return final_progress, confidence
 
         raise AssertionError("No outcome group has valid outcome.")
-
-    def write_to_workspace(self, workspace_node, workspace_writer):
-        outcome_determiner = workspace_writer.get_outcome_determination_info(self.name).outcome_determiner
-        outcome_determiner.write_to_workspace(self, workspace_node, self._outcome_groups, workspace_writer)

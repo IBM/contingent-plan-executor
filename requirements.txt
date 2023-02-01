@@ -1,7 +1,5 @@
 requests
-Flask==1.0
-Werkzeug==0.16.0
-cloudant==2.4.0
+Flask
 flask-cors
 json2html
 jsonpickle
@@ -10,3 +8,4 @@ spacy
 rasa
 textblob
 graphviz
+docker

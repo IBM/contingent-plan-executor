@@ -1,0 +1,2112 @@
+{
+    "name": "day-planner",
+    "context_variables": {
+        "location": {
+            "type": "json",
+            "config": {
+                "extraction": {
+                    "method": "spacy",
+                    "config_method": "gpe"
+                }
+            },
+            "known": {
+                "type": "flag",
+                "init": false
+            }
+        },
+        "phone_number": {
+            "type": "json",
+            "config": {
+                "options": [
+                    1234567890,
+                    2345678901,
+                    3453452794
+                ],
+                "extraction": {
+                    "method": "regex",
+                    "pattern": "\\d{10}"
+                }
+            },
+            "known": {
+                "type": "fflag",
+                "init": false
+            }
+        },
+        "cuisine": {
+            "type": "enum",
+            "config": [
+                "Mexican",
+                "Italian",
+                "Chinese",
+                "dessert"
+            ],
+            "known": {
+                "type": "fflag",
+                "init": false
+            }
+        },
+        "have_allergy": {
+            "type": "flag",
+            "config": false,
+            "known": {
+                "type": "flag",
+                "init": false
+            }
+        },
+        "food_restriction": {
+            "type": "enum",
+            "config": [
+                "dairy-free",
+                "gluten-free"
+            ],
+            "known": {
+                "type": "flag",
+                "init": false
+            }
+        },
+        "budget": {
+            "type": "enum",
+            "config": [
+                "low",
+                "high"
+            ],
+            "known": {
+                "type": "flag",
+                "init": false
+            }
+        },
+        "outing_type": {
+            "type": "enum",
+            "config": [
+                "high-energy",
+                "low-energy"
+            ],
+            "known": {
+                "type": "fflag",
+                "init": false
+            }
+        },
+        "conflict": {
+            "type": "flag",
+            "config": false,
+            "known": {
+                "type": "flag",
+                "init": false
+            }
+        },
+        "restaurant": {
+            "type": "enum",
+            "config": [
+                "Guac Grill",
+                "Alfredo's Pizza Caf\u00e9",
+                "Mandarin",
+                "Geneva Crepes"
+            ],
+            "known": {
+                "type": "flag",
+                "init": false
+            }
+        },
+        "outing": {
+            "type": "enum",
+            "config": [
+                "Stages",
+                "Stauffer Library",
+                "Broadway Theater",
+                "Smith's Golfing Club"
+            ],
+            "known": {
+                "type": "flag",
+                "init": false
+            }
+        },
+        "goal": {
+            "type": "flag",
+            "config": false,
+            "known": {
+                "type": "flag",
+                "init": false
+            }
+        },
+        "have-message": {
+            "type": "flag",
+            "config": false
+        },
+        "force-statement": {
+            "type": "flag",
+            "config": false
+        },
+        "allow_single_slot_outing_type": {
+            "type": "flag",
+            "config": false
+        },
+        "allow_single_slot_budget": {
+            "type": "flag",
+            "config": false
+        },
+        "forcing__get-allergy": {
+            "type": "flag",
+            "config": false
+        }
+    },
+    "intents": {
+        "confirm": {
+            "entities": [],
+            "utterances": [
+                "yes",
+                "yeah",
+                "that's it",
+                "Y",
+                "mhm",
+                "confirm",
+                "yes please"
+            ],
+            "type": "regular"
+        },
+        "deny": {
+            "entities": [],
+            "utterances": [
+                "no",
+                "not at all",
+                "that's not what i meant",
+                "absolutely not",
+                "i don't want that",
+                "nah",
+                "no thanks",
+                "no thank you"
+            ],
+            "type": "regular"
+        },
+        "share_phone_number": {
+            "entities": [
+                "$phone_number"
+            ],
+            "utterances": [
+                "My phone number is $phone_number.",
+                "My number is $phone_number.",
+                "$phone_number"
+            ],
+            "type": "regular"
+        },
+        "share_location": {
+            "entities": [
+                "$location"
+            ],
+            "utterances": [
+                "I live in $location.",
+                "I am located in $location.",
+                "Can you help me find things to do in $location?"
+            ],
+            "type": "regular"
+        },
+        "share_cuisine": {
+            "entities": [
+                "$cuisine"
+            ],
+            "utterances": [
+                "I want to eat $cuisine.",
+                "Do you have restaurants of type $cuisine?",
+                "Are there any $cuisine restaurants in the area?"
+            ],
+            "type": "regular"
+        },
+        "share_allergies": {
+            "entities": [
+                "$food_restriction"
+            ],
+            "utterances": [
+                "I have to eat $food_restriction.",
+                "I can only eat foods that are $food_restriction.",
+                "I am allergic to any foods that are not $food_restriction."
+            ],
+            "type": "regular"
+        },
+        "share_all_outing_preferences": {
+            "entities": [
+                "$budget",
+                "$outing_type"
+            ],
+            "utterances": [
+                "I have a $budget budget and I would prefer a $outing_type atmosphere today.",
+                "I am operating within a $budget budget and I want to go to a $outing_type place.",
+                "I can do activities with a $budget budget and I want to find the most $outing_type place in the city."
+            ],
+            "type": "regular"
+        },
+        "share_budget": {
+            "entities": [
+                "$budget"
+            ],
+            "utterances": [
+                "I have a $budget budget.",
+                "I am operating within a $budget budget.",
+                "I can do activities with a $budget budget."
+            ],
+            "type": "regular"
+        },
+        "share_outing_type": {
+            "entities": [
+                "$outing_type"
+            ],
+            "utterances": [
+                "I would prefer a $outing_type atmosphere today.",
+                "I want to go to a $outing_type place.",
+                "What is the most $outing_type place in the city?"
+            ],
+            "type": "regular"
+        },
+        "fallback": {
+            "entities": [],
+            "utterances": [],
+            "type": "fallback"
+        },
+        "utter_ds": {
+            "entities": [],
+            "utterances": [],
+            "type": "regular"
+        }
+    },
+    "actions": {
+        "get-have-allergy": {
+            "type": "dialogue",
+            "message_variants": [
+                "Do you have any allergies? (Y/N)"
+            ],
+            "condition": [
+                [
+                    "have_allergy",
+                    "Unknown"
+                ],
+                [
+                    "force-statement",
+                    false
+                ],
+                [
+                    "forcing__get-allergy",
+                    false
+                ]
+            ],
+            "effect": {
+                "global-outcome-name": "set-allergy",
+                "type": "oneof",
+                "outcomes": [
+                    {
+                        "updates": {
+                            "have_allergy": {
+                                "value": true,
+                                "variable": "have_allergy",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            },
+                            "forcing__get-allergy": {
+                                "value": true,
+                                "variable": "forcing__get-allergy",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "confirm",
+                        "follow_up": "get-allergy",
+                        "name": "get-have-allergy_DETDUP_set-allergy-EQ-indicate_allergy",
+                        "assignments": {
+                            "$have_allergy": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "have_allergy": {
+                                "value": false,
+                                "variable": "have_allergy",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            },
+                            "conflict": {
+                                "value": false,
+                                "variable": "conflict",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "deny",
+                        "name": "get-have-allergy_DETDUP_set-allergy-EQ-indicate_no_allergy",
+                        "assignments": {
+                            "$have_allergy": "found",
+                            "$conflict": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "have-message": {
+                                "value": true,
+                                "variable": "have-message",
+                                "interpretation": "json"
+                            },
+                            "force-statement": {
+                                "value": true,
+                                "variable": "force-statement",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "fallback",
+                        "name": "get-have-allergy_DETDUP_set-allergy-EQ-fallback",
+                        "assignments": {}
+                    }
+                ]
+            },
+            "fallback_message_variants": [
+                "Sorry, I couldn't understand that input.",
+                "Sorry, I didn't quite get that."
+            ],
+            "intents": {
+                "confirm": {
+                    "entities": [],
+                    "utterances": [
+                        "yes",
+                        "yeah",
+                        "that's it",
+                        "Y",
+                        "mhm",
+                        "confirm",
+                        "yes please"
+                    ],
+                    "type": "regular"
+                },
+                "deny": {
+                    "entities": [],
+                    "utterances": [
+                        "no",
+                        "not at all",
+                        "that's not what i meant",
+                        "absolutely not",
+                        "i don't want that",
+                        "nah",
+                        "no thanks",
+                        "no thank you"
+                    ],
+                    "type": "regular"
+                },
+                "fallback": {
+                    "entities": [],
+                    "utterances": [],
+                    "type": "fallback"
+                }
+            }
+        },
+        "get-allergy": {
+            "type": "dialogue",
+            "message_variants": [
+                "What type of allergy do you have? (I currently account for dairy and gluten allergies)."
+            ],
+            "fallback_message_variants": [
+                "Sorry, I don't recognize that type of allergy."
+            ],
+            "condition": [
+                [
+                    "have_allergy",
+                    "Known"
+                ],
+                [
+                    "have_allergy",
+                    true
+                ],
+                [
+                    "force-statement",
+                    false
+                ]
+            ],
+            "effect": {
+                "global-outcome-name": "set-allergy",
+                "type": "oneof",
+                "outcomes": [
+                    {
+                        "updates": {
+                            "food_restriction": {
+                                "value": "$food_restriction",
+                                "variable": "food_restriction",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            },
+                            "forcing__get-allergy": {
+                                "value": false,
+                                "variable": "forcing__get-allergy",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "share_allergies",
+                        "name": "get-allergy_DETDUP_set-allergy-EQ-update_allergy",
+                        "assignments": {
+                            "$food_restriction": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "have-message": {
+                                "value": true,
+                                "variable": "have-message",
+                                "interpretation": "json"
+                            },
+                            "force-statement": {
+                                "value": true,
+                                "variable": "force-statement",
+                                "interpretation": "json"
+                            },
+                            "forcing__get-allergy": {
+                                "value": false,
+                                "variable": "forcing__get-allergy",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "fallback",
+                        "name": "get-allergy_DETDUP_set-allergy-EQ-fallback",
+                        "assignments": {}
+                    }
+                ]
+            },
+            "intents": {
+                "share_allergies": {
+                    "entities": [
+                        "$food_restriction"
+                    ],
+                    "utterances": [
+                        "I have to eat $food_restriction.",
+                        "I can only eat foods that are $food_restriction.",
+                        "I am allergic to any foods that are not $food_restriction."
+                    ],
+                    "type": "regular"
+                },
+                "fallback": {
+                    "entities": [],
+                    "utterances": [],
+                    "type": "fallback"
+                }
+            }
+        },
+        "check-conflicts": {
+            "type": "system",
+            "subtype": "Context dependent determination",
+            "condition": [
+                [
+                    "location",
+                    "Known"
+                ],
+                [
+                    "have_allergy",
+                    "Known"
+                ],
+                [
+                    "have_allergy",
+                    true
+                ],
+                [
+                    "food_restriction",
+                    "Known"
+                ],
+                [
+                    "cuisine",
+                    "Known"
+                ],
+                [
+                    "conflict",
+                    "Unknown"
+                ],
+                [
+                    "force-statement",
+                    false
+                ],
+                [
+                    "forcing__get-allergy",
+                    false
+                ]
+            ],
+            "effect": {
+                "global-outcome-name": "check-conflicts",
+                "type": "oneof",
+                "outcomes": [
+                    {
+                        "updates": {
+                            "conflict": {
+                                "value": true,
+                                "variable": "conflict",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            }
+                        },
+                        "context": {
+                            "cuisine": {
+                                "value": "dessert"
+                            },
+                            "food_restriction": {
+                                "value": "dairy-free"
+                            }
+                        },
+                        "name": "check-conflicts_DETDUP_check-conflicts-EQ-restriction-dessert",
+                        "intent": null,
+                        "assignments": {
+                            "$conflict": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "conflict": {
+                                "value": true,
+                                "variable": "conflict",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            }
+                        },
+                        "context": {
+                            "cuisine": {
+                                "value": "Mexican"
+                            },
+                            "food_restriction": {
+                                "value": "gluten-free"
+                            }
+                        },
+                        "name": "check-conflicts_DETDUP_check-conflicts-EQ-restriction-mexican",
+                        "intent": null,
+                        "assignments": {
+                            "$conflict": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "conflict": {
+                                "value": false,
+                                "variable": "conflict",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            }
+                        },
+                        "context": {
+                            "cuisine": {
+                                "value": "Italian"
+                            }
+                        },
+                        "name": "check-conflicts_DETDUP_check-conflicts-EQ-no-restriction-1",
+                        "intent": null,
+                        "assignments": {
+                            "$conflict": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "conflict": {
+                                "value": false,
+                                "variable": "conflict",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            }
+                        },
+                        "context": {
+                            "cuisine": {
+                                "value": "Chinese"
+                            }
+                        },
+                        "name": "check-conflicts_DETDUP_check-conflicts-EQ-no-restriction-2",
+                        "intent": null,
+                        "assignments": {
+                            "$conflict": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "conflict": {
+                                "value": false,
+                                "variable": "conflict",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            }
+                        },
+                        "context": {
+                            "cuisine": {
+                                "value": "dessert"
+                            },
+                            "food_restriction": {
+                                "value": "gluten-free"
+                            }
+                        },
+                        "name": "check-conflicts_DETDUP_check-conflicts-EQ-no-restriction-3",
+                        "intent": null,
+                        "assignments": {
+                            "$conflict": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "conflict": {
+                                "value": false,
+                                "variable": "conflict",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            }
+                        },
+                        "context": {
+                            "cuisine": {
+                                "value": "Mexican"
+                            },
+                            "food_restriction": {
+                                "value": "dairy-free"
+                            }
+                        },
+                        "name": "check-conflicts_DETDUP_check-conflicts-EQ-no-restriction-4",
+                        "intent": null,
+                        "assignments": {
+                            "$conflict": "found"
+                        }
+                    }
+                ]
+            }
+        },
+        "reset-preferences": {
+            "type": "system",
+            "condition": [
+                [
+                    "conflict",
+                    "Known"
+                ],
+                [
+                    "conflict",
+                    true
+                ],
+                [
+                    "force-statement",
+                    false
+                ],
+                [
+                    "forcing__get-allergy",
+                    false
+                ]
+            ],
+            "effect": {
+                "global-outcome-name": "reset",
+                "type": "oneof",
+                "outcomes": [
+                    {
+                        "updates": {
+                            "have_allergy": {
+                                "variable": "have_allergy",
+                                "certainty": "Unknown",
+                                "value": null,
+                                "interpretation": "json"
+                            },
+                            "food_restriction": {
+                                "variable": "food_restriction",
+                                "certainty": "Unknown",
+                                "value": null,
+                                "interpretation": "json"
+                            },
+                            "cuisine": {
+                                "variable": "cuisine",
+                                "certainty": "Unknown",
+                                "value": null,
+                                "interpretation": "json"
+                            },
+                            "conflict": {
+                                "variable": "conflict",
+                                "certainty": "Unknown",
+                                "value": null,
+                                "interpretation": "json"
+                            },
+                            "have-message": {
+                                "value": true,
+                                "variable": "have-message",
+                                "interpretation": "json"
+                            },
+                            "force-statement": {
+                                "value": true,
+                                "variable": "force-statement",
+                                "interpretation": "json"
+                            }
+                        },
+                        "response_variants": [
+                            "Sorry, but there are no restaurants that match your allergy and cuisine preferences. Try entering a different set of preferences."
+                        ],
+                        "name": "reset-preferences_DETDUP_reset-EQ-reset-values",
+                        "intent": null,
+                        "assignments": {
+                            "$have_allergy": "didnt-find",
+                            "$food_restriction": "didnt-find",
+                            "$cuisine": "didnt-find",
+                            "$conflict": "didnt-find"
+                        }
+                    }
+                ]
+            }
+        },
+        "set-restaurant": {
+            "type": "system",
+            "subtype": "Context dependent determination",
+            "condition": [
+                [
+                    "cuisine",
+                    "Known"
+                ],
+                [
+                    "conflict",
+                    "Known"
+                ],
+                [
+                    "conflict",
+                    false
+                ],
+                [
+                    "restaurant",
+                    "Unknown"
+                ],
+                [
+                    "force-statement",
+                    false
+                ],
+                [
+                    "forcing__get-allergy",
+                    false
+                ]
+            ],
+            "effect": {
+                "global-outcome-name": "assign_restaurant",
+                "type": "oneof",
+                "outcomes": [
+                    {
+                        "updates": {
+                            "restaurant": {
+                                "value": "Guac Grill",
+                                "variable": "restaurant",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            }
+                        },
+                        "context": {
+                            "cuisine": {
+                                "value": "Mexican"
+                            }
+                        },
+                        "name": "set-restaurant_DETDUP_assign_restaurant-EQ-set-mexican",
+                        "intent": null,
+                        "assignments": {
+                            "$restaurant": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "restaurant": {
+                                "value": "Alfredo's Pizza Caf\u00e9",
+                                "variable": "restaurant",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            }
+                        },
+                        "context": {
+                            "cuisine": {
+                                "value": "Italian"
+                            }
+                        },
+                        "name": "set-restaurant_DETDUP_assign_restaurant-EQ-set-italian",
+                        "intent": null,
+                        "assignments": {
+                            "$restaurant": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "restaurant": {
+                                "value": "Mandarin",
+                                "variable": "restaurant",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            }
+                        },
+                        "context": {
+                            "cuisine": {
+                                "value": "Chinese"
+                            }
+                        },
+                        "name": "set-restaurant_DETDUP_assign_restaurant-EQ-set-chinese",
+                        "intent": null,
+                        "assignments": {
+                            "$restaurant": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "restaurant": {
+                                "value": "Geneva Crepes",
+                                "variable": "restaurant",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            }
+                        },
+                        "context": {
+                            "cuisine": {
+                                "value": "dessert"
+                            }
+                        },
+                        "name": "set-restaurant_DETDUP_assign_restaurant-EQ-set-dessert",
+                        "intent": null,
+                        "assignments": {
+                            "$restaurant": "found"
+                        }
+                    }
+                ]
+            }
+        },
+        "set-outing": {
+            "type": "system",
+            "subtype": "Context dependent determination",
+            "condition": [
+                [
+                    "budget",
+                    "Known"
+                ],
+                [
+                    "outing_type",
+                    "Known"
+                ],
+                [
+                    "force-statement",
+                    false
+                ],
+                [
+                    "forcing__get-allergy",
+                    false
+                ]
+            ],
+            "effect": {
+                "global-outcome-name": "assign_outing",
+                "type": "oneof",
+                "outcomes": [
+                    {
+                        "updates": {
+                            "outing": {
+                                "value": "Stages",
+                                "variable": "outing",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            }
+                        },
+                        "context": {
+                            "budget": {
+                                "value": "low"
+                            },
+                            "outing_type": {
+                                "value": "high-energy"
+                            }
+                        },
+                        "name": "set-outing_DETDUP_assign_outing-EQ-set-club",
+                        "intent": null,
+                        "assignments": {
+                            "$outing": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "outing": {
+                                "value": "Stauffer Library",
+                                "variable": "outing",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            }
+                        },
+                        "context": {
+                            "budget": {
+                                "value": "low"
+                            },
+                            "outing_type": {
+                                "value": "low-energy"
+                            }
+                        },
+                        "name": "set-outing_DETDUP_assign_outing-EQ-set-library",
+                        "intent": null,
+                        "assignments": {
+                            "$outing": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "outing": {
+                                "value": "Broadway Theater",
+                                "variable": "outing",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            }
+                        },
+                        "context": {
+                            "budget": {
+                                "value": "high"
+                            },
+                            "outing_type": {
+                                "value": "low-energy"
+                            }
+                        },
+                        "name": "set-outing_DETDUP_assign_outing-EQ-set-theater",
+                        "intent": null,
+                        "assignments": {
+                            "$outing": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "outing": {
+                                "value": "Smith's Golfing Club",
+                                "variable": "outing",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            }
+                        },
+                        "context": {
+                            "budget": {
+                                "value": "high"
+                            },
+                            "outing_type": {
+                                "value": "high-energy"
+                            }
+                        },
+                        "name": "set-outing_DETDUP_assign_outing-EQ-set-golf",
+                        "intent": null,
+                        "assignments": {
+                            "$outing": "found"
+                        }
+                    }
+                ]
+            }
+        },
+        "complete": {
+            "disable-fallback": true,
+            "type": "dialogue",
+            "condition": [
+                [
+                    "phone_number",
+                    "Known"
+                ],
+                [
+                    "location",
+                    "Known"
+                ],
+                [
+                    "restaurant",
+                    "Known"
+                ],
+                [
+                    "outing",
+                    "Known"
+                ],
+                [
+                    "force-statement",
+                    false
+                ],
+                [
+                    "forcing__get-allergy",
+                    false
+                ]
+            ],
+            "message_variants": [
+                "Booked a reservation at $restaurant as well as a spot at $outing in $location."
+            ],
+            "effect": {
+                "global-outcome-name": "finish",
+                "type": "oneof",
+                "outcomes": [
+                    {
+                        "updates": {
+                            "goal": {
+                                "value": true,
+                                "variable": "goal",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": null,
+                        "name": "complete_DETDUP_finish-EQ-finish",
+                        "assignments": {
+                            "$goal": "found"
+                        }
+                    }
+                ]
+            },
+            "intents": {}
+        },
+        "dialogue_statement": {
+            "type": "dialogue",
+            "condition": [
+                [
+                    "have-message",
+                    true
+                ],
+                [
+                    "force-statement",
+                    true
+                ]
+            ],
+            "effect": {
+                "global-outcome-name": "reset",
+                "type": "oneof",
+                "outcomes": [
+                    {
+                        "updates": {
+                            "have-message": {
+                                "value": false,
+                                "variable": "have-message",
+                                "interpretation": "json"
+                            },
+                            "force-statement": {
+                                "value": false,
+                                "variable": "force-statement",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "utter_ds",
+                        "name": "dialogue_statement_DETDUP_reset-EQ-lock",
+                        "assignments": {}
+                    }
+                ]
+            },
+            "message_variants": [],
+            "intents": {
+                "utter_ds": {
+                    "entities": [],
+                    "utterances": [],
+                    "type": "regular"
+                }
+            }
+        },
+        "slot-fill__get-location": {
+            "type": "dialogue",
+            "message_variants": [
+                "Where are you located?"
+            ],
+            "fallback_message_variants": [
+                "Sorry, that isn't a valid location."
+            ],
+            "condition": [
+                [
+                    "location",
+                    null
+                ],
+                [
+                    "location",
+                    "Unknown"
+                ],
+                [
+                    "force-statement",
+                    false
+                ],
+                [
+                    "forcing__get-allergy",
+                    false
+                ]
+            ],
+            "effect": {
+                "global-outcome-name": "validate-slot-fill",
+                "type": "oneof",
+                "outcomes": [
+                    {
+                        "updates": {
+                            "location": {
+                                "value": "$location",
+                                "variable": "location",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            },
+                            "have-message": {
+                                "value": true,
+                                "variable": "have-message",
+                                "interpretation": "json"
+                            },
+                            "force-statement": {
+                                "value": true,
+                                "variable": "force-statement",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "share_location",
+                        "response_variants": [
+                            "Tailoring your results to what's available in $location..."
+                        ],
+                        "name": "slot-fill__get-location_DETDUP_validate-slot-fill-EQ-location_found",
+                        "assignments": {
+                            "$location": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "have-message": {
+                                "value": true,
+                                "variable": "have-message",
+                                "interpretation": "json"
+                            },
+                            "force-statement": {
+                                "value": true,
+                                "variable": "force-statement",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "fallback",
+                        "name": "slot-fill__get-location_DETDUP_validate-slot-fill-EQ-fallback",
+                        "assignments": {}
+                    }
+                ]
+            },
+            "intents": {
+                "share_location": {
+                    "entities": [
+                        "$location"
+                    ],
+                    "utterances": [
+                        "I live in $location.",
+                        "I am located in $location.",
+                        "Can you help me find things to do in $location?"
+                    ],
+                    "type": "regular"
+                },
+                "fallback": {
+                    "entities": [],
+                    "utterances": [],
+                    "type": "fallback"
+                }
+            }
+        },
+        "slot-fill__get-phone_number": {
+            "type": "dialogue",
+            "message_variants": [
+                "What is your phone number? I can use it to make reservations."
+            ],
+            "fallback_message_variants": [
+                "Sorry, that isn't a valid number."
+            ],
+            "condition": [
+                [
+                    "phone_number",
+                    null
+                ],
+                [
+                    "phone_number",
+                    "Unknown"
+                ],
+                [
+                    "force-statement",
+                    false
+                ],
+                [
+                    "forcing__get-allergy",
+                    false
+                ]
+            ],
+            "effect": {
+                "global-outcome-name": "validate-slot-fill",
+                "type": "oneof",
+                "outcomes": [
+                    {
+                        "updates": {
+                            "phone_number": {
+                                "value": "$phone_number",
+                                "variable": "phone_number",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "share_phone_number",
+                        "name": "slot-fill__get-phone_number_DETDUP_validate-slot-fill-EQ-phone_number_found",
+                        "assignments": {
+                            "$phone_number": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "phone_number": {
+                                "value": "$phone_number",
+                                "variable": "phone_number",
+                                "certainty": "Uncertain",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "share_phone_number",
+                        "name": "slot-fill__get-phone_number_DETDUP_validate-slot-fill-EQ-phone_number_maybe-found",
+                        "assignments": {
+                            "$phone_number": "maybe-found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "have-message": {
+                                "value": true,
+                                "variable": "have-message",
+                                "interpretation": "json"
+                            },
+                            "force-statement": {
+                                "value": true,
+                                "variable": "force-statement",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "fallback",
+                        "name": "slot-fill__get-phone_number_DETDUP_validate-slot-fill-EQ-fallback",
+                        "assignments": {}
+                    }
+                ]
+            },
+            "intents": {
+                "share_phone_number": {
+                    "entities": [
+                        "$phone_number"
+                    ],
+                    "utterances": [
+                        "My phone number is $phone_number.",
+                        "My number is $phone_number.",
+                        "$phone_number"
+                    ],
+                    "type": "regular"
+                },
+                "fallback": {
+                    "entities": [],
+                    "utterances": [],
+                    "type": "fallback"
+                }
+            }
+        },
+        "clarify__phone_number": {
+            "type": "dialogue",
+            "message_variants": [
+                "I'm unsure about your phone number, is it $phone_number?"
+            ],
+            "condition": [
+                [
+                    "phone_number",
+                    "Uncertain"
+                ],
+                [
+                    "force-statement",
+                    false
+                ],
+                [
+                    "forcing__get-allergy",
+                    false
+                ]
+            ],
+            "effect": {
+                "global-outcome-name": "validate-clarification",
+                "type": "oneof",
+                "outcomes": [
+                    {
+                        "updates": {
+                            "phone_number": {
+                                "value": "$phone_number",
+                                "variable": "phone_number",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "confirm",
+                        "name": "clarify__phone_number_DETDUP_validate-clarification-EQ-confirm",
+                        "assignments": {
+                            "$phone_number": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "phone_number": {
+                                "value": null,
+                                "variable": "phone_number",
+                                "certainty": "Unknown",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "deny",
+                        "name": "clarify__phone_number_DETDUP_validate-clarification-EQ-deny",
+                        "assignments": {
+                            "$phone_number": "didnt-find"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "have-message": {
+                                "value": true,
+                                "variable": "have-message",
+                                "interpretation": "json"
+                            },
+                            "force-statement": {
+                                "value": true,
+                                "variable": "force-statement",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "fallback",
+                        "name": "clarify__phone_number_DETDUP_validate-clarification-EQ-fallback",
+                        "assignments": {}
+                    }
+                ]
+            },
+            "fallback_message_variants": [
+                "Sorry, I couldn't understand that input.",
+                "Sorry, I didn't quite get that."
+            ],
+            "intents": {
+                "confirm": {
+                    "entities": [],
+                    "utterances": [
+                        "yes",
+                        "yeah",
+                        "that's it",
+                        "Y",
+                        "mhm",
+                        "confirm",
+                        "yes please"
+                    ],
+                    "type": "regular"
+                },
+                "deny": {
+                    "entities": [],
+                    "utterances": [
+                        "no",
+                        "not at all",
+                        "that's not what i meant",
+                        "absolutely not",
+                        "i don't want that",
+                        "nah",
+                        "no thanks",
+                        "no thank you"
+                    ],
+                    "type": "regular"
+                },
+                "fallback": {
+                    "entities": [],
+                    "utterances": [],
+                    "type": "fallback"
+                }
+            }
+        },
+        "slot-fill__get-cuisine": {
+            "type": "dialogue",
+            "message_variants": [
+                "What is your cuisine of choice? Mexican, Italian, Chinese, and dessert restaurants are in the area."
+            ],
+            "fallback_message_variants": [
+                "Sorry, that isn't a valid cuisine."
+            ],
+            "condition": [
+                [
+                    "cuisine",
+                    null
+                ],
+                [
+                    "cuisine",
+                    "Unknown"
+                ],
+                [
+                    "force-statement",
+                    false
+                ],
+                [
+                    "forcing__get-allergy",
+                    false
+                ]
+            ],
+            "effect": {
+                "global-outcome-name": "validate-slot-fill",
+                "type": "oneof",
+                "outcomes": [
+                    {
+                        "updates": {
+                            "cuisine": {
+                                "value": "$cuisine",
+                                "variable": "cuisine",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            },
+                            "have-message": {
+                                "value": true,
+                                "variable": "have-message",
+                                "interpretation": "json"
+                            },
+                            "force-statement": {
+                                "value": true,
+                                "variable": "force-statement",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "share_cuisine",
+                        "response_variants": [
+                            "Cuisine preference has been logged."
+                        ],
+                        "name": "slot-fill__get-cuisine_DETDUP_validate-slot-fill-EQ-cuisine_found",
+                        "assignments": {
+                            "$cuisine": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "cuisine": {
+                                "value": "$cuisine",
+                                "variable": "cuisine",
+                                "certainty": "Uncertain",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "share_cuisine",
+                        "name": "slot-fill__get-cuisine_DETDUP_validate-slot-fill-EQ-cuisine_maybe-found",
+                        "assignments": {
+                            "$cuisine": "maybe-found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "have-message": {
+                                "value": true,
+                                "variable": "have-message",
+                                "interpretation": "json"
+                            },
+                            "force-statement": {
+                                "value": true,
+                                "variable": "force-statement",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "fallback",
+                        "name": "slot-fill__get-cuisine_DETDUP_validate-slot-fill-EQ-fallback",
+                        "assignments": {}
+                    }
+                ]
+            },
+            "intents": {
+                "share_cuisine": {
+                    "entities": [
+                        "$cuisine"
+                    ],
+                    "utterances": [
+                        "I want to eat $cuisine.",
+                        "Do you have restaurants of type $cuisine?",
+                        "Are there any $cuisine restaurants in the area?"
+                    ],
+                    "type": "regular"
+                },
+                "fallback": {
+                    "entities": [],
+                    "utterances": [],
+                    "type": "fallback"
+                }
+            }
+        },
+        "clarify__cuisine": {
+            "type": "dialogue",
+            "message_variants": [
+                "I didn't quite get your cuisine preference. Do you want to eat $cuisine?"
+            ],
+            "condition": [
+                [
+                    "cuisine",
+                    "Uncertain"
+                ],
+                [
+                    "force-statement",
+                    false
+                ],
+                [
+                    "forcing__get-allergy",
+                    false
+                ]
+            ],
+            "effect": {
+                "global-outcome-name": "validate-clarification",
+                "type": "oneof",
+                "outcomes": [
+                    {
+                        "updates": {
+                            "cuisine": {
+                                "value": "$cuisine",
+                                "variable": "cuisine",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "confirm",
+                        "name": "clarify__cuisine_DETDUP_validate-clarification-EQ-confirm",
+                        "assignments": {
+                            "$cuisine": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "cuisine": {
+                                "value": null,
+                                "variable": "cuisine",
+                                "certainty": "Unknown",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "deny",
+                        "name": "clarify__cuisine_DETDUP_validate-clarification-EQ-deny",
+                        "assignments": {
+                            "$cuisine": "didnt-find"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "have-message": {
+                                "value": true,
+                                "variable": "have-message",
+                                "interpretation": "json"
+                            },
+                            "force-statement": {
+                                "value": true,
+                                "variable": "force-statement",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "fallback",
+                        "name": "clarify__cuisine_DETDUP_validate-clarification-EQ-fallback",
+                        "assignments": {}
+                    }
+                ]
+            },
+            "fallback_message_variants": [
+                "Sorry, I couldn't understand that input.",
+                "Sorry, I didn't quite get that."
+            ],
+            "intents": {
+                "confirm": {
+                    "entities": [],
+                    "utterances": [
+                        "yes",
+                        "yeah",
+                        "that's it",
+                        "Y",
+                        "mhm",
+                        "confirm",
+                        "yes please"
+                    ],
+                    "type": "regular"
+                },
+                "deny": {
+                    "entities": [],
+                    "utterances": [
+                        "no",
+                        "not at all",
+                        "that's not what i meant",
+                        "absolutely not",
+                        "i don't want that",
+                        "nah",
+                        "no thanks",
+                        "no thank you"
+                    ],
+                    "type": "regular"
+                },
+                "fallback": {
+                    "entities": [],
+                    "utterances": [],
+                    "type": "fallback"
+                }
+            }
+        },
+        "slot-fill__get_outing": {
+            "type": "dialogue",
+            "message_variants": [
+                "What kind of outing would you like to go to? Please specify both your budget (high or low) and the type of atmosphere you're looking for (i.e. fun, relaxing, etc.)"
+            ],
+            "fallback_message_variants": [
+                "Sorry, that isn't a valid outing preference."
+            ],
+            "condition": [
+                [
+                    "budget",
+                    null
+                ],
+                [
+                    "budget",
+                    "Unknown"
+                ],
+                [
+                    "outing_type",
+                    null
+                ],
+                [
+                    "outing_type",
+                    "Unknown"
+                ],
+                [
+                    "force-statement",
+                    false
+                ],
+                [
+                    "forcing__get-allergy",
+                    false
+                ]
+            ],
+            "effect": {
+                "global-outcome-name": "validate-slot-fill",
+                "type": "oneof",
+                "outcomes": [
+                    {
+                        "updates": {
+                            "budget": {
+                                "value": "$budget",
+                                "variable": "budget",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            },
+                            "outing_type": {
+                                "value": "$outing_type",
+                                "variable": "outing_type",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "share_all_outing_preferences",
+                        "name": "slot-fill__get_outing_DETDUP_validate-slot-fill-EQ-budget_found-outing_type_found",
+                        "assignments": {
+                            "$budget": "found",
+                            "$outing_type": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "budget": {
+                                "value": "$budget",
+                                "variable": "budget",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            },
+                            "outing_type": {
+                                "value": "$outing_type",
+                                "variable": "outing_type",
+                                "certainty": "Uncertain",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "share_all_outing_preferences",
+                        "name": "slot-fill__get_outing_DETDUP_validate-slot-fill-EQ-budget_found-outing_type_maybe-found",
+                        "assignments": {
+                            "$budget": "found",
+                            "$outing_type": "maybe-found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "budget": {
+                                "value": "$budget",
+                                "variable": "budget",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            },
+                            "allow_single_slot_outing_type": {
+                                "value": true,
+                                "variable": "allow_single_slot_outing_type",
+                                "interpretation": "json"
+                            },
+                            "have-message": {
+                                "value": true,
+                                "variable": "have-message",
+                                "interpretation": "json"
+                            },
+                            "force-statement": {
+                                "value": true,
+                                "variable": "force-statement",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "share_all_outing_preferences",
+                        "response_variants": [
+                            "Ok, I'll take that into account."
+                        ],
+                        "name": "slot-fill__get_outing_DETDUP_validate-slot-fill-EQ-budget_found",
+                        "assignments": {
+                            "$budget": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "outing_type": {
+                                "value": "$outing_type",
+                                "variable": "outing_type",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            },
+                            "allow_single_slot_budget": {
+                                "value": true,
+                                "variable": "allow_single_slot_budget",
+                                "interpretation": "json"
+                            },
+                            "have-message": {
+                                "value": true,
+                                "variable": "have-message",
+                                "interpretation": "json"
+                            },
+                            "force-statement": {
+                                "value": true,
+                                "variable": "force-statement",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "share_all_outing_preferences",
+                        "response_variants": [
+                            "Great choice!"
+                        ],
+                        "name": "slot-fill__get_outing_DETDUP_validate-slot-fill-EQ-outing_type_found",
+                        "assignments": {
+                            "$outing_type": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "outing_type": {
+                                "value": "$outing_type",
+                                "variable": "outing_type",
+                                "certainty": "Uncertain",
+                                "interpretation": "json"
+                            },
+                            "allow_single_slot_budget": {
+                                "value": true,
+                                "variable": "allow_single_slot_budget",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "share_all_outing_preferences",
+                        "name": "slot-fill__get_outing_DETDUP_validate-slot-fill-EQ-outing_type_maybe-found",
+                        "assignments": {
+                            "$outing_type": "maybe-found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "have-message": {
+                                "value": true,
+                                "variable": "have-message",
+                                "interpretation": "json"
+                            },
+                            "force-statement": {
+                                "value": true,
+                                "variable": "force-statement",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "fallback",
+                        "name": "slot-fill__get_outing_DETDUP_validate-slot-fill-EQ-fallback",
+                        "assignments": {}
+                    }
+                ]
+            },
+            "intents": {
+                "share_all_outing_preferences": {
+                    "entities": [
+                        "$budget",
+                        "$outing_type"
+                    ],
+                    "utterances": [
+                        "I have a $budget budget and I would prefer a $outing_type atmosphere today.",
+                        "I am operating within a $budget budget and I want to go to a $outing_type place.",
+                        "I can do activities with a $budget budget and I want to find the most $outing_type place in the city."
+                    ],
+                    "type": "regular"
+                },
+                "fallback": {
+                    "entities": [],
+                    "utterances": [],
+                    "type": "fallback"
+                }
+            }
+        },
+        "single_slot__outing_type": {
+            "type": "dialogue",
+            "message_variants": [
+                "What is your preferred outing type? Use a descriptive adjective like fun, high-energy, relaxing, etc."
+            ],
+            "condition": [
+                [
+                    "outing_type",
+                    "Unknown"
+                ],
+                [
+                    "allow_single_slot_outing_type",
+                    true
+                ],
+                [
+                    "force-statement",
+                    false
+                ],
+                [
+                    "forcing__get-allergy",
+                    false
+                ]
+            ],
+            "effect": {
+                "global-outcome-name": "validate-slot-fill",
+                "type": "oneof",
+                "outcomes": [
+                    {
+                        "updates": {
+                            "outing_type": {
+                                "value": "$outing_type",
+                                "variable": "outing_type",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            },
+                            "allow_single_slot_outing_type": {
+                                "value": false,
+                                "variable": "allow_single_slot_outing_type",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "share_outing_type",
+                        "name": "single_slot__outing_type_DETDUP_validate-slot-fill-EQ-fill-slot",
+                        "assignments": {
+                            "$outing_type": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "outing_type": {
+                                "value": "$outing_type",
+                                "variable": "outing_type",
+                                "certainty": "Uncertain",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "share_outing_type",
+                        "name": "single_slot__outing_type_DETDUP_validate-slot-fill-EQ-slot-unclear",
+                        "assignments": {
+                            "$outing_type": "maybe-found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "have-message": {
+                                "value": true,
+                                "variable": "have-message",
+                                "interpretation": "json"
+                            },
+                            "force-statement": {
+                                "value": true,
+                                "variable": "force-statement",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "fallback",
+                        "name": "single_slot__outing_type_DETDUP_validate-slot-fill-EQ-fallback",
+                        "assignments": {}
+                    }
+                ]
+            },
+            "fallback_message_variants": [
+                "Sorry, that isn't a valid outing type."
+            ],
+            "intents": {
+                "share_outing_type": {
+                    "entities": [
+                        "$outing_type"
+                    ],
+                    "utterances": [
+                        "I would prefer a $outing_type atmosphere today.",
+                        "I want to go to a $outing_type place.",
+                        "What is the most $outing_type place in the city?"
+                    ],
+                    "type": "regular"
+                },
+                "fallback": {
+                    "entities": [],
+                    "utterances": [],
+                    "type": "fallback"
+                }
+            }
+        },
+        "single_slot__budget": {
+            "type": "dialogue",
+            "message_variants": [
+                "What is your budget preference? Please select either high or low."
+            ],
+            "condition": [
+                [
+                    "budget",
+                    "Unknown"
+                ],
+                [
+                    "allow_single_slot_budget",
+                    true
+                ],
+                [
+                    "force-statement",
+                    false
+                ],
+                [
+                    "forcing__get-allergy",
+                    false
+                ]
+            ],
+            "effect": {
+                "global-outcome-name": "validate-slot-fill",
+                "type": "oneof",
+                "outcomes": [
+                    {
+                        "updates": {
+                            "budget": {
+                                "value": "$budget",
+                                "variable": "budget",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            },
+                            "allow_single_slot_budget": {
+                                "value": false,
+                                "variable": "allow_single_slot_budget",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "share_budget",
+                        "name": "single_slot__budget_DETDUP_validate-slot-fill-EQ-fill-slot",
+                        "assignments": {
+                            "$budget": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "have-message": {
+                                "value": true,
+                                "variable": "have-message",
+                                "interpretation": "json"
+                            },
+                            "force-statement": {
+                                "value": true,
+                                "variable": "force-statement",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "fallback",
+                        "name": "single_slot__budget_DETDUP_validate-slot-fill-EQ-fallback",
+                        "assignments": {}
+                    }
+                ]
+            },
+            "fallback_message_variants": [
+                "Sorry, that isn't a valid budget option. Please select either high or low."
+            ],
+            "intents": {
+                "share_budget": {
+                    "entities": [
+                        "$budget"
+                    ],
+                    "utterances": [
+                        "I have a $budget budget.",
+                        "I am operating within a $budget budget.",
+                        "I can do activities with a $budget budget."
+                    ],
+                    "type": "regular"
+                },
+                "fallback": {
+                    "entities": [],
+                    "utterances": [],
+                    "type": "fallback"
+                }
+            }
+        },
+        "clarify__outing_type": {
+            "type": "dialogue",
+            "message_variants": [
+                "Sorry, I wasn't quite sure about your outing type preference. Did you want a(n) $outing_type atmosphere?"
+            ],
+            "condition": [
+                [
+                    "outing_type",
+                    "Uncertain"
+                ],
+                [
+                    "force-statement",
+                    false
+                ],
+                [
+                    "forcing__get-allergy",
+                    false
+                ]
+            ],
+            "effect": {
+                "global-outcome-name": "validate-clarification",
+                "type": "oneof",
+                "outcomes": [
+                    {
+                        "updates": {
+                            "outing_type": {
+                                "value": "$outing_type",
+                                "variable": "outing_type",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "confirm",
+                        "name": "clarify__outing_type_DETDUP_validate-clarification-EQ-confirm",
+                        "assignments": {
+                            "$outing_type": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "outing_type": {
+                                "value": null,
+                                "variable": "outing_type",
+                                "certainty": "Unknown",
+                                "interpretation": "json"
+                            },
+                            "allow_single_slot_outing_type": {
+                                "value": true,
+                                "variable": "allow_single_slot_outing_type",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "deny",
+                        "name": "clarify__outing_type_DETDUP_validate-clarification-EQ-deny",
+                        "assignments": {
+                            "$outing_type": "didnt-find"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "have-message": {
+                                "value": true,
+                                "variable": "have-message",
+                                "interpretation": "json"
+                            },
+                            "force-statement": {
+                                "value": true,
+                                "variable": "force-statement",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "fallback",
+                        "name": "clarify__outing_type_DETDUP_validate-clarification-EQ-fallback",
+                        "assignments": {}
+                    }
+                ]
+            },
+            "fallback_message_variants": [
+                "Sorry, I couldn't understand that input.",
+                "Sorry, I didn't quite get that."
+            ],
+            "intents": {
+                "confirm": {
+                    "entities": [],
+                    "utterances": [
+                        "yes",
+                        "yeah",
+                        "that's it",
+                        "Y",
+                        "mhm",
+                        "confirm",
+                        "yes please"
+                    ],
+                    "type": "regular"
+                },
+                "deny": {
+                    "entities": [],
+                    "utterances": [
+                        "no",
+                        "not at all",
+                        "that's not what i meant",
+                        "absolutely not",
+                        "i don't want that",
+                        "nah",
+                        "no thanks",
+                        "no thank you"
+                    ],
+                    "type": "regular"
+                },
+                "fallback": {
+                    "entities": [],
+                    "utterances": [],
+                    "type": "fallback"
+                }
+            }
+        }
+    }
+}

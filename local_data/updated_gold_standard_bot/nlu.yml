@@ -1,0 +1,354 @@
+nlu:
+- examples: '- yes
+
+    - yeah
+
+    - that''s it
+
+    - Y
+
+    - mhm
+
+    - confirm
+
+    - yes please'
+  intent: confirm
+- examples: '- no
+
+    - not at all
+
+    - that''s not what i meant
+
+    - absolutely not
+
+    - i don''t want that
+
+    - nah
+
+    - no thanks
+
+    - no thank you'
+  intent: deny
+- examples: '- \d{10}'
+  regex: phone_number
+- examples: '- My phone number is [1234567890]{"entity": "phone_number", "value":
+    "1234567890"}.
+
+    - My number is [1234567890]{"entity": "phone_number", "value": "1234567890"}.
+
+    - [1234567890]{"entity": "phone_number", "value": "1234567890"}
+
+    - My phone number is [2345678901]{"entity": "phone_number", "value": "2345678901"}.
+
+    - My number is [2345678901]{"entity": "phone_number", "value": "2345678901"}.
+
+    - [2345678901]{"entity": "phone_number", "value": "2345678901"}
+
+    - My phone number is [3453452794]{"entity": "phone_number", "value": "3453452794"}.
+
+    - My number is [3453452794]{"entity": "phone_number", "value": "3453452794"}.
+
+    - [3453452794]{"entity": "phone_number", "value": "3453452794"}'
+  intent: share_phone_number
+- examples: '- I live in [$location]{"entity": "location", "value": "$location"}.
+
+    - I am located in [$location]{"entity": "location", "value": "$location"}.
+
+    - Can you help me find things to do in [$location]{"entity": "location", "value":
+    "$location"}?'
+  intent: share_location
+- examples: '- I want to eat [Mexican]{"entity": "cuisine", "value": "Mexican"}.
+
+    - Do you have restaurants of type [Mexican]{"entity": "cuisine", "value": "Mexican"}?
+
+    - Are there any [Mexican]{"entity": "cuisine", "value": "Mexican"} restaurants
+    in the area?
+
+    - I want to eat [Italian]{"entity": "cuisine", "value": "Italian"}.
+
+    - Do you have restaurants of type [Italian]{"entity": "cuisine", "value": "Italian"}?
+
+    - Are there any [Italian]{"entity": "cuisine", "value": "Italian"} restaurants
+    in the area?
+
+    - I want to eat [Chinese]{"entity": "cuisine", "value": "Chinese"}.
+
+    - Do you have restaurants of type [Chinese]{"entity": "cuisine", "value": "Chinese"}?
+
+    - Are there any [Chinese]{"entity": "cuisine", "value": "Chinese"} restaurants
+    in the area?
+
+    - I want to eat [dessert]{"entity": "cuisine", "value": "dessert"}.
+
+    - Do you have restaurants of type [dessert]{"entity": "cuisine", "value": "dessert"}?
+
+    - Are there any [dessert]{"entity": "cuisine", "value": "dessert"} restaurants
+    in the area?'
+  intent: share_cuisine
+- examples: '- I have to eat [dairy-free]{"entity": "food_restriction", "value": "dairy-free"}.
+
+    - I can only eat foods that are [dairy-free]{"entity": "food_restriction", "value":
+    "dairy-free"}.
+
+    - I am allergic to any foods that are not [dairy-free]{"entity": "food_restriction",
+    "value": "dairy-free"}.
+
+    - I have to eat [gluten-free]{"entity": "food_restriction", "value": "gluten-free"}.
+
+    - I can only eat foods that are [gluten-free]{"entity": "food_restriction", "value":
+    "gluten-free"}.
+
+    - I am allergic to any foods that are not [gluten-free]{"entity": "food_restriction",
+    "value": "gluten-free"}.'
+  intent: share_allergies
+- examples: '- I have a [low]{"entity": "budget", "value": "low"} budget and I would
+    prefer a [high-energy]{"entity": "outing_type", "value": "high-energy"} atmosphere
+    today.
+
+    - I am operating within a [low]{"entity": "budget", "value": "low"} budget and
+    I want to go to a [high-energy]{"entity": "outing_type", "value": "high-energy"}
+    place.
+
+    - I can do activities with a [low]{"entity": "budget", "value": "low"} budget
+    and I want to find the most [high-energy]{"entity": "outing_type", "value": "high-energy"}
+    place in the city.
+
+    - I have a [low]{"entity": "budget", "value": "low"} budget and I would prefer
+    a [low-energy]{"entity": "outing_type", "value": "low-energy"} atmosphere today.
+
+    - I am operating within a [low]{"entity": "budget", "value": "low"} budget and
+    I want to go to a [low-energy]{"entity": "outing_type", "value": "low-energy"}
+    place.
+
+    - I can do activities with a [low]{"entity": "budget", "value": "low"} budget
+    and I want to find the most [low-energy]{"entity": "outing_type", "value": "low-energy"}
+    place in the city.
+
+    - I have a [low]{"entity": "budget", "value": "low"} budget and I would prefer
+    a [fun]{"entity": "outing_type", "value": "high-energy"} atmosphere today.
+
+    - I am operating within a [low]{"entity": "budget", "value": "low"} budget and
+    I want to go to a [fun]{"entity": "outing_type", "value": "high-energy"} place.
+
+    - I can do activities with a [low]{"entity": "budget", "value": "low"} budget
+    and I want to find the most [fun]{"entity": "outing_type", "value": "high-energy"}
+    place in the city.
+
+    - I have a [low]{"entity": "budget", "value": "low"} budget and I would prefer
+    a [exciting]{"entity": "outing_type", "value": "high-energy"} atmosphere today.
+
+    - I am operating within a [low]{"entity": "budget", "value": "low"} budget and
+    I want to go to a [exciting]{"entity": "outing_type", "value": "high-energy"}
+    place.
+
+    - I can do activities with a [low]{"entity": "budget", "value": "low"} budget
+    and I want to find the most [exciting]{"entity": "outing_type", "value": "high-energy"}
+    place in the city.
+
+    - I have a [low]{"entity": "budget", "value": "low"} budget and I would prefer
+    a [social]{"entity": "outing_type", "value": "high-energy"} atmosphere today.
+
+    - I am operating within a [low]{"entity": "budget", "value": "low"} budget and
+    I want to go to a [social]{"entity": "outing_type", "value": "high-energy"} place.
+
+    - I can do activities with a [low]{"entity": "budget", "value": "low"} budget
+    and I want to find the most [social]{"entity": "outing_type", "value": "high-energy"}
+    place in the city.
+
+    - I have a [low]{"entity": "budget", "value": "low"} budget and I would prefer
+    a [chill]{"entity": "outing_type", "value": "low-energy"} atmosphere today.
+
+    - I am operating within a [low]{"entity": "budget", "value": "low"} budget and
+    I want to go to a [chill]{"entity": "outing_type", "value": "low-energy"} place.
+
+    - I can do activities with a [low]{"entity": "budget", "value": "low"} budget
+    and I want to find the most [chill]{"entity": "outing_type", "value": "low-energy"}
+    place in the city.
+
+    - I have a [low]{"entity": "budget", "value": "low"} budget and I would prefer
+    a [relaxing]{"entity": "outing_type", "value": "low-energy"} atmosphere today.
+
+    - I am operating within a [low]{"entity": "budget", "value": "low"} budget and
+    I want to go to a [relaxing]{"entity": "outing_type", "value": "low-energy"} place.
+
+    - I can do activities with a [low]{"entity": "budget", "value": "low"} budget
+    and I want to find the most [relaxing]{"entity": "outing_type", "value": "low-energy"}
+    place in the city.
+
+    - I have a [low]{"entity": "budget", "value": "low"} budget and I would prefer
+    a [laid-back]{"entity": "outing_type", "value": "low-energy"} atmosphere today.
+
+    - I am operating within a [low]{"entity": "budget", "value": "low"} budget and
+    I want to go to a [laid-back]{"entity": "outing_type", "value": "low-energy"}
+    place.
+
+    - I can do activities with a [low]{"entity": "budget", "value": "low"} budget
+    and I want to find the most [laid-back]{"entity": "outing_type", "value": "low-energy"}
+    place in the city.
+
+    - I have a [high]{"entity": "budget", "value": "high"} budget and I would prefer
+    a [high-energy]{"entity": "outing_type", "value": "high-energy"} atmosphere today.
+
+    - I am operating within a [high]{"entity": "budget", "value": "high"} budget and
+    I want to go to a [high-energy]{"entity": "outing_type", "value": "high-energy"}
+    place.
+
+    - I can do activities with a [high]{"entity": "budget", "value": "high"} budget
+    and I want to find the most [high-energy]{"entity": "outing_type", "value": "high-energy"}
+    place in the city.
+
+    - I have a [high]{"entity": "budget", "value": "high"} budget and I would prefer
+    a [low-energy]{"entity": "outing_type", "value": "low-energy"} atmosphere today.
+
+    - I am operating within a [high]{"entity": "budget", "value": "high"} budget and
+    I want to go to a [low-energy]{"entity": "outing_type", "value": "low-energy"}
+    place.
+
+    - I can do activities with a [high]{"entity": "budget", "value": "high"} budget
+    and I want to find the most [low-energy]{"entity": "outing_type", "value": "low-energy"}
+    place in the city.
+
+    - I have a [high]{"entity": "budget", "value": "high"} budget and I would prefer
+    a [fun]{"entity": "outing_type", "value": "high-energy"} atmosphere today.
+
+    - I am operating within a [high]{"entity": "budget", "value": "high"} budget and
+    I want to go to a [fun]{"entity": "outing_type", "value": "high-energy"} place.
+
+    - I can do activities with a [high]{"entity": "budget", "value": "high"} budget
+    and I want to find the most [fun]{"entity": "outing_type", "value": "high-energy"}
+    place in the city.
+
+    - I have a [high]{"entity": "budget", "value": "high"} budget and I would prefer
+    a [exciting]{"entity": "outing_type", "value": "high-energy"} atmosphere today.
+
+    - I am operating within a [high]{"entity": "budget", "value": "high"} budget and
+    I want to go to a [exciting]{"entity": "outing_type", "value": "high-energy"}
+    place.
+
+    - I can do activities with a [high]{"entity": "budget", "value": "high"} budget
+    and I want to find the most [exciting]{"entity": "outing_type", "value": "high-energy"}
+    place in the city.
+
+    - I have a [high]{"entity": "budget", "value": "high"} budget and I would prefer
+    a [social]{"entity": "outing_type", "value": "high-energy"} atmosphere today.
+
+    - I am operating within a [high]{"entity": "budget", "value": "high"} budget and
+    I want to go to a [social]{"entity": "outing_type", "value": "high-energy"} place.
+
+    - I can do activities with a [high]{"entity": "budget", "value": "high"} budget
+    and I want to find the most [social]{"entity": "outing_type", "value": "high-energy"}
+    place in the city.
+
+    - I have a [high]{"entity": "budget", "value": "high"} budget and I would prefer
+    a [chill]{"entity": "outing_type", "value": "low-energy"} atmosphere today.
+
+    - I am operating within a [high]{"entity": "budget", "value": "high"} budget and
+    I want to go to a [chill]{"entity": "outing_type", "value": "low-energy"} place.
+
+    - I can do activities with a [high]{"entity": "budget", "value": "high"} budget
+    and I want to find the most [chill]{"entity": "outing_type", "value": "low-energy"}
+    place in the city.
+
+    - I have a [high]{"entity": "budget", "value": "high"} budget and I would prefer
+    a [relaxing]{"entity": "outing_type", "value": "low-energy"} atmosphere today.
+
+    - I am operating within a [high]{"entity": "budget", "value": "high"} budget and
+    I want to go to a [relaxing]{"entity": "outing_type", "value": "low-energy"} place.
+
+    - I can do activities with a [high]{"entity": "budget", "value": "high"} budget
+    and I want to find the most [relaxing]{"entity": "outing_type", "value": "low-energy"}
+    place in the city.
+
+    - I have a [high]{"entity": "budget", "value": "high"} budget and I would prefer
+    a [laid-back]{"entity": "outing_type", "value": "low-energy"} atmosphere today.
+
+    - I am operating within a [high]{"entity": "budget", "value": "high"} budget and
+    I want to go to a [laid-back]{"entity": "outing_type", "value": "low-energy"}
+    place.
+
+    - I can do activities with a [high]{"entity": "budget", "value": "high"} budget
+    and I want to find the most [laid-back]{"entity": "outing_type", "value": "low-energy"}
+    place in the city.'
+  intent: share_all_outing_preferences
+- examples: '- I have a [low]{"entity": "budget", "value": "low"} budget.
+
+    - I am operating within a [low]{"entity": "budget", "value": "low"} budget.
+
+    - I can do activities with a [low]{"entity": "budget", "value": "low"} budget.
+
+    - I have a [high]{"entity": "budget", "value": "high"} budget.
+
+    - I am operating within a [high]{"entity": "budget", "value": "high"} budget.
+
+    - I can do activities with a [high]{"entity": "budget", "value": "high"} budget.'
+  intent: share_budget
+- examples: '- I would prefer a [high-energy]{"entity": "outing_type", "value": "high-energy"}
+    atmosphere today.
+
+    - I want to go to a [high-energy]{"entity": "outing_type", "value": "high-energy"}
+    place.
+
+    - What is the most [high-energy]{"entity": "outing_type", "value": "high-energy"}
+    place in the city?
+
+    - I would prefer a [low-energy]{"entity": "outing_type", "value": "low-energy"}
+    atmosphere today.
+
+    - I want to go to a [low-energy]{"entity": "outing_type", "value": "low-energy"}
+    place.
+
+    - What is the most [low-energy]{"entity": "outing_type", "value": "low-energy"}
+    place in the city?
+
+    - I would prefer a [fun]{"entity": "outing_type", "value": "high-energy"} atmosphere
+    today.
+
+    - I want to go to a [fun]{"entity": "outing_type", "value": "high-energy"} place.
+
+    - What is the most [fun]{"entity": "outing_type", "value": "high-energy"} place
+    in the city?
+
+    - I would prefer a [exciting]{"entity": "outing_type", "value": "high-energy"}
+    atmosphere today.
+
+    - I want to go to a [exciting]{"entity": "outing_type", "value": "high-energy"}
+    place.
+
+    - What is the most [exciting]{"entity": "outing_type", "value": "high-energy"}
+    place in the city?
+
+    - I would prefer a [social]{"entity": "outing_type", "value": "high-energy"} atmosphere
+    today.
+
+    - I want to go to a [social]{"entity": "outing_type", "value": "high-energy"}
+    place.
+
+    - What is the most [social]{"entity": "outing_type", "value": "high-energy"} place
+    in the city?
+
+    - I would prefer a [chill]{"entity": "outing_type", "value": "low-energy"} atmosphere
+    today.
+
+    - I want to go to a [chill]{"entity": "outing_type", "value": "low-energy"} place.
+
+    - What is the most [chill]{"entity": "outing_type", "value": "low-energy"} place
+    in the city?
+
+    - I would prefer a [relaxing]{"entity": "outing_type", "value": "low-energy"}
+    atmosphere today.
+
+    - I want to go to a [relaxing]{"entity": "outing_type", "value": "low-energy"}
+    place.
+
+    - What is the most [relaxing]{"entity": "outing_type", "value": "low-energy"}
+    place in the city?
+
+    - I would prefer a [laid-back]{"entity": "outing_type", "value": "low-energy"}
+    atmosphere today.
+
+    - I want to go to a [laid-back]{"entity": "outing_type", "value": "low-energy"}
+    place.
+
+    - What is the most [laid-back]{"entity": "outing_type", "value": "low-energy"}
+    place in the city?'
+  intent: share_outing_type

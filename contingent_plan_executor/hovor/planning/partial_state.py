@@ -1,3 +1,5 @@
+import json
+
 class PartialState(object):
     """Representation of a planning state (i.e., set of predicates)
     """
@@ -82,3 +84,6 @@ class PartialState(object):
 
     def __repr__(self):
         return str(self.fluents)
+
+    def toJSON(self):
+        return json.dumps(self.fluents)

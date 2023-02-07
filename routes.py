@@ -11,16 +11,15 @@ from flask import request, jsonify
 from werkzeug.routing import RequestRedirect
 from werkzeug.exceptions import MethodNotAllowed, NotFound
 
-from hovor.configuration.direct_json_configuration_provider import DirectJsonConfigurationProvider
-from hovor.outcome_determiners import ws_action_outcome_determiner_config
+from contingent_plan_executor.hovor.configuration.direct_json_configuration_provider import DirectJsonConfigurationProvider
+from contingent_plan_executor.hovor.outcome_determiners import ws_action_outcome_determiner_config
 
 from remote_main import app
-from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
-from hovor.execution_monitor import EM
+from contingent_plan_executor.hovor.execution_monitor import EM
 
-from environment import initialize_remote_environment
-from hovor.core import initialize_session
-from hovor.session.database_session import DatabaseSession
+from contingent_plan_executor.environment import initialize_remote_environment
+from contingent_plan_executor.hovor.core import initialize_session
+from contingent_plan_executor.hovor.session.database_session import DatabaseSession
 
 initialize_remote_environment()
 

@@ -1,10 +1,12 @@
 from copy import deepcopy
+import jsonpickle
 
 from hovor.runtime.outcome_determination_progress import OutcomeDeterminationProgress
+from hovor.session.database_session import DatabaseSession
 from hovor import DEBUG
 
 
-def EM(session, action_execution_result):
+def EM(session, action_execution_result, db_session: DatabaseSession = None, db = None, convo_id = None):
     """
     Top-level execution monitor code that will loop until we have an external
     action execution call to make. We assume that this is entered when a new
@@ -18,6 +20,7 @@ def EM(session, action_execution_result):
 
     diagnostics = []
 
+
     while not is_external_call:
         # incorporates state/context changes that happend after action execution
         final_progress, confidence = run_outcome_determination(session, action_execution_result)
@@ -27,6 +30,9 @@ def EM(session, action_execution_result):
 
         # next we change state accordingly
         action = progress_with_outcome(session, final_progress)
+
+        if db_session:
+            db_session.save(db, convo_id)
 
         # We will execute the action and keep going if it does not correspond to
         #  an external call.

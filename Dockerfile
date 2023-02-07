@@ -8,8 +8,8 @@ RUN pip install -r requirements.txt
 
 RUN python -m spacy download en_core_web_md
 
-COPY contingent-plan-executor/ ./contingent-plan-executor
+COPY contingent_plan_executor/ ./contingent_plan_executor
 
 COPY local_data/ ./local_data
 
-ENTRYPOINT ["python", "./contingent-plan-executor/local_main.py"]
+ENTRYPOINT ["python", "./contingent_plan_executor/test_flask.py"]

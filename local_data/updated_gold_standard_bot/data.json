@@ -287,7 +287,7 @@
                 ]
             ],
             "effect": {
-                "global-outcome-name": "set-allergy",
+                "global-outcome-name": "get-have-allergy__set-allergy",
                 "type": "oneof",
                 "outcomes": [
                     {
@@ -306,7 +306,7 @@
                         },
                         "intent": "confirm",
                         "follow_up": "get-allergy",
-                        "name": "get-have-allergy_DETDUP_set-allergy-EQ-indicate_allergy",
+                        "name": "get-have-allergy_DETDUP_get-have-allergy__set-allergy-EQ-indicate_allergy",
                         "assignments": {
                             "$have_allergy": "found"
                         }
@@ -327,7 +327,7 @@
                             }
                         },
                         "intent": "deny",
-                        "name": "get-have-allergy_DETDUP_set-allergy-EQ-indicate_no_allergy",
+                        "name": "get-have-allergy_DETDUP_get-have-allergy__set-allergy-EQ-indicate_no_allergy",
                         "assignments": {
                             "$have_allergy": "found",
                             "$conflict": "found"
@@ -347,7 +347,7 @@
                             }
                         },
                         "intent": "fallback",
-                        "name": "get-have-allergy_DETDUP_set-allergy-EQ-fallback",
+                        "name": "get-have-allergy_DETDUP_get-have-allergy__set-allergy-EQ-fallback",
                         "assignments": {}
                     }
                 ]
@@ -414,7 +414,7 @@
                 ]
             ],
             "effect": {
-                "global-outcome-name": "set-allergy",
+                "global-outcome-name": "get-allergy__set-allergy",
                 "type": "oneof",
                 "outcomes": [
                     {
@@ -432,7 +432,7 @@
                             }
                         },
                         "intent": "share_allergies",
-                        "name": "get-allergy_DETDUP_set-allergy-EQ-update_allergy",
+                        "name": "get-allergy_DETDUP_get-allergy__set-allergy-EQ-update_allergy",
                         "assignments": {
                             "$food_restriction": "found"
                         }
@@ -456,7 +456,7 @@
                             }
                         },
                         "intent": "fallback",
-                        "name": "get-allergy_DETDUP_set-allergy-EQ-fallback",
+                        "name": "get-allergy_DETDUP_get-allergy__set-allergy-EQ-fallback",
                         "assignments": {}
                     }
                 ]
@@ -518,7 +518,7 @@
                 ]
             ],
             "effect": {
-                "global-outcome-name": "check-conflicts",
+                "global-outcome-name": "check-conflicts__check-conflicts",
                 "type": "oneof",
                 "outcomes": [
                     {
@@ -538,7 +538,7 @@
                                 "value": "dairy-free"
                             }
                         },
-                        "name": "check-conflicts_DETDUP_check-conflicts-EQ-restriction-dessert",
+                        "name": "check-conflicts_DETDUP_check-conflicts__check-conflicts-EQ-restriction-dessert",
                         "intent": null,
                         "assignments": {
                             "$conflict": "found"
@@ -561,7 +561,7 @@
                                 "value": "gluten-free"
                             }
                         },
-                        "name": "check-conflicts_DETDUP_check-conflicts-EQ-restriction-mexican",
+                        "name": "check-conflicts_DETDUP_check-conflicts__check-conflicts-EQ-restriction-mexican",
                         "intent": null,
                         "assignments": {
                             "$conflict": "found"
@@ -581,7 +581,7 @@
                                 "value": "Italian"
                             }
                         },
-                        "name": "check-conflicts_DETDUP_check-conflicts-EQ-no-restriction-1",
+                        "name": "check-conflicts_DETDUP_check-conflicts__check-conflicts-EQ-no-restriction-1",
                         "intent": null,
                         "assignments": {
                             "$conflict": "found"
@@ -601,7 +601,7 @@
                                 "value": "Chinese"
                             }
                         },
-                        "name": "check-conflicts_DETDUP_check-conflicts-EQ-no-restriction-2",
+                        "name": "check-conflicts_DETDUP_check-conflicts__check-conflicts-EQ-no-restriction-2",
                         "intent": null,
                         "assignments": {
                             "$conflict": "found"
@@ -624,7 +624,7 @@
                                 "value": "gluten-free"
                             }
                         },
-                        "name": "check-conflicts_DETDUP_check-conflicts-EQ-no-restriction-3",
+                        "name": "check-conflicts_DETDUP_check-conflicts__check-conflicts-EQ-no-restriction-3",
                         "intent": null,
                         "assignments": {
                             "$conflict": "found"
@@ -647,7 +647,7 @@
                                 "value": "dairy-free"
                             }
                         },
-                        "name": "check-conflicts_DETDUP_check-conflicts-EQ-no-restriction-4",
+                        "name": "check-conflicts_DETDUP_check-conflicts__check-conflicts-EQ-no-restriction-4",
                         "intent": null,
                         "assignments": {
                             "$conflict": "found"
@@ -677,7 +677,7 @@
                 ]
             ],
             "effect": {
-                "global-outcome-name": "reset",
+                "global-outcome-name": "reset-preferences__reset",
                 "type": "oneof",
                 "outcomes": [
                     {
@@ -720,7 +720,7 @@
                         "response_variants": [
                             "Sorry, but there are no restaurants that match your allergy and cuisine preferences. Try entering a different set of preferences."
                         ],
-                        "name": "reset-preferences_DETDUP_reset-EQ-reset-values",
+                        "name": "reset-preferences_DETDUP_reset-preferences__reset-EQ-reset-values",
                         "intent": null,
                         "assignments": {
                             "$have_allergy": "didnt-find",
@@ -762,7 +762,7 @@
                 ]
             ],
             "effect": {
-                "global-outcome-name": "assign_restaurant",
+                "global-outcome-name": "set-restaurant__assign_restaurant",
                 "type": "oneof",
                 "outcomes": [
                     {
@@ -779,7 +779,7 @@
                                 "value": "Mexican"
                             }
                         },
-                        "name": "set-restaurant_DETDUP_assign_restaurant-EQ-set-mexican",
+                        "name": "set-restaurant_DETDUP_set-restaurant__assign_restaurant-EQ-set-mexican",
                         "intent": null,
                         "assignments": {
                             "$restaurant": "found"
@@ -799,7 +799,7 @@
                                 "value": "Italian"
                             }
                         },
-                        "name": "set-restaurant_DETDUP_assign_restaurant-EQ-set-italian",
+                        "name": "set-restaurant_DETDUP_set-restaurant__assign_restaurant-EQ-set-italian",
                         "intent": null,
                         "assignments": {
                             "$restaurant": "found"
@@ -819,7 +819,7 @@
                                 "value": "Chinese"
                             }
                         },
-                        "name": "set-restaurant_DETDUP_assign_restaurant-EQ-set-chinese",
+                        "name": "set-restaurant_DETDUP_set-restaurant__assign_restaurant-EQ-set-chinese",
                         "intent": null,
                         "assignments": {
                             "$restaurant": "found"
@@ -839,7 +839,7 @@
                                 "value": "dessert"
                             }
                         },
-                        "name": "set-restaurant_DETDUP_assign_restaurant-EQ-set-dessert",
+                        "name": "set-restaurant_DETDUP_set-restaurant__assign_restaurant-EQ-set-dessert",
                         "intent": null,
                         "assignments": {
                             "$restaurant": "found"
@@ -870,7 +870,7 @@
                 ]
             ],
             "effect": {
-                "global-outcome-name": "assign_outing",
+                "global-outcome-name": "set-outing__assign_outing",
                 "type": "oneof",
                 "outcomes": [
                     {
@@ -890,7 +890,7 @@
                                 "value": "high-energy"
                             }
                         },
-                        "name": "set-outing_DETDUP_assign_outing-EQ-set-club",
+                        "name": "set-outing_DETDUP_set-outing__assign_outing-EQ-set-club",
                         "intent": null,
                         "assignments": {
                             "$outing": "found"
@@ -913,7 +913,7 @@
                                 "value": "low-energy"
                             }
                         },
-                        "name": "set-outing_DETDUP_assign_outing-EQ-set-library",
+                        "name": "set-outing_DETDUP_set-outing__assign_outing-EQ-set-library",
                         "intent": null,
                         "assignments": {
                             "$outing": "found"
@@ -936,7 +936,7 @@
                                 "value": "low-energy"
                             }
                         },
-                        "name": "set-outing_DETDUP_assign_outing-EQ-set-theater",
+                        "name": "set-outing_DETDUP_set-outing__assign_outing-EQ-set-theater",
                         "intent": null,
                         "assignments": {
                             "$outing": "found"
@@ -959,7 +959,7 @@
                                 "value": "high-energy"
                             }
                         },
-                        "name": "set-outing_DETDUP_assign_outing-EQ-set-golf",
+                        "name": "set-outing_DETDUP_set-outing__assign_outing-EQ-set-golf",
                         "intent": null,
                         "assignments": {
                             "$outing": "found"
@@ -1001,7 +1001,7 @@
                 "Booked a reservation at $restaurant as well as a spot at $outing in $location."
             ],
             "effect": {
-                "global-outcome-name": "finish",
+                "global-outcome-name": "complete__finish",
                 "type": "oneof",
                 "outcomes": [
                     {
@@ -1014,7 +1014,7 @@
                             }
                         },
                         "intent": null,
-                        "name": "complete_DETDUP_finish-EQ-finish",
+                        "name": "complete_DETDUP_complete__finish-EQ-finish",
                         "assignments": {
                             "$goal": "found"
                         }
@@ -1036,7 +1036,7 @@
                 ]
             ],
             "effect": {
-                "global-outcome-name": "reset",
+                "global-outcome-name": "dialogue_statement__reset",
                 "type": "oneof",
                 "outcomes": [
                     {
@@ -1053,7 +1053,7 @@
                             }
                         },
                         "intent": "utter_ds",
-                        "name": "dialogue_statement_DETDUP_reset-EQ-lock",
+                        "name": "dialogue_statement_DETDUP_dialogue_statement__reset-EQ-lock",
                         "assignments": {}
                     }
                 ]
@@ -1094,7 +1094,7 @@
                 ]
             ],
             "effect": {
-                "global-outcome-name": "validate-slot-fill",
+                "global-outcome-name": "slot-fill__get-location__validate-slot-fill",
                 "type": "oneof",
                 "outcomes": [
                     {
@@ -1120,7 +1120,7 @@
                         "response_variants": [
                             "Tailoring your results to what's available in $location..."
                         ],
-                        "name": "slot-fill__get-location_DETDUP_validate-slot-fill-EQ-location_found",
+                        "name": "slot-fill__get-location_DETDUP_slot-fill__get-location__validate-slot-fill-EQ-location_found",
                         "assignments": {
                             "$location": "found"
                         }
@@ -1139,7 +1139,7 @@
                             }
                         },
                         "intent": "fallback",
-                        "name": "slot-fill__get-location_DETDUP_validate-slot-fill-EQ-fallback",
+                        "name": "slot-fill__get-location_DETDUP_slot-fill__get-location__validate-slot-fill-EQ-fallback",
                         "assignments": {}
                     }
                 ]
@@ -1190,7 +1190,7 @@
                 ]
             ],
             "effect": {
-                "global-outcome-name": "validate-slot-fill",
+                "global-outcome-name": "slot-fill__get-phone_number__validate-slot-fill",
                 "type": "oneof",
                 "outcomes": [
                     {
@@ -1203,7 +1203,7 @@
                             }
                         },
                         "intent": "share_phone_number",
-                        "name": "slot-fill__get-phone_number_DETDUP_validate-slot-fill-EQ-phone_number_found",
+                        "name": "slot-fill__get-phone_number_DETDUP_slot-fill__get-phone_number__validate-slot-fill-EQ-phone_number_found",
                         "assignments": {
                             "$phone_number": "found"
                         }
@@ -1218,7 +1218,7 @@
                             }
                         },
                         "intent": "share_phone_number",
-                        "name": "slot-fill__get-phone_number_DETDUP_validate-slot-fill-EQ-phone_number_maybe-found",
+                        "name": "slot-fill__get-phone_number_DETDUP_slot-fill__get-phone_number__validate-slot-fill-EQ-phone_number_maybe-found",
                         "assignments": {
                             "$phone_number": "maybe-found"
                         }
@@ -1237,7 +1237,7 @@
                             }
                         },
                         "intent": "fallback",
-                        "name": "slot-fill__get-phone_number_DETDUP_validate-slot-fill-EQ-fallback",
+                        "name": "slot-fill__get-phone_number_DETDUP_slot-fill__get-phone_number__validate-slot-fill-EQ-fallback",
                         "assignments": {}
                     }
                 ]
@@ -1281,7 +1281,7 @@
                 ]
             ],
             "effect": {
-                "global-outcome-name": "validate-clarification",
+                "global-outcome-name": "clarify__phone_number__validate-clarification",
                 "type": "oneof",
                 "outcomes": [
                     {
@@ -1294,7 +1294,7 @@
                             }
                         },
                         "intent": "confirm",
-                        "name": "clarify__phone_number_DETDUP_validate-clarification-EQ-confirm",
+                        "name": "clarify__phone_number_DETDUP_clarify__phone_number__validate-clarification-EQ-confirm",
                         "assignments": {
                             "$phone_number": "found"
                         }
@@ -1309,7 +1309,7 @@
                             }
                         },
                         "intent": "deny",
-                        "name": "clarify__phone_number_DETDUP_validate-clarification-EQ-deny",
+                        "name": "clarify__phone_number_DETDUP_clarify__phone_number__validate-clarification-EQ-deny",
                         "assignments": {
                             "$phone_number": "didnt-find"
                         }
@@ -1328,7 +1328,7 @@
                             }
                         },
                         "intent": "fallback",
-                        "name": "clarify__phone_number_DETDUP_validate-clarification-EQ-fallback",
+                        "name": "clarify__phone_number_DETDUP_clarify__phone_number__validate-clarification-EQ-fallback",
                         "assignments": {}
                     }
                 ]
@@ -1399,7 +1399,7 @@
                 ]
             ],
             "effect": {
-                "global-outcome-name": "validate-slot-fill",
+                "global-outcome-name": "slot-fill__get-cuisine__validate-slot-fill",
                 "type": "oneof",
                 "outcomes": [
                     {
@@ -1425,7 +1425,7 @@
                         "response_variants": [
                             "Cuisine preference has been logged."
                         ],
-                        "name": "slot-fill__get-cuisine_DETDUP_validate-slot-fill-EQ-cuisine_found",
+                        "name": "slot-fill__get-cuisine_DETDUP_slot-fill__get-cuisine__validate-slot-fill-EQ-cuisine_found",
                         "assignments": {
                             "$cuisine": "found"
                         }
@@ -1440,7 +1440,7 @@
                             }
                         },
                         "intent": "share_cuisine",
-                        "name": "slot-fill__get-cuisine_DETDUP_validate-slot-fill-EQ-cuisine_maybe-found",
+                        "name": "slot-fill__get-cuisine_DETDUP_slot-fill__get-cuisine__validate-slot-fill-EQ-cuisine_maybe-found",
                         "assignments": {
                             "$cuisine": "maybe-found"
                         }
@@ -1459,7 +1459,7 @@
                             }
                         },
                         "intent": "fallback",
-                        "name": "slot-fill__get-cuisine_DETDUP_validate-slot-fill-EQ-fallback",
+                        "name": "slot-fill__get-cuisine_DETDUP_slot-fill__get-cuisine__validate-slot-fill-EQ-fallback",
                         "assignments": {}
                     }
                 ]
@@ -1503,7 +1503,7 @@
                 ]
             ],
             "effect": {
-                "global-outcome-name": "validate-clarification",
+                "global-outcome-name": "clarify__cuisine__validate-clarification",
                 "type": "oneof",
                 "outcomes": [
                     {
@@ -1516,7 +1516,7 @@
                             }
                         },
                         "intent": "confirm",
-                        "name": "clarify__cuisine_DETDUP_validate-clarification-EQ-confirm",
+                        "name": "clarify__cuisine_DETDUP_clarify__cuisine__validate-clarification-EQ-confirm",
                         "assignments": {
                             "$cuisine": "found"
                         }
@@ -1531,7 +1531,7 @@
                             }
                         },
                         "intent": "deny",
-                        "name": "clarify__cuisine_DETDUP_validate-clarification-EQ-deny",
+                        "name": "clarify__cuisine_DETDUP_clarify__cuisine__validate-clarification-EQ-deny",
                         "assignments": {
                             "$cuisine": "didnt-find"
                         }
@@ -1550,7 +1550,7 @@
                             }
                         },
                         "intent": "fallback",
-                        "name": "clarify__cuisine_DETDUP_validate-clarification-EQ-fallback",
+                        "name": "clarify__cuisine_DETDUP_clarify__cuisine__validate-clarification-EQ-fallback",
                         "assignments": {}
                     }
                 ]
@@ -1629,7 +1629,7 @@
                 ]
             ],
             "effect": {
-                "global-outcome-name": "validate-slot-fill",
+                "global-outcome-name": "slot-fill__get_outing__validate-slot-fill",
                 "type": "oneof",
                 "outcomes": [
                     {
@@ -1648,7 +1648,7 @@
                             }
                         },
                         "intent": "share_all_outing_preferences",
-                        "name": "slot-fill__get_outing_DETDUP_validate-slot-fill-EQ-budget_found-outing_type_found",
+                        "name": "slot-fill__get_outing_DETDUP_slot-fill__get_outing__validate-slot-fill-EQ-budget_found-outing_type_found",
                         "assignments": {
                             "$budget": "found",
                             "$outing_type": "found"
@@ -1670,7 +1670,7 @@
                             }
                         },
                         "intent": "share_all_outing_preferences",
-                        "name": "slot-fill__get_outing_DETDUP_validate-slot-fill-EQ-budget_found-outing_type_maybe-found",
+                        "name": "slot-fill__get_outing_DETDUP_slot-fill__get_outing__validate-slot-fill-EQ-budget_found-outing_type_maybe-found",
                         "assignments": {
                             "$budget": "found",
                             "$outing_type": "maybe-found"
@@ -1704,7 +1704,7 @@
                         "response_variants": [
                             "Ok, I'll take that into account."
                         ],
-                        "name": "slot-fill__get_outing_DETDUP_validate-slot-fill-EQ-budget_found",
+                        "name": "slot-fill__get_outing_DETDUP_slot-fill__get_outing__validate-slot-fill-EQ-budget_found",
                         "assignments": {
                             "$budget": "found"
                         }
@@ -1737,7 +1737,7 @@
                         "response_variants": [
                             "Great choice!"
                         ],
-                        "name": "slot-fill__get_outing_DETDUP_validate-slot-fill-EQ-outing_type_found",
+                        "name": "slot-fill__get_outing_DETDUP_slot-fill__get_outing__validate-slot-fill-EQ-outing_type_found",
                         "assignments": {
                             "$outing_type": "found"
                         }
@@ -1757,7 +1757,7 @@
                             }
                         },
                         "intent": "share_all_outing_preferences",
-                        "name": "slot-fill__get_outing_DETDUP_validate-slot-fill-EQ-outing_type_maybe-found",
+                        "name": "slot-fill__get_outing_DETDUP_slot-fill__get_outing__validate-slot-fill-EQ-outing_type_maybe-found",
                         "assignments": {
                             "$outing_type": "maybe-found"
                         }
@@ -1776,7 +1776,7 @@
                             }
                         },
                         "intent": "fallback",
-                        "name": "slot-fill__get_outing_DETDUP_validate-slot-fill-EQ-fallback",
+                        "name": "slot-fill__get_outing_DETDUP_slot-fill__get_outing__validate-slot-fill-EQ-fallback",
                         "assignments": {}
                     }
                 ]
@@ -1825,7 +1825,7 @@
                 ]
             ],
             "effect": {
-                "global-outcome-name": "validate-slot-fill",
+                "global-outcome-name": "single_slot__outing_type__validate-slot-fill",
                 "type": "oneof",
                 "outcomes": [
                     {
@@ -1843,7 +1843,7 @@
                             }
                         },
                         "intent": "share_outing_type",
-                        "name": "single_slot__outing_type_DETDUP_validate-slot-fill-EQ-fill-slot",
+                        "name": "single_slot__outing_type_DETDUP_single_slot__outing_type__validate-slot-fill-EQ-fill-slot",
                         "assignments": {
                             "$outing_type": "found"
                         }
@@ -1858,7 +1858,7 @@
                             }
                         },
                         "intent": "share_outing_type",
-                        "name": "single_slot__outing_type_DETDUP_validate-slot-fill-EQ-slot-unclear",
+                        "name": "single_slot__outing_type_DETDUP_single_slot__outing_type__validate-slot-fill-EQ-slot-unclear",
                         "assignments": {
                             "$outing_type": "maybe-found"
                         }
@@ -1877,7 +1877,7 @@
                             }
                         },
                         "intent": "fallback",
-                        "name": "single_slot__outing_type_DETDUP_validate-slot-fill-EQ-fallback",
+                        "name": "single_slot__outing_type_DETDUP_single_slot__outing_type__validate-slot-fill-EQ-fallback",
                         "assignments": {}
                     }
                 ]
@@ -1928,7 +1928,7 @@
                 ]
             ],
             "effect": {
-                "global-outcome-name": "validate-slot-fill",
+                "global-outcome-name": "single_slot__budget__validate-slot-fill",
                 "type": "oneof",
                 "outcomes": [
                     {
@@ -1946,7 +1946,7 @@
                             }
                         },
                         "intent": "share_budget",
-                        "name": "single_slot__budget_DETDUP_validate-slot-fill-EQ-fill-slot",
+                        "name": "single_slot__budget_DETDUP_single_slot__budget__validate-slot-fill-EQ-fill-slot",
                         "assignments": {
                             "$budget": "found"
                         }
@@ -1965,7 +1965,7 @@
                             }
                         },
                         "intent": "fallback",
-                        "name": "single_slot__budget_DETDUP_validate-slot-fill-EQ-fallback",
+                        "name": "single_slot__budget_DETDUP_single_slot__budget__validate-slot-fill-EQ-fallback",
                         "assignments": {}
                     }
                 ]
@@ -2012,7 +2012,7 @@
                 ]
             ],
             "effect": {
-                "global-outcome-name": "validate-clarification",
+                "global-outcome-name": "clarify__outing_type__validate-clarification",
                 "type": "oneof",
                 "outcomes": [
                     {
@@ -2025,7 +2025,7 @@
                             }
                         },
                         "intent": "confirm",
-                        "name": "clarify__outing_type_DETDUP_validate-clarification-EQ-confirm",
+                        "name": "clarify__outing_type_DETDUP_clarify__outing_type__validate-clarification-EQ-confirm",
                         "assignments": {
                             "$outing_type": "found"
                         }
@@ -2045,7 +2045,7 @@
                             }
                         },
                         "intent": "deny",
-                        "name": "clarify__outing_type_DETDUP_validate-clarification-EQ-deny",
+                        "name": "clarify__outing_type_DETDUP_clarify__outing_type__validate-clarification-EQ-deny",
                         "assignments": {
                             "$outing_type": "didnt-find"
                         }
@@ -2064,7 +2064,7 @@
                             }
                         },
                         "intent": "fallback",
-                        "name": "clarify__outing_type_DETDUP_validate-clarification-EQ-fallback",
+                        "name": "clarify__outing_type_DETDUP_clarify__outing_type__validate-clarification-EQ-fallback",
                         "assignments": {}
                     }
                 ]

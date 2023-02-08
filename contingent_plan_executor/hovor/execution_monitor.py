@@ -1,12 +1,12 @@
 from copy import deepcopy
-import jsonpickle
+import json
 
 from hovor.runtime.outcome_determination_progress import OutcomeDeterminationProgress
 from hovor.session.database_session import DatabaseSession
 from hovor import DEBUG
 
 
-def EM(session, action_execution_result, db_session: DatabaseSession = None, db = None, convo_id = None):
+def EM(session, action_execution_result, db = None, convo_id = None):
     """
     Top-level execution monitor code that will loop until we have an external
     action execution call to make. We assume that this is entered when a new
@@ -31,8 +31,10 @@ def EM(session, action_execution_result, db_session: DatabaseSession = None, db 
         # next we change state accordingly
         action = progress_with_outcome(session, final_progress)
 
-        if db_session:
-            db_session.save(db, convo_id)
+        if isinstance(session, DatabaseSession):
+            session.save(db, convo_id)
+            with open("db.json", "w") as f:
+                f.write(json.dumps(db))
 
         # We will execute the action and keep going if it does not correspond to
         #  an external call.
@@ -51,7 +53,6 @@ def EM(session, action_execution_result, db_session: DatabaseSession = None, db 
                     accumulated_messages = action_execution_result.get_field('msg')
                 else:
                     accumulated_messages = accumulated_messages + '\n' + action_execution_result.get_field('msg')
-
 
 
         # If we exit the loop, then we have an external action to execute next (e.g.,

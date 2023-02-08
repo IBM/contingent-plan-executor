@@ -12,4 +12,4 @@ COPY contingent_plan_executor/ ./contingent_plan_executor
 
 COPY local_data/ ./local_data
 
-ENTRYPOINT ["python", "./contingent_plan_executor/test_flask.py"]
+ENTRYPOINT ["python", "./contingent_plan_executor/run_flask.py"]

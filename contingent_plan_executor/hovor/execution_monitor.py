@@ -33,8 +33,6 @@ def EM(session, action_execution_result, db = None, convo_id = None):
 
         if isinstance(session, DatabaseSession):
             session.save(db, convo_id)
-            with open("db.json", "w") as f:
-                f.write(json.dumps(db))
 
         # We will execute the action and keep going if it does not correspond to
         #  an external call.

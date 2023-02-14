@@ -6,7 +6,7 @@ from hovor.session.database_session import DatabaseSession
 from hovor import DEBUG
 
 
-def EM(session, action_execution_result, db = None, convo_id = None):
+def EM(session, action_execution_result, db = None, user_id = None):
     """
     Top-level execution monitor code that will loop until we have an external
     action execution call to make. We assume that this is entered when a new
@@ -32,7 +32,7 @@ def EM(session, action_execution_result, db = None, convo_id = None):
         action = progress_with_outcome(session, final_progress)
 
         if isinstance(session, DatabaseSession):
-            session.save(db, convo_id)
+            session.save(db, user_id)
 
         # We will execute the action and keep going if it does not correspond to
         #  an external call.

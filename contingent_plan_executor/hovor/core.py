@@ -30,16 +30,16 @@ def run_interaction(configuration_provider):
     print("\n" + "-" * 20)
     print("INTERACTION END")
 
-def run_interaction_from(configuration_provider, db, convo_id):
+def run_interaction_from(configuration_provider, db, user_id):
     print("RUNNING INTERACTION")
     print("-" * 20 + "\n")
 
-    session = initialize_session_db(configuration_provider, db, convo_id)
+    session = initialize_session_db(configuration_provider, db, user_id)
     if session.current_action.action_type != "goal_achieved":
         last_execution_result = session.current_action.execute()  # initial action execution
 
         while True:
-            EM(session, last_execution_result, db, convo_id)
+            EM(session, last_execution_result, db, user_id)
             # the previous line will loop until there is a system action
             action = session.current_action
             if action is None:
@@ -54,8 +54,8 @@ def run_interaction_from(configuration_provider, db, convo_id):
     print("\n" + "-" * 20)
     print("INTERACTION END")
 
-def initialize_session_db(configuration_provider, db, convo_id):
-    session = DatabaseSession(db, convo_id, configuration_provider)
+def initialize_session_db(configuration_provider, db, user_id):
+    session = DatabaseSession(db, user_id, configuration_provider)
     if session._current_node is None:
         session.load_initial_plan_data()
 

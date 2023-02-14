@@ -8,9 +8,9 @@ import json
 def run_local_conversation(output_files_path):
     run_interaction(initialize_local_run(output_files_path))
 
-def run_conversation_from(output_files_path, db, convo_id):
+def run_conversation_from(output_files_path, db, user_id):
     config = initialize_local_run(output_files_path)
-    run_interaction_from(config, db, convo_id)
+    run_interaction_from(config, db, user_id)
 
 
 if __name__ == "__main__":
@@ -19,4 +19,4 @@ if __name__ == "__main__":
     # else:
     #     raise ValueError("Please provide the directory to your plan4dial output files as a system argument.")
     arg = "local_data/updated_gold_standard_bot"
-    # run_local_conversation(arg)
+    run_local_conversation(arg)

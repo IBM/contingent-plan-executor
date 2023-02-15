@@ -10,7 +10,7 @@ def run_local_conversation(output_files_path):
 
 def run_conversation_from(output_files_path, db, user_id):
     config = initialize_local_run(output_files_path)
-    run_interaction_from(config, db, user_id)
+    run_interaction_from(config, output_files_path, db, user_id)
 
 
 if __name__ == "__main__":

@@ -47,8 +47,7 @@ class DatabaseSession(InMemorySession):
         conversation = db.session.execute(db.select(ConversationDatabase).filter_by(user_id=conversation_id)).scalar_one()
         conversation.state = jsonpickle.encode(self._current_state)
         conversation.action = jsonpickle.encode(self._current_action)
-        if hasattr(self._current_action, "_utterance"):
-            conversation.action_result = jsonpickle.encode(self._current_action._utterance)
+        conversation.action_result = jsonpickle.encode(self._current_action_result)
         conversation.context = jsonpickle.encode(self._current_context)
         conversation.node_id = self._current_node.node_id
         # All but the last element will be json, and the last element is the full

@@ -10,6 +10,7 @@ import json, jsonpickle
 import traceback
 import os
 import sqlalchemy
+import random
 
 initialize_remote_environment()
 
@@ -24,10 +25,22 @@ def check_db(user_id):
 @app.route('/new-conversation', methods=['GET', 'POST'])
 def new_conversation():
     try:
-        # We assume that we only have one trace per user
-        input_data = request.get_json()
-        user_id = input_data['user']
-        trace_id = "trace-%s" % user_id
+        if request.method == 'POST':
+            # We assume that we only have one trace per user
+            input_data = request.get_json()
+            user_id = input_data['user']
+            # Try to overwrite an existing trace
+            existing = check_db(user_id)
+            if existing:
+                db.session.delete(existing)
+                trace_id = user_id
+            else:
+                return jsonify({'status': 'error', 'msg': "The given user ID does not exist."})
+        else:
+            user_id = random.getrandbits(128)
+            while check_db("trace-%s" % user_id):
+                user_id = random.getrandbits(128)
+            trace_id = "trace-%s" % user_id
 
         with open("out_path.txt", "r") as f:
             out_path = f.readlines()[0]
@@ -43,11 +56,6 @@ def new_conversation():
         print("Plan fetched.")
 
         run_rasa_model_server(out_path)
-
-        # If the trace already exists, we delete it first
-        existing = check_db(trace_id)
-        if existing:
-            db.session.delete(existing)
 
         print("Creating a new trace.")
         temp_session = initialize_session(plan_config)
@@ -96,10 +104,13 @@ def new_conversation():
             # If the trace already exists, we delete it first
             db.session.delete(check_db(trace_id))
             if accumulated_messages is None:
-                return jsonify({'status': "Plan complete!"})
+                return jsonify({'status': "Plan complete!", "user_id": trace_id})
             else:
+                # NOTE: cannot json dumps the diagnostics because they have sets in them.
+                with open("diagnostics.txt","w") as f:
+                    f.write(str(diagnostics))
                 return jsonify(
-                    {'status': "Plan complete!", 'msg': accumulated_messages, 'diagnostics': diagnostics})
+                    {'status': "Plan complete!", 'msg': accumulated_messages, "user_id": trace_id})
 
         if need_to_execute:
             action_result = action.start_execution()
@@ -118,7 +129,7 @@ def new_conversation():
 
         if action_result is None:
             print("No execution result to return.")
-            return jsonify({'status': 'success', 'msg': 'All set!'})
+            return jsonify({'status': 'success', 'msg': 'All set!', "user_id": trace_id})
         if action_result.get_field('type') == 'message':
             print("Returning message: %s" % action_result.get_field('msg'))
             # NOTE: cannot json dumps the diagnostics because they have sets in them.
@@ -126,7 +137,7 @@ def new_conversation():
                 f.write(str(diagnostics))
             return jsonify({'status': 'success',
                             'msg': action_result.get_field('msg'),
-                            })
+                            "user_id": trace_id})
         else:
             print("Not sure what to do with action of type %s\n%s" % (action_result.get_field('type'),
                                                                         str(action_result)))
@@ -146,8 +157,7 @@ def new_message():
     try:
         # We assume that we only have one trace per user
         input_data = request.get_json()
-        user_id = input_data['user']
-        trace_id = "trace-%s" % user_id
+        trace_id = input_data['user']
 
         with open("out_path.txt", "r") as f:
             out_path = f.readlines()[0]
@@ -254,8 +264,7 @@ def new_message():
 def load_conversation():
     # We assume that we only have one trace per user
     input_data = request.get_json()
-    user_id = input_data['user']
-    trace_id = "trace-%s" % user_id
+    trace_id = input_data['user']
 
     with open("out_path.txt", "r") as f:
         out_path = f.readlines()[0]

@@ -14,15 +14,19 @@ def create_validate_json_config_prov(output_files_path):
     return configuration_provider
 
 def run_rasa_model_server(output_files_path):
-    subprocess.Popen(f"rasa run --enable-api -m {output_files_path}/nlu_model.tar.gz", shell=True)
-    sleep(3.0)
-    while True:
-        try:
-            requests.post("http://localhost:5005/model/parse", json={"text": ""})
-        except requests.exceptions.ConnectionError:
-            sleep(1.0)
-        else:
-            break
+    # check if the model is already running before proceeding
+    try:
+        requests.post("http://localhost:5005/model/parse", json={"text": ""})
+    except requests.exceptions.ConnectionError:
+        subprocess.Popen(f"rasa run --enable-api -m {output_files_path}/nlu_model.tar.gz", shell=True)
+        sleep(3.0)
+        while True:
+            try:
+                requests.post("http://localhost:5005/model/parse", json={"text": ""})
+            except requests.exceptions.ConnectionError:
+                sleep(0.1)
+            else:
+                break
 
 def initialize_local_run(output_files_path, get_cfg: bool = True):
     initialize_local_environment()

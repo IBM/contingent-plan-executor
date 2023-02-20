@@ -1,16 +1,10 @@
-from hovor.core import run_interaction, run_interaction_from
+from hovor.core import run_interaction
 from local_run_utils import *
-from hovor.session.database_session import DatabaseSession
 import sys
-import json
 
 
 def run_local_conversation(output_files_path):
     run_interaction(initialize_local_run(output_files_path))
-
-def run_conversation_from(output_files_path, db, user_id):
-    config = initialize_local_run(output_files_path)
-    run_interaction_from(config, output_files_path, db, user_id)
 
 
 if __name__ == "__main__":

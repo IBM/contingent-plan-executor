@@ -28,7 +28,7 @@ def new_conversation():
         if request.method == 'POST':
             # We assume that we only have one trace per user
             input_data = request.get_json()
-            user_id = input_data['user']
+            user_id = input_data["user_id"]
             # Try to overwrite an existing trace
             existing = check_db(user_id)
             if existing:
@@ -157,7 +157,7 @@ def new_message():
     try:
         # We assume that we only have one trace per user
         input_data = request.get_json()
-        trace_id = input_data['user']
+        trace_id = input_data["user_id"]
 
         with open("out_path.txt", "r") as f:
             out_path = f.readlines()[0]
@@ -264,7 +264,7 @@ def new_message():
 def load_conversation():
     # We assume that we only have one trace per user
     input_data = request.get_json()
-    trace_id = input_data['user']
+    trace_id = input_data["user_id"]
 
     with open("out_path.txt", "r") as f:
         out_path = f.readlines()[0]

@@ -3,6 +3,7 @@ from hovor.outcome_determiners.outcome_determiner_base import OutcomeDeterminerB
 
 class ContextDependentOutcomeDeterminer(OutcomeDeterminerBase):
     def __init__(self, context_variables):
+        # TODO: remove since not used?
         self.context_variables = context_variables
 
     @staticmethod

@@ -1,5 +1,6 @@
 import random
 import re
+import rstr
 
 from hovor.actions.local_dialogue_action import LocalDialogueAction
 from hovor.outcome_determiners.random_outcome_determiner import RandomOutcomeDeterminer
@@ -50,16 +51,31 @@ class LocalDialogueActionSimulated(LocalDialogueAction):
         if category.upper() not in examples:
             return None
         return random.choice(examples[category.upper()])
+    
+    def example_regex_entity(self, regex):
+        """
+        Since Spacy won't generate a given entity type from nothing,
+        I made this function which can generate a random example for
+        each category of named entities.
+        """
+        
+        return rstr.xeger(regex)
 
     def get_random_value_for_var(self, var_name):
         cv = self.data_for_sim['context_variables'][var_name]
         if cv['type'] == 'enum':
             return random.choice(cv['config'])
-        elif cv['type'] == 'json' and cv['config']['extraction']['method'] == 'spacy':
-            return self.example_spacy_entity(cv['config']['extraction']['config_method'])
+        elif cv['type'] == 'json':
+            if cv['config']['extraction']['method'] == 'spacy':
+                return self.example_spacy_entity(cv['config']['extraction']['config_method'])
+            elif cv['config']['extraction']['method'] == 'regex':
+                return self.example_regex_entity(cv['config']['extraction']['pattern'])
+            else:
+                raise TypeError(
+                "Tried to fill in a json var with an unknown method. Only spacy and regex extraction methods are currently supported.")
         else:
             raise TypeError(
-                "Tried to fill in a non-enum or json var. Only enums and jsons are currently supported. ")
+                "Tried to fill in a non-enum or json var. Only enums and jsons are currently supported.")
 
     def fill_dollar_vars(self, s):
         if '$' not in s:

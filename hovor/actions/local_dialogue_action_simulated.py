@@ -54,9 +54,8 @@ class LocalDialogueActionSimulated(LocalDialogueAction):
     
     def example_regex_entity(self, regex):
         """
-        Since Spacy won't generate a given entity type from nothing,
-        I made this function which can generate a random example for
-        each category of named entities.
+        This function uses the rstr library to generate a
+        random string matching the given regex. 
         """
         
         return rstr.xeger(regex)

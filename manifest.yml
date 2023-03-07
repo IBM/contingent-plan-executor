@@ -1,7 +1,0 @@
----
-applications:
- - name: ExecutionMonitor
-   random-route: true
-   memory: 128M
-   buildpacks:
-    - https://github.com/cloudfoundry/python-buildpack.git#v1.7.4

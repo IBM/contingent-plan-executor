@@ -106,16 +106,19 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
 
     def extract_entity(self, entity: str):
         # for "complex" json configurations
+        complex = False
         if type(self.context_variables[entity]["config"]) == dict:
-            # can be either "method" (like spacy) or "pattern" (like a regex)
-            if "method" in self.context_variables[entity]["config"]["extraction"]:
-                method = self.context_variables[entity]["config"]["extraction"]["method"]
-                if method == "spacy":
-                    extracted, certainty = self.try_spacy_then_rasa(entity)
-                elif method == "regex":
-                    extracted, certainty = self.try_rasa_then_spacy(entity)
+            if "extraction" in self.context_variables[entity]["config"]:
+                complex = True
+                # can be either "method" (like spacy) or "pattern" (like a regex)
+                if "method" in self.context_variables[entity]["config"]["extraction"]:
+                    method = self.context_variables[entity]["config"]["extraction"]["method"]
+                    if method == "spacy":
+                        extracted, certainty = self.try_spacy_then_rasa(entity)
+                    elif method == "regex":
+                        extracted, certainty = self.try_rasa_then_spacy(entity)
         # rasa
-        else:
+        if not complex:
             extracted, certainty = self.try_rasa_then_spacy(entity)
         if extracted:
             return {

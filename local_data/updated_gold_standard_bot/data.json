@@ -4,24 +4,31 @@
         "location": {
             "type": "json",
             "config": {
+                "options": {
+                    "Toronto": {
+                        "variations": [
+                            "downtown"
+                        ]
+                    },
+                    "Kingston": {
+                        "variations": [
+                            "k-town"
+                        ]
+                    }
+                },
                 "extraction": {
                     "method": "spacy",
                     "config_method": "gpe"
                 }
             },
             "known": {
-                "type": "flag",
+                "type": "fflag",
                 "init": false
             }
         },
         "phone_number": {
             "type": "json",
             "config": {
-                "options": [
-                    1234567890,
-                    2345678901,
-                    3453452794
-                ],
                 "extraction": {
                     "method": "regex",
                     "pattern": "\\d{10}"
@@ -77,10 +84,22 @@
         },
         "outing_type": {
             "type": "enum",
-            "config": [
-                "high-energy",
-                "low-energy"
-            ],
+            "config": {
+                "high-energy": {
+                    "variations": [
+                        "fun",
+                        "exciting",
+                        "social"
+                    ]
+                },
+                "low-energy": {
+                    "variations": [
+                        "chill",
+                        "relaxing",
+                        "laid-back"
+                    ]
+                }
+            },
             "known": {
                 "type": "fflag",
                 "init": false
@@ -98,7 +117,7 @@
             "type": "enum",
             "config": [
                 "Guac Grill",
-                "Alfredo's Pizza Caf\u00e9",
+                "Alfredo's Pizza Caf\u00c3\u00a9",
                 "Mandarin",
                 "Geneva Crepes"
             ],
@@ -788,7 +807,7 @@
                     {
                         "updates": {
                             "restaurant": {
-                                "value": "Alfredo's Pizza Caf\u00e9",
+                                "value": "Alfredo's Pizza Caf\u00c3\u00a9",
                                 "variable": "restaurant",
                                 "certainty": "Known",
                                 "interpretation": "json"
@@ -1127,6 +1146,21 @@
                     },
                     {
                         "updates": {
+                            "location": {
+                                "value": "$location",
+                                "variable": "location",
+                                "certainty": "Uncertain",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "share_location",
+                        "name": "slot-fill__get-location_DETDUP_slot-fill__get-location__validate-slot-fill-EQ-location_maybe-found",
+                        "assignments": {
+                            "$location": "maybe-found"
+                        }
+                    },
+                    {
+                        "updates": {
                             "have-message": {
                                 "value": true,
                                 "variable": "have-message",
@@ -1153,6 +1187,117 @@
                         "I live in $location.",
                         "I am located in $location.",
                         "Can you help me find things to do in $location?"
+                    ],
+                    "type": "regular"
+                },
+                "fallback": {
+                    "entities": [],
+                    "utterances": [],
+                    "type": "fallback"
+                }
+            }
+        },
+        "clarify__location": {
+            "type": "dialogue",
+            "message_variants": [
+                "I wasn't sure about your location. Do you live in $location?"
+            ],
+            "condition": [
+                [
+                    "location",
+                    "Uncertain"
+                ],
+                [
+                    "force-statement",
+                    false
+                ],
+                [
+                    "forcing__get-allergy",
+                    false
+                ]
+            ],
+            "effect": {
+                "global-outcome-name": "clarify__location__validate-clarification",
+                "type": "oneof",
+                "outcomes": [
+                    {
+                        "updates": {
+                            "location": {
+                                "value": "$location",
+                                "variable": "location",
+                                "certainty": "Known",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "confirm",
+                        "name": "clarify__location_DETDUP_clarify__location__validate-clarification-EQ-confirm",
+                        "assignments": {
+                            "$location": "found"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "location": {
+                                "value": null,
+                                "variable": "location",
+                                "certainty": "Unknown",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "deny",
+                        "name": "clarify__location_DETDUP_clarify__location__validate-clarification-EQ-deny",
+                        "assignments": {
+                            "$location": "didnt-find"
+                        }
+                    },
+                    {
+                        "updates": {
+                            "have-message": {
+                                "value": true,
+                                "variable": "have-message",
+                                "interpretation": "json"
+                            },
+                            "force-statement": {
+                                "value": true,
+                                "variable": "force-statement",
+                                "interpretation": "json"
+                            }
+                        },
+                        "intent": "fallback",
+                        "name": "clarify__location_DETDUP_clarify__location__validate-clarification-EQ-fallback",
+                        "assignments": {}
+                    }
+                ]
+            },
+            "fallback_message_variants": [
+                "Sorry, I couldn't understand that input.",
+                "Sorry, I didn't quite get that."
+            ],
+            "intents": {
+                "confirm": {
+                    "entities": [],
+                    "utterances": [
+                        "yes",
+                        "yeah",
+                        "that's it",
+                        "Y",
+                        "mhm",
+                        "confirm",
+                        "yes please"
+                    ],
+                    "type": "regular"
+                },
+                "deny": {
+                    "entities": [],
+                    "utterances": [
+                        "no",
+                        "not at all",
+                        "that's not what i meant",
+                        "absolutely not",
+                        "i don't want that",
+                        "nah",
+                        "no thanks",
+                        "no thank you"
                     ],
                     "type": "regular"
                 },
@@ -1700,7 +1845,7 @@
                                 "interpretation": "json"
                             }
                         },
-                        "intent": "share_all_outing_preferences",
+                        "intent": "share_budget",
                         "response_variants": [
                             "Ok, I'll take that into account."
                         ],
@@ -1733,7 +1878,7 @@
                                 "interpretation": "json"
                             }
                         },
-                        "intent": "share_all_outing_preferences",
+                        "intent": "share_outing_type",
                         "response_variants": [
                             "Great choice!"
                         ],
@@ -1756,7 +1901,7 @@
                                 "interpretation": "json"
                             }
                         },
-                        "intent": "share_all_outing_preferences",
+                        "intent": "share_outing_type",
                         "name": "slot-fill__get_outing_DETDUP_slot-fill__get_outing__validate-slot-fill-EQ-outing_type_maybe-found",
                         "assignments": {
                             "$outing_type": "maybe-found"
@@ -1791,6 +1936,28 @@
                         "I have a $budget budget and I would prefer a $outing_type atmosphere today.",
                         "I am operating within a $budget budget and I want to go to a $outing_type place.",
                         "I can do activities with a $budget budget and I want to find the most $outing_type place in the city."
+                    ],
+                    "type": "regular"
+                },
+                "share_budget": {
+                    "entities": [
+                        "$budget"
+                    ],
+                    "utterances": [
+                        "I have a $budget budget.",
+                        "I am operating within a $budget budget.",
+                        "I can do activities with a $budget budget."
+                    ],
+                    "type": "regular"
+                },
+                "share_outing_type": {
+                    "entities": [
+                        "$outing_type"
+                    ],
+                    "utterances": [
+                        "I would prefer a $outing_type atmosphere today.",
+                        "I want to go to a $outing_type place.",
+                        "What is the most $outing_type place in the city?"
                     ],
                     "type": "regular"
                 },

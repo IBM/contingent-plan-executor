@@ -5,6 +5,7 @@ from hovor.runtime.outcome_determination_progress import OutcomeDeterminationPro
 from hovor.session.in_memory_session import InMemorySession
 import datetime
 import json
+import os
 
 def run_interaction(configuration_provider):
     print("RUNNING INTERACTION")
@@ -118,7 +119,7 @@ class DetailedJsonConversationLog(ConversationLogInterface):
         with open(file_path, "w") as fout:
             json.dump(output_dict, fout)
 
-def simulate_interaction(configuration_provider):
+def simulate_interaction(configuration_provider, output_dir):
     print("SIMULATING INTERACTION")
     print("-" * 20 + "\n")
 
@@ -165,7 +166,7 @@ def simulate_interaction(configuration_provider):
     print("\n" + "-" * 20)
     print("INTERACTION END")
     for convo_log in convo_logs:
-        convo_log.save_conversation_to_file(f'simulated_conversation_{str_date_time}')
+        convo_log.save_conversation_to_file(os.path.join(output_dir, f'simulated_conversation_{str_date_time}'))
 
 
 def initialize_session(configuration_provider):

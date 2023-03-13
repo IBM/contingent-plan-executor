@@ -4,6 +4,7 @@ import json
 import typing
 import random
 import torch
+import shutil
 
 from hovor.core import simulate_interaction
 from local_run_utils import *
@@ -20,13 +21,15 @@ def simulate_local_conversation(output_files_path, log_output_dir):
     # don't launch the server every time
     simulate_interaction(initialize_local_run_simulated(output_files_path, launch_server=False), output_dir=log_output_dir)
 
-def simulate_local_conversations(output_files_path, log_output_dir, n_convos, sleep_time=0):
+def simulate_local_conversations(output_files_path, log_output_dir, n_convos, sleep_time=0, overwrite_output_dir=False):
 
     # launch the server once at the start
     print('Launching the server...')
     run_rasa_model_server(output_files_path)
     print('Server should be launched! Now simulating conversations...')
 
+    if os.path.exists(log_output_dir) and overwrite_output_dir:
+        shutil.rmtree(log_output_dir)
 
     for i in range(n_convos):
         print(f"Simulating conversation {i}...")
@@ -119,7 +122,7 @@ def score_sentences(sentences: List[str],
     
     return sentence_results
 
-def experiment_diologues_no_agg(articles: List[List[str]], scorer_function: Callable[[str, str], float], n_pretext_sentences: int = 5):
+def experiment_diologues_no_agg(articles: List[List[str]], _scorer_function: Callable[[str, str], float], n_pretext_sentences: int = 5):
     """
     A function to run a comparison of a sentence scorer function applied to a list of articles,
     first with some pretext and second with random pretext from the article. 
@@ -129,7 +132,7 @@ def experiment_diologues_no_agg(articles: List[List[str]], scorer_function: Call
 
         print('------------------------------------------------------------------------------------------------------')
         print(f'Scoring sentences in article {i}...')
-        sentence_scores_a = score_sentences(article, scorer_function, n_pretext_sentences=n_pretext_sentences, verbose=0)
+        sentence_scores_a = score_sentences(article, _scorer_function, n_pretext_sentences=n_pretext_sentences, verbose=0)
 
         print('Saving results...')
         experiment_results_per_article.append(sentence_scores_a)

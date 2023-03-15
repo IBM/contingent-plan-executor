@@ -38,7 +38,7 @@ def simulate_local_conversations(output_files_path, log_output_dir, n_convos, sl
             log_output_dir)
         time.sleep(sleep_time)
 
-def load_detailed_jsons(ds_path):
+def load_detailed_jsons(ds_path, randomize=False):
     convos = [] # list of dicts
     for fpath in os.listdir(ds_path):
         if fpath[-5:]=='.json':
@@ -57,6 +57,17 @@ def load_detailed_jsons(ds_path):
                         utterances.append(pair['user_message'])
                         action_types.append(pair['action_type'])
                         action_names.append(pair['action'])
+
+                if randomize:
+                    # use random seed so runs that are repeated get the same
+                    # random shuffle so the caching works on identical arguments
+                    # to the analyzing function
+                    random.seed(31459)
+                    random.shuffle(utterances)
+                    random.seed(31459)
+                    random.shuffle(action_names)
+                    random.seed(31459)
+                    random.shuffle(action_types)
                         
                 convo = {
                     "bot_name": data['metadata']['bot_name'],
@@ -65,6 +76,8 @@ def load_detailed_jsons(ds_path):
                     "action_names": action_names,
                     "action_types": action_types
                 }    
+                if randomize:
+                    convo['bot_name'] = convo['bot_name'] + "-randomized"
                         
                 
                 convos.append(convo)

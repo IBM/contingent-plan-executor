@@ -20,21 +20,32 @@ def check_db(user_id):
         return db.session.execute(db.select(ConversationDatabase).filter_by(user_id=user_id)).scalar_one()
     except sqlalchemy.exc.NoResultFound:
         return
-    
-def accuHovorMsgs(raw_msg, accumulated_f = None):
-    if not accumulated_f:
-        accumulated_f = []
+
+# TODO: eventually replace accumulated_messages and delete this function by storing
+# everything as dicts initially
+# def splitHovorMsgs(last_execution_result, raw_msg):
+#     # need to split up multiple messages (and remove any resulting empty strings)
+#     raw_msgs = list(filter(lambda x: x != '', raw_msg.replace("\n", "").split("HOVOR: ")))
+#     for msg in raw_msgs:
+#         # duplicates can occur due to accumulated messages resulting in overlap;
+#         # want to eliminate these when returning a conversation recap
+#         if len(last_execution_result) > 0:
+#             if last_execution_result[-1] != {"HOVOR": msg}:
+#                 last_execution_result.append({"HOVOR": msg})
+#         else:
+#             last_execution_result.append({"HOVOR": msg})
+
+def accuHovorMsgs(accumulated_messages, raw_msg):
     # need to split up multiple messages (and remove any resulting empty strings)
-    raw_msgs = list(filter(lambda x: x != '', raw_msg.replace("\n", "").split("HOVOR: ")))
+    raw_msgs = list(filter(lambda x: x != '', raw_msg.split("HOVOR: ")))
     for msg in raw_msgs:
         # duplicates can occur due to accumulated messages resulting in overlap;
         # want to eliminate these when returning a conversation recap
-        if len(accumulated_f) > 0:
-            if accumulated_f[-1] != {"HOVOR": msg}:
-                accumulated_f.append({"HOVOR": msg})
+        if len(accumulated_messages) > 0:
+            if accumulated_messages[-1] != {"HOVOR": msg}:
+                accumulated_messages.append({"HOVOR": msg})
         else:
-            accumulated_f.append({"HOVOR": msg})
-    return accumulated_f
+            accumulated_messages.append({"HOVOR": msg})         
 
 # allow for the remote chat to initialize the message
 @app.route('/new-conversation', methods=['GET', 'POST'])
@@ -75,10 +86,14 @@ def new_conversation():
         print("Creating a new trace.")
         temp_session = initialize_session(plan_config)
         action = temp_session.current_action
-
+        
         need_to_execute = (not action.is_external) or (
                 action.is_deterministic() and action.action_type != "goal_achieved")
         action_result = action.start_execution()  # initial action execution
+        accumulated_messages = []
+        if action_result.get_field('msg'):
+            accuHovorMsgs(accumulated_messages, action_result.get_field('msg'))
+            action_result.set_field('msg', accumulated_messages)
 
         db.session.add(
             ConversationDatabase(
@@ -106,19 +121,17 @@ def new_conversation():
             action = session.current_action
 
         # Need to jump through some hoops to keep things consistent
-        accumulated_messages = ''
-        if original_message is not None:
-            accumulated_messages += original_message
+        accumulated_messages = []
         if new_accumulated_messages is not None:
-            accumulated_messages += '\n' + new_accumulated_messages
-        if accumulated_messages == '':
+            accuHovorMsgs(accumulated_messages, new_accumulated_messages)
+        if not accumulated_messages:
             accumulated_messages = None
 
         if (action is None) or (action.action_type == "goal_achieved"):
             # If the goal is achieved, then we kill the session (so a new one can begin)
             # If the trace already exists, we delete it first
             db.session.delete(check_db(trace_id))
-            if accumulated_messages is None:
+            if not accumulated_messages:
                 return jsonify({'status': "Plan complete!", "user_id": trace_id})
             else:
                 # NOTE: cannot json dumps the diagnostics because they have sets in them.
@@ -129,13 +142,13 @@ def new_conversation():
 
         if need_to_execute:
             action_result = action.start_execution()
-
             if accumulated_messages is not None:
                 msg = action_result.get_field('msg')
                 if msg is None:
                     action_result.set_field('msg', accumulated_messages)
                 else:
-                    action_result.set_field('msg', accumulated_messages + '\n' + msg)
+                    accuHovorMsgs(accumulated_messages, msg)
+                    action_result.set_field('msg', accumulated_messages)
 
             session.update_action_result(action_result)
 
@@ -151,7 +164,7 @@ def new_conversation():
             with open("diagnostics.txt","w") as f:
                 f.write(str(diagnostics))
             return jsonify({'status': 'success',
-                            'msg': accuHovorMsgs(action_result.get_field('msg')),
+                            'msg': accumulated_messages,
                             "user_id": trace_id})
         else:
             print("Not sure what to do with action of type %s\n%s" % (action_result.get_field('type'),
@@ -207,6 +220,10 @@ def new_message():
         accumulated_messages, diagnostics, final_outcome_name, confidence = EM(session, result)
         action = session.current_action
 
+        if accumulated_messages is not None:
+            accumulated_messages_formatted = []
+            accuHovorMsgs(accumulated_messages_formatted, accumulated_messages)
+
         if (action is None) or (action.action_type == "goal_achieved"):
             # If the goal is achieved, then we kill the session (so a new one can begin)
             db[trace_id].delete()
@@ -225,7 +242,7 @@ def new_message():
                                 'outcome_name': final_outcome_name,
                                 'confidence': confidence,
                                 'stickiness': 0,
-                                'msg': accumulated_messages,
+                                'msg': accumulated_messages_formatted,
                                 })
 
         last_execution_result = action.start_execution()
@@ -233,9 +250,10 @@ def new_message():
         if accumulated_messages is not None:
             msg = last_execution_result.get_field('msg')
             if msg is None:
-                last_execution_result.set_field('msg', accumulated_messages)
+                last_execution_result.set_field('msg', accumulated_messages_formatted)
             else:
-                last_execution_result.set_field('msg', accumulated_messages + '\n' + msg)
+                accuHovorMsgs(accumulated_messages_formatted, msg)
+                last_execution_result.set_field('msg', accumulated_messages_formatted)
 
         session.update_action_result(last_execution_result)
 
@@ -264,7 +282,7 @@ def new_message():
                         'outcome_name': final_outcome_name,
                         'confidence': confidence,
                         'stickiness': 1,
-                        'msg': accuHovorMsgs(last_execution_result.get_field('msg')),
+                        'msg': last_execution_result.get_field('msg'),
                         }
                     )
     else:
@@ -304,17 +322,17 @@ def load_conversation():
     # Load up the existing session
     session = DatabaseSession(db, trace_id, plan_config)
     previous_action = session.current_action.name
-
+        
     accumulated_messages = []
     for act in session.delta_history:
         if act["action_result"]["fields"]:
             if act["action_result"]["fields"]["type"] == "message":
-                accumulated_messages = accuHovorMsgs(act["action_result"]["fields"]["msg"], accumulated_messages)
+                accuHovorMsgs(accumulated_messages, act["action_result"]["fields"]["msg"])
                 if act["action_result"]["fields"]["input"]:
                     accumulated_messages.append({"USER": act["action_result"]["fields"]["input"]})
     # # need to add last action explicitly
     if session.current_action_result.get_field('type') == 'message':
-        accumulated_messages = accuHovorMsgs(session.current_action_result.get_field("msg"), accumulated_messages)
+        accuHovorMsgs(accumulated_messages, session.current_action_result.get_field("msg"))
         if session.current_action_result.get_field("input"):
             accumulated_messages.append({"USER": session.current_action_result.get_field("input")})
     if not accumulated_messages:
@@ -329,6 +347,7 @@ def load_conversation():
                         'msg': accumulated_messages,
                         }
                     )
+
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))

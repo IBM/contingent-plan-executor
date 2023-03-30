@@ -117,7 +117,9 @@ def new_conversation():
         if (action is None) or (action.action_type == "goal_achieved"):
             # If the goal is achieved, then we kill the session (so a new one can begin)
             # If the trace already exists, we delete it first
+            # NOTE: do we want to do this?
             db.session.delete(check_db(trace_id))
+            db.session.commit()
             if accumulated_messages is None:
                 return jsonify({'status': "Plan complete!", "user_id": trace_id})
             else:
@@ -209,9 +211,11 @@ def new_message():
 
         if (action is None) or (action.action_type == "goal_achieved"):
             # If the goal is achieved, then we kill the session (so a new one can begin)
-            db[trace_id].delete()
+            # NOTE: do we want to do this?
+            db.session.delete(check_db(trace_id))
+            db.session.commit()
             if accumulated_messages is None:
-                return jsonify({'status': 'Plan Complete',
+                return jsonify({'status': 'Plan complete!',
                                 'action_name': previous_action,
                                 'outcome_name': final_outcome_name,
                                 'confidence': confidence,
@@ -225,7 +229,7 @@ def new_message():
                                 'outcome_name': final_outcome_name,
                                 'confidence': confidence,
                                 'stickiness': 0,
-                                'msg': accumulated_messages,
+                                'msg': accuHovorMsgs(accumulated_messages),
                                 })
 
         last_execution_result = action.start_execution()
@@ -317,6 +321,7 @@ def load_conversation():
         accumulated_messages = accuHovorMsgs(session.current_action_result.get_field("msg"), accumulated_messages)
         if session.current_action_result.get_field("input"):
             accumulated_messages.append({"USER": session.current_action_result.get_field("input")})
+    
     if not accumulated_messages:
         print("No execution result to return.")
         return jsonify({'status': 'success',
@@ -324,9 +329,9 @@ def load_conversation():
                         'msg': 'No execution result to return. All set!'})
     else:
         print("Returning messages: %s" % accumulated_messages)
-        return jsonify({'status': 'success',
+        return jsonify({'status': 'Plan complete!' if session.current_action.action_type == 'goal_achieved' else 'success',
                         'action_name': previous_action,
-                        'msg': accumulated_messages,
+                        'msg': (accumulated_messages),
                         }
                     )
 

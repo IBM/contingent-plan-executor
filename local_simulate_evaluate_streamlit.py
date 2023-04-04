@@ -9,10 +9,11 @@ from local_simulate_evaluate_utils import simulate_local_conversations, load_det
 
 import streamlit as st
 import shutil
+import textwrap
 
 
 def convo_heatmap(scores, utterances):
-    fig, axes = plt.subplots(1, 1, sharey=True, dpi=300, figsize=(20, 10))
+    fig, axes = plt.subplots(1, 1, sharey=True, dpi=300, figsize=(10, 10))
     sns.heatmap(ax=axes,
                 data=scores,
                 annot=utterances,
@@ -129,7 +130,7 @@ if __name__ == "__main__":
         selected_ind_random = random_convos_expander.number_input(
         'What random conversation index would you like to see?', value=0, key='random_ind_selector')
         fig = convo_heatmap(np.array(convo_sentence_scores_randomized[selected_ind_random]).reshape(-1, 1),
-                        np.array(loaded_convos_randomized[selected_ind_random]['utterances']).reshape(-1, 1))
+                        np.array([textwrap.fill(e, 85) for e in loaded_convos_randomized[selected_ind_random]['utterances']]).reshape(-1,1))
         random_convos_expander.pyplot(fig)
         
 
@@ -169,12 +170,12 @@ if __name__ == "__main__":
 
     st.write("### Sentence evaluations for the worst conversation")
     fig = convo_heatmap(np.array(convo_sentence_scores[worst_convo_ind]).reshape(-1, 1),
-                        np.array(loaded_convos[worst_convo_ind]['utterances']).reshape(-1, 1))
+                        np.array([textwrap.fill(e, 85) for e in loaded_convos[worst_convo_ind]['utterances']]).reshape(-1,1))
     st.pyplot(fig)
 
     st.write("### Sentence evaluations for the best conversation")
     fig = convo_heatmap(np.array(convo_sentence_scores[best_convo_ind]).reshape(-1, 1),
-                        np.array(loaded_convos[best_convo_ind]['utterances']).reshape(-1, 1))
+                        np.array([textwrap.fill(e, 85) for e in loaded_convos[best_convo_ind]['utterances']]).reshape(-1,1))
     st.pyplot(fig)
 
     st.write("### Sentence evaluations for selected conversation")
@@ -189,5 +190,5 @@ if __name__ == "__main__":
         f"Min score: {min_score_per_convo[selected_ind]:.2f}, percentile: {sum(min_score_per_convo < min_score_per_convo[selected_ind])/len(min_score_per_convo):.2f}")
 
     fig = convo_heatmap(np.array(convo_sentence_scores[selected_ind]).reshape(-1, 1),
-                        np.array(loaded_convos[selected_ind]['utterances']).reshape(-1, 1))
+                        np.array([textwrap.fill(e, 85) for e in loaded_convos[selected_ind]['utterances']]).reshape(-1,1))
     st.pyplot(fig)

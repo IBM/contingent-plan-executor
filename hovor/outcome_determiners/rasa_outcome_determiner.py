@@ -153,10 +153,10 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         for out, out_cfg in self.full_outcomes.items():
             # check to make sure this intent was at least DETECTED by rasa
             if out_cfg["intent"] in intents_detected:
-                if self.intents[out_cfg["intent"]]["variables"]:
+                if self.intents[out_cfg["intent"]]["entities"]:
                     # we only want to consider assignments that are variables of the intent, as outcomes often
                     # have other updates for existing entities.
-                    entity_reqs = {e[1:]:cert for e, cert in out_cfg["assignments"].items() if e in self.intents[out_cfg["intent"]]["variables"]}
+                    entity_reqs = {e[1:]:cert for e, cert in out_cfg["assignments"].items() if e in self.intents[out_cfg["intent"]]["entities"]}
 
                     intents.append(
                         Intent(

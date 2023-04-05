@@ -110,12 +110,13 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         if type(self.context_variables[entity]["config"]) == dict:
             if "extraction" in self.context_variables[entity]["config"]:
                 complex = True
-                # can be either be spacy or regex
-                method = self.context_variables[entity]["config"]["extraction"]["method"]
-                if method == "spacy":
-                    extracted, certainty = self.try_spacy_then_rasa(entity)
-                elif method == "regex":
-                    extracted, certainty = self.try_rasa_then_spacy(entity)
+                # can be either "method" (like spacy) or "pattern" (like a regex)
+                if "method" in self.context_variables[entity]["config"]["extraction"]:
+                    method = self.context_variables[entity]["config"]["extraction"]["method"]
+                    if method == "spacy":
+                        extracted, certainty = self.try_spacy_then_rasa(entity)
+                    elif method == "regex":
+                        extracted, certainty = self.try_rasa_then_spacy(entity)
         # rasa
         if not complex:
             extracted, certainty = self.try_rasa_then_spacy(entity)
@@ -151,7 +152,6 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         # make outcome groups accessible by name
         outcome_groups = {out.name : out for out in outcome_groups}
         intents_detected = {ranking["name"]: ranking["confidence"] for ranking in r["intent_ranking"]}
-        entities_detected = {e["entity"] for e in r["entities"]}
         intents = []
         for out, out_cfg in self.full_outcomes.items():
             # check to make sure this intent was at least DETECTED by rasa
@@ -159,18 +159,17 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                 if self.intents[out_cfg["intent"]]["entities"]:
                     # we only want to consider assignments that are variables of the intent, as outcomes often
                     # have other updates for existing entities.
-                    # use the assignments key so we get the required certainty for each entity
                     entity_reqs = {e[1:]:cert for e, cert in out_cfg["assignments"].items() if e in self.intents[out_cfg["intent"]]["entities"]}
-                    # make sure we only include intents whose entities were at least DETECTED by rasa
-                    if False not in [e in entities_detected for e in entity_reqs]:
-                        intents.append(
-                            Intent(
-                                out_cfg["intent"],
-                                frozenset(entity_reqs.items()),
-                                outcome_groups[out],
-                                intents_detected[out_cfg["intent"]]
-                            )
+
+                    intents.append(
+                        Intent(
+                            out_cfg["intent"],
+                            # use the assignments key so we get the required certainty for each entity
+                            frozenset(entity_reqs.items()),
+                            outcome_groups[out],
+                            intents_detected[out_cfg["intent"]]
                         )
+                    )
                 else:
                     intents.append(
                         Intent(
@@ -273,24 +272,16 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         DEBUG("\t top random ranking for group '%s'" % (chosen_intent))
         return ranked_groups, progress
 
-    def _make_entity_type_sample(self, entity, entity_type, raw_entity_config, extracted_info):
+    def _make_entity_type_sample(self, entity, entity_type, entity_config, extracted_info):
         entity_value = extracted_info["value"]
         # entity is extracted with spacy and has options specified
-        spacy_w_opts = (raw_entity_config["extraction"]["method"] == "spacy" and "options" in raw_entity_config) if entity_type == "json" else False
+        spacy_w_opts = (entity_config["extraction"]["method"] == "spacy" and "options" in entity_config) if entity_type == "json" else False
         if spacy_w_opts:
-            raw_entity_config = raw_entity_config["options"]
-        entity_config = raw_entity_config
+            entity_config = entity_config["options"]
         if spacy_w_opts or entity_type == "enum":
             # lowercase all strings in entity_config, map back to original casing
             entity_config = {e.lower(): e for e in entity_config}
-            # consider variations too (need to in case they were not captured because of misspelling;
-            # also strengthens entity recognition as similar words to these will be valid)
-            if type(raw_entity_config) == dict:
-                for e in raw_entity_config:
-                    for var in raw_entity_config[e]["variations"]:
-                        entity_config[var.lower()] = e
             entity_value = entity_value.lower()
-            # check/fix case (if it was only a case issue we'll keep certainty at "known")
             if entity_value in entity_config:
                 extracted_info["sample"] = entity_config[entity_value]
                 return extracted_info
@@ -343,8 +334,8 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                                     extracted_info["sample"] = entity_config[hol]
                                     return extracted_info
         elif entity_type == "json":
-            if raw_entity_config["extraction"]["method"] == "regex":
-                match = re.search(raw_entity_config["extraction"]["pattern"], entity_value)
+            if entity_config["extraction"]["method"] == "regex":
+                match = re.search(entity_config["extraction"]["pattern"], entity_value)
                 if match:
                     extracted_info["sample"] = entity_value
                     return extracted_info

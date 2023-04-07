@@ -33,7 +33,7 @@ def run_interaction(configuration_provider):
 class ConversationLogInterface:
     def write_message(self, entity, message):
         pass
-    def write_diologue_pair(self, agent_message=None, user_message=None, action=None, action_type=None):
+    def write_dialogue_pair(self, agent_message=None, user_message=None, action=None, action_type=None):
         pass
     def save_conversation_to_file(self, file_path):
         pass
@@ -45,7 +45,7 @@ class SimpleTextConversationLog(ConversationLogInterface):
     def write_message(self, entity, message):
         self.messages.append(f'{entity}: ' + message)
 
-    def write_diologue_pair(self, agent_message=None, user_message=None, action=None, action_type=None):
+    def write_dialogue_pair(self, agent_message=None, user_message=None, action=None, action_type=None):
         if agent_message:
             self.messages.append('AGENT: ' + agent_message.replace('HOVOR: ', '', 1)) 
         if user_message:
@@ -68,7 +68,7 @@ class JsonConversationLog(ConversationLogInterface):
             'message': message
         })
 
-    def write_diologue_pair(self, agent_message=None, user_message=None, action=None, action_type=None):
+    def write_dialogue_pair(self, agent_message=None, user_message=None, action=None, action_type=None):
         if agent_message:
             agent_message = agent_message.replace('HOVOR: ', '', 1)
         self.messages.append({
@@ -97,7 +97,7 @@ class DetailedJsonConversationLog(ConversationLogInterface):
             'message': message
         })
 
-    def write_diologue_pair(self, agent_message=None, user_message=None, action=None, action_type=None):
+    def write_dialogue_pair(self, agent_message=None, user_message=None, action=None, action_type=None):
         if agent_message:
             agent_message = agent_message.replace('HOVOR: ', '', 1)
         self.messages.append({
@@ -144,9 +144,9 @@ def simulate_interaction(configuration_provider, output_dir):
         # No user input for this action result. 
         user_message=None
     
-    # write the diologue pair to each conversation log
+    # write the dialogue pair to each conversation log
     for convo_log in convo_logs:
-        convo_log.write_diologue_pair(agent_message=agent_message, 
+        convo_log.write_dialogue_pair(agent_message=agent_message, 
                                       user_message=user_message, 
                                       action=session.current_action.config['name'],
                                       action_type=session.current_action.action_type)

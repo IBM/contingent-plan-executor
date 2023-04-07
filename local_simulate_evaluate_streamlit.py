@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import os
 
 from local_run_utils import *
-from local_simulate_evaluate_utils import simulate_local_conversations, load_detailed_jsons, build_score_sentence_nsp_function_bert, experiment_diologues_no_agg
+from local_simulate_evaluate_utils import simulate_local_conversations, load_detailed_jsons, build_score_sentence_nsp_function_bert, experiment_dialogues_no_agg
 
 import streamlit as st
 import shutil
@@ -33,7 +33,7 @@ if __name__ == "__main__":
     # redefine util methods using the streamlit cache wrapper
     simulate_local_conversations = st.cache_data(
         simulate_local_conversations, max_entries=1)
-    experiment_diologues_no_agg = st.cache_data(experiment_diologues_no_agg)
+    experiment_dialogues_no_agg = st.cache_data(experiment_dialogues_no_agg)
     # load_detailed_jsons = st.cache_data(load_detailed_jsons) # shouldn't cache this as files could differ while path won't
     build_score_sentence_nsp_function_bert = st.cache_resource(
         build_score_sentence_nsp_function_bert)
@@ -65,7 +65,7 @@ if __name__ == "__main__":
     score_sentence_nsp = build_score_sentence_nsp_function_bert()
 
     # compute scores for every sentence in every convo
-    convo_sentence_scores = experiment_diologues_no_agg([c['utterances'] for c in loaded_convos],
+    convo_sentence_scores = experiment_dialogues_no_agg([c['utterances'] for c in loaded_convos],
                                                         score_sentence_nsp,
                                                         n_pretext_sentences=5)
 
@@ -102,7 +102,7 @@ if __name__ == "__main__":
         loaded_convos_randomized = load_detailed_jsons(output_dir, randomize=True)
 
         # compute scores for every sentence in every convo
-        convo_sentence_scores_randomized = experiment_diologues_no_agg([c['utterances'] for c in loaded_convos_randomized],
+        convo_sentence_scores_randomized = experiment_dialogues_no_agg([c['utterances'] for c in loaded_convos_randomized],
                                                             score_sentence_nsp,
                                                             n_pretext_sentences=5)
         

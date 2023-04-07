@@ -24,7 +24,7 @@ if __name__ == "__main__":
     score_sentence_nsp = build_score_sentence_nsp_function_bert()
     
     # compute scores for every sentence in every convo
-    convo_sentence_scores = experiment_diologues_no_agg([c['utterances'] for c in loaded_convos], 
+    convo_sentence_scores = experiment_dialogues_no_agg([c['utterances'] for c in loaded_convos], 
                                                     score_sentence_nsp, 
                                                     n_pretext_sentences=5)
 

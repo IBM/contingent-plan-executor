@@ -135,7 +135,7 @@ def score_sentences(sentences: List[str],
     
     return sentence_results
 
-def experiment_diologues_no_agg(articles: List[List[str]], _scorer_function: Callable[[str, str], float], n_pretext_sentences: int = 5):
+def experiment_dialogues_no_agg(articles: List[List[str]], _scorer_function: Callable[[str, str], float], n_pretext_sentences: int = 5):
     """
     A function to run a comparison of a sentence scorer function applied to a list of articles,
     first with some pretext and second with random pretext from the article. 

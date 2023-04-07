@@ -59,7 +59,7 @@ def EM_S(session, action_execution_result, convo_logs=[]):
                     user_message = None
                 # write the pair to the log
                 for convo_log in convo_logs:
-                    convo_log.write_diologue_pair(agent_message=agent_message, 
+                    convo_log.write_dialogue_pair(agent_message=agent_message, 
                                                   user_message=user_message, 
                                                   action=action.config['name'],
                                                   action_type=action.action_type)

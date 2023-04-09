@@ -19,7 +19,7 @@ def simulate_local_conversation(output_files_path, log_output_dir):
     if not os.path.exists(log_output_dir):
         os.mkdir(log_output_dir)
     # don't launch the server every time
-    simulate_interaction(initialize_local_run_simulated(output_files_path, launch_server=False), output_dir=log_output_dir)
+    simulate_interaction(initialize_local_run_simulated(output_files_path), output_dir=log_output_dir)
 
 def simulate_local_conversations(output_files_path, log_output_dir, n_convos, sleep_time=0, overwrite_output_dir=False):
 

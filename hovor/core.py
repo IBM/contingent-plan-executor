@@ -5,6 +5,7 @@ from hovor.runtime.outcome_determination_progress import OutcomeDeterminationPro
 from hovor.session.in_memory_session import InMemorySession
 import datetime
 import json
+import os
 
 def run_interaction(configuration_provider):
     print("RUNNING INTERACTION")
@@ -32,7 +33,7 @@ def run_interaction(configuration_provider):
 class ConversationLogInterface:
     def write_message(self, entity, message):
         pass
-    def write_diologue_pair(self, agent_message=None, user_message=None):
+    def write_dialogue_pair(self, agent_message=None, user_message=None, action=None, action_type=None):
         pass
     def save_conversation_to_file(self, file_path):
         pass
@@ -44,7 +45,7 @@ class SimpleTextConversationLog(ConversationLogInterface):
     def write_message(self, entity, message):
         self.messages.append(f'{entity}: ' + message)
 
-    def write_diologue_pair(self, agent_message=None, user_message=None):
+    def write_dialogue_pair(self, agent_message=None, user_message=None, action=None, action_type=None):
         if agent_message:
             self.messages.append('AGENT: ' + agent_message.replace('HOVOR: ', '', 1)) 
         if user_message:
@@ -67,7 +68,7 @@ class JsonConversationLog(ConversationLogInterface):
             'message': message
         })
 
-    def write_diologue_pair(self, agent_message=None, user_message=None):
+    def write_dialogue_pair(self, agent_message=None, user_message=None, action=None, action_type=None):
         if agent_message:
             agent_message = agent_message.replace('HOVOR: ', '', 1)
         self.messages.append({
@@ -82,7 +83,43 @@ class JsonConversationLog(ConversationLogInterface):
         with open(file_path, "w") as fout:
             json.dump(self.messages, fout)
 
-def simulate_interaction(configuration_provider):
+class DetailedJsonConversationLog(ConversationLogInterface):
+    def __init__(self, bot_name='unknown'):
+        self.messages = []
+        self.metadata = {
+            "time_created":datetime.datetime.now().strftime(r"%d-%m-%Y-%H-%M-%S-%f"),
+            "bot_name": bot_name
+        }
+    
+    def write_message(self, entity, message):
+        self.messages.append({
+            'entity': entity,
+            'message': message
+        })
+
+    def write_dialogue_pair(self, agent_message=None, user_message=None, action=None, action_type=None):
+        if agent_message:
+            agent_message = agent_message.replace('HOVOR: ', '', 1)
+        self.messages.append({
+            'agent_message': agent_message,
+            'user_message': user_message,
+            'action': action,
+            'action_type': action_type
+        })
+
+    def save_conversation_to_file(self, file_path):
+        if file_path.split('.')[-1]!='json':
+            file_path = file_path + '.json'
+
+        output_dict = {
+            "metadata": self.metadata,
+            "messages": self.messages
+        }
+
+        with open(file_path, "w") as fout:
+            json.dump(output_dict, fout)
+
+def simulate_interaction(configuration_provider, output_dir):
     print("SIMULATING INTERACTION")
     print("-" * 20 + "\n")
 
@@ -90,7 +127,8 @@ def simulate_interaction(configuration_provider):
     str_date_time = timestamp.strftime(r"%d-%m-%Y-%H-%M-%S-%f")
     print("Current timestamp", str_date_time)
 
-    convo_logs = [JsonConversationLog(), SimpleTextConversationLog()]
+    convo_logs = [DetailedJsonConversationLog(bot_name=configuration_provider._configuration_data['name']), 
+                  SimpleTextConversationLog()]
 
     session = initialize_session(configuration_provider)
     last_execution_result = session.current_action.execute()  # initial action execution
@@ -106,9 +144,12 @@ def simulate_interaction(configuration_provider):
         # No user input for this action result. 
         user_message=None
     
-    # write the diologue pair to each conversation log
+    # write the dialogue pair to each conversation log
     for convo_log in convo_logs:
-        convo_log.write_diologue_pair(agent_message=agent_message, user_message=user_message)
+        convo_log.write_dialogue_pair(agent_message=agent_message, 
+                                      user_message=user_message, 
+                                      action=session.current_action.config['name'],
+                                      action_type=session.current_action.action_type)
 
     while True:
         accumulated_messages, _, _, _ = EM_S(session, last_execution_result, convo_logs=convo_logs)
@@ -125,7 +166,7 @@ def simulate_interaction(configuration_provider):
     print("\n" + "-" * 20)
     print("INTERACTION END")
     for convo_log in convo_logs:
-        convo_log.save_conversation_to_file(f'simulated_conversation_{str_date_time}')
+        convo_log.save_conversation_to_file(os.path.join(output_dir, f'simulated_conversation_{str_date_time}'))
 
 
 def initialize_session(configuration_provider):

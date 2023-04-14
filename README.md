@@ -74,3 +74,22 @@ Send new messages with `curl`, i.e. :
   ```
 curl -d '{"user_id":"haz", "msg":"Toronto"}' -H "Content-Type: application/json" -X POST http://localhost:5000/new-message
   ```
+# Simulation and Evaluation
+This allows for chatbot designers to simulate conversations, and analyze problematic ones. 
+
+
+## Setup for Simulation and Evaluation
+To run simulation and evaluation, some libraries will be needed in addition to the normal libraries for hovor. In my experience, the best way to do this is with conda to manage your environments, but the same package list should work for pip approaches. 
+
+To create a working env with conda, follow these steps:
+1. `conda create --name hovor-duplicate python=3.8.15`
+2. `conda activate hovor-sim`
+3. `conda install pip`
+4. `pip install -r requirements_sim.txt`
+5. `python -m spacy download en_core_web_md`
+
+You can see the packages that will be installed the in the file `requirements_sim.txt`.  
+If you have difficulties with package versions, you can view the text file `conda_list.txt` which contains the output of conda list for my working conda environment on ubuntu. You can likely specify these package versions in the requirements file to fix any conflicts.
+
+## Run Simulation and Evaluation
+The best way to apply simulation and evaluation, is to use our user interface. With your simulation environment activated, you will run the command: `streamlit run local_simulate_evaluate_streamlit.py` and once the paths are correct, it will run these processes. 

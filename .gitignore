@@ -3,3 +3,6 @@ vcap-local.json
 __pycache__
 .rasa
 .vscode
+diagnostics.txt
+out_path.txt
+instance/

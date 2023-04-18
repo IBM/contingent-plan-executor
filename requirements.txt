@@ -1,14 +1,12 @@
 requests
-Flask==1.0
-Werkzeug==0.16.0
-cloudant==2.4.0
+Flask
+Flask-SQLAlchemy
 flask-cors
 json2html
 jsonpickle
-watson-developer-cloud
-ibm-watson
 nltk
 spacy
 rasa
 textblob
 graphviz
+docker

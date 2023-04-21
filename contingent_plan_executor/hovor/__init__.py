@@ -44,7 +44,4 @@ def setupapp():
     except OperationalError:
         app, db = setup("sqlite:///project.db") 
         
-    with app.app_context():
-        from hovor.session.database_session import DatabaseSession
-        db.create_all()
     return app, db

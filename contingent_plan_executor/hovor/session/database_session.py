@@ -1,23 +1,13 @@
-from copy import deepcopy
-
-import jsonpickle, json 
+import jsonpickle
 import sqlalchemy
 
 from hovor.session.in_memory_session import InMemorySession
 from hovor.runtime.outcome_determination_progress import OutcomeDeterminationProgress
-from hovor import db
 
-class ConversationDatabase(db.Model):
-    user_id = db.Column(db.String, unique=True, nullable=False, primary_key=True)
-    state = db.Column(db.PickleType, nullable=True)
-    action = db.Column(db.PickleType, nullable=True)
-    action_result = db.Column(db.PickleType, nullable=True)
-    context = db.Column(db.PickleType, nullable=True)
-    node_id = db.Column(db.PickleType, nullable=True)
-    history = db.Column(db.PickleType, nullable=True)
 
 class DatabaseSession(InMemorySession):
     def __init__(self, db, conversation_id, configuration_provider, loading_from: bool = False):
+        from app import ConversationDatabase
         # Prepopulate the superclass
         super(DatabaseSession, self).__init__(configuration_provider)
         try:
@@ -39,6 +29,7 @@ class DatabaseSession(InMemorySession):
 
 
     def save(self, db, conversation_id):
+        from app import ConversationDatabase
         try:
             conversation = db.session.execute(db.select(ConversationDatabase).filter_by(user_id=conversation_id)).scalar_one()
         except sqlalchemy.exc.NoResultFound:

@@ -19,7 +19,6 @@ def run_rasa_model_server(output_files_path):
         requests.post("http://localhost:5005/model/parse", json={"text": ""})
     except requests.exceptions.ConnectionError:
         subprocess.Popen(f"rasa run --enable-api -m {output_files_path}/nlu_model.tar.gz", shell=True)
-        sleep(3.0)
         while True:
             try:
                 requests.post("http://localhost:5005/model/parse", json={"text": ""})

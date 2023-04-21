@@ -20,29 +20,31 @@ def setup(sqlalchemy_db_uri):
     db.init_app(app)
     return app, db
 
-# also write the plan configuration data to the volume
-if len(sys.argv) > 1:
-    output_files_path = sys.argv[1]
-else:
-    raise ValueError("Please provide the directory to your plan4dial output files as a system argument.")
-    # output_files_path = "local_data/updated_gold_standard_bot" # ONLY for local debugging
+def setupapp():
+    # also write the plan configuration data to the volume
+    if len(sys.argv) > 1:
+        output_files_path = sys.argv[1]
+    else:
+        raise ValueError("Please provide the directory to your plan4dial output files as a system argument.")
+        # output_files_path = "local_data/updated_gold_standard_bot" # ONLY for local debugging
 
-# save the output files path name
-with open("out_path.txt", "w") as f:
-    f.write(output_files_path)
+    # save the output files path name
+    with open("out_path.txt", "w") as f:
+        f.write(output_files_path)
 
-# mounted docker run
-try:
-    app, db = setup("sqlite:////../data/project.db")
+    # mounted docker run
+    try:
+        app, db = setup("sqlite:////../data/project.db")
+        with app.app_context():
+            # don't import DatabaseSession yet; we just want to make sure we can create the
+            # db in the given directory. (importing creates the tables and it seems we can
+            # only do this once). 
+            db.create_all()
+    # local or unmounted docker runs
+    except OperationalError:
+        app, db = setup("sqlite:///project.db") 
+        
     with app.app_context():
-        # don't import DatabaseSession yet; we just want to make sure we can create the
-        # db in the given directory. (importing creates the tables and it seems we can
-        # only do this once). 
+        from hovor.session.database_session import DatabaseSession
         db.create_all()
-# local or unmounted docker runs
-except OperationalError:
-    app, db = setup("sqlite:///project.db") 
-    
-with app.app_context():
-    from hovor.session.database_session import DatabaseSession
-    db.create_all()
+    return app, db

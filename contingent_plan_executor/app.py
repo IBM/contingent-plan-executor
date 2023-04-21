@@ -1,4 +1,4 @@
-from hovor import db, app
+from hovor import setupapp
 from hovor.session.database_session import DatabaseSession, ConversationDatabase
 from hovor.core import initialize_session
 from hovor.configuration.direct_json_configuration_provider import DirectJsonConfigurationProvider
@@ -336,5 +336,6 @@ def load_conversation():
                     )
 
 if __name__ == "__main__":
+    app, db = setupapp()
     port = int(os.environ.get('PORT', 5000))
     app.run(debug=False, host='0.0.0.0', port=port)

@@ -1,5 +1,5 @@
-from hovor import db, app
-from hovor.session.database_session import DatabaseSession, ConversationDatabase
+from hovor import setupapp
+from hovor.session.database_session import DatabaseSession
 from hovor.core import initialize_session
 from hovor.configuration.direct_json_configuration_provider import DirectJsonConfigurationProvider
 from hovor.execution_monitor import EM
@@ -13,7 +13,21 @@ import sqlalchemy
 import random
 
 initialize_remote_environment()
+app, db = setupapp()
 
+
+class ConversationDatabase(db.Model):
+    user_id = db.Column(db.String, unique=True, nullable=False, primary_key=True)
+    state = db.Column(db.PickleType, nullable=True)
+    action = db.Column(db.PickleType, nullable=True)
+    action_result = db.Column(db.PickleType, nullable=True)
+    context = db.Column(db.PickleType, nullable=True)
+    node_id = db.Column(db.PickleType, nullable=True)
+    history = db.Column(db.PickleType, nullable=True)
+
+with app.app_context():
+    from app import ConversationDatabase
+    db.create_all()
 
 def check_db(user_id):
     try:

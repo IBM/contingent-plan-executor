@@ -11,3 +11,4 @@ rasa
 textblob
 graphviz
 docker
+rstr==3.2.0

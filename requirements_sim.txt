@@ -1,6 +1,7 @@
 requests
 Flask
 flask-cors
+flask-sqlalchemy
 json2html
 jsonpickle
 nltk

@@ -46,7 +46,7 @@ if __name__ == "__main__":
     output_dir = st.text_input("Output Directory", value="simulated_convos")
 
     chatbot_output_files = st.text_input(
-        "Chatbot Output Files", value="/home/jacob/Dev/plan4dial/plan4dial/local_data/gold_standard_bot/output_files")
+        "Chatbot Output Files", value="/home/muise/projects/plan4dial/plan4dial/local_data/gold_standard_bot/output_files")
 
     n_convos = st.number_input("Number of Conversations", value=5)
 
@@ -105,7 +105,7 @@ if __name__ == "__main__":
         convo_sentence_scores_randomized = experiment_dialogues_no_agg([c['utterances'] for c in loaded_convos_randomized],
                                                             score_sentence_nsp,
                                                             n_pretext_sentences=5)
-        
+
         mean_score_per_convo_randomized = [np.mean(x) for x in convo_sentence_scores_randomized]
         median_score_per_convo_randomized = [np.median(x) for x in convo_sentence_scores_randomized]
         min_score_per_convo_randomized = [np.min(x) for x in convo_sentence_scores_randomized]
@@ -123,7 +123,7 @@ if __name__ == "__main__":
                             "median_score": median_score_per_convo_randomized,
                             "mean_score": mean_score_per_convo_randomized,
                             "min_score": min_score_per_convo_randomized, })
-        
+
         random_convos_expander.write('### Conversation Scores Randomized')
         random_convos_expander.write(results_randomized)
 
@@ -132,7 +132,7 @@ if __name__ == "__main__":
         fig = convo_heatmap(np.array(convo_sentence_scores_randomized[selected_ind_random]).reshape(-1, 1),
                         np.array([textwrap.fill(e, 85) for e in loaded_convos_randomized[selected_ind_random]['utterances']]).reshape(-1,1))
         random_convos_expander.pyplot(fig)
-        
+
 
     st.write('## View the best n and worst n conversations')
     st.write('This section will contain conversations from the randomized bot if enabled. ')
@@ -140,7 +140,7 @@ if __name__ == "__main__":
     n = st.number_input("Top n, n=", value=2, key='n')
     convo_compare_method = st.selectbox(
         "comparison_metric", ['median_score', 'mean_score', 'min_score'])
-    
+
     if add_random_convos:
         final_results = pd.concat([results, results_randomized])
     else:

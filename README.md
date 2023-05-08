@@ -82,7 +82,7 @@ This allows for chatbot designers to simulate conversations, and analyze problem
 To run simulation and evaluation, some libraries will be needed in addition to the normal libraries for hovor. In my experience, the best way to do this is with conda to manage your environments, but the same package list should work for pip approaches. 
 
 To create a working env with conda, follow these steps:
-1. `conda create --name hovor-duplicate python=3.8.15`
+1. `conda create --name hovor-sim python=3.8.15`
 2. `conda activate hovor-sim`
 3. `conda install pip`
 4. `pip install -r requirements_sim.txt`

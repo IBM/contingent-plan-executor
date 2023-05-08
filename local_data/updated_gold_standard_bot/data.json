@@ -1227,9 +1227,22 @@
                                 "variable": "location",
                                 "certainty": "Known",
                                 "interpretation": "json"
+                            },
+                            "have-message": {
+                                "value": true,
+                                "variable": "have-message",
+                                "interpretation": "json"
+                            },
+                            "force-statement": {
+                                "value": true,
+                                "variable": "force-statement",
+                                "interpretation": "json"
                             }
                         },
                         "intent": "confirm",
+                        "response_variants": [
+                            "Tailoring your results to what's available in $location..."
+                        ],
                         "name": "clarify__location_DETDUP_clarify__location__validate-clarification-EQ-confirm",
                         "assignments": {
                             "$location": "found"
@@ -1658,9 +1671,22 @@
                                 "variable": "cuisine",
                                 "certainty": "Known",
                                 "interpretation": "json"
+                            },
+                            "have-message": {
+                                "value": true,
+                                "variable": "have-message",
+                                "interpretation": "json"
+                            },
+                            "force-statement": {
+                                "value": true,
+                                "variable": "force-statement",
+                                "interpretation": "json"
                             }
                         },
                         "intent": "confirm",
+                        "response_variants": [
+                            "Cuisine preference has been logged."
+                        ],
                         "name": "clarify__cuisine_DETDUP_clarify__cuisine__validate-clarification-EQ-confirm",
                         "assignments": {
                             "$cuisine": "found"
@@ -2003,13 +2029,24 @@
                                 "certainty": "Known",
                                 "interpretation": "json"
                             },
-                            "allow_single_slot_outing_type": {
-                                "value": false,
-                                "variable": "allow_single_slot_outing_type",
+                            "have-message": {
+                                "value": true,
+                                "variable": "have-message",
+                                "interpretation": "json"
+                            },
+                            "force-statement": {
+                                "value": true,
+                                "variable": "force-statement",
                                 "interpretation": "json"
                             }
                         },
+                        "allow_single_slot_outing_type": {
+                            "value": false
+                        },
                         "intent": "share_outing_type",
+                        "response_variants": [
+                            "Great choice!"
+                        ],
                         "name": "single_slot__outing_type_DETDUP_single_slot__outing_type__validate-slot-fill-EQ-fill-slot",
                         "assignments": {
                             "$outing_type": "found"
@@ -2106,13 +2143,24 @@
                                 "certainty": "Known",
                                 "interpretation": "json"
                             },
-                            "allow_single_slot_budget": {
-                                "value": false,
-                                "variable": "allow_single_slot_budget",
+                            "have-message": {
+                                "value": true,
+                                "variable": "have-message",
+                                "interpretation": "json"
+                            },
+                            "force-statement": {
+                                "value": true,
+                                "variable": "force-statement",
                                 "interpretation": "json"
                             }
                         },
+                        "allow_single_slot_budget": {
+                            "value": false
+                        },
                         "intent": "share_budget",
+                        "response_variants": [
+                            "Ok, I'll take that into account."
+                        ],
                         "name": "single_slot__budget_DETDUP_single_slot__budget__validate-slot-fill-EQ-fill-slot",
                         "assignments": {
                             "$budget": "found"
@@ -2189,9 +2237,22 @@
                                 "variable": "outing_type",
                                 "certainty": "Known",
                                 "interpretation": "json"
+                            },
+                            "have-message": {
+                                "value": true,
+                                "variable": "have-message",
+                                "interpretation": "json"
+                            },
+                            "force-statement": {
+                                "value": true,
+                                "variable": "force-statement",
+                                "interpretation": "json"
                             }
                         },
                         "intent": "confirm",
+                        "response_variants": [
+                            "Great choice!"
+                        ],
                         "name": "clarify__outing_type_DETDUP_clarify__outing_type__validate-clarification-EQ-confirm",
                         "assignments": {
                             "$outing_type": "found"

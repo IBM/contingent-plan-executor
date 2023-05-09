@@ -61,7 +61,9 @@ class LocalDialogueActionSimulated(LocalDialogueAction):
     def get_random_value_for_var(self, var_name):
         cv = self.data_for_sim['context_variables'][var_name]
         if cv['type'] == 'enum':
-            return random.choice(cv['config'])
+            if type(cv['config']) == list:
+                return random.choice(cv['config'])
+            return random.choice(list(cv['config'].keys()))
         elif cv['type'] == 'json':
             if cv['config']['extraction']['method'] == 'spacy':
                 return self.example_spacy_entity(cv['config']['extraction']['config_method'])

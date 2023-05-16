@@ -193,31 +193,31 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
 
     def extract_intents(self, intents):
         entities = {}
-        chosen_intent = None
+        extracted_intent = None
         for intent in intents:
             # if this intent expects entities, make sure we extract them
             if intent.entity_reqs != None:
                 entities = self.extract_entities(intent)
                 if intent.entity_reqs == frozenset({entity: entities[entity]["certainty"] for entity in entities if entities[entity]["certainty"] != "didnt-find"}.items()):
-                    chosen_intent = intent
+                    extracted_intent = intent
                     break
                 # need to reassign to None because we only get here if for some reason we weren't
                 # able to extract the intent correctly
-                chosen_intent = None
+                extracted_intent = None
                 # an intent with entities we were not able to extract gets a confidence of 0
                 intent.confidence = 0
             else:
                 # stop looking for a suitable intent if the intent extracted doesn't require entities
-                chosen_intent = intent
+                extracted_intent = intent
                 break
-        if chosen_intent:
+        if extracted_intent:
             # in the case that there are multiple intents with the same name and confidence
             # because we're going by entity assignment, we only want the intent that reflects
             # our extracted entity assignment to be chosen. i.e. at this point, an intent share_cuisine where
             # cuisine is "found" and the sister intent share_cuisine where cuisine is "maybe-found" will
             # have the same confidence, but we only want the right one to be chosen.
             for intent in intents:
-                if intent.name == chosen_intent.name and intent.entity_reqs != chosen_intent.entity_reqs:
+                if intent.name == extracted_intent.name and intent.entity_reqs != extracted_intent.entity_reqs:
                     intent.confidence = 0
 
         for intent in intents:
@@ -236,7 +236,7 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
             }
             for intent in intents
         ]
-        return chosen_intent.name, entities, ranked_groups
+        return intents[0], ranked_groups
 
 
     def get_final_rankings(self, input, outcome_groups):
@@ -250,26 +250,38 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         return self.extract_intents(intents)
 
     def rank_groups(self, outcome_groups, progress):
-        chosen_intent, entities, ranked_groups = self.get_final_rankings(
+        chosen_intent, ranked_groups = self.get_final_rankings(
             progress.json["action_result"]["fields"]["input"], outcome_groups
         )
         ranked_groups = [
             (intent["outcome"], intent["confidence"]) for intent in ranked_groups
         ]
-        # shouldn't only add samples for extracted entities; some outcomes don't
+        # entities required by the extracted intent
+        if chosen_intent.entity_reqs:
+            ci_ent_reqs = [er[0] for er in chosen_intent.entity_reqs]
+        # note we shouldn't only add samples for extracted entities; some outcomes don't
         # extract entities themselves but update the values of existing entities
-        if chosen_intent:
-            for entity, entity_info in entities.items():
-                progress.add_detected_entity(entity, entity_info["sample"])
-            outcome_description = progress.get_description(ranked_groups[0][0].name)
-            for update_var, update_config in outcome_description["updates"].items():
-                if "value" in update_config and update_var not in entities:
-                    if progress.get_entity_type(update_var) in ["json", "enum"]:
-                        value = update_config["value"]
-                        if update_config["value"] == f"${update_var}":
-                            value = progress.actual_context._fields[update_var]
-                        progress.add_detected_entity(update_var, value)
-        DEBUG("\t top random ranking for group '%s'" % (chosen_intent))
+        for update_var, update_config in progress.get_description(chosen_intent.outcome.name)["updates"].items():
+            if "value" in update_config:
+                if progress.get_entity_type(update_var) in ["json", "enum"]:
+                    value = update_config["value"]
+                    # if the value is a variable (check without the $)
+                    if value[1:] in progress.actual_context.field_names:
+                        value = value[1:]
+                        if progress.actual_context._fields[value]:
+                            value = progress.actual_context._fields[value]
+                        else:
+                            # if it is not part of the progress yet and we just extracted entities,
+                            if chosen_intent.entity_reqs:
+                                # check if we just extracted it
+                                if value in ci_ent_reqs:
+                                    value = self.extracted_entities[value]["sample"]
+                                # otherwise, we tried to assign an entity to a value we don't have yet
+                                else:
+                                    raise ValueError("Tried to assign an entity to \
+                                                    an unknown variable value.")
+                    progress.add_detected_entity(update_var, value)
+        DEBUG("\t top random ranking for group '%s'" % (chosen_intent.name))
         return ranked_groups, progress
 
     def _make_entity_type_sample(self, entity, entity_type, entity_config, extracted_info):

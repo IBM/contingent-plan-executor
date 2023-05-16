@@ -7,3 +7,5 @@ diagnostics.txt
 out_path.txt
 instance/
 simulated_convos
+output_*.gv*
+output_stats.json

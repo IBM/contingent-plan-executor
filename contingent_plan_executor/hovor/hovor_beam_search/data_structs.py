@@ -13,7 +13,7 @@ class RolloutBase(ABC):
     """
     @abstractmethod
     def get_reached_goal(self, *args, **kwargs) -> bool:
-        """Returns if the beam reached the goal.
+        """Returns: if the beam reached the goal.
 
         Returns:
             bool: True if the corresponding beam reached the goal, False
@@ -23,7 +23,7 @@ class RolloutBase(ABC):
 
     @abstractmethod
     def get_intent_confidences(self, *args, **kwargs) -> List[Dict]:
-        """Returns (all) the intent confidences that match a user utterance.
+        """Returns: (all) the intent confidences that match a user utterance.
         NOTE: Do not just return the k highest intents, because the top k are
         selected based on overall score, not just the singular confidence.
 
@@ -48,7 +48,7 @@ class RolloutBase(ABC):
 
     @abstractmethod
     def get_action_confidences(self, *args, **kwargs) -> Dict:
-        """Returns (all) the action confidences that match an agent utterance.
+        """Returns: (all) the action confidences that match an agent utterance.
         NOTE: Do not just return the k highest actions, because the top k are
         selected based on overall score, not just the singular confidence.
 
@@ -138,7 +138,7 @@ class Output:
         self.score = score
 
     def __lt__(self, other):
-        return self.score > other.score
+        return self.score.real > other.score.real
 
 
 class Action(Output):
@@ -195,3 +195,6 @@ class Beam:
     rollout: RolloutBase
     scores: List[float]
     fallbacks: int
+
+    def __lt__(self, other):
+        return self.scores[-1].real > other.scores[-1].real

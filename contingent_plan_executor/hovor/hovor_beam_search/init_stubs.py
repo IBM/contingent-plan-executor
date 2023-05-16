@@ -57,6 +57,17 @@ class HovorRollout(RolloutBase):
 
     def get_intent_confidences(self, action, utterance):
         data = self._configuration_provider._configuration_data
+        # if we're dealing with a message action, we can just return
+        # the single outcome immediately
+        if data["actions"][action]["type"] == "message":
+            out = data["actions"][action]["effect"]["outcomes"][0]
+            return [
+                {
+                    "intent": out["intent"],
+                    "outcome": out["name"],
+                    "confidence": 1
+                }
+            ]
         rasa_outcome_determiner = RasaOutcomeDeterminer(
             action,
             data["actions"][action]["effect"]["outcomes"],
@@ -66,21 +77,19 @@ class HovorRollout(RolloutBase):
         outcome_group_config = self._configuration_provider._create_outcome_group(
             action, data["actions"][action]["effect"]
         )
-        if type(outcome_group_config) == DeterministicOutcomeGroup:
-            outcome_groups = [outcome_group_config]
-        elif type(outcome_group_config) == OrOutcomeGroup:
+        # DeterministicOutcomeGroup case should be handled by the "message" case above
+        if type(outcome_group_config) == OrOutcomeGroup:
             outcome_groups = self._configuration_provider._create_outcome_group(
                 action, data["actions"][action]["effect"]
             )._outcome_groups
         else:
             raise AssertionError(f"Cannot handle the outcome group of type {type(outcome_group_config)}")
-        _, _, ranked_groups = rasa_outcome_determiner.get_final_rankings(
+        _, ranked_groups = rasa_outcome_determiner.get_final_rankings(
             utterance["USER"], outcome_groups
         )
         ranked_groups = sorted(ranked_groups, key=lambda item: item["confidence"], reverse=True)
-        softmax_rankings = softmax_confidences({ranking["intent"] : ranking["confidence"] for ranking in ranked_groups})
+        softmax_confidences(ranked_groups)
         for ranking in ranked_groups:
-            ranking["confidence"] = softmax_rankings[ranking["intent"]]
             ranking["outcome"] = ranking["outcome"].name
         return ranked_groups
 

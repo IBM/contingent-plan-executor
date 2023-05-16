@@ -23,13 +23,11 @@ def semantic_similarity(source_sentence: str, sentences: List[str]):
         }
     }))/len(sentences)
 
-def softmax_confidences(confidences: Dict):
-    softmax_conversions = list(softmax(list(confidences.values())))
-    index = 0
-    for action in confidences:
-        confidences[action] = softmax_conversions[index]
-        index += 1
-    return confidences
+def softmax_confidences(ranked_groups: List[Dict]):
+    pure_confidences = [rank["confidence"] for rank in ranked_groups]
+    softmax_conversions = list(softmax(pure_confidences))
+    for idx in range(len(ranked_groups)):
+        ranked_groups[idx]["confidence"] = softmax_conversions[idx]
 
 def normalize_confidences(confidences: Dict):
     total = sum(confidences.values())

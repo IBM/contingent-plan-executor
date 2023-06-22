@@ -72,7 +72,7 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
             else:
                 self.rasa_entities[extracted["entity"]] = extracted
 
-    def try_rasa_then_spacy(self, entity):
+    def try_rasa_then_spacy(self, entity: str):
         extracted = self.find_rasa_entity(entity)
         if not extracted:
             if self.spacy_entities.values():
@@ -90,7 +90,7 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
             certainty = "found"
         return extracted, certainty
 
-    def try_spacy_then_rasa(self, entity):
+    def try_spacy_then_rasa(self, entity: str):
         extracted = self.find_spacy_entity(
             self.context_variables[entity]["config"]["extraction"]["config_method"].upper()
         )
@@ -104,21 +104,44 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
             certainty = "found"
         return extracted, certainty
 
+    def extract_regex(self, entity):
+        """For regexes, it doesn't matter whether spacy or rasa extracted it
+        ("regex" is its own category). Just try with either-- results will always be
+        found or didnt-find. Also, for spacy, we will only check for "CARDINAL"
+        extractions.
+        """
+        extracted = None
+
+        pattern = self.context_variables[entity]["config"]["extraction"]["pattern"]
+        raw_extracted = self.find_rasa_entity(entity)
+        if raw_extracted:
+            match = re.search(raw_extracted["value"], pattern)
+            if match:
+                extracted = ext_ent
+        if not extracted:
+            if self.spacy_entities:
+                if "CARDINAL" in self.spacy_entities:
+                    # iterate through all CARDINAL entities and see if any match
+                    for ext_ent in self.spacy_entities["CARDINAL"]:
+                        match = re.search(pattern, ext_ent["value"])
+                        if match:
+                            extracted = ext_ent
+                            break
+            else:
+                return None, None
+        return extracted, "found"
+
     def extract_entity(self, entity: str):
         # for "complex" json configurations
-        complex = False
-        if type(self.context_variables[entity]["config"]) == dict:
-            if "extraction" in self.context_variables[entity]["config"]:
-                complex = True
-                # can be either "method" (like spacy) or "pattern" (like a regex)
-                if "method" in self.context_variables[entity]["config"]["extraction"]:
-                    method = self.context_variables[entity]["config"]["extraction"]["method"]
-                    if method == "spacy":
-                        extracted, certainty = self.try_spacy_then_rasa(entity)
-                    elif method == "regex":
-                        extracted, certainty = self.try_rasa_then_spacy(entity)
+        if self.context_variables[entity]["type"] == "json":
+            # can be either "method" (like spacy) or "pattern" (like a regex)
+            method = self.context_variables[entity]["config"]["extraction"]["method"]
+            if method == "spacy":
+                extracted, certainty = self.try_spacy_then_rasa(entity)
+            elif method == "regex":
+                extracted, certainty = self.extract_regex(entity)
         # rasa
-        if not complex:
+        else:
             extracted, certainty = self.try_rasa_then_spacy(entity)
         if extracted:
             return {
@@ -265,21 +288,23 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
             if "value" in update_config:
                 if progress.get_entity_type(update_var) in ["json", "enum"]:
                     value = update_config["value"]
-                    # if the value is a variable (check without the $)
-                    if value[1:] in progress.actual_context.field_names:
-                        value = value[1:]
-                        if progress.actual_context._fields[value]:
-                            value = progress.actual_context._fields[value]
-                        else:
-                            # if it is not part of the progress yet and we just extracted entities,
-                            if chosen_intent.entity_reqs:
-                                # check if we just extracted it
-                                if value in ci_ent_reqs:
-                                    value = self.extracted_entities[value]["sample"]
-                                # otherwise, we tried to assign an entity to a value we don't have yet
-                                else:
-                                    raise ValueError("Tried to assign an entity to \
-                                                    an unknown variable value.")
+                    # if value is not null
+                    if value:
+                        # if the value is a variable (check without the $)
+                        if value[1:] in progress.actual_context.field_names:
+                            value = value[1:]
+                            if progress.actual_context._fields[value]:
+                                value = progress.actual_context._fields[value]
+                            else:
+                                # if it is not part of the progress yet and we just extracted entities,
+                                if chosen_intent.entity_reqs:
+                                    # check if we just extracted it
+                                    if value in ci_ent_reqs:
+                                        value = self.extracted_entities[value]["sample"]
+                                    # otherwise, we tried to assign an entity to a value we don't have yet
+                                    else:
+                                        raise ValueError("Tried to assign an entity to \
+                                                        an unknown variable value.")
                     progress.add_detected_entity(update_var, value)
         DEBUG("\t top random ranking for group '%s'" % (chosen_intent.name))
         return ranked_groups, progress
@@ -346,14 +371,10 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                                     extracted_info["sample"] = entity_config[hol]
                                     return extracted_info
         elif entity_type == "json":
-            if entity_config["extraction"]["method"] == "regex":
-                match = re.search(entity_config["extraction"]["pattern"], entity_value)
-                if match:
-                    extracted_info["sample"] = entity_value
-                    return extracted_info
-            else:
-                extracted_info["sample"] = entity_value
-                return extracted_info
+            # note: regex would have been checked already, and for spacy w/o options specified just
+            # set the entity value
+            extracted_info["sample"] = entity_value
+            return extracted_info
         else:
             raise NotImplementedError("Cant sample from type: " + entity_type)
         extracted_info["certainty"] = "didnt-find"

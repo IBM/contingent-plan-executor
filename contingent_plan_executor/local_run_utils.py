@@ -4,9 +4,11 @@ from time import sleep
 import requests
 import subprocess
 import jsonpickle
+from pathlib import Path
+
 
 def create_validate_json_config_prov(output_files_path):
-    configuration_provider = JsonConfigurationProvider(f"{output_files_path}/data")
+    configuration_provider = JsonConfigurationProvider(str(Path(output_files_path) / "data"))
     # test on recoded provider
     json = jsonpickle.encode(configuration_provider)
     configuration_provider = jsonpickle.decode(json)

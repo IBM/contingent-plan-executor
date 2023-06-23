@@ -1,5 +1,4 @@
 import json
-import os
 
 from hovor.actions.action_base import ActionBase
 from hovor.configuration.configuration_provider_base import ConfigurationProviderBase
@@ -24,7 +23,6 @@ from hovor.planning.partial_state import PartialState
 
 class JsonConfigurationProvider(ConfigurationProviderBase):
     def __init__(self, path):
-        id = os.path.basename(path)
         with open(path + ".json") as f:
             configuration_data = json.load(f)
 

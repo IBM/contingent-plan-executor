@@ -6,8 +6,8 @@ json2html
 jsonpickle
 nltk
 spacy
-tensorflow>=2.12.0
-rasa>=3.6.0
+tensorflow==2.12.*
+rasa==3.6.1a1
 textblob
 graphviz
 docker

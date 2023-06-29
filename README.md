@@ -28,7 +28,9 @@ python contingent_plan_executor/app.py local_data/updated_gold_standard_bot
 
 With Docker installed, run this command in the terminal to build the image:
 
+```
 docker build -t hovor:latest .
+```
 
 Once the image is built, you have two options for running the container:
 
@@ -36,11 +38,15 @@ Once the image is built, you have two options for running the container:
 Use this version if you want to run a conversation that deletes once the container is
 removed. (This is most ideal for testing).
 
-``docker run -it --rm -p 5000:5000 -d hovor:latest local_data/updated_gold_standard_bot``
+```
+docker run -it --rm -p 5000:5000 -d hovor:latest local_data/updated_gold_standard_bot
+```
 
 #### b. Persistent/Mounted Run:
 Use this version to persist conversation data.  
-``docker run -it --rm -p 5000:5000 -d -v convo_data:/data hovor:latest local_data/updated_gold_standard_bot``
+```
+docker run -it --rm -p 5000:5000 -d -v convo_data:/data hovor:latest local_data/updated_gold_standard_bot
+```
 
 ## 2. Rundown of API Endpoints
 Below are the various sub-endpoints and explanation of the services they provide along with necessary input/output to/from them. Note that for any endpoint, an unsuccessful call will have an "error" status, and you can view the "msg" to see what went wrong.

@@ -12,16 +12,25 @@ Install the dependencies listed in the requirements.txt file to be able to run t
   ```
 pip install -r requirements.txt
   ```
+#### a. CLI (no API endpoints; only use for quick testing)
+Run the following in the terminal. You can replace ``local_data/updated_gold_standard_bot`` with the path to any directory populated with valid [plan4dial](https://github.com/dialogue-planning/plan4dial) generated files.
+  ```
+python contingent_plan_executor/local_main.py local_data/updated_gold_standard_bot
+  ```
 
-Run the app. You can replace ``local_data/updated_gold_standard_bot`` with the path to any directory populated with valid [plan4dial](https://github.com/dialogue-planning/plan4dial) generated files.
+#### b. With API endpoints
+Run the following in the terminal. You can replace ``local_data/updated_gold_standard_bot`` with the path to any directory populated with valid [plan4dial](https://github.com/dialogue-planning/plan4dial) generated files.
   ```
 python contingent_plan_executor/app.py local_data/updated_gold_standard_bot
   ```
 
 ### Docker Run (Recommended)
+
 With Docker installed, run this command in the terminal to build the image:
 
+```
 docker build -t hovor:latest .
+```
 
 Once the image is built, you have two options for running the container:
 
@@ -29,17 +38,17 @@ Once the image is built, you have two options for running the container:
 Use this version if you want to run a conversation that deletes once the container is
 removed. (This is most ideal for testing).
 
-``docker run -it --rm -p 5000:5000 -d hovor:latest local_data/updated_gold_standard_bot``
+```
+docker run -it --rm -p 5000:5000 -d hovor:latest local_data/updated_gold_standard_bot
+```
 
 #### b. Persistent/Mounted Run:
-Use this version to persist conversation. data.  
-``docker run -it --rm -p 5000:5000 -d -v convo_data:/data hovor:latest local_data/updated_gold_standard_bot``
+Use this version to persist conversation data.  
+```
+docker run -it --rm -p 5000:5000 -d -v convo_data:/data hovor:latest local_data/updated_gold_standard_bot
+```
 
-## 2. API endpoints
-
-**TODO: UPDATE**
-The root of execution monitor API endpoint is `[REPLACE WHEN HOSTED]`.
-
+## 2. Rundown of API Endpoints
 Below are the various sub-endpoints and explanation of the services they provide along with necessary input/output to/from them. Note that for any endpoint, an unsuccessful call will have an "error" status, and you can view the "msg" to see what went wrong.
 
 ### /new-conversation
@@ -66,14 +75,16 @@ Sends a message to the agent speaking to the given "user_id". Returns the agent'
 
 Loads the conversation of the given "user_id" in its most recent save state. Returns the agent's message(s) under "msg". Call the **new-message** endpoint to continue the conversation.
 
-
-
 View your app at : http://localhost:5000 
 
 Send new messages with `curl`, i.e. :
   ```
-curl -d '{"user_id":"haz", "msg":"Toronto"}' -H "Content-Type: application/json" -X POST http://localhost:5000/new-message
+curl -d '{"user_id":"haz", "msg":"I want to go to Toronto"}' -H "Content-Type: application/json" -X POST http://localhost:5000/new-message
   ```
+
+# Deploying to our Embeddable Web Interface, WIDGET
+Once you have a server running (local or otherwise) see [here](https://github.com/dialogue-planning/widget).
+
 # Simulation and Evaluation
 This allows for chatbot designers to simulate conversations, and analyze problematic ones. 
 

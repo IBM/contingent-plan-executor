@@ -11,6 +11,7 @@ Install the dependencies listed in the requirements.txt file to be able to run t
 
   ```
 pip install -r requirements.txt
+python -m spacy download en_core_web_md
   ```
 #### a. CLI (no API endpoints; only use for quick testing)
 Run the following in the terminal. You can replace ``local_data/updated_gold_standard_bot`` with the path to any directory populated with valid [plan4dial](https://github.com/dialogue-planning/plan4dial) generated files.

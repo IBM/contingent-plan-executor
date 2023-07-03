@@ -5,6 +5,8 @@ This repository contains the the logic of dialogue planner. It is deployed as a 
 
 ## 1. Running the app
 
+**If you encounter unexpected errors, you may have to reconfigure your `tensorflow` installation (see [here](https://www.tensorflow.org/install/pip)).**
+
 ### Local Run
 
 Install the dependencies listed in the requirements.txt file to be able to run the app locally.

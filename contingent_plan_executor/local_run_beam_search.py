@@ -6,19 +6,18 @@ import os
 
 
 if __name__ == "__main__":
-    simulated_convos_path ="C:\\Users\\Rebecca\\Desktop\\work\\coding\\contingent-plan-executor\\simulated_convos"
+    simulated_convos_path = "sample_conversations"
     # read all json files in the simulated convos directory
     conversations = [
-        json.loads(open(os.path.join(simulated_convos_path, out), "r").read()) for out in glob(f"{simulated_convos_path}/*.json")
+        json.loads(open(out, "r").read()) for out in glob(f"{simulated_convos_path}/*.json")
     ]
-    output_files_path = "C:\\Users\\Rebecca\\Desktop\\work\\coding\\plan4dial\\plan4dial\\local_data\\rollout_no_system_gold_standard_bot\\output_files"
+    output_files_path = "/home/rebecca/plan4dial/plan4dial/local_data/bank_bot/output_files"
     initialize_local_run(output_files_path, False)
     exec = BeamSearchExecutor(
         3,
         2,
         conversations,
-        True,
-        "output",
+        "contingent_plan_executor/hovor/hovor_beam_search/beam_search_output/",
         output_files_path=output_files_path,
     )
     exec.beam_search()

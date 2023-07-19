@@ -7,7 +7,7 @@ def run_local_conversation(output_files_path):
 
 
 def simulate_local_conversation(output_files_path):
-    simulate_interaction(initialize_local_run_simulated(output_files_path), "simulated_convos")
+    simulate_interaction(initialize_local_run_simulated(output_files_path), "sample_conversations")
 
 
 if __name__ == "__main__":

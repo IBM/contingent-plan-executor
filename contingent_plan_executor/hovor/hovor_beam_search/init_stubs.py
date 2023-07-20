@@ -80,6 +80,11 @@ class HovorRollout(RolloutBase):
         self._current_state = set(HovorRollout._rollout_cfg["initial_state"])
         self.applicable_actions = set()
         self._update_applicable_actions()
+        # note that we use the built-in notion of progress because for some outcome
+        # determinations, the context and history is needed (context dependent
+        # determination is one) and using the built-in progress was the easiest way.
+        # the built-in progress comes with a lot of functions we don't need (ditto
+        # for the configuration_provider), but we can just ignore these.
         if progress:
             self._progress = progress
         else:

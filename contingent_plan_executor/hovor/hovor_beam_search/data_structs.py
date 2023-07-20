@@ -11,13 +11,23 @@ class RolloutBase(ABC):
     Args:
         ABC (class): Used to create an abstract class.
     """
+
     @abstractmethod
     def get_reached_goal(self, *args, **kwargs) -> bool:
-        """Returns: if the beam reached the goal.
+        """Returns if the beam reached the goal.
 
         Returns:
             bool: True if the corresponding beam reached the goal, False
             otherwise.
+        """
+        pass
+
+    @abstractmethod
+    def call_outcome_determiner(self, *args, **kwargs) -> List:
+        """Calls the outcome determiner of an action.
+
+        Returns:
+            List: A list of outcomes ranked by confidence.
         """
         pass
 
@@ -62,7 +72,7 @@ class RolloutBase(ABC):
                         # continue for each action
                         ...
                     }
-               
+
                 NOTE: Insertion order of dictionary values is maintained as of
                 Python 3.7.
         """
@@ -76,7 +86,7 @@ class RolloutBase(ABC):
     @abstractmethod
     def update_state(self, *args, **kwargs):
         """Update the state (including applicable actions, so
-        :py:func:`_update_applicable_actions 
+        :py:func:`_update_applicable_actions
         <beam_search.beam_srch_data_structs.RolloutBase._update_applicable_actions>`
         should be called here).
         """
@@ -189,6 +199,7 @@ class Beam:
         fallbacks (int): The number of fallbacks that have occurred in the beam
             so far.
     """
+
     last_action: Optional[Action]
     last_intent: Optional[Intent]
     rankings: List[Output]
@@ -197,4 +208,4 @@ class Beam:
     fallbacks: int
 
     def __lt__(self, other):
-        return self.scores[-1].real > other.scores[-1].real
+        return sum(self.scores).real > sum(other.scores).real

@@ -4,6 +4,7 @@ from graphviz import Digraph
 
 class GraphGenerator:
     """Builds a basic graph with graphviz."""
+
     def __init__(self):
         self._idx = "0"
         self._parent = "0"
@@ -28,8 +29,9 @@ class GraphGenerator:
         )
 
     def create_from_parent(
-        self, nodes: Dict[str, float], fillcolor: str, new_parent: str = None
+        self, nodes: Dict[str, float], action: bool, new_parent: str = None
     ):
+        fillcolor = "skyblue" if action else "lightgoldenrod1"
         for node, conf in nodes.items():
             edge_color, penwidth = "grey45", "5.0"
             self._inc_idx()
@@ -57,10 +59,12 @@ class BeamSearchGraphGenerator(GraphGenerator):
     Args:
         k (int): The k value for the beam search.
     """
+
     class GraphBeam:
         """Inner class that holds the id maps for each beam so that any node
         can be easily referenced.
         """
+
         def __init__(self, parent_nodes_id_map: Dict = None):
             if not parent_nodes_id_map:
                 parent_nodes_id_map = {"START": ["0"]}
@@ -78,11 +82,12 @@ class BeamSearchGraphGenerator(GraphGenerator):
     def create_nodes_highlight_k(
         self,
         nodes: Dict[str, float],
-        fillcolor: str,
+        action: bool,
         parent: str,
         beam: int,
         k_chosen: Iterable[str],
     ):
+        fillcolor = "skyblue" if action else "lightgoldenrod1"
         # have to access the parent ID before potentially making changes to the map to prevent
         # overwriting in the case where you have a node "A" connected to a parent "A"
         # (otherwise you would attach the node to itself)

@@ -2,13 +2,9 @@ from hovor.outcome_determiners.outcome_determiner_base import OutcomeDeterminerB
 
 
 class ContextDependentOutcomeDeterminer(OutcomeDeterminerBase):
-    def __init__(self, context_variables):
-        # TODO: remove since not used?
-        self.context_variables = context_variables
-
     @staticmethod
     def known_to_certainty(known):
-        return ("Known" if known else "Unknown") if type(known) == bool else "Uncertain"
+        return ("Known" if known else "Unknown") if type(known) == bool else "Uncertain" 
 
     def rank_groups(self, outcome_groups, progress):
         ranked_groups = []

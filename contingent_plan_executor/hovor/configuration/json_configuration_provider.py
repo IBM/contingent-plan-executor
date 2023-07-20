@@ -4,7 +4,6 @@ from hovor.actions.action_base import ActionBase
 from hovor.configuration.configuration_provider_base import ConfigurationProviderBase
 from hovor.configuration.json_configuration_postprocessing import hovor_config_postprocess
 from hovor.effects.assign_entity_effect import AssignEntityEffect
-from hovor.outcome_determiners import all_entities, ws_action_outcome_determiner_config
 from hovor.outcome_determiners.context_dependent_outcome_determiner import ContextDependentOutcomeDeterminer
 from hovor.outcome_determiners.default_system_outcome_determiner import DefaultSystemOutcomeDeterminer
 from hovor.outcome_determiners.outcome_determination_info import OutcomeDeterminationInfo
@@ -223,7 +222,7 @@ class JsonConfigurationProvider(ConfigurationProviderBase):
             return RandomOutcomeDeterminer()
 
         if outcome_determiner_name == "context_dependent_outcome_determiner":
-            return ContextDependentOutcomeDeterminer(self._configuration_data["context_variables"])
+            return ContextDependentOutcomeDeterminer()
 
         if outcome_determiner_name == "default_system_outcome_determiner":
             return DefaultSystemOutcomeDeterminer()

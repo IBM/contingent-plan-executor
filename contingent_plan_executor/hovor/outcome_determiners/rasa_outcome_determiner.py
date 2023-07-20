@@ -251,18 +251,10 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         # rearrange intent ranking
         intents.sort()
 
-        ranked_groups = [
-            {
-                "intent": intent.name,
-                "outcome": intent.outcome,
-                "confidence": intent.confidence,
-            }
-            for intent in intents
-        ]
-        return intents[0], ranked_groups
+        return intents[0], intents
 
 
-    def get_final_rankings(self, input, outcome_groups):
+    def get_raw_rankings(self, input, outcome_groups):
         r = json.loads(
             requests.post(
                 "http://localhost:5005/model/parse", json={"text": input}
@@ -273,11 +265,11 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         return self.extract_intents(intents)
 
     def rank_groups(self, outcome_groups, progress):
-        chosen_intent, ranked_groups = self.get_final_rankings(
+        chosen_intent, intents = self.get_raw_rankings(
             progress.json["action_result"]["fields"]["input"], outcome_groups
         )
         ranked_groups = [
-            (intent["outcome"], intent["confidence"]) for intent in ranked_groups
+            (intent.outcome, intent.confidence) for intent in intents
         ]
         # entities required by the extracted intent
         if chosen_intent.entity_reqs:

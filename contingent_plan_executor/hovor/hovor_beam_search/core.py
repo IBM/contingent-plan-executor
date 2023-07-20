@@ -76,6 +76,13 @@ class BeamSearchExecutor:
             )
         self._max_fallbacks = value
 
+    @staticmethod
+    def _sum_scores(old_scores, confidence):
+        # avoid math error when taking the log
+        if confidence == 0:
+            confidence = EPSILON
+        return sum(old_scores) + log(confidence)
+
 
     def _prep_for_new_search(self):
         """Resets the beams and graph generator to begin a new search."""
@@ -101,7 +108,7 @@ class BeamSearchExecutor:
                     name=result["intent"],
                     probability=result["confidence"],
                     beam=i,
-                    score=sum(self.beams[i].scores) + log(result["confidence"]),
+                    score=BeamSearchExecutor._sum_scores(self.beams[i].scores, result["confidence"]),
                     outcome=result["outcome"],
                 )
                 # update the last intent and rankings and add it to the beam
@@ -142,7 +149,7 @@ class BeamSearchExecutor:
                 name=action,
                 probability=1.0,
                 beam=beam,
-                score=sum(self.beams[beam].scores) + log(1.0),
+                score=BeamSearchExecutor._sum_scores(self.beams[beam].scores, 1.0)
             )
             self.beams[beam].last_action = action
             # get the intents from the ranked group (outcome, confidence) tuples
@@ -152,7 +159,7 @@ class BeamSearchExecutor:
                     name=group[0].name.split("-EQ-")[1],
                     probability=group[1],
                     beam=beam,
-                    score=sum(self.beams[beam].scores) + log(group[1]),
+                    score=BeamSearchExecutor._sum_scores(self.beams[beam].scores, group[1]),
                     outcome=group[0].name,
                 )
                 for group in ranked_groups
@@ -371,8 +378,7 @@ class BeamSearchExecutor:
                                     beam=beam,
                                     # find the score by taking the sum of the current
                                     # beam thread which should be a list of log(prob)
-                                    score=sum(self.beams[beam].scores)
-                                    + log(intent_cfg["confidence"]),
+                                    score=BeamSearchExecutor._sum_scores(self.beams[beam].scores, intent_cfg["confidence"]),
                                     outcome=intent_cfg["outcome"],
                                 )
                             )
@@ -391,7 +397,7 @@ class BeamSearchExecutor:
                                     name=act,
                                     probability=conf,
                                     beam=beam,
-                                    score=sum(self.beams[beam].scores) + log(conf),
+                                    score=BeamSearchExecutor._sum_scores(self.beams[beam].scores, conf)
                                 )
                             )
                 # sort the outputs (k highest actions or intents) by score

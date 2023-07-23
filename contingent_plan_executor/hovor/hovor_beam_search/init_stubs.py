@@ -79,7 +79,7 @@ class HovorRollout(RolloutBase):
         HovorRollout._rollout_cfg = rollout_cfg
         self._current_state = set(HovorRollout._rollout_cfg["initial_state"])
         self.applicable_actions = set()
-        self._update_applicable_actions()
+        self._update_applicable_actions(True)
         # note that we use the built-in notion of progress because for some outcome
         # determinations, the context and history is needed (context dependent
         # determination is one) and using the built-in progress was the easiest way.
@@ -100,6 +100,13 @@ class HovorRollout(RolloutBase):
 
     def get_reached_goal(self):
         return "(goal)" in self._current_state
+
+    def check_system_case(self):
+        if len(self.applicable_actions) == 1:
+            action = list(self.applicable_actions)[0]
+            if HovorRollout.data["actions"][action]["type"] in ["system", "api"]:
+                return True
+        return False
 
     def call_outcome_determiner(self, action: str, determiner: OutcomeDeterminerBase):
         # execute the action
@@ -166,7 +173,7 @@ class HovorRollout(RolloutBase):
                     self._current_state.remove(f"(not {f})")
                 self._current_state.add(f)
 
-    def _update_applicable_actions(self):
+    def _update_applicable_actions(self, in_run: bool):
         # get all applicable actions, disqualifying non-dialogue actions
         applicable_actions = {
             act
@@ -175,8 +182,13 @@ class HovorRollout(RolloutBase):
                 self._current_state
             )
         }
-        if len(applicable_actions) == 0:
-            raise ValueError("No applicable actions found past this point.")
+        if in_run:
+            if self.get_reached_goal():
+                raise Warning(
+                    "The goal was reached through a system action, but there are still utterances left!"
+                )
+            if len(applicable_actions) == 0:
+                raise ValueError("No applicable actions found past this point.")
         # raise an error if there are multiple applicable system/api actions but no dialogue/message actions as it is ambiguous which should be executed.
         # otherwise, remove the system/api actions from the pool of applicable actions as they have no messages to compare against.
         if len(applicable_actions) > 1:
@@ -195,12 +207,11 @@ class HovorRollout(RolloutBase):
         self.applicable_actions = applicable_actions
 
     # given an outcome, update the state + applicable actions in the new state + progress/context
-    def update_state(self, last_action, chosen_outcome):
+    def update_state(self, last_action, chosen_outcome, in_run: bool):
         self._update_state_fluents(
             HovorRollout._rollout_cfg["actions"][last_action]["effect"][chosen_outcome],
         )
-        self._update_applicable_actions()
-        # TODO: use functions
+        self._update_applicable_actions(in_run)
         outcome_group_config = (
             HovorRollout.configuration_provider._create_outcome_group(
                 last_action, HovorRollout.data["actions"][last_action]["effect"]
@@ -258,15 +269,19 @@ class HovorRollout(RolloutBase):
                             ] = outcome["response_variants"]
                             break
 
-    def update_if_message_action(self, most_conf_act):
-        act_type = HovorRollout.data["actions"][most_conf_act]["type"]
-        if act_type == "message":
+    @staticmethod
+    def is_message_action(act):
+        return HovorRollout.data["actions"][act]["type"] == "message"
+
+    def update_if_message_action(self, most_conf_act, in_run: bool):
+        if self.is_message_action(most_conf_act):
             action_eff = HovorRollout.data["actions"][most_conf_act]["effect"]
             self.update_state(
                 most_conf_act,
                 HovorRollout.configuration_provider._create_outcome_group(
                     most_conf_act, action_eff
                 ).name,
+                in_run,
             )
             return {
                 "intent": action_eff["outcomes"][0]["intent"],

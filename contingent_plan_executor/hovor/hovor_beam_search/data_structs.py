@@ -8,9 +8,22 @@ class RolloutBase(ABC):
     calculate action and intent confidences and keep track of + update the
     current state.
 
+    NOTE: You will also need an "applicable_actions" attribute.
+
     Args:
         ABC (class): Used to create an abstract class.
     """
+
+    @abstractmethod
+    def copy(self, *args, **kwargs):
+        """Returns an un-aliased copy of the Rollout. This is needed for when
+        we are performing a restructuring of the beams and the Rollouts need to
+        be transferred over. A "deep" copy is necessary to prevent aliasing in
+        the case where multiple beams are expanded from one "previous" beam.
+
+        Returns:
+            A "deep" copy of itself.
+        """
 
     @abstractmethod
     def get_reached_goal(self, *args, **kwargs) -> bool:
@@ -21,6 +34,16 @@ class RolloutBase(ABC):
             otherwise.
         """
         pass
+
+    @abstractmethod
+    def check_system_case(self, *args, **kwargs) -> bool:
+        """Checks if system action(s) can be run in the current state (see
+        the docstring in :ref:`core`).
+
+        Returns:
+            bool: True if system action(s) can be run in the current state,
+            False otherwise.
+        """
 
     @abstractmethod
     def call_outcome_determiner(self, *args, **kwargs) -> List:
@@ -80,7 +103,13 @@ class RolloutBase(ABC):
 
     @abstractmethod
     def _update_applicable_actions(self, *args, **kwargs):
-        """Updates which actions are applicable in the current state."""
+        """Updates which actions are applicable in the current state.
+        
+        Raise an error if there are no applicable actions and there are still utterances left. 
+        Raise a warning if we reach the goal but there are still utterances left.
+
+        (Use the `in_run` attribute of ConversationAlignmentExecutor to do this).
+        """
         pass
 
     @abstractmethod
@@ -93,6 +122,15 @@ class RolloutBase(ABC):
         pass
 
     @abstractmethod
+    def is_message_action(self, *args, **kwargs):
+        """Returns if the given action is a message action. This is used within
+        :py:func:`update_if_message_action
+        <beam_search.beam_srch_data_structs.RolloutBase._update_if_message_action>`
+        as well as the core algorithm.
+        """
+        pass
+
+    @abstractmethod
     def update_if_message_action(self, *args, **kwargs) -> Optional[Dict]:
         """Checks if the provided action is a "message" action, meaning it only
         has one outcome. If that's the case, the outcome must be automatically
@@ -100,7 +138,8 @@ class RolloutBase(ABC):
         This execution is already handled within the beam search algorithm; this
         function just needs to return the associated intent. So:
 
-        * Check if the action is a "message" action
+        * Check if the action is a "message" action (with :py:func:`is_message_action
+        <beam_search.beam_srch_data_structs.RolloutBase.is_message_action>`.)
 
            * | If it is, update the state with the single outcome and return a
                single intent in the form

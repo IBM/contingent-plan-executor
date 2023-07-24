@@ -54,6 +54,7 @@ class ConversationAlignmentExecutor:
         self.graphs_path = graphs_path
         self.rollout_param = kwargs
         self.in_run = True
+        self.json_data = []
 
     @property
     def k(self):
@@ -103,7 +104,7 @@ class ConversationAlignmentExecutor:
             else self.beams[beam].rankings[-1].name
         )
 
-    def _is_drop_off(self, beam: int, node_score: float):
+    def _is_drop_off(self, node_name: str, beam: int, node_score: float):
         """Determines if the difference between the scores of two rankings (the node
         provided and the node that precedes it in the list of rankings) is big enough
         to determine a "drop-off."
@@ -117,13 +118,13 @@ class ConversationAlignmentExecutor:
             (bool) True if the difference between the scores of two rankings is big
             enough to determine a "drop-off," False otherwise.
         """
-        rank = self.beams[beam].rankings[-1].score
-        diff = node_score - self.beams[beam].rankings[-1].score
-        eps = log(EPSILON)
-        return (node_score - self.beams[beam].rankings[-1].score).real <= log(EPSILON).real
+        drop_off = (node_score - self.beams[beam].rankings[-1].score).real <= log(EPSILON).real
+        if drop_off:
+            self.json_data[-1]["drop-off nodes"].add(f"{self.beams[beam].rankings[-1].name} -> {node_name}")
+        return drop_off
 
-    def _determine_node_type(self, beam: int, node_score: float, default_type: NodeType):
-        """Returns the DROP_OFF NodeType if the node is determined to be a "drop off"
+    def _determine_node_type(self, node_name: str, beam: int, node_score: float, default_type: NodeType):
+        """Returns the DROP_OFF NodeType if the node is determined to be a "drop-off"
         point and the given NodeType otherwise.
         
         Args:
@@ -131,9 +132,9 @@ class ConversationAlignmentExecutor:
             node_score (float): The score of the node to be compared against the
                 last ranking.
             default_type (NodeType): The NodeType that will be otherwise set if a
-                "drop off" is not detected.
+                "drop-off" is not detected.
         """
-        return NodeType.DROP_OFF if self._is_drop_off(beam, node_score) else default_type
+        return NodeType.DROP_OFF if self._is_drop_off(node_name, beam, node_score) else default_type
 
     def _handle_message_actions(self):
         """Handles "message actions" for all beams.
@@ -225,16 +226,18 @@ class ConversationAlignmentExecutor:
                 self._get_last_head_from_action(beam),
                 [action.name],
             )
+            self.beams[beam].last_action = action
+            self.beams[beam].rankings.append(action)
             # add "intent" (again, here we use the outcome name) nodes
             self.graph_gen.create_nodes_from_beams(
-                {intent.name: (round(intent.score.real, 4), self._determine_node_type(beam, intent.score, NodeType.SYSTEM_API)) for intent in all_intents},
+                {intent.name: (round(intent.score.real, 4), self._determine_node_type(intent.name, beam, intent.score, NodeType.SYSTEM_API)) for intent in all_intents},
                 beam,
                 action.name,
                 [all_intents[0].name],
             )
-            self.beams[beam].last_action = action
+            
             self.beams[beam].last_intent = all_intents[0]
-            self.beams[beam].rankings.extend([action, all_intents[0]])
+            self.beams[beam].rankings.append(all_intents[0])
 
     def _reconstruct_beam_w_output(
         self, outputs: List[Union[Action, Intent]]
@@ -342,8 +345,14 @@ class ConversationAlignmentExecutor:
             an utterance whereas the case for system/api actions needs to be checked BEFORE
             continuing the iteration.
         """
-        json_out = []
         for idx in range(len(self.conversations)):
+            self.json_data.append(
+                {
+                    "conversation": self.conversations[idx],
+                    "status": None,
+                    "drop-off nodes": set()
+                }
+            )
             # resets the beams and creates a new "Rollout"
             self._prep_for_new_search()
             start_rollout = HovorRollout(**self.rollout_param)
@@ -481,6 +490,7 @@ class ConversationAlignmentExecutor:
                             # probabilities to use in the graph
                             {
                                 output.name: (round(output.score.real, 4), self._determine_node_type(
+                                        output.name,
                                         beam,
                                         output.score,
                                         NodeType.INTENT
@@ -569,15 +579,9 @@ class ConversationAlignmentExecutor:
             self.graph_gen.graph.render(f"{self.graphs_path}/convo_{idx}", cleanup=True)
             # sort the beams by total score (largest first)
             self.beams.sort(reverse=True)
-            # we consider the conversation to not be handled if the best beam
-            # is <= the epsilon value
-            json_out.append(
-                {
-                    "conversation": self.conversations[idx],
-                    "status": "failure"
-                    if sum(self.beams[0].scores).real <= EPSILON.real
-                    else "success",
-                }
-            )
+            # we consider the conversation to be handled if the best beam
+            # total score is >= the log(epsilon) value and the goal was reached
+            self.json_data[-1]["status"] = "passed" if (sum(self.beams[0].scores).real >= log(EPSILON).real and self.beams[beam].rollout.get_reached_goal()) else "failed"
+            self.json_data[-1]["drop-off nodes"] = list(self.json_data[-1]["drop-off nodes"])
         with open(f"{self.graphs_path}/output_stats.json", "w") as out:
-            out.write(json.dumps(json_out, indent=4))
+            out.write(json.dumps(self.json_data, indent=4))

@@ -9,6 +9,7 @@ class NodeType(Enum):
     SYSTEM_API = 3
     INTENT = 4
     GOAL = 5
+    DROP_OFF = 6
 
 
 class BeamSearchGraph:
@@ -32,21 +33,28 @@ class BeamSearchGraph:
             NodeType.SYSTEM_API: "pink",
             NodeType.INTENT: "lightgoldenrod1",
             NodeType.GOAL: "darkolivegreen3",
+            NodeType.DROP_OFF: "indianred2"
         }[type]
 
     def _inc_idx(self, inc: int = 1):
         self._idx = str(int(self._idx) + inc)
 
     def create_nodes_outside_beams(
-        self, nodes: Dict[str, float], type: NodeType, parent: str
+        self, nodes: Dict, parent: str
     ):
-        for node, conf in nodes.items():
+        """
+        nodes should be in the form:
+        {
+            [node name]: (score, NodeType)
+        }
+        """
+        for node, cfg in nodes.items():
             edge_color, penwidth = "grey45", "5.0"
             self._inc_idx()
             self.graph.node(
                 self._idx,
-                f"{node}\n{conf}",
-                fillcolor=BeamSearchGraph._set_color(type),
+                f"{node}\n{cfg[0]}",
+                fillcolor=BeamSearchGraph._set_color(cfg[1]),
                 style="filled",
                 fontsize="50",
             )
@@ -55,23 +63,28 @@ class BeamSearchGraph:
 
     def create_nodes_from_beams(
         self,
-        nodes: Dict[str, float],
-        type: NodeType,
+        nodes: Dict,
         beam: int,
         parent: str,
         k_highlighted: Iterable[str] = None,
     ):
+        """
+        nodes should be in the form:
+        {
+            [node name]: (score, NodeType)
+        }
+        """
         # have to access the parent ID before potentially making changes to the map to prevent
         # overwriting in the case where you have a node "A" connected to a parent "A"
         # (otherwise you would attach the node to itself)
         parent = self.beams[beam].get_parent_node(parent)
-        for node, conf in nodes.items():
+        for node, cfg in nodes.items():
             edge_color, arrowhead, penwidth = "grey45", "none", "5.0"
             self._inc_idx()
             self.graph.node(
                 self._idx,
-                f"{node}\n{conf}",
-                fillcolor=BeamSearchGraph._set_color(type),
+                f"{node}\n{cfg[0]}",
+                fillcolor=BeamSearchGraph._set_color(cfg[1]),
                 style="filled",
                 fontsize="50",
             )

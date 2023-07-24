@@ -9,7 +9,7 @@ from hovor.configuration.json_configuration_postprocessing import (
 import json
 
 
-EPSILON = log(0.00000001)
+EPSILON = 0.00000001
 
 
 class ConversationAlignmentExecutor:
@@ -77,12 +77,11 @@ class ConversationAlignmentExecutor:
             )
         self._max_fallbacks = value
 
-    @staticmethod
-    def _sum_scores(old_scores, confidence):
+    def _sum_scores(self, beam, confidence):
         # avoid math error when taking the log
         if confidence == 0:
             confidence = EPSILON
-        return sum(old_scores) + log(confidence)
+        return sum(self.beams[beam].scores) + log(confidence)
 
     @staticmethod
     def _get_action_node_type(action):
@@ -97,12 +96,44 @@ class ConversationAlignmentExecutor:
         self.beams = []
         self.graph_gen = BeamSearchGraph(self.k)
 
-    def _get_last_node_from_action(self, beam):
+    def _get_last_head_from_action(self, beam):
         return (
             self.beams[beam].last_action.name
             if HovorRollout.is_message_action(self.beams[beam].last_action.name)
             else self.beams[beam].rankings[-1].name
         )
+
+    def _is_drop_off(self, beam: int, node_score: float):
+        """Determines if the difference between the scores of two rankings (the node
+        provided and the node that precedes it in the list of rankings) is big enough
+        to determine a "drop-off."
+
+        Args:
+            beam (int): The beam where the rankings are being compared.
+            node_score (float): The score of the node to be compared against the
+                last ranking.
+        
+        Returns:
+            (bool) True if the difference between the scores of two rankings is big
+            enough to determine a "drop-off," False otherwise.
+        """
+        rank = self.beams[beam].rankings[-1].score
+        diff = node_score - self.beams[beam].rankings[-1].score
+        eps = log(EPSILON)
+        return (node_score - self.beams[beam].rankings[-1].score).real <= log(EPSILON).real
+
+    def _determine_node_type(self, beam: int, node_score: float, default_type: NodeType):
+        """Returns the DROP_OFF NodeType if the node is determined to be a "drop off"
+        point and the given NodeType otherwise.
+        
+        Args:
+            beam (int): The beam where the rankings are being compared.
+            node_score (float): The score of the node to be compared against the
+                last ranking.
+            default_type (NodeType): The NodeType that will be otherwise set if a
+                "drop off" is not detected.
+        """
+        return NodeType.DROP_OFF if self._is_drop_off(beam, node_score) else default_type
 
     def _handle_message_actions(self):
         """Handles "message actions" for all beams.
@@ -125,8 +156,8 @@ class ConversationAlignmentExecutor:
                     name=result["intent"],
                     probability=result["confidence"],
                     beam=beam,
-                    score=ConversationAlignmentExecutor._sum_scores(
-                        self.beams[beam].scores, result["confidence"]
+                    score=self._sum_scores(
+                        beam, result["confidence"]
                     ),
                     outcome=result["outcome"],
                 )
@@ -161,8 +192,8 @@ class ConversationAlignmentExecutor:
                 name=action,
                 probability=1.0,
                 beam=beam,
-                score=ConversationAlignmentExecutor._sum_scores(
-                    self.beams[beam].scores, 1.0
+                score=self._sum_scores(
+                    beam, 1.0
                 ),
             )
 
@@ -173,8 +204,8 @@ class ConversationAlignmentExecutor:
                     name=group[0].name.split("-EQ-")[1],
                     probability=group[1],
                     beam=beam,
-                    score=ConversationAlignmentExecutor._sum_scores(
-                        self.beams[beam].scores, group[1]
+                    score=self._sum_scores(
+                        beam, group[1]
                     ),
                     outcome=group[0].name,
                 )
@@ -187,18 +218,16 @@ class ConversationAlignmentExecutor:
                 action.name, all_intents[0].outcome, self.in_run
             )
             # update the graph
-            # add action node
+            # add action node (node that we don't check for drop-offs since the confidence is always 1.0)
             self.graph_gen.create_nodes_from_beams(
-                {action.name: round(action.score.real, 4)},
-                NodeType.SYSTEM_API,
+                {action.name: (round(action.score.real, 4), NodeType.SYSTEM_API)},
                 beam,
-                self._get_last_node_from_action(beam),
+                self._get_last_head_from_action(beam),
                 [action.name],
             )
             # add "intent" (again, here we use the outcome name) nodes
             self.graph_gen.create_nodes_from_beams(
-                {intent.name: round(intent.score.real, 4) for intent in all_intents},
-                NodeType.SYSTEM_API,
+                {intent.name: (round(intent.score.real, 4), self._determine_node_type(beam, intent.score, NodeType.SYSTEM_API)) for intent in all_intents},
                 beam,
                 action.name,
                 [all_intents[0].name],
@@ -227,8 +256,7 @@ class ConversationAlignmentExecutor:
         for i in range(len(outputs)):
             # grab the beam that the output came from
             at_beam = outputs[i].beam
-            # grab that beam's fallbacks
-            fallbacks = self.beams[at_beam].fallbacks
+
             # if we're dealing with actions
             if actions:
                 # set the last action to the output and keep the last intent
@@ -241,7 +269,7 @@ class ConversationAlignmentExecutor:
                 last_intent = outputs[i]
                 last_action = self.beams[at_beam].last_action
                 if outputs[i].is_fallback():
-                    fallbacks += 1
+                    self.beams[at_beam].fallbacks += 1
             # update the rankings and scores and create a new Beam.
             # note that for the rollout, we have to use a COPY because
             # otherwise, in the case where multiple beams extend from
@@ -253,7 +281,7 @@ class ConversationAlignmentExecutor:
                     self.beams[at_beam].rankings + [outputs[i]],
                     self.beams[at_beam].rollout.copy(),
                     self.beams[at_beam].scores + [log(outputs[i].probability)],
-                    fallbacks,
+                    self.beams[at_beam].fallbacks,
                 )
             )
         return new_beams
@@ -346,10 +374,7 @@ class ConversationAlignmentExecutor:
                 )
                 # add the k actions to the graph
                 self.graph_gen.create_nodes_from_beams(
-                    {outputs[beam].name: round(outputs[beam].score.real, 4)},
-                    ConversationAlignmentExecutor._get_action_node_type(
-                        outputs[beam].name
-                    ),
+                    {outputs[beam].name: (round(outputs[beam].score.real, 4), ConversationAlignmentExecutor._get_action_node_type(outputs[beam].name))},
                     beam,
                     "START",
                     [outputs[beam].name],
@@ -360,8 +385,7 @@ class ConversationAlignmentExecutor:
             # add the (total actions - k) nodes that won't be picked to the graph
             for action in outputs[self.k :]:
                 self.graph_gen.create_nodes_outside_beams(
-                    {action.name: round(action.score.real, 4)},
-                    ConversationAlignmentExecutor._get_action_node_type(action.name),
+                    {action.name: (round(action.score.real, 4), ConversationAlignmentExecutor._get_action_node_type(action.name))},
                     "0",
                 )
             # iterate through all utterances (the first was already observed)
@@ -395,8 +419,8 @@ class ConversationAlignmentExecutor:
                                     beam=beam,
                                     # find the score by taking the sum of the current
                                     # beam thread which should be a list of log(prob)
-                                    score=ConversationAlignmentExecutor._sum_scores(
-                                        self.beams[beam].scores,
+                                    score=self._sum_scores(
+                                        beam,
                                         intent_cfg["confidence"],
                                     ),
                                     outcome=intent_cfg["outcome"],
@@ -417,8 +441,8 @@ class ConversationAlignmentExecutor:
                                     name=act,
                                     probability=conf,
                                     beam=beam,
-                                    score=ConversationAlignmentExecutor._sum_scores(
-                                        self.beams[beam].scores, conf
+                                    score=self._sum_scores(
+                                        beam, conf
                                     ),
                                 )
                             )
@@ -432,7 +456,18 @@ class ConversationAlignmentExecutor:
                 # for the graph: track which nodes are "chosen" for each beam
                 graph_beam_chosen_map = {idx: [] for idx in range(self.k)}
                 for output in outputs:
-                    graph_beam_chosen_map[output.beam].append(output.name)
+                    if user:
+                        # tank the score if necessary (need to do this before adding nodes
+                        # to the graph)
+                        if output.is_fallback():
+                            # we don't actually want to change the fallback value until
+                            # we restructure the beams because of the case where multiple
+                            # outputs stem from one beam (only one resulting beam would have
+                            # the increase, not all).
+                            if self.beams[output.beam].fallbacks + 1 == self.max_fallbacks:
+                                output.probability = EPSILON
+                                output.score = self._sum_scores(output.beam, EPSILON)
+                    graph_beam_chosen_map[output.beam].append(output)
                 for beam, chosen in graph_beam_chosen_map.items():
                     # don't add message action intents/outcomes to the graph
                     last_action_message = HovorRollout.is_message_action(
@@ -445,21 +480,25 @@ class ConversationAlignmentExecutor:
                             # using the filtered outputs, map intents to
                             # probabilities to use in the graph
                             {
-                                output.name: round(output.score.real, 4)
+                                output.name: (round(output.score.real, 4), self._determine_node_type(
+                                        beam,
+                                        output.score,
+                                        NodeType.INTENT
+                                        if user
+                                        else (
+                                            ConversationAlignmentExecutor._get_action_node_type(
+                                                output.name
+                                            )
+                                        )
+                                    )
+                                )
                                 for output in all_outputs
                                 if output.beam == beam
                             },
-                            NodeType.INTENT
-                            if user
-                            else (
-                                ConversationAlignmentExecutor._get_action_node_type(
-                                    output.name
-                                )
-                            ),
                             beam,
                             # for actions succeeding message actions, use the last action as the head
-                            self._get_last_node_from_action(beam),
-                            chosen,
+                            self._get_last_head_from_action(beam),
+                            [c.name for c in chosen],
                         )
                 # update the graph's beams so that the parent/id map matches
                 # the reconstructed beams. we have to do this because again,
@@ -481,10 +520,7 @@ class ConversationAlignmentExecutor:
                         )
                 else:
                     self._handle_message_actions()
-                # tank the scores if we've hit the max fallbacks
-                for beam in self.beams:
-                    if beam.fallbacks == self.max_fallbacks:
-                        beam.scores = [EPSILON]
+
             # we've reached the end of the conversation
             for beam in range(len(self.beams)):
                 # run any straggling system actions (often this is needed to reach the goal).
@@ -494,13 +530,12 @@ class ConversationAlignmentExecutor:
                 if self.beams[beam].rollout.get_reached_goal():
                     self.graph_gen.create_nodes_from_beams(
                         {
-                            "GOAL REACHED": round(
+                            "GOAL REACHED": (round(
                                 self.beams[beam].rankings[-1].score.real, 4
-                            )
+                            ), NodeType.GOAL)
                         },
-                        NodeType.GOAL,
                         beam,
-                        self._get_last_node_from_action(beam),
+                        self._get_last_head_from_action(beam),
                         ["GOAL REACHED"],
                     )
                 # highlight all the "final" beams

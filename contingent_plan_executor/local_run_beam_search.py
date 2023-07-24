@@ -1,4 +1,4 @@
-from hovor.hovor_beam_search.core import BeamSearchExecutor
+from hovor.hovor_beam_search.core import ConversationAlignmentExecutor
 from local_run_utils import initialize_local_run
 from glob import glob
 import json
@@ -11,10 +11,10 @@ if __name__ == "__main__":
     conversations = [
         json.loads(open(out, "r").read()) for out in glob(f"{simulated_convos_path}/*.json")
     ]
-    output_files_path = "/home/rebecca/plan4dial/plan4dial/local_data/bank_bot/output_files"
+    output_files_path = "C:\\Users\\Rebecca\\Desktop\\work\\coding\\plan4dial\\plan4dial\\local_data\\gold_standard_bot\\output_files"
     initialize_local_run(output_files_path, False)
-    exec = BeamSearchExecutor(
-        3,
+    exec = ConversationAlignmentExecutor(
+        2,
         2,
         conversations,
         "contingent_plan_executor/hovor/hovor_beam_search/beam_search_output/",

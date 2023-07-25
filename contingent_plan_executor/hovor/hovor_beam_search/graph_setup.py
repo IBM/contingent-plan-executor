@@ -28,9 +28,9 @@ class BeamSearchGraph:
     @staticmethod
     def _set_color(type: NodeType):
         return {
-            NodeType.DEFAULT_ACTION: "skyblue",
-            NodeType.MESSAGE_ACTION: "azure2",
-            NodeType.SYSTEM_API: "pink",
+            NodeType.DEFAULT_ACTION: "steelblue1",
+            NodeType.MESSAGE_ACTION: "powderblue",
+            NodeType.SYSTEM_API: "plum2",
             NodeType.INTENT: "lightgoldenrod1",
             NodeType.GOAL: "darkolivegreen3",
             NodeType.DROP_OFF: "indianred2"

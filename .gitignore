@@ -8,5 +8,4 @@ out_path.txt
 instance/
 output_*.gv*
 output_stats.json
-sample_conversations
 beam_search_output

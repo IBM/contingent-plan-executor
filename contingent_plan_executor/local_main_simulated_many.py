@@ -7,14 +7,15 @@ def run_local_conversation(output_files_path):
     simulate_interaction(initialize_local_run(output_files_path))
 
 
-def simulate_local_conversation(output_files_path):
-    simulate_interaction(initialize_local_run_simulated(output_files_path), "sample_conversations")
+def simulate_local_conversation(output_files_path, simulated_out_path):
+    simulate_interaction(initialize_local_run_simulated(output_files_path), simulated_out_path)
 
 
 if __name__ == "__main__":
-    for i in range(10):
+    for i in range(1):
         print(i)
         simulate_local_conversation(
-            "/home/rebecca/plan4dial/plan4dial/local_data/bank_bot/output_files"
+            "\\\wsl.localhost\\Ubuntu\\root\\plan4dial\\plan4dial\\local_data\\medical_bot\\output_files", 
+            "sample_conversations/medical_bot"
             )
         time.sleep(1)

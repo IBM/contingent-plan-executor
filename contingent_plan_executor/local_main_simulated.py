@@ -6,10 +6,12 @@ def run_local_conversation(output_files_path):
     simulate_interaction(initialize_local_run(output_files_path))
 
 
-def simulate_local_conversation(output_files_path):
-    simulate_interaction(initialize_local_run_simulated(output_files_path), "sample_conversations")
+def simulate_local_conversation(output_files_path, sample_convos_out):
+    simulate_interaction(initialize_local_run_simulated(output_files_path), sample_convos_out)
 
 
 if __name__ == "__main__":
     simulate_local_conversation(
-        "C:\\Users\\Rebecca\\Desktop\\work\\coding\\plan4dial\\plan4dial\\local_data\\rollout_no_system_gold_standard_bot\\output_files")
+        "/home/rebecca/plan4dial/plan4dial/local_data/bank_bot/output_files",
+        "sample_conversations/bank_bot"
+        )

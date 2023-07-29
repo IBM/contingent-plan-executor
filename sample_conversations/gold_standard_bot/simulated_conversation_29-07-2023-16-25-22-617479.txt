@@ -1,0 +1,29 @@
+AGENT: What kind of outing would you like to go to? Please specify both your budget (high or low) and the type of atmosphere you're looking for (i.e. fun, relaxing, etc.)
+USER: I am operating within a low budget.
+AGENT: Ok, I'll take that into account.
+AGENT: What is your preferred outing type? Use a descriptive adjective like fun, high-energy, relaxing, etc.
+USER: What is the most low-energy place in the city?
+AGENT: Great choice!
+AGENT: What is your phone number? I can use it to make reservations.
+USER: My phone number is 0205034131.
+AGENT: Sorry, that isn't a valid number.
+AGENT: What is your phone number? I can use it to make reservations.
+USER: My phone number is 9092507956.
+AGENT: Sorry, that isn't a valid number.
+AGENT: What is your phone number? I can use it to make reservations.
+USER: My phone number is 2062021747.
+AGENT: Sorry, that isn't a valid number.
+AGENT: What is your phone number? I can use it to make reservations.
+USER: My phone number is 7476952910.
+AGENT: Sorry, that isn't a valid number.
+AGENT: What is your phone number? I can use it to make reservations.
+USER: My phone number is 4485288117.
+AGENT: Do you have any allergies? (Y/N)
+USER: absolutely not
+AGENT: Where are you located?
+USER: I live in Toronto.
+AGENT: Tailoring your results to what's available in Toronto...
+AGENT: What is your cuisine of choice? Mexican, Italian, Chinese, and dessert restaurants are in the area.
+USER: Do you have restaurants of type Italian?
+AGENT: Cuisine preference has been logged.
+AGENT: Booked a reservation at Alfredo's Pizza Café as well as a spot at Stauffer Library in Toronto.

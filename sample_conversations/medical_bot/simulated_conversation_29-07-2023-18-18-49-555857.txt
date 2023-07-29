@@ -1,0 +1,11 @@
+AGENT: Have you been exposed to COVID-19?
+USER: mhm
+AGENT: Are you experiencing symptoms of any kind? (Answer yes or no).
+USER: no thanks
+AGENT: Has it been at least 5 days since you were exposed to COVID-19?
+USER: not at all
+AGENT: Have you tested positive for COVID-19 in the last 30 days?
+USER: mhm
+AGENT: What about in the last 90 days?
+USER: nah
+AGENT: Since you have been exposed to COVID-19 but are not yet showing symptoms, wait a total of 5 days since your exposure to test.

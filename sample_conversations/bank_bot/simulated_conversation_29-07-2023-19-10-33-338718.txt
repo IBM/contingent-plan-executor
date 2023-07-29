@@ -1,0 +1,29 @@
+AGENT: Would you like to create a new account?
+USER: no thanks
+AGENT: Ok! No accounts will be created.
+AGENT: Would you like to e-transfer any money to your contacts?
+USER: mhm
+AGENT: Ok, how much money do you want to send and to who?
+USER: Please send through 28 to Bob.
+AGENT: Which account would you like to use?
+USER: I want to use chequing for this.
+AGENT: Transferring 28 to Bob from chequing...
+AGENT: Would you like to pay off your outstanding bills today?
+USER: yes please
+AGENT: Which bill would you like to pay off?
+USER: I want to pay off my gas bill.
+AGENT: Which account would you like to use?
+USER: Use chequing
+AGENT: Ok, I'm paying your gas bill from your chequing account.
+AGENT: Would you like to request money from a contact?
+USER: mhm
+AGENT: Which contact would you like to request money from and how much?
+USER: Please ask for 77 from Sandra.
+AGENT: Sorry, I didn't quite get that.
+AGENT: Which contact would you like to request money from and how much?
+USER: Please ask for 4 from Bob.
+AGENT: Ok, I'm requesting a transfer of 4 from Bob. I will let you know when the transfer goes through.
+AGENT: Would you like to transfer any money today?
+USER: no thank you
+AGENT: Ok, no problem!
+AGENT: Completed all bank actions for today. Thank you!

@@ -1,0 +1,5 @@
+AGENT: Have you been exposed to COVID-19?
+USER: nah
+AGENT: Are you experiencing symptoms of any kind? (Answer yes or no).
+USER: nuh uh
+AGENT: Since you have no symptoms and have not been exposed to COVID-19, no further action is required.

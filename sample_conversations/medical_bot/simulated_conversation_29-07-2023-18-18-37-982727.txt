@@ -1,0 +1,10 @@
+AGENT: Have you been exposed to COVID-19?
+USER: not at all
+AGENT: Are you experiencing symptoms of any kind? (Answer yes or no).
+USER: Y
+AGENT: I'm sorry to hear you are feeling unwell.
+AGENT: Have you been experiencing symptoms for over a week?
+USER: not at all
+AGENT: What symptoms are you feeling?
+USER: I have a fever
+AGENT: Ok. If you are having trouble breathing, your face is throat is tight, or your face is swelling up, call emergency. Use warm (not hot) water to clean the area (without scrubbing). If this was potentially the result of a product, stop using it immediately. Try a medicated lotion on the area.

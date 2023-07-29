@@ -1,0 +1,27 @@
+AGENT: Would you like to create a new account?
+USER: mhm
+AGENT: What account type would you like to create?
+USER: Please create a retirement fund account.
+AGENT: Ok. Your new account was created, but you need to transfer some funds into this new account to open it. If you specify an account, I can transfer a small amount of funds from that to your new account.
+AGENT: Which account would you like to use?
+USER: I want to use savings for this.
+AGENT: Account retirement fund was successfully created with starter funds transferred from savings.
+AGENT: Would you like to e-transfer any money to your contacts?
+USER: ya
+AGENT: Ok, how much money do you want to send and to who?
+USER: Mark is expecting 5000 from me.
+AGENT: Which account would you like to use?
+USER: I want to use chequing for this.
+AGENT: Transferring 5000 to Mark from chequing...
+AGENT: Would you like to pay off your outstanding bills today?
+USER: no thank you
+AGENT: Ok! I won't pay off your outstanding bills today.
+AGENT: Would you like to request money from a contact?
+USER: yes please
+AGENT: Which contact would you like to request money from and how much?
+USER: Sandra owes me 5000.
+AGENT: Ok, I'm requesting a transfer of 5000 from Sandra. I will let you know when the transfer goes through.
+AGENT: Would you like to transfer any money today?
+USER: nah
+AGENT: Ok, no problem!
+AGENT: Completed all bank actions for today. Thank you!

@@ -1,0 +1,10 @@
+AGENT: Have you been exposed to COVID-19?
+USER: no
+AGENT: Are you experiencing symptoms of any kind? (Answer yes or no).
+USER: Y
+AGENT: I'm sorry to hear you are feeling unwell.
+AGENT: Have you been experiencing symptoms for over a week?
+USER: yeah
+AGENT: What symptoms are you feeling?
+USER: It hurts to eat
+AGENT: Ok. I sent you an email detailing the nearest appointments of dentists in your area.

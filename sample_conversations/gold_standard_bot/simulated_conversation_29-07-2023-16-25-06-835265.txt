@@ -1,17 +1,15 @@
 AGENT: What kind of outing would you like to go to? Please specify both your budget (high or low) and the type of atmosphere you're looking for (i.e. fun, relaxing, etc.)
-USER: I can do activities with a high budget.
-AGENT: Ok, I'll take that into account.
-AGENT: What is your preferred outing type? Use a descriptive adjective like fun, high-energy, relaxing, etc.
-USER: I would prefer a low-energy atmosphere today.
-AGENT: Great choice!
+USER: I have a low budget and I would prefer a high-energy atmosphere today.
 AGENT: What is your phone number? I can use it to make reservations.
-USER: 6453559583
+USER: My number is 5811413740.
 AGENT: Do you have any allergies? (Y/N)
-USER: no
+USER: yes please
+AGENT: What type of allergy do you have? (I currently account for dairy and gluten allergies).
+USER: I can only eat foods that are gluten-free.
 AGENT: Where are you located?
-USER: Can you help me find things to do in Kingston?
+USER: I live in Kingston.
 AGENT: Tailoring your results to what's available in Kingston...
 AGENT: What is your cuisine of choice? Mexican, Italian, Chinese, and dessert restaurants are in the area.
-USER: Do you have restaurants of type Italian?
+USER: Are there any dessert restaurants in the area?
 AGENT: Cuisine preference has been logged.
-AGENT: Booked a reservation at Alfredo's Pizza Café as well as a spot at Broadway Theater in Kingston.
+AGENT: Booked a reservation at Geneva Crepes as well as a spot at Stages in Kingston.

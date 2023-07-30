@@ -115,15 +115,15 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         pattern = self.context_variables[entity]["config"]["extraction"]["pattern"]
         raw_extracted = self.find_rasa_entity(entity)
         if raw_extracted:
-            match = re.search(raw_extracted["value"], pattern)
+            match = re.fullmatch(pattern, raw_extracted["value"])
             if match:
-                extracted = ext_ent
+                extracted = raw_extracted
         if not extracted:
             if self.spacy_entities:
                 if "CARDINAL" in self.spacy_entities:
                     # iterate through all CARDINAL entities and see if any match
                     for ext_ent in self.spacy_entities["CARDINAL"]:
-                        match = re.search(pattern, ext_ent["value"])
+                        match = re.fullmatch(pattern, ext_ent["value"])
                         if match:
                             extracted = ext_ent
                             break

@@ -1,5 +1,5 @@
 from cmath import log
-from typing import List, Union, Dict
+from typing import List, Union
 from hovor.hovor_beam_search.data_structs import *
 from hovor.hovor_beam_search.init_stubs import *
 from hovor.hovor_beam_search.graph_setup import BeamSearchGraph, NodeType
@@ -53,7 +53,7 @@ class ConversationAlignmentExecutor:
     ):
         self.k = k
         self.max_fallbacks = max_fallbacks
-        self.conversations = preprocess_conversations(conversation_paths)
+        self.conversations = ConversationAlignmentExecutor.preprocess_conversations(conversation_paths)
         self.conversation_paths = conversation_paths
         self.graphs_path = graphs_path
         self.rollout_param = kwargs
@@ -81,6 +81,32 @@ class ConversationAlignmentExecutor:
                 "The number of fallbacks needed to tank a beam must be a positive integer."
             )
         self._max_fallbacks = value
+
+    @staticmethod
+    def preprocess_conversations(conversation_paths: List[str]):
+        """Preprocesses conversations generated from `local_main_simulated_many`
+        for use within the algorithm.
+
+        Args:
+            conversation_paths (List[str]): Paths that store the conversations to be
+                explored.
+
+        Returns:
+            (List[List[Dict[str, str]]]): Formatted conversation data.
+        """
+        conversations = [
+            json.loads(open(out, "r").read()) for out in conversation_paths
+        ]
+        new_convos = []
+        for conv in conversations:
+            messages = []
+            for msg_cfg in conv["messages"]:
+                if msg_cfg["agent_message"]:
+                    messages.append({"AGENT": msg_cfg["agent_message"]})
+                if msg_cfg["user_message"]:
+                    messages.append({"USER": msg_cfg["user_message"]})
+            new_convos.append(messages)
+        return new_convos
 
     def _sum_scores(self, beam, confidence):
         # avoid math error when taking the log

@@ -20,32 +20,6 @@ from copy import deepcopy
 import json
 
 
-def preprocess_conversations(conversation_paths: List[str]):
-    """Preprocesses conversations generated from `local_main_simulated_many`
-    for use within the algorithm.
-
-    Args:
-        conversation_paths (List[str]): Paths that store the conversations to be
-            explored.
-
-    Returns:
-        (List[List[Dict[str, str]]]): Formatted conversation data.
-    """
-    conversations = [
-        json.loads(open(out, "r").read()) for out in conversation_paths
-    ]
-    new_convos = []
-    for conv in conversations:
-        messages = []
-        for msg_cfg in conv["messages"]:
-            if msg_cfg["agent_message"]:
-                messages.append({"AGENT": msg_cfg["agent_message"]})
-            if msg_cfg["user_message"]:
-                messages.append({"USER": msg_cfg["user_message"]})
-        new_convos.append(messages)
-    return new_convos
-
-
 class Intent(Output):
     """Describes an Intent.
     Args:

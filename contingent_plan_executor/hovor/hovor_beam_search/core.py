@@ -8,9 +8,10 @@ from hovor.configuration.json_configuration_postprocessing import (
 )
 import json
 import matplotlib.pyplot as plt
+import os
 
 
-EPSILON = 0.00000001
+EPSILON = 0.000000000000000000001
 
 
 class ConversationAlignmentExecutor:
@@ -22,8 +23,9 @@ class ConversationAlignmentExecutor:
         max_fallbacks (int): The maximum number of fallbacks that can occur
             in any beam before the probability is tanked by resetting the
             score to the log of a low number epsilon.
-        conversations (List[List[Dict[str, str]]]): The conversation to be
-            explored. Should be in the format
+        conversation_paths (List[str]): Paths that store the conversations to be
+            explored. `preprocess_conversations` should convert conversations
+            to the format
 
             .. code-block:: python
 
@@ -45,13 +47,14 @@ class ConversationAlignmentExecutor:
         self,
         k: int,
         max_fallbacks: int,
-        conversations: List[List[Dict[str, str]]],
+        conversation_paths: str,
         graphs_path: str = None,
         **kwargs,
     ):
         self.k = k
         self.max_fallbacks = max_fallbacks
-        self.conversations = preprocess_conversations(conversations)
+        self.conversations = preprocess_conversations(conversation_paths)
+        self.conversation_paths = conversation_paths
         self.graphs_path = graphs_path
         self.rollout_param = kwargs
         self.in_run = True
@@ -579,13 +582,16 @@ class ConversationAlignmentExecutor:
                 for i in range(1, len(self.beams[beam].rankings)):
                     if self._is_drop_off(beam, self.beams[beam].rankings[i].score, i - 1):
                         self.json_data[-1]["drop-off nodes"].append(f"{self.beams[beam].rankings[i-1].name} -> {self.beams[beam].rankings[i].name}")
-            self.graph_gen.graph.render(f"{self.graphs_path}/convo_{idx}", cleanup=True)
+            self.graph_gen.graph.render(os.path.join(self.graphs_path, *("graphs", os.path.splitext(os.path.basename(self.conversation_paths[idx]))[0])), cleanup=True)
+            # move the "covered" conversation to the output folder (saves headaches when you need multiple runs)
+            os.mkdir(os.path.join(self.graphs_path, "convos"))
+            os.replace(self.conversation_paths[idx], os.path.join(self.graphs_path, *("convos", os.path.basename(self.conversation_paths[idx]))))
             # sort the beams by total score (largest first)
             self.beams.sort(reverse=True)
             # we consider the conversation to be handled if the best beam
             # total score is >= the log(epsilon) value and the goal was reached
             self.json_data[-1]["status"] = "passed" if (sum(self.beams[0].scores).real >= log(EPSILON).real and self.beams[beam].rollout.get_reached_goal()) else "failed"
-        
+
         # store the # of successes and failures and the ratio
         successes = len([conv for conv in self.json_data if conv["status"] == "passed"])
         failures = len(self.conversations) - successes

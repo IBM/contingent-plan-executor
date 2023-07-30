@@ -15,20 +15,25 @@ from hovor.runtime.outcome_determination_progress import OutcomeDeterminationPro
 from hovor.runtime.action_result import ActionResult
 from environment import initialize_local_environment
 from local_run_utils import create_validate_json_config_prov
+from typing import List
 from copy import deepcopy
 import json
 
 
-def preprocess_conversations(conversations):
+def preprocess_conversations(conversation_paths: List[str]):
     """Preprocesses conversations generated from `local_main_simulated_many`
     for use within the algorithm.
 
     Args:
-        conversations (Dict): The generated conversations, in JSON/Dict format.
+        conversation_paths (List[str]): Paths that store the conversations to be
+            explored.
 
     Returns:
         (List[List[Dict[str, str]]]): Formatted conversation data.
     """
+    conversations = [
+        json.loads(open(out, "r").read()) for out in conversation_paths
+    ]
     new_convos = []
     for conv in conversations:
         messages = []

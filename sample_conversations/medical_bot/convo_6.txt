@@ -1,0 +1,16 @@
+AGENT: Have you been exposed to COVID-19?
+USER: no thank you
+AGENT: Are you experiencing symptoms of any kind? (Answer yes or no).
+USER: ya
+AGENT: I'm sorry to hear you are feeling unwell!
+AGENT: Please describe the symptoms you are experiencing.
+USER: I am experiencing covid symptoms.
+AGENT: Have you been feeling ill for more than a week?
+USER: uh huh
+AGENT: Has it been at least 5 days since you were exposed to COVID-19?
+USER: yeah
+AGENT: Have you contracted COVID-19 in the last 30 days?
+USER: nah
+AGENT: How about in the last 90 days?
+USER: absolutely not
+AGENT: Since you have covid symptoms and have not had COVID-19 in the last 90 days, you should test immediately. You can use either a PCR test or take antigen tests according to the suggested testing guidelines.

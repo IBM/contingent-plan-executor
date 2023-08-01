@@ -1,0 +1,10 @@
+AGENT: Have you been notified with a COVID-19 exposure?
+USER: uh huh
+AGENT: Are you experiencing symptoms of any kind? (Answer yes or no).
+USER: nah
+AGENT: Running diagnostics...
+AGENT: Has it been at least 5 days since you were exposed to COVID-19?
+USER: yup
+AGENT: Have you contracted COVID-19 in the last 30 days?
+USER: ya
+AGENT: Since you have had COVID-19 in the last 30 days or less, testing is not recommended as you have no covid symptoms.

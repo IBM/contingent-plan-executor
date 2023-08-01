@@ -1,0 +1,19 @@
+AGENT: Do you have any food restrictions?
+USER: confirm
+AGENT: What type of allergy do you have? (I currently account for dairy and gluten allergies).
+USER: I can only eat foods that are dairy-free.
+AGENT: What kind of outing would you like to go to? Please specify both your budget (high or low) and the type of atmosphere you're looking for (i.e. fun, relaxing, etc.)
+USER: I have a high budget.
+AGENT: Ok, I'll take that into account.
+AGENT: What is your preferred outing type? Use a descriptive adjective like fun, high-energy, relaxing, etc.
+USER: I want to go to a low-energy place.
+AGENT: Great choice!
+AGENT: What is your phone number? I can use it to make reservations.
+USER: My phone number is 2165819332.
+AGENT: Where are you located?
+USER: Can you help me find things to do in Toronto?
+AGENT: Tailoring your results to what's available in Toronto...
+AGENT: dessert, Chinese, Mexican, and Italian restaurants are around; which would you prefer?
+USER: Are there any Mexican restaurants in the area?
+AGENT: Cuisine preference has been logged.
+AGENT: Booked a reservation at Guac Grill as well as a spot at Broadway Theater in Toronto.

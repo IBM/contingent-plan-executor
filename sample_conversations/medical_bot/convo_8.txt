@@ -1,0 +1,12 @@
+AGENT: Have you been exposed to COVID-19?
+USER: yes
+AGENT: Are you feeling ill? (Please answer yes or no).
+USER: nuh uh
+AGENT: Running diagnostics...
+AGENT: Has it been at least 5 days since you were exposed to COVID-19?
+USER: yes please
+AGENT: Have you tested positive for COVID-19 in the last 30 days?
+USER: no
+AGENT: What about in the last 90 days?
+USER: mhm
+AGENT: Although you have had COVID-19 in the last 90 days and don't have covid symptoms, you should still use antigen tests according to the suggested testing guidelines.

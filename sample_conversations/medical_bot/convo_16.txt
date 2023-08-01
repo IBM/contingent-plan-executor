@@ -1,0 +1,15 @@
+AGENT: Have you been notified with a COVID-19 exposure?
+USER: yes
+AGENT: Are you feeling ill? (Please answer yes or no).
+USER: yes
+AGENT: I'm sorry to hear you are feeling unwell!
+AGENT: Please describe the symptoms you are experiencing.
+USER: I think I have a cavity
+AGENT: Have you been feeling ill for more than a week?
+USER: nuh uh
+AGENT: To address your teeth, I sent you an email detailing the nearest appointments of dentists in your area.
+AGENT: Has it been at least 5 days since you were exposed to COVID-19?
+USER: no thanks
+AGENT: Have you tested positive for COVID-19 in the last 30 days?
+USER: ya
+AGENT: Since you have been exposed to COVID-19 but are not yet showing covid symptoms, wait a total of 5 days since your exposure to test.

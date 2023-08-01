@@ -113,6 +113,13 @@ class ConversationAlignmentExecutor:
         if confidence == 0:
             confidence = EPSILON
         return sum(self.beams[beam].scores) + log(confidence)
+    
+    @staticmethod
+    def _set_conf(confidence):
+        # avoid math error when taking the log
+        if confidence == 0:
+            confidence = EPSILON
+        return confidence
 
     @staticmethod
     def _get_action_node_type(action):
@@ -185,7 +192,7 @@ class ConversationAlignmentExecutor:
                 # create an intent from the message action.
                 intent = Intent(
                     name=result["intent"],
-                    probability=result["confidence"],
+                    probability=ConversationAlignmentExecutor._set_conf(result["confidence"]),
                     beam=beam,
                     score=self._sum_scores(
                         beam, result["confidence"]
@@ -195,6 +202,7 @@ class ConversationAlignmentExecutor:
                 # update the last intent and rankings and add it to the beam
                 self.beams[beam].last_intent = intent
                 self.beams[beam].rankings.append(intent)
+                self.beams[beam].scores.append(log(intent.probability))
 
     def _handle_system_actions(self, beam: int):
         # before we begin, check if we have the valid case for
@@ -233,7 +241,7 @@ class ConversationAlignmentExecutor:
             all_intents = [
                 Intent(
                     name=group[0].name.split("-EQ-")[1],
-                    probability=group[1],
+                    probability=ConversationAlignmentExecutor._set_conf(group[1]),
                     beam=beam,
                     score=self._sum_scores(
                         beam, group[1]
@@ -258,6 +266,7 @@ class ConversationAlignmentExecutor:
             )
             self.beams[beam].last_action = action
             self.beams[beam].rankings.append(action)
+            self.beams[beam].scores.append(log(action.probability))
             # add "intent" (again, here we use the outcome name) nodes
             self.graph_gen.create_nodes_from_beams(
                 {intent.name: (round(intent.score.real, 4), self._determine_node_type(beam, intent.score, NodeType.SYSTEM_API)) for intent in all_intents},
@@ -268,6 +277,7 @@ class ConversationAlignmentExecutor:
             
             self.beams[beam].last_intent = all_intents[0]
             self.beams[beam].rankings.append(all_intents[0])
+            self.beams[beam].scores.append(log(all_intents[0].probability))
 
     def _reconstruct_beam_w_output(
         self, outputs: List[Union[Action, Intent]]
@@ -391,7 +401,7 @@ class ConversationAlignmentExecutor:
                 self.conversations[idx][0]
             )
             outputs = [
-                Action(name=key, probability=val, beam=index, score=log(val))
+                Action(name=key, probability=ConversationAlignmentExecutor._set_conf(val), beam=index, score=log(val))
                 for index, (key, val) in enumerate(starting_values.items())
             ]
             # if there are less starting actions than there are beams, duplicate
@@ -433,7 +443,7 @@ class ConversationAlignmentExecutor:
                 utterance = self.conversations[idx][utterance_idx]
                 # we are "in run" as long as there are more utterances following
                 # the current one
-                self.in_run = utterance_idx == len(self.conversations[idx]) - 2
+                self.in_run = utterance_idx < len(self.conversations[idx]) - 1
                 user = "USER" in utterance
                 outputs = []
                 # iterate through all the beams
@@ -454,7 +464,7 @@ class ConversationAlignmentExecutor:
                                 # create beam search "Intents" given the output
                                 Intent(
                                     name=intent_cfg["intent"],
-                                    probability=intent_cfg["confidence"],
+                                    probability=ConversationAlignmentExecutor._set_conf(intent_cfg["confidence"]),
                                     beam=beam,
                                     # find the score by taking the sum of the current
                                     # beam thread which should be a list of log(prob)
@@ -478,7 +488,7 @@ class ConversationAlignmentExecutor:
                             outputs.append(
                                 Action(
                                     name=act,
-                                    probability=conf,
+                                    probability=ConversationAlignmentExecutor._set_conf(conf),
                                     beam=beam,
                                     score=self._sum_scores(
                                         beam, conf
@@ -578,6 +588,7 @@ class ConversationAlignmentExecutor:
                         ["GOAL REACHED"],
                     )
                     self.beams[beam].rankings.append(Output("GOAL REACHED", 1.0, beam, self.beams[beam].rankings[-1].score))
+                    self.beams[beam].scores.append(self.beams[beam].rankings[-1].score)
                 # highlight all the "final" beams
                 head = "0"
                 for node in self.beams[beam].rankings:
@@ -614,12 +625,17 @@ class ConversationAlignmentExecutor:
             if not os.path.exists(convos_dir):
                 os.mkdir(convos_dir)
             os.replace(self.conversation_paths[idx], os.path.join(convos_dir, os.path.basename(self.conversation_paths[idx])))
-            # sort the beams by total score (largest first)
-            self.beams.sort(reverse=True)
             # we consider the conversation to be handled if the best beam
             # total score is >= the log(epsilon) value and the goal was reached
-            self.json_data[-1]["status"] = "passed" if (sum(self.beams[0].scores).real >= log(EPSILON).real and self.beams[beam].rollout.get_reached_goal()) else "failed"
-
+            for beam in range(len(self.beams)):
+                print(sum(self.beams[beam].scores).real)
+                print(self.beams[beam].rollout.get_reached_goal())
+                if (sum(self.beams[beam].scores).real >= log(EPSILON).real and self.beams[beam].rollout.get_reached_goal()):
+                    self.json_data[-1]["status"] = "passed"
+                    break
+            if self.json_data[-1]["status"] != "passed":
+                self.json_data[-1]["status"] = "failed"
+            self.json_data[-1]["name"] = self.conversation_paths[idx]
         # store the # of successes and failures and the ratio
         successes = len([conv for conv in self.json_data if conv["status"] == "passed"])
         failures = len(self.conversations) - successes
@@ -642,9 +658,10 @@ class ConversationAlignmentExecutor:
         plt.figure(0)
         plt.title("Status of Conversations")
         plt.pie([s, f], labels = [f"{(round(s/t, 2)) * 100}% passed", f"{round(f/t, 2) * 100}% failed"], colors=["green", "red"], explode = [0.2, 0], shadow = True)
+        plt.savefig(os.path.join(self.graphs_path, "success_stats.pdf"), dpi=1200)
 
         plt.figure(1)
         plt.title("Drop-off nodes")
         nodes = self.json_data["results"]["drop-off nodes"]
         plt.pie(nodes.values(), labels = nodes.keys(), shadow = True)
-        plt.show()
+        plt.savefig(os.path.join(self.graphs_path, "drop-off_nodes.pdf"), dpi=1200)

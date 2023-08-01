@@ -245,6 +245,3 @@ class Beam:
     rollout: RolloutBase
     scores: List[float]
     fallbacks: int
-
-    def __lt__(self, other):
-        return sum(self.scores).real > sum(other.scores).real

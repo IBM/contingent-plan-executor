@@ -1,0 +1,10 @@
+AGENT: Have you been notified with a COVID-19 exposure?
+USER: Y
+AGENT: Are you feeling ill? (Please answer yes or no).
+USER: nuh uh
+AGENT: Running diagnostics...
+AGENT: Has it been at least 5 days since your exposure to COVID-19?
+USER: no thank you
+AGENT: Have you contracted COVID-19 in the last 30 days?
+USER: confirm
+AGENT: Since you have been exposed to COVID-19 but are not yet showing covid symptoms, wait a total of 5 days since your exposure to test.

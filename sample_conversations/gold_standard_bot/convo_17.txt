@@ -1,0 +1,13 @@
+AGENT: Do you have any food restrictions?
+USER: no thanks
+AGENT: What kind of outing would you like to go to? Please specify both your budget (high or low) and the type of atmosphere you're looking for (i.e. fun, relaxing, etc.)
+USER: I have a high budget and I would prefer a low-energy atmosphere today.
+AGENT: What is your phone number? I can use it to make reservations.
+USER: My phone number is 3041483601.
+AGENT: Where are you located?
+USER: I am located in Toronto.
+AGENT: Tailoring your results to what's available in Toronto...
+AGENT: What is your cuisine of choice? Mexican, Italian, Chinese, and dessert restaurants are in the area.
+USER: I want to eat Mexican.
+AGENT: Cuisine preference has been logged.
+AGENT: Booked a reservation at Guac Grill as well as a spot at Broadway Theater in Toronto.

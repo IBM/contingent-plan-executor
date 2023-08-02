@@ -8,7 +8,8 @@ class RolloutBase(ABC):
     calculate action and intent confidences and keep track of + update the
     current state.
 
-    NOTE: You will also need an "applicable_actions" attribute.
+    NOTE: You will also need an "applicable_actions" attribute (set of the
+    currently applicable actions).
 
     Args:
         ABC (class): Used to create an abstract class.
@@ -104,8 +105,8 @@ class RolloutBase(ABC):
     @abstractmethod
     def _update_applicable_actions(self, *args, **kwargs):
         """Updates which actions are applicable in the current state.
-        
-        Raise an error if there are no applicable actions and there are still utterances left. 
+
+        Raise an error if there are no applicable actions and there are still utterances left.
         Raise a warning if we reach the goal but there are still utterances left.
 
         (Use the `in_run` attribute of ConversationAlignmentExecutor to do this).

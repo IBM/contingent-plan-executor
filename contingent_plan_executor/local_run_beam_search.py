@@ -12,12 +12,13 @@ if __name__ == "__main__":
     ]
     output_files_path = f"/home/rebecca/plan4dial/plan4dial/local_data/{bot}/output_files"
     initialize_local_run(output_files_path, False)
+    out_dir = f"contingent_plan_executor/hovor/hovor_beam_search/beam_search_output/{bot}"
     exec = ConversationAlignmentExecutor(
         k=1,
         max_fallbacks=1,
         conversation_paths=conversation_paths,
-        graphs_path=f"contingent_plan_executor/hovor/hovor_beam_search/beam_search_output/{bot}",
+        graphs_path=out_dir,
         output_files_path=output_files_path,
     )
     exec.beam_search()
-    exec.plot()
+    ConversationAlignmentExecutor.plot(f"{out_dir}/output_stats.json", out_dir)

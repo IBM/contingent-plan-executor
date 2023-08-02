@@ -55,8 +55,8 @@ class HovorRollout(RolloutBase):
             act_cfg["condition"] = set(act_cfg["condition"])
             for out, out_vals in act_cfg["effect"].items():
                 act_cfg["effect"][out] = set(out_vals)
-        HovorRollout._rollout_cfg = rollout_cfg
-        self._current_state = set(HovorRollout._rollout_cfg["initial_state"])
+        HovorRollout.rollout_cfg = rollout_cfg
+        self._current_state = set(HovorRollout.rollout_cfg["initial_state"])
         self.applicable_actions = set()
         self._update_applicable_actions(True)
         # note that we use the built-in notion of progress because for some outcome
@@ -156,8 +156,8 @@ class HovorRollout(RolloutBase):
         # get all applicable actions, disqualifying non-dialogue actions
         applicable_actions = {
             act
-            for act in HovorRollout._rollout_cfg["actions"]
-            if HovorRollout._rollout_cfg["actions"][act]["condition"].issubset(
+            for act in HovorRollout.rollout_cfg["actions"]
+            if HovorRollout.rollout_cfg["actions"][act]["condition"].issubset(
                 self._current_state
             )
         }
@@ -188,7 +188,7 @@ class HovorRollout(RolloutBase):
     # given an outcome, update the state + applicable actions in the new state + progress/context
     def update_state(self, last_action, chosen_outcome, in_run: bool):
         self._update_state_fluents(
-            HovorRollout._rollout_cfg["actions"][last_action]["effect"][chosen_outcome],
+            HovorRollout.rollout_cfg["actions"][last_action]["effect"][chosen_outcome],
         )
         self._update_applicable_actions(in_run)
         outcome_group_config = (
@@ -242,7 +242,10 @@ class HovorRollout(RolloutBase):
                         ] = data["actions"][prev_action]["fallback_message_variants"]
                 else:
                     for outcome in data["actions"][prev_action]["effect"]["outcomes"]:
-                        if outcome["name"] == prev_outcome:
+                        if (
+                            outcome["name"] == prev_outcome
+                            and "response_variants" in outcome
+                        ):
                             data["actions"]["dialogue_statement"][
                                 "message_variants"
                             ] = outcome["response_variants"]

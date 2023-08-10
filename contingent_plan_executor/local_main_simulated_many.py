@@ -14,12 +14,12 @@ def simulate_local_conversation(output_files_path, sample_convos_out):
 
 
 if __name__ == "__main__":
-    bot = "gold_standard_bot"
-    out = "/home/rebecca/conversation-alignment/beam_search/eval/2/json_convos"
+    # bot = "gold_standard_bot"
+    out = "/home/rebecca/conversation-alignment/beam_search/eval/1/json_convos"
     for i in range(20):
         print(i)
         simulate_local_conversation(
-            "/home/rebecca/conversation-alignment/beam_search/eval/2/1_unmodified_run/output_files",
+            "/home/rebecca/conversation-alignment/beam_search/eval/1/1_unmodified_run/output_files",
             out
             )
         time.sleep(1)

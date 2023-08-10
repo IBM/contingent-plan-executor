@@ -10,11 +10,11 @@ if __name__ == "__main__":
     conversation_paths = [
         out for out in glob(f"{simulated_convos_path}/*.json")
     ]
-    output_files_path = "/home/rebecca/conversation-alignment/beam_search/eval/2/2_modified_run/output_files"
+    output_files_path = "/home/rebecca/conversation-alignment/beam_search/eval/1/1_unmodified_run/output_files"
     initialize_local_run(output_files_path, False)
-    out_dir = "/home/rebecca/conversation-alignment/beam_search/eval/2/2_modified_run/4_iter"
+    out_dir = "/home/rebecca/conversation-alignment/beam_search/eval/1/1_unmodified_run"
     exec = ConversationAlignmentExecutor(
-        k=3,
+        k=1,
         max_fallbacks=1,
         conversation_paths=conversation_paths,
         output_path=out_dir,

@@ -257,7 +257,7 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
     def get_raw_rankings(self, input, outcome_groups):
         r = json.loads(
             requests.post(
-                "http://localhost:5005/model/parse", json={"text": input}
+                "http://localhost:5006/model/parse", json={"text": input}
             ).text
         )
         intents = self.filter_intents(r, outcome_groups)

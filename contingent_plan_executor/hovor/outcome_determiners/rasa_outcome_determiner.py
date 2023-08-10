@@ -186,7 +186,7 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
 
                     intents.append(
                         Intent(
-                            out_cfg["intent"],
+                            out_cfg["intent_cfg"] if "intent_cfg" in out_cfg else out_cfg["intent"],
                             # use the assignments key so we get the required certainty for each entity
                             frozenset(entity_reqs.items()),
                             outcome_groups[out],
@@ -298,7 +298,7 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                                         raise ValueError("Tried to assign an entity to \
                                                         an unknown variable value.")
                     progress.add_detected_entity(update_var, value)
-        DEBUG("\t top random ranking for group '%s'" % (chosen_intent.name))
+        # DEBUG("\t top random ranking for group '%s'" % (chosen_intent.name))
         return ranked_groups, progress
 
     def _make_entity_type_sample(self, entity, entity_type, entity_config, extracted_info):

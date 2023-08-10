@@ -72,7 +72,12 @@ class HovorRollout(RolloutBase):
             )
 
     def copy(self):
-        new = HovorRollout(HovorRollout._output_files_path, self._progress)
+        new = HovorRollout(HovorRollout._output_files_path, OutcomeDeterminationProgress(
+                    initialize_session(HovorRollout.configuration_provider), ActionResult()
+                )
+            )
+        new._progress.actual_context._fields = {f: v for f, v in self._progress.actual_context._fields.items()}
+        new._progress._actual_determination_result._fields = {f: v for f, v in self._progress._actual_determination_result._fields.items()} if self._progress._actual_determination_result._fields else {}
         new._current_state = deepcopy(self._current_state)
         new.applicable_actions = deepcopy(self.applicable_actions)
         return new
@@ -127,7 +132,7 @@ class HovorRollout(RolloutBase):
         )
         # reformat
         ranked_groups = [
-            {"outcome": g[0], "confidence": g[1], "intent": out["intent"]}
+            {"outcome": g[0], "confidence": g[1], "intent": out["intent_cfg"] if "intent_cfg" in out else out["intent"]}
             for g in ranked_groups
             for out in HovorRollout.data["actions"][action]["effect"]["outcomes"]
             if out["name"] == g[0].name
@@ -135,7 +140,7 @@ class HovorRollout(RolloutBase):
         ranked_groups = sorted(
             ranked_groups, key=lambda item: item["confidence"], reverse=True
         )
-        softmax_confidences(ranked_groups)
+        # softmax_confidences(ranked_groups)
         for ranking in ranked_groups:
             ranking["outcome"] = ranking["outcome"].name
         return ranked_groups
@@ -163,11 +168,11 @@ class HovorRollout(RolloutBase):
         }
         if in_run:
             if self.get_reached_goal():
-                raise Warning(
-                    "The goal was reached through a system action, but there are still utterances left!"
-                )
+                self.applicable_actions = "The goal was reached through a system action, but there are still utterances left!"
+                return
             if len(applicable_actions) == 0:
-                raise ValueError("No applicable actions found past this point.")
+                self.applicable_actions = "No applicable actions found past this point!"
+                return
         # raise an error if there are multiple applicable system/api actions but no dialogue/message actions as it is ambiguous which should be executed.
         # otherwise, remove the system/api actions from the pool of applicable actions as they have no messages to compare against.
         if len(applicable_actions) > 1:
@@ -177,12 +182,10 @@ class HovorRollout(RolloutBase):
                 if HovorRollout.data["actions"][act]["type"] in ["dialogue", "message"]
             }
             if len(applicable_actions) == 0:
-                raise NotImplementedError(
-                    """There were multiple applicable actions, but none of them were dialogue or message actions. 
+                applicable_actions = """There were multiple applicable actions, but none of them were dialogue or message actions. 
                     We are currently not handling the ambiguous case of selecting which system or api action to 
                     execute when multiple are applicable and we are forced to choose. Please see the docstring 
                     under `beam_search` for more details."""
-                )
         self.applicable_actions = applicable_actions
 
     # given an outcome, update the state + applicable actions in the new state + progress/context
@@ -219,7 +222,7 @@ class HovorRollout(RolloutBase):
             confidences[action] = semantic_similarity(
                 source_sentence["AGENT"], messages
             )
-        return normalize_confidences(
+        return (
             {
                 k: v
                 for k, v in sorted(

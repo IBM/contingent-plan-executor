@@ -1,5 +1,0 @@
-AGENT: Have you been in contact or close to someone with COVID-19?
-USER: no
-AGENT: Are you experiencing symptoms of any kind? (Answer yes or no).
-USER: not at all
-AGENT: Since you have no symptoms and have not been exposed to COVID-19, no further action is required.

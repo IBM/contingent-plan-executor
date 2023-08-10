@@ -1,5 +1,0 @@
-AGENT: Have you been exposed to COVID-19?
-USER: absolutely not
-AGENT: Are you feeling ill? (Please answer yes or no).
-USER: no
-AGENT: Since you have no symptoms and have not been exposed to COVID-19, no further action is required.

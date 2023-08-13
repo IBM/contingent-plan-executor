@@ -140,7 +140,7 @@ class HovorRollout(RolloutBase):
         ranked_groups = sorted(
             ranked_groups, key=lambda item: item["confidence"], reverse=True
         )
-        # softmax_confidences(ranked_groups)
+        softmax_confidences(ranked_groups)
         for ranking in ranked_groups:
             ranking["outcome"] = ranking["outcome"].name
         return ranked_groups
@@ -222,7 +222,7 @@ class HovorRollout(RolloutBase):
             confidences[action] = semantic_similarity(
                 source_sentence["AGENT"], messages
             )
-        return (
+        return normalize_confidences(
             {
                 k: v
                 for k, v in sorted(

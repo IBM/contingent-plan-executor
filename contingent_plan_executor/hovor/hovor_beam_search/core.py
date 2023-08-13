@@ -153,12 +153,13 @@ class ConversationAlignmentExecutor:
         bars[2].set_color("red")
         bars[3].set_color("darksalmon")
         plt.savefig(os.path.join(out_path, "confusion_stats.pdf"))
-
+        plt.clf()
         plt.figure(1, figsize=(20, 20))
         plt.title("Drop-off nodes")
         nodes = json_data["results"]["drop-off nodes"]
         plt.pie(nodes.values(), labels=nodes.keys(), shadow=True)
         plt.savefig(os.path.join(out_path, "drop-off_nodes.pdf"))
+        plt.clf()
 
     def _sum_scores(self, beam, confidence):
         # avoid math error when taking the log
@@ -509,15 +510,15 @@ class ConversationAlignmentExecutor:
 
     def _store_single_convo_data(self, idx: int):
         # move the "covered" conversation to the output folder (saves headaches when you need multiple runs)
-        convos_dir = os.path.join(self.output_path, "convos")
-        if not os.path.exists(convos_dir):
-            os.mkdir(convos_dir)
-        os.replace(
-            self.conversation_paths[idx],
-            os.path.join(
-                convos_dir, os.path.basename(self.conversation_paths[idx])
-            ),
-        )
+        # convos_dir = os.path.join(self.output_path, "convos")
+        # if not os.path.exists(convos_dir):
+        #     os.mkdir(convos_dir)
+        # os.replace(
+        #     self.conversation_paths[idx],
+        #     os.path.join(
+        #         convos_dir, os.path.basename(self.conversation_paths[idx])
+        #     ),
+        # )
         self.json_data["conversation data"][-1]["name"] = self.conversation_paths[idx]
         # based on the pass/fail assessment and our knowledge of what is missing in the model, categorize the conversation on the confusion matrix.
         self.json_data["conversation data"][-1]["status"] = self._get_confusion_matrix()

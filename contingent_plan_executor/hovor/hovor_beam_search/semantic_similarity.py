@@ -19,9 +19,13 @@ def query(payload):
 
 
 def semantic_similarity(source_sentence: str, sentences: List[str]):
-    return sum(
-        query({"inputs": {"source_sentence": source_sentence, "sentences": sentences}})
-    ) / len(sentences)
+    while True:
+        try:
+            return sum(
+                query({"inputs": {"source_sentence": source_sentence, "sentences": sentences}})
+            ) / len(sentences)
+        except Exception as e:
+            pass
 
 
 def softmax_confidences(ranked_groups: List[Dict]):

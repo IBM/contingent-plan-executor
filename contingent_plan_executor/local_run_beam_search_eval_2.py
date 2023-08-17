@@ -12,7 +12,7 @@ if __name__ == "__main__":
     ]
     output_files_path = "/home/rebecca/conversation-alignment/beam_search/eval/2/2_modified_run/output_files"
     initialize_local_run(output_files_path, False)
-    out_dir = "/home/rebecca/conversation-alignment/beam_search/eval/2/2_modified_run/6_iter"
+    out_dir = "/home/rebecca/conversation-alignment/beam_search/eval/2/2_modified_run/36_iter"
     exec = ConversationAlignmentExecutor(
         k=3,
         max_fallbacks=1,

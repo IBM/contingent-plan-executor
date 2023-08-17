@@ -168,8 +168,7 @@ class HovorRollout(RolloutBase):
         }
         if in_run:
             if self.get_reached_goal():
-                self.applicable_actions = "The goal was reached through a system action, but there are still utterances left!"
-                return
+                self.applicable_actions = "WARNING: The goal was reached, but there are still utterances left!"
             if len(applicable_actions) == 0:
                 self.applicable_actions = "No applicable actions found past this point!"
                 return
@@ -212,6 +211,7 @@ class HovorRollout(RolloutBase):
         self, source_sentence, prev_action=None, prev_intent=None, prev_outcome=None
     ):
         self._check_for_message_updates(prev_action, prev_intent, prev_outcome)
+        print(self.applicable_actions)
         action_message_map = {
             act: HovorRollout.data["actions"][act]["message_variants"]
             for act in self.applicable_actions
@@ -256,7 +256,8 @@ class HovorRollout(RolloutBase):
 
     @staticmethod
     def is_message_action(act):
-        return HovorRollout.data["actions"][act]["type"] == "message"
+        # skip over "ending" nodes
+        return HovorRollout.data["actions"][act]["type"] == "message" if act in HovorRollout.data["actions"] else False
 
     def update_if_message_action(self, most_conf_act, in_run: bool):
         if self.is_message_action(most_conf_act):

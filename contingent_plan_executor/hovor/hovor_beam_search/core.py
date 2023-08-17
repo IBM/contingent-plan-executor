@@ -154,10 +154,10 @@ class ConversationAlignmentExecutor:
         bars[3].set_color("darksalmon")
         plt.savefig(os.path.join(out_path, "confusion_stats.pdf"))
         plt.clf()
-        plt.figure(1, figsize=(20, 20))
+        plt.figure(1, figsize=(60, 35))
         plt.title("Drop-off nodes")
         nodes = json_data["results"]["drop-off nodes"]
-        plt.pie(nodes.values(), labels=nodes.keys(), shadow=True)
+        plt.pie(nodes.values(), labels=nodes.keys(), shadow=True, textprops={'fontsize': 50})
         plt.savefig(os.path.join(out_path, "drop-off_nodes.pdf"))
         plt.clf()
 
@@ -176,11 +176,7 @@ class ConversationAlignmentExecutor:
 
     @staticmethod
     def _get_action_node_type(action):
-        return (
-            NodeType.MESSAGE_ACTION
-            if HovorRollout.is_message_action(action)
-            else NodeType.DEFAULT_ACTION
-        )
+        return NodeType.MESSAGE_ACTION if HovorRollout.is_message_action(action) else NodeType.DEFAULT_ACTION
 
     def _prep_for_new_search(self):
         """Resets the beams and graph generator to begin a new search."""
@@ -189,9 +185,11 @@ class ConversationAlignmentExecutor:
 
     def _get_last_head_from_action(self, beam):
         return (
-            self.beams[beam].last_action.name
+            (self.beams[beam].last_action.name
             if HovorRollout.is_message_action(self.beams[beam].last_action.name)
-            else self.beams[beam].rankings[-1].name
+            else self.beams[beam].rankings[-1].name)
+            if isinstance(self.beams[beam].last_action, Action)
+            else  self.beams[beam].rankings[-1].name
         )
 
     def _is_drop_off(self, beam: int, node_score: float, prev_idx: int):
@@ -233,6 +231,11 @@ class ConversationAlignmentExecutor:
             if self._is_drop_off(beam, node_score, -1)
             else default_type
         )
+    
+    def _handle_state_update_cases(self, beam: int):
+        self._append_ending_node(beam, self.beams[beam].rollout.applicable_actions)
+        if self.beams[beam].rollout.applicable_actions != "WARNING: The goal was reached, but there are still utterances left!":
+            self._append_ending_node(beam, "finishing off...")
 
     def _handle_message_actions(self):
         """Handles "message actions" for all beams.
@@ -245,30 +248,31 @@ class ConversationAlignmentExecutor:
         """
         # iterate through all the beams
         for beam in range(len(self.beams)):
-            # if result is not None, then the last action was a message action
-            result = self.beams[beam].rollout.update_if_message_action(
-                self.beams[beam].last_action.name, self._in_run
-            )
-            if result:
-                # create an intent from the message action.
-                intent = Intent(
-                    name=result["intent"],
-                    probability=ConversationAlignmentExecutor._set_conf(
-                        result["confidence"]
-                    ),
-                    beam=beam,
-                    score=self._sum_scores(beam, result["confidence"]),
-                    outcome=result["outcome"],
+            # don't want to run for "ending" nodes
+            if isinstance(self.beams[beam].last_action, Action):
+                # if result is not None, then the last action was a message action
+                result = self.beams[beam].rollout.update_if_message_action(
+                    self.beams[beam].last_action.name, self._in_run
                 )
-                # update the last intent and rankings and add it to the beam
-                self.beams[beam].last_intent = intent
-                self.beams[beam].rankings.append(intent)
-                self.beams[beam].scores.append(log(intent.probability))
+                if result:
+                    # create an intent from the message action.
+                    intent = Intent(
+                        name=result["intent"],
+                        probability=ConversationAlignmentExecutor._set_conf(
+                            result["confidence"]
+                        ),
+                        beam=beam,
+                        score=self._sum_scores(beam, result["confidence"]),
+                        outcome=result["outcome"],
+                    )
+                    # update the last intent and rankings and add it to the beam
+                    self.beams[beam].last_intent = intent
+                    self.beams[beam].rankings.append(intent)
+                    self.beams[beam].scores.append(log(intent.probability))
 
-                # returned an error message
-                if type(self.beams[beam].rollout.applicable_actions) == str:
-                    self._append_ending_node(beam, self.beams[beam].rollout.applicable_actions)
-                    self._append_ending_node(beam, "pruning...")
+                    # returned an error message
+                    if type(self.beams[beam].rollout.applicable_actions) == str:
+                        self._handle_state_update_cases(beam)
 
     def _handle_system_actions(self, beam: int):
         # before we begin, check if we have the valid case for
@@ -352,12 +356,15 @@ class ConversationAlignmentExecutor:
             
             # returned an error message
             if type(self.beams[beam].rollout.applicable_actions) == str:
-                return self.beams[beam].rollout.applicable_actions
+                self._handle_state_update_cases(beam)
             # if the system action fails to "complete" itself (it is still applicable)
             # once it has executed and we have not reached the goal,
             # we will end up in an infinite loop!
-            if not self.beams[beam].rollout.get_reached_goal() and self.beams[beam].rollout.applicable_actions == prev_app_acts:
-                return f"The system action {action.name} failed to complete itself!"
+            if self.beams[beam].rollout.applicable_actions == prev_app_acts:
+                if not self.beams[beam].rollout.get_reached_goal():
+                    return "The preceding system action failed to complete itself!"
+                else:
+                    return "We reached the goal through the preceding system action and there is nothing else to do now!"
 
 
     def _reconstruct_beam_w_output(
@@ -376,7 +383,7 @@ class ConversationAlignmentExecutor:
             List[Beam]: The new Beams with the outputs added.
         """
         new_beams = []
-        actions = isinstance(outputs[0], Action)
+        actions = not isinstance(outputs[0], Intent)
         for i in range(len(outputs)):
             # grab the beam that the output came from
             at_beam = outputs[i].beam
@@ -448,7 +455,7 @@ class ConversationAlignmentExecutor:
                 continue
 
             # add a "GOAL REACHED" node if necessary
-            if self.beams[beam].rollout.get_reached_goal():
+            if self.beams[beam].rollout.get_reached_goal() and self.beams[beam].rankings[-1].name != "GOAL REACHED":
                 self._append_ending_node(beam, "GOAL REACHED")
 
 
@@ -509,16 +516,6 @@ class ConversationAlignmentExecutor:
         )
 
     def _store_single_convo_data(self, idx: int):
-        # move the "covered" conversation to the output folder (saves headaches when you need multiple runs)
-        # convos_dir = os.path.join(self.output_path, "convos")
-        # if not os.path.exists(convos_dir):
-        #     os.mkdir(convos_dir)
-        # os.replace(
-        #     self.conversation_paths[idx],
-        #     os.path.join(
-        #         convos_dir, os.path.basename(self.conversation_paths[idx])
-        #     ),
-        # )
         self.json_data["conversation data"][-1]["name"] = self.conversation_paths[idx]
         # based on the pass/fail assessment and our knowledge of what is missing in the model, categorize the conversation on the confusion matrix.
         self.json_data["conversation data"][-1]["status"] = self._get_confusion_matrix()
@@ -548,8 +545,11 @@ class ConversationAlignmentExecutor:
             outputs = []
             # iterate through all the beams
             for beam in range(len(self.beams)):
-                if isinstance(self.beams[beam].rankings[-1], Output) and self.beams[beam].rankings[-1].name == "pruning...":
+                if not isinstance(self.beams[beam].rankings[-1], Action) and not isinstance(self.beams[beam].rankings[-1], Intent):
                     continue
+                # a message action or simple state update can result in the goal being added
+                # if self.beams[beam].rollout.get_reached_goal():
+                #     self._append_ending_node(beam, "GOAL REACHED")
                 # if this is a user utterance, get the k highest intents by
                 # observing the utterance in the context of the last action
                 if user:
@@ -583,13 +583,24 @@ class ConversationAlignmentExecutor:
                     # because user intents should only be extracted directly after
                     # dialogue actions!
                     system_result = self._handle_system_actions(beam)
-                    # returned error
+                    # returned error (or reached the goal)
                     if type(system_result) == str:
                         self._append_ending_node(beam, system_result)
-                        self._append_ending_node(beam, "pruning...")
+                        if system_result == "We reached the goal through the preceding system action and there is nothing else to do now!":
+                            outputs.append(            
+                                Output(
+                                    "GOAL REACHED",
+                                    1.0,
+                                    beam,
+                                    self.beams[beam].rankings[-1].score,
+                                )
+                            )
+                        self._append_ending_node(beam, "finishing off...")                        
+                    # pruning can happen either from updating the state from
+                    # within _handle_system_actions, or from a system action
+                    # error!
+                    if self.beams[beam].rankings[-1].name == "finishing off...":
                         continue
-                    if self.beams[beam].rollout.get_reached_goal():
-                        return
                     
                     all_act_confs = self.beams[beam].rollout.get_action_confidences(
                         utterance,
@@ -608,6 +619,8 @@ class ConversationAlignmentExecutor:
                                 score=self._sum_scores(beam, conf),
                             )
                         )
+            if not outputs:
+                return
             # sort the outputs (k highest actions or intents) by score
             outputs.sort()
             # store all the outputs (only to use in graph creation) before
@@ -647,17 +660,19 @@ class ConversationAlignmentExecutor:
                         {
                             output.name: (
                                 round(output.score.real, 4),
-                                self._determine_node_type(
-                                    beam,
-                                    output.score,
-                                    NodeType.INTENT
-                                    if user
-                                    else (
-                                        ConversationAlignmentExecutor._get_action_node_type(
-                                            output.name
-                                        )
-                                    ),
-                                ),
+                                NodeType.GOAL if not isinstance(output, Intent) and not isinstance(output, Action) else (
+                                    self._determine_node_type(
+                                        beam,
+                                        output.score,
+                                        NodeType.INTENT
+                                        if user
+                                        else (
+                                            ConversationAlignmentExecutor._get_action_node_type(
+                                                output.name
+                                            )
+                                        ),
+                                    )
+                                )
                             )
                             for output in all_outputs
                             if output.beam == beam
@@ -687,8 +702,7 @@ class ConversationAlignmentExecutor:
                     )
                     # returned an error message
                     if type(self.beams[beam].rollout.applicable_actions) == str:
-                        self._append_ending_node(beam, self.beams[beam].rollout.applicable_actions)
-                        self._append_ending_node(beam, "pruning...")
+                        self._handle_state_update_cases(beam)
             else:
                 self._handle_message_actions()
 
@@ -750,6 +764,7 @@ class ConversationAlignmentExecutor:
             continuing the iteration.
         """
         for idx in range(len(self.conversations)):
+            print(idx)
             self.json_data["conversation data"].append(
                 {
                     "conversation": self.conversations[idx],
@@ -774,12 +789,13 @@ class ConversationAlignmentExecutor:
                 for index, (key, val) in enumerate(starting_values.items())
             ]
             outputs.sort()
-            # if there are less starting actions than there are beams, duplicate
-            # the best action until we reach self.k
-            while len(outputs) < self.k:
-                outputs.append(outputs[0])
 
-            for beam in range(self.k):
+            if len(outputs) > self.k:
+                starting = self.k
+            else:
+                starting = len(outputs)
+
+            for beam in range(starting):
                 # create the initial beams
                 self.beams.append(
                     Beam(
@@ -807,24 +823,21 @@ class ConversationAlignmentExecutor:
                 )
 
             self._handle_message_actions()
-            # had to prune due to error
-            if len(self.beams) < self.k:
-                self.json_data["error"] = "Failed during initialization!"
-                break
 
-            # add the (total actions - k) nodes that won't be picked to the graph
-            for action in outputs[self.k :]:
-                self.graph_gen.create_nodes_outside_beams(
-                    {
-                        action.name: (
-                            round(action.score.real, 4),
-                            ConversationAlignmentExecutor._get_action_node_type(
-                                action.name
-                            ),
-                        )
-                    },
-                    "0",
-                )
+            if len(outputs) > self.k:
+                # add the (total actions - k) nodes that won't be picked to the graph
+                for action in outputs[self.k :]:
+                    self.graph_gen.create_nodes_outside_beams(
+                        {
+                            action.name: (
+                                round(action.score.real, 4),
+                                ConversationAlignmentExecutor._get_action_node_type(
+                                    action.name
+                                ),
+                            )
+                        },
+                        "0",
+                    )
 
             self._beam_search_single_conv(idx)
 

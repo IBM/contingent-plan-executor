@@ -35,7 +35,7 @@ class Intent:
         return self.confidence > other.confidence
 
 
-class RasaOutcomeDeterminer(OutcomeDeterminerBase):
+class NLUOutcomeDeterminer(OutcomeDeterminerBase):
     """Determiner"""
 
     def __init__(self, action_name, full_outcomes, context_variables, intents):
@@ -51,9 +51,22 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
     def parse_synset_name(synset):
         return synset.name().split(".")[0]
 
-    def find_rasa_entity(self, entity: str):
-        if entity in self.rasa_entities:
-            return self.rasa_entities[entity]
+    def find_x_entity(self, entity: str):
+        """
+        **TODO: REPLACE THIS STUB**
+
+        Return the entity if it exists.
+
+        Create one of these for every extraction type (i.e. spacy) used 
+
+        Args:
+            entity (str): The entity to retrieve
+
+        Returns:
+            Optional[Dict]: The entity, if it exists, or None.
+        """
+        if entity in self.x_entities:
+            return self.x_entities[entity]
 
     def find_spacy_entity(self, method: str):
         if method in self.spacy_entities:
@@ -61,8 +74,21 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                 return self.spacy_entities[method].pop()
 
     def initialize_extracted_entities(self, entities: Dict):
+        """
+        **TODO: REPLACE THIS STUB**
+
+        Initialize the entities into their respective categories.
+        You want to do this so you can extract entities according to their extraction
+        specifications, as well as set "orderings" for extraction types. for example, 
+        for a "number" entity (with allowed "maybe" knowledge) set to be extracted with
+        rasa, it was extracted with rasa, and if that failed an extraction was 
+        attempted with spacy's "CARDINAL" with the "maybe" knowledge setting. 
+
+        Args:
+            entities (Dict): The raw entities extracted.
+        """
         self.spacy_entities = {}
-        self.rasa_entities = {}
+        self.x_entities = {}
         for extracted in entities:
             if extracted["entity"] in SPACY_LABELS:
                 if extracted["entity"] in self.spacy_entities:
@@ -70,50 +96,53 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                 else:
                     self.spacy_entities[extracted["entity"]] = [extracted]
             else:
-                self.rasa_entities[extracted["entity"]] = extracted
+                self.x_entities[extracted["entity"]] = extracted
 
-    def try_rasa_then_spacy(self, entity: str):
-        extracted = self.find_rasa_entity(entity)
-        if not extracted:
-            if self.spacy_entities.values():
-                extracted = []
-                extracted.extend(
-                    val
-                    for method_vals in self.spacy_entities.values()
-                    for val in method_vals
-                )
-                extracted = random.choice(extracted)
-                certainty = "maybe-found"
-            else:
-                return None, None
-        else:
-            certainty = "found"
-        return extracted, certainty
+    # TODO: replace with general "execute with ordering" function
+    # def try_rasa_then_spacy(self, entity: str):
+    #     extracted = self.find_rasa_entity(entity)
+    #     if not extracted:
+    #         if self.spacy_entities.values():
+    #             extracted = []
+    #             extracted.extend(
+    #                 val
+    #                 for method_vals in self.spacy_entities.values()
+    #                 for val in method_vals
+    #             )
+    #             extracted = random.choice(extracted)
+    #             certainty = "maybe-found"
+    #         else:
+    #             return None, None
+    #     else:
+    #         certainty = "found"
+    #     return extracted, certainty
 
-    def try_spacy_then_rasa(self, entity: str):
-        extracted = self.find_spacy_entity(
-            self.context_variables[entity]["config"]["extraction"]["config_method"].upper()
-        )
-        if not extracted:
-            # if we can't parse with spacy, try with Rasa (may also return None)
-            extracted = self.find_rasa_entity(entity)
-            if not extracted:
-                return None, None
-            certainty = "maybe-found"
-        else:
-            certainty = "found"
-        return extracted, certainty
+    # def try_spacy_then_rasa(self, entity: str):
+    #     extracted = self.find_spacy_entity(
+    #         self.context_variables[entity]["config"]["extraction"]["config_method"].upper()
+    #     )
+    #     if not extracted:
+    #         # if we can't parse with spacy, try with Rasa (may also return None)
+    #         extracted = self.find_rasa_entity(entity)
+    #         if not extracted:
+    #             return None, None
+    #         certainty = "maybe-found"
+    #     else:
+    #         certainty = "found"
+    #     return extracted, certainty
 
+
+    # TODO: turn into stub
     def extract_regex(self, entity):
-        """For regexes, it doesn't matter whether spacy or rasa extracted it
-        ("regex" is its own category). Just try with either-- results will always be
-        found or didnt-find. Also, for spacy, we will only check for "CARDINAL"
-        extractions.
+        """For regexes, it doesn't matter whether what extracted it
+        ("regex" is its own category). Just try with all relevant extraction methods--
+        results will always be "found" or "didnt-find". Also, for spacy, we will only
+        check for "CARDINAL" extractions.
         """
         extracted = None
 
         pattern = self.context_variables[entity]["config"]["extraction"]["pattern"]
-        raw_extracted = self.find_rasa_entity(entity)
+        raw_extracted = self.find_x_entity(entity)
         if raw_extracted:
             match = re.fullmatch(pattern, raw_extracted["value"])
             if match:
@@ -343,22 +372,22 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                                         extracted_info["sample"] = entity_config[d]
                                         return extracted_info
                             for hyp in syn.hypernyms():
-                                hyp = RasaOutcomeDeterminer.parse_synset_name(hyp).lower()
+                                hyp = NLUOutcomeDeterminer.parse_synset_name(hyp).lower()
                                 if hyp in entity_config:
                                     extracted_info["sample"] = entity_config[hyp]
                                     return extracted_info
                             for hyp in syn.hyponyms():
-                                hyp = RasaOutcomeDeterminer.parse_synset_name(hyp).lower()
+                                hyp = NLUOutcomeDeterminer.parse_synset_name(hyp).lower()
                                 if hyp in entity_config:
                                     extracted_info["sample"] = entity_config[hyp]
                                     return extracted_info
                             for hol in syn.member_holonyms():
-                                hol = RasaOutcomeDeterminer.parse_synset_name(hol).lower()
+                                hol = NLUOutcomeDeterminer.parse_synset_name(hol).lower()
                                 if hol in entity_config:
                                     extracted_info["sample"] = entity_config[hol]
                                     return extracted_info
                             for hol in syn.root_hypernyms():
-                                hol = RasaOutcomeDeterminer.parse_synset_name(hol).lower()
+                                hol = NLUOutcomeDeterminer.parse_synset_name(hol).lower()
                                 if hol in entity_config:
                                     extracted_info["sample"] = entity_config[hol]
                                     return extracted_info

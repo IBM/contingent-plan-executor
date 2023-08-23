@@ -1,4 +1,4 @@
-from hovor.outcome_determiners.rasa_outcome_determiner import RasaOutcomeDeterminer
+from hovor.outcome_determiners.rasa_outcome_determiner import NLUOutcomeDeterminer
 from hovor.hovor_beam_search.semantic_similarity import (
     softmax_confidences,
     semantic_similarity,
@@ -123,7 +123,7 @@ class HovorRollout(RolloutBase):
         self._progress.json["action_result"]["fields"]["input"] = utterance["USER"]
         ranked_groups = self.call_outcome_determiner(
             action,
-            RasaOutcomeDeterminer(
+            NLUOutcomeDeterminer(
                 action,
                 data["actions"][action]["effect"]["outcomes"],
                 data["context_variables"],

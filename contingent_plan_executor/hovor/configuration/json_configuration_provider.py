@@ -8,7 +8,7 @@ from hovor.outcome_determiners.context_dependent_outcome_determiner import Conte
 from hovor.outcome_determiners.default_system_outcome_determiner import DefaultSystemOutcomeDeterminer
 from hovor.outcome_determiners.outcome_determination_info import OutcomeDeterminationInfo
 from hovor.outcome_determiners.random_outcome_determiner import RandomOutcomeDeterminer
-from hovor.outcome_determiners.rasa_outcome_determiner import RasaOutcomeDeterminer
+from hovor.outcome_determiners.rasa_outcome_determiner import NLUOutcomeDeterminer
 from hovor.outcome_determiners.web_call_outcome_determiner import WebCallOutcomeDeterminer
 from hovor.planning import controller
 from hovor.planning.controller.edge import ControllerEdge
@@ -228,7 +228,7 @@ class JsonConfigurationProvider(ConfigurationProviderBase):
             return DefaultSystemOutcomeDeterminer()
 
         if outcome_determiner_name == "disambiguation_outcome_determiner":
-            return RasaOutcomeDeterminer(action_name, outcome_config["outcomes"], self._configuration_data["context_variables"], self._configuration_data["intents"])
+            return NLUOutcomeDeterminer(action_name, outcome_config["outcomes"], self._configuration_data["context_variables"], self._configuration_data["intents"])
 
         if outcome_determiner_name == "web_call_outcome_determiner":
             return WebCallOutcomeDeterminer()

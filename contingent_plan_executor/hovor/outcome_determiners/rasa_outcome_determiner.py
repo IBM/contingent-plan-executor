@@ -115,15 +115,15 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
         pattern = self.context_variables[entity]["config"]["extraction"]["pattern"]
         raw_extracted = self.find_rasa_entity(entity)
         if raw_extracted:
-            match = re.search(raw_extracted["value"], pattern)
+            match = re.fullmatch(pattern, raw_extracted["value"])
             if match:
-                extracted = ext_ent
+                extracted = raw_extracted
         if not extracted:
             if self.spacy_entities:
                 if "CARDINAL" in self.spacy_entities:
                     # iterate through all CARDINAL entities and see if any match
                     for ext_ent in self.spacy_entities["CARDINAL"]:
-                        match = re.search(pattern, ext_ent["value"])
+                        match = re.fullmatch(pattern, ext_ent["value"])
                         if match:
                             extracted = ext_ent
                             break
@@ -186,7 +186,7 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
 
                     intents.append(
                         Intent(
-                            out_cfg["intent"],
+                            out_cfg["intent_cfg"] if "intent_cfg" in out_cfg else out_cfg["intent"],
                             # use the assignments key so we get the required certainty for each entity
                             frozenset(entity_reqs.items()),
                             outcome_groups[out],
@@ -257,7 +257,7 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
     def get_raw_rankings(self, input, outcome_groups):
         r = json.loads(
             requests.post(
-                "http://localhost:5005/model/parse", json={"text": input}
+                "http://localhost:5006/model/parse", json={"text": input}
             ).text
         )
         intents = self.filter_intents(r, outcome_groups)
@@ -298,7 +298,7 @@ class RasaOutcomeDeterminer(OutcomeDeterminerBase):
                                         raise ValueError("Tried to assign an entity to \
                                                         an unknown variable value.")
                     progress.add_detected_entity(update_var, value)
-        DEBUG("\t top random ranking for group '%s'" % (chosen_intent.name))
+        # DEBUG("\t top random ranking for group '%s'" % (chosen_intent.name))
         return ranked_groups, progress
 
     def _make_entity_type_sample(self, entity, entity_type, entity_config, extracted_info):

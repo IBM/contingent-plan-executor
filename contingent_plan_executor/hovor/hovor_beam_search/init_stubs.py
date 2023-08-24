@@ -15,30 +15,9 @@ from hovor.runtime.outcome_determination_progress import OutcomeDeterminationPro
 from hovor.runtime.action_result import ActionResult
 from environment import initialize_local_environment
 from local_run_utils import create_validate_json_config_prov
+from typing import List
 from copy import deepcopy
 import json
-
-
-def preprocess_conversations(conversations):
-    """Preprocesses conversations generated from `local_main_simulated_many`
-    for use within the algorithm.
-
-    Args:
-        conversations (Dict): The generated conversations, in JSON/Dict format.
-
-    Returns:
-        (List[List[Dict[str, str]]]): Formatted conversation data.
-    """
-    new_convos = []
-    for conv in conversations:
-        messages = []
-        for msg_cfg in conv["messages"]:
-            if msg_cfg["agent_message"]:
-                messages.append({"AGENT": msg_cfg["agent_message"]})
-            if msg_cfg["user_message"]:
-                messages.append({"USER": msg_cfg["user_message"]})
-        new_convos.append(messages)
-    return new_convos
 
 
 class Intent(Output):
@@ -76,8 +55,8 @@ class HovorRollout(RolloutBase):
             act_cfg["condition"] = set(act_cfg["condition"])
             for out, out_vals in act_cfg["effect"].items():
                 act_cfg["effect"][out] = set(out_vals)
-        HovorRollout._rollout_cfg = rollout_cfg
-        self._current_state = set(HovorRollout._rollout_cfg["initial_state"])
+        HovorRollout.rollout_cfg = rollout_cfg
+        self._current_state = set(HovorRollout.rollout_cfg["initial_state"])
         self.applicable_actions = set()
         self._update_applicable_actions(True)
         # note that we use the built-in notion of progress because for some outcome
@@ -93,7 +72,12 @@ class HovorRollout(RolloutBase):
             )
 
     def copy(self):
-        new = HovorRollout(HovorRollout._output_files_path, self._progress)
+        new = HovorRollout(HovorRollout._output_files_path, OutcomeDeterminationProgress(
+                    initialize_session(HovorRollout.configuration_provider), ActionResult()
+                )
+            )
+        new._progress.actual_context._fields = {f: v for f, v in self._progress.actual_context._fields.items()}
+        new._progress._actual_determination_result._fields = {f: v for f, v in self._progress._actual_determination_result._fields.items()} if self._progress._actual_determination_result._fields else {}
         new._current_state = deepcopy(self._current_state)
         new.applicable_actions = deepcopy(self.applicable_actions)
         return new
@@ -148,7 +132,7 @@ class HovorRollout(RolloutBase):
         )
         # reformat
         ranked_groups = [
-            {"outcome": g[0], "confidence": g[1], "intent": out["intent"]}
+            {"outcome": g[0], "confidence": g[1], "intent": out["intent_cfg"] if "intent_cfg" in out else out["intent"]}
             for g in ranked_groups
             for out in HovorRollout.data["actions"][action]["effect"]["outcomes"]
             if out["name"] == g[0].name
@@ -177,18 +161,17 @@ class HovorRollout(RolloutBase):
         # get all applicable actions, disqualifying non-dialogue actions
         applicable_actions = {
             act
-            for act in HovorRollout._rollout_cfg["actions"]
-            if HovorRollout._rollout_cfg["actions"][act]["condition"].issubset(
+            for act in HovorRollout.rollout_cfg["actions"]
+            if HovorRollout.rollout_cfg["actions"][act]["condition"].issubset(
                 self._current_state
             )
         }
         if in_run:
             if self.get_reached_goal():
-                raise Warning(
-                    "The goal was reached through a system action, but there are still utterances left!"
-                )
+                self.applicable_actions = "WARNING: The goal was reached, but there are still utterances left!"
             if len(applicable_actions) == 0:
-                raise ValueError("No applicable actions found past this point.")
+                self.applicable_actions = "No applicable actions found past this point!"
+                return
         # raise an error if there are multiple applicable system/api actions but no dialogue/message actions as it is ambiguous which should be executed.
         # otherwise, remove the system/api actions from the pool of applicable actions as they have no messages to compare against.
         if len(applicable_actions) > 1:
@@ -198,18 +181,16 @@ class HovorRollout(RolloutBase):
                 if HovorRollout.data["actions"][act]["type"] in ["dialogue", "message"]
             }
             if len(applicable_actions) == 0:
-                raise NotImplementedError(
-                    """There were multiple applicable actions, but none of them were dialogue or message actions. 
+                applicable_actions = """There were multiple applicable actions, but none of them were dialogue or message actions. 
                     We are currently not handling the ambiguous case of selecting which system or api action to 
                     execute when multiple are applicable and we are forced to choose. Please see the docstring 
                     under `beam_search` for more details."""
-                )
         self.applicable_actions = applicable_actions
 
     # given an outcome, update the state + applicable actions in the new state + progress/context
     def update_state(self, last_action, chosen_outcome, in_run: bool):
         self._update_state_fluents(
-            HovorRollout._rollout_cfg["actions"][last_action]["effect"][chosen_outcome],
+            HovorRollout.rollout_cfg["actions"][last_action]["effect"][chosen_outcome],
         )
         self._update_applicable_actions(in_run)
         outcome_group_config = (
@@ -230,6 +211,7 @@ class HovorRollout(RolloutBase):
         self, source_sentence, prev_action=None, prev_intent=None, prev_outcome=None
     ):
         self._check_for_message_updates(prev_action, prev_intent, prev_outcome)
+        print(self.applicable_actions)
         action_message_map = {
             act: HovorRollout.data["actions"][act]["message_variants"]
             for act in self.applicable_actions
@@ -263,7 +245,10 @@ class HovorRollout(RolloutBase):
                         ] = data["actions"][prev_action]["fallback_message_variants"]
                 else:
                     for outcome in data["actions"][prev_action]["effect"]["outcomes"]:
-                        if outcome["name"] == prev_outcome:
+                        if (
+                            outcome["name"] == prev_outcome
+                            and "response_variants" in outcome
+                        ):
                             data["actions"]["dialogue_statement"][
                                 "message_variants"
                             ] = outcome["response_variants"]
@@ -271,7 +256,8 @@ class HovorRollout(RolloutBase):
 
     @staticmethod
     def is_message_action(act):
-        return HovorRollout.data["actions"][act]["type"] == "message"
+        # skip over "ending" nodes
+        return HovorRollout.data["actions"][act]["type"] == "message" if act in HovorRollout.data["actions"] else False
 
     def update_if_message_action(self, most_conf_act, in_run: bool):
         if self.is_message_action(most_conf_act):

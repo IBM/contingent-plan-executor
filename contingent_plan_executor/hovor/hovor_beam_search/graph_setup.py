@@ -33,15 +33,13 @@ class BeamSearchGraph:
             NodeType.SYSTEM_API: "plum2",
             NodeType.INTENT: "lightgoldenrod1",
             NodeType.GOAL: "darkolivegreen3",
-            NodeType.DROP_OFF: "indianred2"
+            NodeType.DROP_OFF: "indianred2",
         }[type]
 
     def _inc_idx(self, inc: int = 1):
         self._idx = str(int(self._idx) + inc)
 
-    def create_nodes_outside_beams(
-        self, nodes: Dict, parent: str
-    ):
+    def create_nodes_outside_beams(self, nodes: Dict, parent: str):
         """
         nodes should be in the form:
         {

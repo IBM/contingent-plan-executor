@@ -9,3 +9,4 @@ instance/
 output_*.gv*
 output_stats.json
 beam_search_output
+sample_conversations/

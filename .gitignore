@@ -1,7 +1,6 @@
 vcap-local.json
 .venv
 __pycache__
-.rasa
 .vscode
 diagnostics.txt
 out_path.txt

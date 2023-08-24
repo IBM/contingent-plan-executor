@@ -150,8 +150,6 @@ pytz-deprecation-shim     0.1.0.post0              pypi_0    pypi
 pyyaml                    6.0                      pypi_0    pypi
 questionary               1.10.0                   pypi_0    pypi
 randomname                0.1.5                    pypi_0    pypi
-rasa                      3.3.1                    pypi_0    pypi
-rasa-sdk                  3.3.0                    pypi_0    pypi
 readline                  8.2                  h5eee18b_0  
 redis                     4.3.5                    pypi_0    pypi
 regex                     2022.9.13                pypi_0    pypi

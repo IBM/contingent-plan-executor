@@ -8,7 +8,7 @@ from hovor.outcome_determiners.context_dependent_outcome_determiner import Conte
 from hovor.outcome_determiners.default_system_outcome_determiner import DefaultSystemOutcomeDeterminer
 from hovor.outcome_determiners.outcome_determination_info import OutcomeDeterminationInfo
 from hovor.outcome_determiners.random_outcome_determiner import RandomOutcomeDeterminer
-from hovor.outcome_determiners.rasa_outcome_determiner import NLUOutcomeDeterminer
+from hovor.outcome_determiners.nlu_outcome_determiner import NLUOutcomeDeterminer
 from hovor.outcome_determiners.web_call_outcome_determiner import WebCallOutcomeDeterminer
 from hovor.planning import controller
 from hovor.planning.controller.edge import ControllerEdge

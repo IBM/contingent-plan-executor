@@ -4,7 +4,7 @@ from hovor.core import initialize_session
 from hovor.configuration.direct_json_configuration_provider import DirectJsonConfigurationProvider
 from hovor.execution_monitor import EM
 from environment import initialize_remote_environment
-from local_run_utils import run_rasa_model_server
+from local_run_utils import run_model_server
 from flask import request, jsonify
 import json, jsonpickle
 import traceback
@@ -84,7 +84,7 @@ def new_conversation():
 
         print("Plan fetched.")
 
-        run_rasa_model_server(out_path)
+        run_model_server(out_path)
 
         print("Creating a new trace.")
         temp_session = initialize_session(plan_config)
@@ -204,7 +204,7 @@ def new_message():
 
         print("Plan fetched.")
 
-        run_rasa_model_server(out_path)
+        run_model_server(out_path)
 
         # Only proceed if the trace exists
         if not check_db(trace_id):
@@ -313,7 +313,7 @@ def load_conversation():
 
     print("Plan fetched.")
 
-    run_rasa_model_server(out_path)
+    run_model_server(out_path)
 
     # Only proceed if the trace exists
     if not check_db(trace_id):

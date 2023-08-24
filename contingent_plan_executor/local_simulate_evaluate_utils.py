@@ -25,7 +25,7 @@ def simulate_local_conversations(output_files_path, log_output_dir, n_convos, sl
 
     # launch the server once at the start
     print('Launching the server...')
-    run_rasa_model_server(output_files_path)
+    run_model_server(output_files_path)
     print('Server should be launched! Now simulating conversations...')
 
     if os.path.exists(log_output_dir) and overwrite_output_dir:
